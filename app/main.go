@@ -10,7 +10,7 @@ func main() {
 
 	router.GET("")
 
-	err := router.Run(":8080")
+	err := router.Run(":8082")
 	if err != nil {
 		log.Println("Error starting server: ", err)
 	}
