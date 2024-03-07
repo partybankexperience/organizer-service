@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	
 	router := gin.Default()
 
 	router.GET("")
@@ -15,3 +17,9 @@ func main() {
 		log.Println("Error starting server: ", err)
 	}
 }
+
+
+
+
+
+
