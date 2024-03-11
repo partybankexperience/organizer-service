@@ -1,9 +1,14 @@
 package repositories
 
 import (
+	"errors"
+	"fmt"
+	"github.com/djfemz/rave/app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
+	"reflect"
+	"strings"
 )
 
 type Repository[T, U any] interface {
@@ -19,7 +24,7 @@ type RepositoryImpl[T, U any] struct {
 var db = connect()
 
 func (r *RepositoryImpl[T, U]) Save(t *T) *T {
-	
+
 	return nil
 }
 
@@ -43,5 +48,38 @@ func connect() *gorm.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
+	_ = addEntities(models.Entities, db)
 	return db
+}
+
+func addEntities(m map[string]any, db *gorm.DB) error {
+	for _, v := range m {
+		err := db.AutoMigrate(v)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	return nil
+}
+
+func GetId(T any) (any, error) {
+	obj := reflect.ValueOf(T)
+	numberOfFields := obj.NumField()
+	for index := 0; index < numberOfFields; index++ {
+		tag := obj.Type().Field(index).Tag
+		fmt.Println(tag)
+		if strings.Contains(string(tag), "id") {
+			idField := obj.Field(index)
+			if idField.CanConvert(reflect.TypeOf(uint64(5))) {
+				v := idField.Uint()
+				return v, nil
+			} else if idField.CanConvert(reflect.TypeOf("")) {
+				return idField.String(), nil
+			}
+			break
+		}
+	}
+
+	return nil, errors.New("could not retrieve id")
 }
