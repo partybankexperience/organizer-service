@@ -5,22 +5,13 @@ import (
 )
 
 type OrganizerRepository interface {
-	Save(organizer *models.Organizer) (*models.Organizer, error)
-	FindById(id uint) *models.Organizer
-}
-
-type OrganizerRepositoryImpl struct {
 	Repository[models.Organizer, uint64]
 }
 
-func NewOrganizerRepositoryImpl() *OrganizerRepositoryImpl {
-	return &OrganizerRepositoryImpl{}
+type OrganizerRepositoryImpl struct {
 }
 
-func (org *OrganizerRepositoryImpl) Save(organizer *models.Organizer) (*models.Organizer, error) {
-	return nil, nil
-}
-
-func (org *OrganizerRepositoryImpl) FindById(id uint) *models.Organizer {
-	return nil
+func NewOrganizerRepositoryImpl() OrganizerRepository {
+	var rep OrganizerRepository = &RepositoryImpl[models.Organizer, uint64]{}
+	return rep
 }
