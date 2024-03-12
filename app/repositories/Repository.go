@@ -37,7 +37,9 @@ func (r *RepositoryImpl[T, U]) FindById(id U) *T {
 }
 
 func (r *RepositoryImpl[T, U]) FindAll() []*T {
-	return nil
+	var orgs []*T
+	db.Find(&orgs)
+	return orgs
 }
 
 func (r *RepositoryImpl[T, U]) DeleteById(id U) {

@@ -27,6 +27,9 @@ func TestRepositoryImpl_FindById(t *testing.T) {
 }
 
 func TestRepositoryImpl_FindAll(t *testing.T) {
+	orgs := repository.FindAll()
+	log.Println(orgs)
+	assert.Equal(t, 3, len(orgs))
 
 }
 
