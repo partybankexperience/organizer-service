@@ -14,8 +14,8 @@ func init() {
 
 type Organizer struct {
 	ID        uint64 `id:"ID" gorm:"primaryKey"`
-	name      string
-	createdAt time.Time
+	Name      string
+	CreatedAt time.Time
 }
 
 type Event struct {

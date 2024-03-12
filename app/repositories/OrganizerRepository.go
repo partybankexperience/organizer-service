@@ -1,7 +1,6 @@
 package repositories
 
 import (
-
 	"github.com/djfemz/rave/app/models"
 )
 
@@ -10,23 +9,18 @@ type OrganizerRepository interface {
 	FindById(id uint) *models.Organizer
 }
 
-type OrganizerRepositoryImpl struct{
+type OrganizerRepositoryImpl struct {
+	Repository[models.Organizer, uint64]
 }
 
-
-func NewOrganizerRepositoryImpl() *OrganizerRepositoryImpl{
+func NewOrganizerRepositoryImpl() *OrganizerRepositoryImpl {
 	return &OrganizerRepositoryImpl{}
 }
 
-func (org *OrganizerRepositoryImpl) Save(organizer *models.Organizer) (*models.Organizer, error){
-
+func (org *OrganizerRepositoryImpl) Save(organizer *models.Organizer) (*models.Organizer, error) {
 	return nil, nil
 }
 
-func (org *OrganizerRepositoryImpl) FindById(id uint) *models.Organizer{
+func (org *OrganizerRepositoryImpl) FindById(id uint) *models.Organizer {
 	return nil
 }
-
-
-
-

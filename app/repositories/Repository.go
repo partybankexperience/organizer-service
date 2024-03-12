@@ -24,12 +24,16 @@ type RepositoryImpl[T, U any] struct {
 var db = connect()
 
 func (r *RepositoryImpl[T, U]) Save(t *T) *T {
-
-	return nil
+	db = db.Save(t)
+	var id, _ = GetId(*t)
+	db.First(t, id)
+	return t
 }
 
 func (r *RepositoryImpl[T, U]) FindById(id U) *T {
-	return nil
+	var t = new(T)
+	db.First(t, id)
+	return t
 }
 
 func (r *RepositoryImpl[T, U]) FindAll() []*T {
