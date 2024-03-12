@@ -15,6 +15,7 @@ type Repository[T, U any] interface {
 	Save(t *T) *T
 	FindById(id U) *T
 	FindAll() []*T
+	FindAllBy(pageable Pageable) []*T
 	DeleteById(id U)
 }
 
@@ -40,6 +41,11 @@ func (r *RepositoryImpl[T, U]) FindAll() []*T {
 	var orgs []*T
 	db.Find(&orgs)
 	return orgs
+}
+
+func (r *RepositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
+	page := getPage[T](db, pageable)
+	return page.GetElements()
 }
 
 func (r *RepositoryImpl[T, U]) DeleteById(id U) {

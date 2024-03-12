@@ -33,6 +33,13 @@ func TestRepositoryImpl_FindAll(t *testing.T) {
 
 }
 
+func TestRepository_FindAll_Pagination(t *testing.T) {
+	var pageable = repositories.NewPageAble(1, 1)
+	orgs := repository.FindAllBy(pageable)
+	assert.NotNil(t, orgs)
+	assert.Equal(t, 1, len(orgs))
+}
+
 func TestRepositoryImpl_DeleteById(t *testing.T) {
 
 }
