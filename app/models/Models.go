@@ -7,6 +7,7 @@ import (
 
 var Entities = make(map[string]any, 100)
 
+// Used to register entities
 func init() {
 	Entities[reflect.ValueOf(Organizer{}).String()] = Organizer{}
 	Entities[reflect.ValueOf(Event{}).String()] = Event{}
