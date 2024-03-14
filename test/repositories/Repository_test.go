@@ -4,6 +4,7 @@ import (
 	"github.com/djfemz/rave/app/models"
 	"github.com/djfemz/rave/app/repositories"
 	"github.com/stretchr/testify/assert"
+
 	"log"
 	"testing"
 	"time"
@@ -41,6 +42,10 @@ func TestRepository_FindAll_Pagination(t *testing.T) {
 }
 
 func TestRepositoryImpl_DeleteById(t *testing.T) {
+
+}
+
+func TestFindByCustomMethodParameter(t *testing.T) {
 
 }
 
