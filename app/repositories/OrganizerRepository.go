@@ -8,10 +8,7 @@ type OrganizerRepository interface {
 	Repository[models.Organizer, uint64]
 }
 
-type OrganizerRepositoryImpl struct {
-}
-
-func NewOrganizerRepositoryImpl() OrganizerRepository {
-	var rep OrganizerRepository = &RepositoryImpl[models.Organizer, uint64]{}
-	return rep
+func NewOrganizerRepository() OrganizerRepository {
+	var organizerRepository OrganizerRepository = &repositoryImpl[models.Organizer, uint64]{}
+	return organizerRepository
 }

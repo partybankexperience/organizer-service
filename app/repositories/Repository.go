@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"errors"
-	"fmt"
 	"github.com/djfemz/rave/app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -19,36 +18,35 @@ type Repository[T, U any] interface {
 	DeleteById(id U)
 }
 
-type RepositoryImpl[T, U any] struct {
-}
+type repositoryImpl[T, U any] struct{}
 
 var db = connect()
 
-func (r *RepositoryImpl[T, U]) Save(t *T) *T {
+func (r *repositoryImpl[T, U]) Save(t *T) *T {
 	db = db.Save(t)
 	var id, _ = GetId(*t)
 	db.First(t, id)
 	return t
 }
 
-func (r *RepositoryImpl[T, U]) FindById(id U) *T {
+func (r *repositoryImpl[T, U]) FindById(id U) *T {
 	var t = new(T)
 	db.First(t, id)
 	return t
 }
 
-func (r *RepositoryImpl[T, U]) FindAll() []*T {
+func (r *repositoryImpl[T, U]) FindAll() []*T {
 	var orgs []*T
 	db.Find(&orgs)
 	return orgs
 }
 
-func (r *RepositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
+func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
 	page := getPage[T](db, pageable)
 	return page.GetElements()
 }
 
-func (r *RepositoryImpl[T, U]) DeleteById(id U) {
+func (r *repositoryImpl[T, U]) DeleteById(id U) {
 
 }
 
@@ -80,18 +78,27 @@ func GetId(T any) (any, error) {
 	numberOfFields := obj.NumField()
 	for index := 0; index < numberOfFields; index++ {
 		tag := obj.Type().Field(index).Tag
-		fmt.Println(tag)
-		if strings.Contains(string(tag), "id") {
-			idField := obj.Field(index)
-			if idField.CanConvert(reflect.TypeOf(uint64(5))) {
-				v := idField.Uint()
-				return v, nil
-			} else if idField.CanConvert(reflect.TypeOf("")) {
-				return idField.String(), nil
+		isPrimaryKeyField := strings.Contains(string(tag), "id")
+		if isPrimaryKeyField {
+			a, err, done := getPrimaryKey(obj, index)
+			if done {
+				return a, err
 			}
-			break
 		}
 	}
-
 	return nil, errors.New("could not retrieve id")
+}
+
+func getPrimaryKey(obj reflect.Value, index int) (any, error, bool) {
+	idField := obj.Field(index)
+	if idField.CanConvert(reflect.TypeOf(uint64(5))) {
+		v := idField.Uint()
+		return v, nil, true
+	} else if idField.CanConvert(reflect.TypeOf(5)) {
+		v := idField.Int()
+		return v, nil, true
+	} else if idField.CanConvert(reflect.TypeOf("")) {
+		return idField.String(), nil, true
+	}
+	return nil, nil, false
 }

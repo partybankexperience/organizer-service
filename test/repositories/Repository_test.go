@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var repository repositories.Repository[models.Organizer, uint64] = &repositories.RepositoryImpl[models.Organizer, uint64]{}
+var repository repositories.Repository[models.Organizer, uint64] = repositories.NewOrganizerRepository()
 
 func TestRepositoryImpl_Save(t *testing.T) {
 	var savedOrg = repository.Save(&models.Organizer{
