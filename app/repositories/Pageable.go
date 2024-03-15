@@ -5,10 +5,10 @@ import (
 )
 
 const (
-	zero = iota
-	one
-	two
-	three
+	ZERO = iota
+	ONE
+	TWO
+	THREE
 )
 
 type Pageable interface {
@@ -47,16 +47,16 @@ func (pageRequest *pageRequest) getSize() int {
 }
 
 func computeNumberOfItemsToSkip(pageNumber int, size int) (numberOfItemsToSkip int) {
-	var isRequestForPageOne = pageNumber == one
+	var isRequestForPageOne = pageNumber == ONE
 	if isRequestForPageOne {
-		return pageNumber - one
+		return pageNumber - ONE
 	}
-	numberOfItemsToSkip = (pageNumber - one) * size
+	numberOfItemsToSkip = (pageNumber - ONE) * size
 	return numberOfItemsToSkip
 }
 
 func getPage[t any](db *gorm.DB, pageable Pageable) *Page[t] {
-	skip := pageable.getNumberOfItemsToSkip() - one
+	skip := pageable.getNumberOfItemsToSkip() - ONE
 	var size = pageable.getSize()
 	var items []*t
 	db.Offset(skip).Limit(size).Find(&items)

@@ -81,7 +81,7 @@ func addEntities(m map[string]any, db *gorm.DB) error {
 func GetId(T any) (any, error) {
 	obj := reflect.ValueOf(T)
 	numberOfFields := obj.NumField()
-	for index := zero; index < numberOfFields; index++ {
+	for index := ZERO; index < numberOfFields; index++ {
 		tag := obj.Type().Field(index).Tag
 		isPrimaryKeyField := strings.Contains(string(tag), "id")
 		if isPrimaryKeyField {
