@@ -18,7 +18,9 @@ type Repository[T, U any] interface {
 	DeleteById(id U)
 }
 
-type repositoryImpl[T, U any] struct{}
+type repositoryImpl[T, U any] struct {
+	Db *gorm.DB
+}
 
 var db = connect()
 
@@ -47,7 +49,7 @@ func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
 }
 
 func (r *repositoryImpl[T, U]) DeleteById(id U) {
-
+	db.Delete(new(T), id)
 }
 
 func connect() *gorm.DB {

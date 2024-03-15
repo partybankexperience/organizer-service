@@ -56,7 +56,7 @@ func computeNumberOfItemsToSkip(pageNumber int, size int) (numberOfItemsToSkip i
 }
 
 func getPage[t any](db *gorm.DB, pageable Pageable) *Page[t] {
-	skip := pageable.getNumberOfItemsToSkip() - 1
+	skip := pageable.getNumberOfItemsToSkip() - one
 	var size = pageable.getSize()
 	var items []*t
 	db.Offset(skip).Limit(size).Find(&items)

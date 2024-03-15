@@ -41,7 +41,9 @@ func TestRepository_FindAll_Pagination(t *testing.T) {
 }
 
 func TestRepositoryImpl_DeleteById(t *testing.T) {
-
+	repository.DeleteById(1)
+	orgs := repository.FindAll()
+	assert.Equal(t, 2, len(orgs))
 }
 
 func TestFindByDynamicProperty(t *testing.T) {
