@@ -19,10 +19,13 @@ type Repository[T, U any] interface {
 }
 
 type repositoryImpl[T, U any] struct {
-	Db *gorm.DB
 }
 
-var db = connect()
+var db *gorm.DB
+
+func init() {
+	db = connect()
+}
 
 func (r *repositoryImpl[T, U]) Save(t *T) *T {
 	db = db.Save(t)
@@ -78,13 +81,13 @@ func addEntities(m map[string]any, db *gorm.DB) error {
 func GetId(T any) (any, error) {
 	obj := reflect.ValueOf(T)
 	numberOfFields := obj.NumField()
-	for index := 0; index < numberOfFields; index++ {
+	for index := zero; index < numberOfFields; index++ {
 		tag := obj.Type().Field(index).Tag
 		isPrimaryKeyField := strings.Contains(string(tag), "id")
 		if isPrimaryKeyField {
-			a, err, done := getPrimaryKey(obj, index)
+			id, err, done := getPrimaryKey(obj, index)
 			if done {
-				return a, err
+				return id, err
 			}
 		}
 	}
