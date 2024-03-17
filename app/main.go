@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	
+
 	router := gin.Default()
 
 	router.GET("")
@@ -17,9 +17,3 @@ func main() {
 		log.Println("Error starting server: ", err)
 	}
 }
-
-
-
-
-
-
