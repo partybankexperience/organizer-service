@@ -21,11 +21,13 @@ func LoginHandler(ctx *gin.Context) {
 	err = ctx.BindJSON(&loginRequest)
 	if err != nil {
 		handleError(ctx, err, loginResponse)
+		return
 	}
 	org := organizationService.GetByUsername(loginRequest.Username)
 	err = bcrypt.CompareHashAndPassword([]byte(org.Password), []byte(loginRequest.Password))
 	if err != nil {
 		handleError(ctx, err, loginResponse)
+		return
 	}
 	token, err := GenerateAccessToken(org)
 	loginResponse["access_token"] = token
@@ -33,8 +35,6 @@ func LoginHandler(ctx *gin.Context) {
 }
 
 func handleError(ctx *gin.Context, err error, loginResponse map[string]string) {
-	if err != nil {
-		loginResponse["error"] = err.Error()
-		ctx.IndentedJSON(http.StatusBadRequest, loginResponse)
-	}
+	loginResponse["error"] = err.Error()
+	ctx.IndentedJSON(http.StatusBadRequest, loginResponse)
 }
