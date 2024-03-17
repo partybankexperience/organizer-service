@@ -1,13 +1,14 @@
 package main
 
 import (
+	"github.com/spf13/viper"
 	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-
+	viper.BindEnv("")
 	router := gin.Default()
 
 	router.GET("")
