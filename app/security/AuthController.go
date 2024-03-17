@@ -1,7 +1,6 @@
 package security
 
 import (
-	"errors"
 	"github.com/djfemz/rave/app/services"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -11,8 +10,8 @@ import (
 var organizationService services.OrganizerService = &services.AppOrganizerService{}
 
 type loginRequest struct {
-	username string
-	password string
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func LoginHandler(ctx *gin.Context) {
@@ -20,11 +19,15 @@ func LoginHandler(ctx *gin.Context) {
 	var loginResponse = make(map[string]string)
 	err := ctx.BindJSON(&loginRequest)
 	if err != nil {
-		ctx.IndentedJSON(http.StatusBadRequest, errors.New("invalid request object"))
+		loginResponse["error"] = err.Error()
+		ctx.IndentedJSON(http.StatusBadRequest, loginResponse)
+		return
 	}
-	org := organizationService.GetByUsername(loginRequest.username)
-	if bcrypt.CompareHashAndPassword([]byte(org.Password), []byte(loginRequest.password)) != nil {
-		ctx.IndentedJSON(http.StatusBadRequest, errors.New("invalid authentication credentials"))
+	org := organizationService.GetByUsername(loginRequest.Username)
+	if bcrypt.CompareHashAndPassword([]byte(org.Password), []byte(loginRequest.Password)) != nil {
+		loginResponse["error"] = err.Error()
+		ctx.IndentedJSON(http.StatusBadRequest, loginResponse)
+		return
 	}
 	token, err := GenerateAccessToken(org)
 	loginResponse["access_token"] = token

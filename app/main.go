@@ -2,17 +2,16 @@ package main
 
 import (
 	"github.com/djfemz/rave/app/security"
-	"github.com/spf13/viper"
 	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	viper.BindEnv("")
+	//viper.BindEnv("")
 	router := gin.Default()
 
-	router.GET("", security.LoginHandler)
+	router.POST("/login", security.LoginHandler)
 
 	err := router.Run(":8082")
 	if err != nil {
