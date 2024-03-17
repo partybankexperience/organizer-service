@@ -22,5 +22,4 @@ func TestName(t *testing.T) {
 	assert.NotNil(t, access_token)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, access_token)
-
 }
