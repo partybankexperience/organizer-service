@@ -8,11 +8,11 @@ import (
 
 func GenerateAccessToken(user *models.Organizer) (string, error) {
 	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsFor(user))
-	access_token, err := token.SignedString([]byte("secret"))
+	accessToken, err := token.SignedString([]byte("secret"))
 	if err != nil {
 		return "", err
 	}
-	return access_token, nil
+	return accessToken, nil
 }
 
 func buildJwtClaimsFor(user *models.Organizer) jwt.RegisteredClaims {
