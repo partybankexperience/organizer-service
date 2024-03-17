@@ -4,6 +4,7 @@ import (
 	"github.com/djfemz/rave/app/services"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"log"
 	"net/http"
 )
 
@@ -18,6 +19,7 @@ func LoginHandler(ctx *gin.Context) {
 	var loginRequest loginRequest
 	var loginResponse = make(map[string]string)
 	err := ctx.BindJSON(&loginRequest)
+	log.Println(loginRequest)
 	if err != nil {
 		loginResponse["error"] = err.Error()
 		ctx.IndentedJSON(http.StatusBadRequest, loginResponse)
