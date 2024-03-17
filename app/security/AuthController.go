@@ -18,7 +18,8 @@ type loginRequest struct {
 func LoginHandler(ctx *gin.Context) {
 	var loginRequest loginRequest
 	var loginResponse = make(map[string]string)
-	err := ctx.BindJSON(&loginRequest)
+	var err error
+	err = ctx.BindJSON(&loginRequest)
 	log.Println(loginRequest)
 	if err != nil {
 		loginResponse["error"] = err.Error()
@@ -26,7 +27,8 @@ func LoginHandler(ctx *gin.Context) {
 		return
 	}
 	org := organizationService.GetByUsername(loginRequest.Username)
-	if bcrypt.CompareHashAndPassword([]byte(org.Password), []byte(loginRequest.Password)) != nil {
+	err = bcrypt.CompareHashAndPassword([]byte(org.Password), []byte(loginRequest.Password))
+	if err != nil {
 		loginResponse["error"] = err.Error()
 		ctx.IndentedJSON(http.StatusBadRequest, loginResponse)
 		return
