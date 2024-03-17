@@ -10,7 +10,6 @@ import (
 
 var user = &models.Organizer{
 	Username:  "jon@email.com",
-	Password:  "password",
 	Role:      models.ORGANIZER,
 	CreatedAt: time.Now(),
 }
