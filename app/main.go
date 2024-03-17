@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/djfemz/rave/app/security"
 	"github.com/spf13/viper"
 	"log"
 
@@ -11,7 +12,7 @@ func main() {
 	viper.BindEnv("")
 	router := gin.Default()
 
-	router.GET("")
+	router.GET("", security.LoginHandler)
 
 	err := router.Run(":8082")
 	if err != nil {
