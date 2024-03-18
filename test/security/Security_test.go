@@ -14,7 +14,7 @@ var user = &models.Organizer{
 	CreatedAt: time.Now(),
 }
 
-func TestName(t *testing.T) {
+func TestGenerateToken(t *testing.T) {
 	accessToken, err := security.GenerateAccessToken(user)
 	assert.NotNil(t, accessToken)
 	assert.Nil(t, err)

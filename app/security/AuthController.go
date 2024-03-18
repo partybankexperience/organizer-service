@@ -17,8 +17,7 @@ type loginRequest struct {
 func LoginHandler(ctx *gin.Context) {
 	var loginRequest loginRequest
 
-	err = ctx.BindJSON(&loginRequest)
-	if err != nil {
+	if err = ctx.BindJSON(&loginRequest); err != nil {
 		handleError(ctx, err, loginResponse)
 		return
 	}
