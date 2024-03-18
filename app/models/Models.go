@@ -20,7 +20,8 @@ func init() {
 }
 
 type Organizer struct {
-	User
+	ID uint64 `id:"ID" gorm:"primaryKey"`
+	*User
 	Name      string
 	CreatedAt time.Time
 }
@@ -35,6 +36,6 @@ type User struct {
 type Event struct {
 	ID   uint64 `id:"ID" gorm:"primaryKey"`
 	Name string
-	Organizer
+	*Organizer
 	Date time.Time
 }

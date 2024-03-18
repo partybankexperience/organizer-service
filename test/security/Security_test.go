@@ -8,14 +8,16 @@ import (
 	"time"
 )
 
-var user = &models.Organizer{
-	Username:  "jon@email.com",
-	Role:      models.ORGANIZER,
+var organization = &models.Organizer{
+	User: &models.User{
+		Username: "jon@email.com",
+		Role:     models.ORGANIZER,
+	},
 	CreatedAt: time.Now(),
 }
 
 func TestGenerateToken(t *testing.T) {
-	accessToken, err := security.GenerateAccessToken(user)
+	accessToken, err := security.GenerateAccessToken(organization)
 	assert.NotNil(t, accessToken)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, accessToken)

@@ -21,7 +21,7 @@ func LoginHandler(ctx *gin.Context) {
 		handleError(ctx, err, loginResponse)
 		return
 	}
-	org := organizationService.GetByUsername(loginRequest.Username)
+	org, _ := organizationService.GetByUsername(loginRequest.Username)
 
 	token, err := GenerateAccessToken(org)
 	if err != nil {
