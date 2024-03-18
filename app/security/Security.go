@@ -24,7 +24,3 @@ func buildJwtClaimsFor(user *models.Organizer) jwt.RegisteredClaims {
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
 	}
 }
-
-func generateOtp() string {
-	return ""
-}
