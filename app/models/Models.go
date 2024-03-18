@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/djfemz/rave/app/security/otp"
 	"reflect"
 	"time"
 )
@@ -16,7 +17,6 @@ const (
 func init() {
 	Entities[reflect.ValueOf(Organizer{}).String()] = Organizer{}
 	Entities[reflect.ValueOf(Event{}).String()] = Event{}
-	Entities[reflect.ValueOf(User{}).String()] = User{}
 }
 
 type Organizer struct {
@@ -24,6 +24,7 @@ type Organizer struct {
 	*User
 	Name      string
 	CreatedAt time.Time
+	Otp       *otp.Otp `gorm:"embedded;embeddedPrefix:otp"`
 }
 
 type User struct {

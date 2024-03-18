@@ -11,13 +11,13 @@ const (
 	DEFAULT_OTP_SIZE = 6
 )
 
-type otp struct {
-	Password  string
-	expiresAt time.Time
+type Otp struct {
+	Code      string
+	ExpiresAt time.Time
 }
 
-func generateOtp() *otp {
-	return &otp{
+func GenerateOtp() *Otp {
+	return &Otp{
 		buildPassword(DEFAULT_OTP_SIZE),
 		time.Now().Add(OTP_EXPIRES_AT * time.Minute),
 	}

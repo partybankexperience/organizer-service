@@ -6,7 +6,7 @@ import (
 )
 
 func TestGenerateOtp(t *testing.T) {
-	otp := generateOtp()
+	otp := GenerateOtp()
 	assert.NotNil(t, otp)
 	assert.NotEmpty(t, otp)
 }

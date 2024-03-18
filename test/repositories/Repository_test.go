@@ -3,6 +3,7 @@ package test
 import (
 	"github.com/djfemz/rave/app/models"
 	"github.com/djfemz/rave/app/repositories"
+	"github.com/djfemz/rave/app/security/otp"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
@@ -15,6 +16,8 @@ func TestRepositoryImpl_Save(t *testing.T) {
 	var savedOrg = repository.Save(&models.Organizer{
 		Name:      "John",
 		CreatedAt: time.Now(),
+
+		Otp: otp.GenerateOtp(),
 	})
 	log.Println(savedOrg)
 	assert.NotNil(t, savedOrg)
