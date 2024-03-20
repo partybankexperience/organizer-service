@@ -41,9 +41,9 @@ func (r *repositoryImpl[T, U]) FindById(id U) *T {
 }
 
 func (r *repositoryImpl[T, U]) FindAll() []*T {
-	var orgs []*T
-	db.Find(&orgs)
-	return orgs
+	var organizations []*T
+	db.Find(&organizations)
+	return organizations
 }
 
 func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {

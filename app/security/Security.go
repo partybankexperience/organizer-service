@@ -15,8 +15,8 @@ func GenerateAccessToken(user *models.Organizer) (string, error) {
 	return accessToken, nil
 }
 
-func buildJwtClaimsFor(user *models.Organizer) jwt.RegisteredClaims {
-	return jwt.RegisteredClaims{
+func buildJwtClaimsFor(user *models.Organizer) *jwt.RegisteredClaims {
+	return &jwt.RegisteredClaims{
 		Issuer:    "app",
 		Subject:   "access_token",
 		Audience:  []string{user.Role},
