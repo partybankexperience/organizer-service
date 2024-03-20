@@ -11,14 +11,14 @@ const (
 	CONFIG_TYPE      = "env"
 )
 
-type envConfig struct {
-	DbUrl      string
-	MailApiKey string
-	MailUrl    string
+type EnvConfig struct {
+	DbUrl        string
+	MAIL_API_KEY string
+	MAIL_API_URL string
 }
 
-func LoadConfigFile() *envConfig {
-	var appConfig = &envConfig{}
+func LoadConfigFile() *EnvConfig {
+	var appConfig *EnvConfig
 	viper.AddConfigPath(CONFIG_PATH)
 	viper.SetConfigName(CONFIG_FILE_NAME)
 	viper.SetConfigType(CONFIG_TYPE)
@@ -26,7 +26,7 @@ func LoadConfigFile() *envConfig {
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal("Error loading config file: ", err)
 	}
-	if err := viper.Unmarshal(appConfig); err != nil {
+	if err := viper.Unmarshal(&appConfig); err != nil {
 		log.Fatal("Error reading config file: ", err)
 	}
 	return appConfig
