@@ -24,7 +24,7 @@ type Organizer struct {
 	*User
 	Name      string
 	CreatedAt time.Time
-	Otp       *otp.Otp `gorm:"embedded;embeddedPrefix:otp"`
+	Otp       *otp.OneTimePassword `gorm:"embedded;embeddedPrefix:otp"`
 }
 
 type User struct {

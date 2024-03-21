@@ -3,6 +3,7 @@ package security
 import (
 	"github.com/djfemz/rave/app/models"
 	"github.com/djfemz/rave/app/security"
+	"github.com/djfemz/rave/app/security/otp"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -21,4 +22,9 @@ func TestGenerateToken(t *testing.T) {
 	assert.NotNil(t, accessToken)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, accessToken)
+}
+
+func TestValidateOtp(t *testing.T) {
+	otp := otp.GenerateOtp("jon@email.com")
+	security.ValidateOtp("")
 }
