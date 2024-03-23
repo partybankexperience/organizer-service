@@ -10,7 +10,16 @@ import (
 	"strings"
 )
 
+type FieldRepository[T, U any] interface {
+	FindByUsername(username any) *T
+}
+
 type Repository[T, U any] interface {
+	CrudRepository[T, U]
+	FieldRepository[T, U]
+}
+
+type CrudRepository[T, U any] interface {
 	Save(t *T) *T
 	FindById(id U) *T
 	FindAll() []*T
@@ -18,7 +27,7 @@ type Repository[T, U any] interface {
 	DeleteById(id U)
 }
 
-type repositoryImpl[T, U any] struct {
+type RepositoryImpl[T, U any] struct {
 }
 
 var db *gorm.DB
@@ -27,31 +36,37 @@ func init() {
 	db = connect()
 }
 
-func (r *repositoryImpl[T, U]) Save(t *T) *T {
+func (r *RepositoryImpl[T, U]) Save(t *T) *T {
 	db = db.Save(t)
 	var id, _ = GetId(*t)
 	db.First(t, id)
 	return t
 }
 
-func (r *repositoryImpl[T, U]) FindById(id U) *T {
+func (r *RepositoryImpl[T, U]) FindById(id U) *T {
 	var t = new(T)
 	db.First(t, id)
 	return t
 }
 
-func (r *repositoryImpl[T, U]) FindAll() []*T {
+func (r *RepositoryImpl[T, U]) FindAll() []*T {
 	var organizations []*T
 	db.Find(&organizations)
 	return organizations
 }
 
-func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
+func (r *RepositoryImpl[T, U]) FindByUsername(username any) *T {
+	var organization *T
+	db.Where("username=?", username).First(&organization)
+	return organization
+}
+
+func (r *RepositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
 	page := getPage[T](db, pageable)
 	return page.GetElements()
 }
 
-func (r *repositoryImpl[T, U]) DeleteById(id U) {
+func (r *RepositoryImpl[T, U]) DeleteById(id U) {
 	db.Delete(new(T), id)
 }
 

@@ -10,17 +10,26 @@ import (
 	"time"
 )
 
-var repository repositories.Repository[models.Organizer, uint64] = repositories.NewOrganizerRepository()
+var repository repositories.Repository[models.Organizer, uint64] = &repositories.RepositoryImpl[models.Organizer, uint64]{}
 
 func TestRepositoryImpl_Save(t *testing.T) {
+	username := "johnny@email.com"
 	var savedOrg = repository.Save(&models.Organizer{
 		Name:      "John",
 		CreatedAt: time.Now(),
-
-		Otp: otp.GenerateOtp(),
+		User: &models.User{
+			Username: username,
+		},
+		Otp: otp.GenerateOtp(username),
 	})
 	log.Println(savedOrg)
 	assert.NotNil(t, savedOrg)
+}
+
+func TestFindByUsername(t *testing.T) {
+	found := repository.FindByUsername("johnny@email.com")
+	log.Println(found)
+	assert.NotNil(t, found)
 }
 
 func TestRepositoryImpl_FindById(t *testing.T) {

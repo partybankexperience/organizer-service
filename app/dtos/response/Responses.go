@@ -2,6 +2,7 @@ package dtos
 
 const (
 	MAIL_SENDING_SUCCESS_MESSAGE = "mail sent successfully"
+	USER_CREATED_SUCCESSFULLY    = "user created successfully"
 )
 
 type RaveResponse[T any] struct {
@@ -12,4 +13,6 @@ type LoginResponse struct {
 }
 
 type CreateOrganizerResponse struct {
+	Message  string `json:"message,omitempty"`
+	Username string `json:"username,omitempty"`
 }
