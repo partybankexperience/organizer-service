@@ -58,8 +58,10 @@ func TestRepositoryImpl_DeleteById(t *testing.T) {
 	assert.Equal(t, 2, len(orgs))
 }
 
-func TestFindByDynamicProperty(t *testing.T) {
-
+func TestFindByOtp(t *testing.T) {
+	org, err := repository.FindByOtp("506554")
+	assert.NotNil(t, org)
+	assert.Nil(t, err)
 }
 
 func TestGetId(t *testing.T) {

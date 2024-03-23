@@ -1,4 +1,4 @@
-package services
+package test
 
 import (
 	request "github.com/djfemz/rave/app/dtos/request"

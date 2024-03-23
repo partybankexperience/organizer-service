@@ -1,4 +1,4 @@
-package security
+package test
 
 import (
 	"github.com/djfemz/rave/app/models"
@@ -21,9 +21,4 @@ func TestGenerateToken(t *testing.T) {
 	assert.NotNil(t, accessToken)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, accessToken)
-}
-
-func TestValidateOtp(t *testing.T) {
-	//otp := otp.GenerateOtp()
-	//security.ValidateOtp("")
 }

@@ -1,4 +1,4 @@
-package services
+package test
 
 import (
 	"github.com/djfemz/rave/app/security/otp"
