@@ -20,7 +20,7 @@ func TestRepositoryImpl_Save(t *testing.T) {
 		User: &models.User{
 			Username: username,
 		},
-		Otp: otp.GenerateOtp(username),
+		Otp: otp.GenerateOtp(),
 	})
 	log.Println(savedOrg)
 	assert.NotNil(t, savedOrg)

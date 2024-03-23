@@ -21,7 +21,7 @@ func NewAuthController() *AutController {
 }
 
 func (authController *AutController) LoginHandler(ctx *gin.Context) {
-	var signInRequest request.LoginRequest
+	var signInRequest request.AuthRequest
 	if err = ctx.BindJSON(&signInRequest); err != nil {
 		handleError(ctx, err)
 		return

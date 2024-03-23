@@ -19,6 +19,7 @@ func NewOrganizerRepository() OrganizerRepository {
 }
 
 func (organizer *organizerRepositoryImpl) FindByUsername(username string) (*models.Organizer, error) {
+	db = connect()
 	var organization = new(models.Organizer)
 	err := db.Where("username=?", username).First(&organization).Error
 	return organization, err

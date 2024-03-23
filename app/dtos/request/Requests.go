@@ -1,8 +1,7 @@
 package dtos
 
-type LoginRequest struct {
-	Username string
-	Password string
+type AuthRequest struct {
+	CreateOrganizerRequest
 }
 
 type CreateOrganizerRequest struct {
@@ -21,8 +20,22 @@ type Recipient struct {
 }
 
 type EmailNotificationRequest struct {
-	Sender    Sender      `json:"sender"`
-	Recipient []Recipient `json:"to"`
-	Subject   string      `json:"subject"`
-	Content   string      `json:"htmlContent"`
+	Sender     Sender      `json:"sender"`
+	Recipients []Recipient `json:"to"`
+	Subject    string      `json:"subject"`
+	Content    string      `json:"htmlContent"`
+}
+
+func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {
+	return &EmailNotificationRequest{
+		Sender: Sender{
+			Email: "noreply@email.com",
+			Name:  "rave",
+		},
+		Recipients: []Recipient{
+			{Email: recipient, Name: "Friend"},
+		},
+		Subject: "rave",
+		Content: content,
+	}
 }

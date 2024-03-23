@@ -22,7 +22,7 @@ func buildMailRequest() *request.EmailNotificationRequest {
 			Email: "john@gmail.com",
 			Name:  "rave",
 		},
-		Recipient: []request.Recipient{
+		Recipients: []request.Recipient{
 			{
 				Email: "davipe1322@irnini.com",
 				Name:  "John Doe",

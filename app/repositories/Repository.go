@@ -27,11 +27,8 @@ type repositoryImpl[T, U any] struct {
 
 var db *gorm.DB
 
-func init() {
-	db = connect()
-}
-
 func (r *repositoryImpl[T, U]) Save(t *T) *T {
+	db = connect()
 	db = db.Save(t)
 	var id, _ = GetId(*t)
 	db.First(t, id)
@@ -39,23 +36,27 @@ func (r *repositoryImpl[T, U]) Save(t *T) *T {
 }
 
 func (r *repositoryImpl[T, U]) FindById(id U) *T {
+	db = connect()
 	var t = new(T)
 	db.First(t, id)
 	return t
 }
 
 func (r *repositoryImpl[T, U]) FindAll() []*T {
+	db = connect()
 	var organizations []*T
 	db.Find(&organizations)
 	return organizations
 }
 
 func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
+	db = connect()
 	page := getPage[T](db, pageable)
 	return page.GetElements()
 }
 
 func (r *repositoryImpl[T, U]) DeleteById(id U) {
+	db = connect()
 	db.Delete(new(T), id)
 }
 
