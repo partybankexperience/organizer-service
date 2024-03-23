@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/djfemz/rave/app/security"
+	"github.com/djfemz/rave/app/security/controllers"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -9,8 +9,7 @@ import (
 
 func main() {
 	router := gin.Default()
-
-	router.POST("/login", security.LoginHandler)
+	router.POST("/login", controllers.NewAuthController().LoginHandler)
 
 	err := router.Run(":8082")
 	if err != nil {

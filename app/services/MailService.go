@@ -21,10 +21,13 @@ type MailService interface {
 	Send(emailRequest *request.EmailNotificationRequest) string
 }
 
-type RaveMailService struct {
+type raveMailService struct{}
+
+func NewMailService() MailService {
+	return &raveMailService{}
 }
 
-func (raveMailService *RaveMailService) Send(emailRequest *request.EmailNotificationRequest) string {
+func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotificationRequest) string {
 	jsonData, _ := json.Marshal(emailRequest)
 	appConfig := config.LoadConfigFile()
 	req, err := http.NewRequest(http.MethodPost, appConfig.MAIL_API_URL, bytes.NewReader(jsonData))

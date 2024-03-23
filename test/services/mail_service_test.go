@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-var mailService services.MailService = &services.RaveMailService{}
+var mailService = services.NewMailService()
 
 func TestSendMail(t *testing.T) {
 	var mailRequest = buildMailRequest()

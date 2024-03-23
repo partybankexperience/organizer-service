@@ -5,10 +5,21 @@ import (
 )
 
 type OrganizerRepository interface {
-	CrudRepository[models.Organizer, uint64]
+	crudRepository[models.Organizer, uint64]
+	FindByUsername(username string) (*models.Organizer, error)
+}
+
+type organizerRepositoryImpl struct {
+	repositoryImpl[models.Organizer, uint64]
 }
 
 func NewOrganizerRepository() OrganizerRepository {
-	var organizerRepository OrganizerRepository = &RepositoryImpl[models.Organizer, uint64]{}
+	var organizerRepository OrganizerRepository = &organizerRepositoryImpl{}
 	return organizerRepository
+}
+
+func (organizer *organizerRepositoryImpl) FindByUsername(username string) (*models.Organizer, error) {
+	var organization = new(models.Organizer)
+	err := db.Where("username=?", username).First(&organization).Error
+	return organization, err
 }

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var repository repositories.Repository[models.Organizer, uint64] = &repositories.RepositoryImpl[models.Organizer, uint64]{}
+var repository = repositories.NewOrganizerRepository()
 
 func TestRepositoryImpl_Save(t *testing.T) {
 	username := "johnny@email.com"
@@ -27,7 +27,7 @@ func TestRepositoryImpl_Save(t *testing.T) {
 }
 
 func TestFindByUsername(t *testing.T) {
-	found := repository.FindByUsername("johnny@email.com")
+	found, _ := repository.FindByUsername("johnny@email.com")
 	log.Println(found)
 	assert.NotNil(t, found)
 }

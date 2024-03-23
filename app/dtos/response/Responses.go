@@ -10,6 +10,8 @@ type RaveResponse[T any] struct {
 }
 
 type LoginResponse struct {
+	Message  string `json:"message,omitempty"`
+	Username string `json:"username,omitempty"`
 }
 
 type CreateOrganizerResponse struct {

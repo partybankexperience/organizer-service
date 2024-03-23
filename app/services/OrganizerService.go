@@ -13,12 +13,18 @@ type OrganizerService interface {
 	GetByUsername(username string) (*models.Organizer, error)
 }
 
-type AppOrganizerService struct {
-	repository repositories.Repository[models.Organizer, uint64]
+type appOrganizerService struct {
+	Repository repositories.OrganizerRepository
 }
 
-func (organizerService *AppOrganizerService) Create(createOrganizerRequest *request.CreateOrganizerRequest) (*response.CreateOrganizerResponse, error) {
-	savedOrganizer := organizerService.repository.Save(mapCreateOrganizerRequestTo(createOrganizerRequest))
+func NewOrganizerService() OrganizerService {
+	return &appOrganizerService{
+		Repository: repositories.NewOrganizerRepository(),
+	}
+}
+
+func (organizerService *appOrganizerService) Create(createOrganizerRequest *request.CreateOrganizerRequest) (*response.CreateOrganizerResponse, error) {
+	savedOrganizer := organizerService.Repository.Save(mapCreateOrganizerRequestTo(createOrganizerRequest))
 	if savedOrganizer != nil {
 		return &response.CreateOrganizerResponse{
 			Message:  response.USER_CREATED_SUCCESSFULLY,
@@ -28,8 +34,11 @@ func (organizerService *AppOrganizerService) Create(createOrganizerRequest *requ
 	return nil, errors.New("failed to create user with username")
 }
 
-func (organizerService *AppOrganizerService) GetByUsername(username string) (*models.Organizer, error) {
-	organizer := organizerService.repository.FindByUsername(username)
+func (organizerService *appOrganizerService) GetByUsername(username string) (*models.Organizer, error) {
+	organizer, err := organizerService.Repository.FindByUsername(username)
+	if err != nil {
+		return nil, err
+	}
 	return organizer, nil
 }
 
