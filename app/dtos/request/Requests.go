@@ -1,12 +1,20 @@
 package dtos
 
 type AuthRequest struct {
-	CreateOrganizerRequest
+	CreateUserRequest
 }
 
-type CreateOrganizerRequest struct {
-	Username string
-	Password string
+type CreateEventRequest struct {
+	Name               string `json:"name"`
+	Location           string `json:"location"`
+	Date               string `json:"date"`
+	Time               string `json:"time"`
+	ContactInformation string `json:"contact_information"`
+	Description        string `json:"description"`
+}
+
+type CreateUserRequest struct {
+	Username string `json:"username"`
 }
 
 type Sender struct {

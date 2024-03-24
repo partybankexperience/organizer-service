@@ -39,7 +39,7 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 }
 
 func addUser(authRequest *request.AuthRequest, err error, organizerService services.OrganizerService, org *models.Organizer) (*response.LoginResponse, error) {
-	organizer, err := organizerService.Create(&authRequest.CreateOrganizerRequest)
+	organizer, err := organizerService.Create(&authRequest.CreateUserRequest)
 	if err != nil {
 		log.Fatal("Error: ", err)
 	}

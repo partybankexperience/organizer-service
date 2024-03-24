@@ -13,7 +13,7 @@ import (
 )
 
 type OrganizerService interface {
-	Create(createOrganizerRequest *request.CreateOrganizerRequest) (*response.CreateOrganizerResponse, error)
+	Create(createOrganizerRequest *request.CreateUserRequest) (*response.CreateOrganizerResponse, error)
 	GetByUsername(username string) (*models.Organizer, error)
 	UpdateOtpFor(id uint64, testOtp *otp.OneTimePassword) (*models.Organizer, error)
 }
@@ -30,7 +30,7 @@ func NewOrganizerService() OrganizerService {
 	}
 }
 
-func (organizerService *appOrganizerService) Create(createOrganizerRequest *request.CreateOrganizerRequest) (*response.CreateOrganizerResponse, error) {
+func (organizerService *appOrganizerService) Create(createOrganizerRequest *request.CreateUserRequest) (*response.CreateOrganizerResponse, error) {
 	organizer := mapCreateOrganizerRequestTo(createOrganizerRequest)
 	password := otp.GenerateOtp()
 	log.Println("organizer: ", organizer.User, " password: ", password, "username: ", organizer.Username)
@@ -66,7 +66,7 @@ func (organizerService *appOrganizerService) UpdateOtpFor(id uint64, otp *otp.On
 	}
 }
 
-func mapCreateOrganizerRequestTo(organizerRequest *request.CreateOrganizerRequest) *models.Organizer {
+func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *models.Organizer {
 	log.Println("organizerRequest", organizerRequest)
 	return &models.Organizer{
 		User: &models.User{

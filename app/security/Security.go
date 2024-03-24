@@ -5,7 +5,6 @@ import (
 	"github.com/djfemz/rave/app/models"
 	"github.com/djfemz/rave/app/services"
 	"github.com/golang-jwt/jwt/v5"
-	"log"
 	"time"
 )
 
@@ -34,17 +33,14 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 		return nil, errors.New("access token is not valid")
 	}
 	if err != nil {
-		log.Println("Error: ", err)
 		return nil, err
 	}
 	subject, err := tok.Claims.GetSubject()
 	if err != nil {
-		log.Println("Error: ", err)
 		return nil, err
 	}
 	org, err := organizerService.GetByUsername(subject)
 	if err != nil {
-		log.Println("Error: ", err)
 		return nil, err
 	}
 	return org, nil
