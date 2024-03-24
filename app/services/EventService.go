@@ -8,7 +8,7 @@ import (
 )
 
 type EventService interface {
-	Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[any], error)
+	Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error)
 }
 
 type raveEventService struct {
@@ -23,7 +23,7 @@ func NewEventService() EventService {
 	}
 }
 
-func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[any], error) {
+func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error) {
 	organizerService := raveEventService.OrganizerService
 	organizer, err := organizerService.GetById(createEventRequest.OrganizerId)
 	if err != nil {
@@ -31,8 +31,28 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	}
 	event := mapCreateEventRequestToEvent(createEventRequest)
 	event.Organizer = organizer
+	eventRepository := raveEventService.EventRepository
+	savedEvent := eventRepository.Save(event)
+	if savedEvent == nil {
+		return nil, err
+	}
+	return &response.RaveResponse[*response.EventResponse]{
+		Data: mapEventToEventResponse(savedEvent),
+	}, nil
+}
 
-	return nil, nil
+func mapEventToEventResponse(event *models.Event) *response.EventResponse {
+	return &response.EventResponse{
+		Message:            "event created successfully",
+		Name:               event.Name,
+		Organizer:          event.Organizer.Name,
+		Location:           event.Location,
+		Date:               event.Date,
+		Time:               event.Time,
+		ContactInformation: event.ContactInformation,
+		Description:        event.Description,
+		Status:             event.Status,
+	}
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {

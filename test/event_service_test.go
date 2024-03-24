@@ -4,6 +4,7 @@ import (
 	request "github.com/djfemz/rave/app/dtos/request"
 	"github.com/djfemz/rave/app/services"
 	"github.com/stretchr/testify/assert"
+	"log"
 	"testing"
 )
 
@@ -20,6 +21,7 @@ func TestCreateEvent(t *testing.T) {
 	}
 
 	res, err := eventService.Create(createEvent)
+	log.Println("event response: ", *res.Data)
 	assert.NotNil(t, res)
 	assert.Nil(t, err)
 }
