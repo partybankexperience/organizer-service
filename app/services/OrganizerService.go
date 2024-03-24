@@ -16,7 +16,6 @@ type OrganizerService interface {
 	Create(createOrganizerRequest *request.CreateOrganizerRequest) (*response.CreateOrganizerResponse, error)
 	GetByUsername(username string) (*models.Organizer, error)
 	UpdateOtpFor(id uint64, testOtp *otp.OneTimePassword) (*models.Organizer, error)
-	IsValidOtp(code string) bool
 }
 
 type appOrganizerService struct {
@@ -65,11 +64,6 @@ func (organizerService *appOrganizerService) UpdateOtpFor(id uint64, otp *otp.On
 	} else {
 		return nil, errors.New("organizer not found")
 	}
-}
-
-func (organizerService *appOrganizerService) IsValidOtp(code string) bool {
-	//organizerService.Repository.
-	return false
 }
 
 func mapCreateOrganizerRequestTo(organizerRequest *request.CreateOrganizerRequest) *models.Organizer {
