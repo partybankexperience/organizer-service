@@ -1,6 +1,7 @@
 package security
 
 import (
+	"errors"
 	"github.com/djfemz/rave/app/models"
 	"github.com/djfemz/rave/app/services"
 	"github.com/golang-jwt/jwt/v5"
@@ -28,6 +29,10 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte("secret"), nil
 	})
+
+	if !tok.Valid {
+		return nil, errors.New("access token is not valid")
+	}
 	if err != nil {
 		log.Println("Error: ", err)
 		return nil, err
