@@ -15,3 +15,9 @@ func TestUpdateOtpForOrganizer(t *testing.T) {
 	assert.NotNil(t, organizer)
 	assert.Equal(t, organizer.Otp, testOtp)
 }
+
+func TestGetById(t *testing.T) {
+	organizer, err := organizerService.GetById(23)
+	assert.NotNil(t, organizer)
+	assert.Nil(t, err)
+}

@@ -11,6 +11,7 @@ type CreateEventRequest struct {
 	Time               string `json:"time"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
+	OrganizerId        uint64 `json:"organizer_id"`
 }
 
 type CreateUserRequest struct {

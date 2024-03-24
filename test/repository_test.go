@@ -68,7 +68,7 @@ func TestGetId(t *testing.T) {
 	var event = models.Event{
 		ID:   24,
 		Name: "John",
-		Date: time.Now(),
+		Date: time.Now().String(),
 	}
 	var id, _ = repositories.GetId(event)
 	assert.Equal(t, uint64(24), id)

@@ -11,7 +11,7 @@ var Entities = make(map[string]any, 100)
 const (
 	ADMIN       = "ADMIN"
 	ORGANIZER   = "ORGANIZER"
-	EVENt_STAFF = "EVENT_STAFF"
+	EVENT_STAFF = "EVENT_STAFF"
 )
 
 const (
@@ -38,14 +38,14 @@ type Organizer struct {
 type User struct {
 	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
 	Username string `json:"username"`
-	Password string `json:"password" "omitempty"`
+	Password string `json:"password"`
 	Role     string `json:"role"`
 }
 
 type Event struct {
 	ID                 uint64 `id:"ID" gorm:"primaryKey" json:"id"`
 	Name               string `json:"name"`
-	*Organizer         `json:"_organizer"`
+	*Organizer         `json:"_organizer" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 	Location           string `json:"location"`
 	Date               string `json:"date"`
 	Time               string
@@ -55,6 +55,7 @@ type Event struct {
 }
 
 type EventStaff struct {
-	User  *User
-	Event *Event
+	ID     uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	*User  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	*Event `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }

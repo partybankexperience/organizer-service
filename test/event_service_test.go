@@ -1,0 +1,25 @@
+package test
+
+import (
+	request "github.com/djfemz/rave/app/dtos/request"
+	"github.com/djfemz/rave/app/services"
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
+
+var eventService = services.NewEventService()
+
+func TestCreateEvent(t *testing.T) {
+	createEvent := &request.CreateEventRequest{
+		Name:               "test event",
+		Location:           "Sabo Yaba",
+		Date:               "2024-03-23",
+		Time:               "12:00:00",
+		ContactInformation: "09023456789",
+		Description:        "this is a test event",
+	}
+
+	res, err := eventService.Create(createEvent)
+	assert.NotNil(t, res)
+	assert.Nil(t, err)
+}
