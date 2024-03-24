@@ -17,6 +17,7 @@ type OrganizerService interface {
 	UpdateOtpFor(id uint64, testOtp *otp.OneTimePassword) (*models.Organizer, error)
 	GetById(id uint64) (*models.Organizer, error)
 	AddEventStaff(staff *request.AddEventStaffRequest) (*response.RaveResponse[string], error)
+	AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error)
 }
 
 type appOrganizerService struct {
@@ -82,6 +83,11 @@ func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *requ
 		return nil, err
 	}
 	return res, nil
+}
+
+func (organizerService *appOrganizerService) AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error) {
+	eventService := NewEventService()
+	return eventService.Create(eventRequest)
 }
 
 func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *models.Organizer {

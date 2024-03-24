@@ -23,11 +23,26 @@ func TestGetById(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestAddEventStaff(t *testing.T) {
+func TestOrganizerCanAddEventStaff(t *testing.T) {
 	addEventStaff := &request.AddEventStaffRequest{
 		StaffEmails: []string{"test@email.com"},
 	}
 	response, err := organizerService.AddEventStaff(addEventStaff)
+	assert.NotNil(t, response)
+	assert.Nil(t, err)
+}
+
+func TestOrganizerCanAddEvent(t *testing.T) {
+	addEventRequest := &request.CreateEventRequest{
+		Name:               "test event",
+		Location:           "Sabo Yaba",
+		Date:               "2024-03-23",
+		Time:               "12:00:00",
+		ContactInformation: "09023456789",
+		Description:        "this is a test event",
+		OrganizerId:        23,
+	}
+	response, err := organizerService.AddEvent(addEventRequest)
 	assert.NotNil(t, response)
 	assert.Nil(t, err)
 }
