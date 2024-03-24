@@ -16,25 +16,26 @@ type OrganizerService interface {
 	GetByUsername(username string) (*models.Organizer, error)
 	UpdateOtpFor(id uint64, testOtp *otp.OneTimePassword) (*models.Organizer, error)
 	GetById(id uint64) (*models.Organizer, error)
+	AddEventStaff(staff *request.AddEventStaffRequest) (*response.RaveResponse[string], error)
 }
 
 type appOrganizerService struct {
-	Repository  repositories.OrganizerRepository
-	mailService MailService
+	Repository        repositories.OrganizerRepository
+	eventStaffService EventStaffService
 }
 
 func NewOrganizerService() OrganizerService {
 	return &appOrganizerService{
-		Repository:  repositories.NewOrganizerRepository(),
-		mailService: NewMailService(),
+		Repository:        repositories.NewOrganizerRepository(),
+		eventStaffService: NewEventStaffService(),
 	}
 }
 
 func (organizerService *appOrganizerService) Create(createOrganizerRequest *request.CreateUserRequest) (*response.CreateOrganizerResponse, error) {
 	organizer := mapCreateOrganizerRequestTo(createOrganizerRequest)
 	password := otp.GenerateOtp()
-	log.Println("organizer: ", organizer.User, " password: ", password, "username: ", organizer.Username)
-	organizerService.mailService.Send(request.NewEmailNotificationRequest(CreateNewOrganizerEmail(password.Code), organizer.Username))
+	mailService := NewMailService()
+	mailService.Send(request.NewEmailNotificationRequest(CreateNewOrganizerEmail(password.Code), organizer.Username))
 	organizer.Otp = password
 	savedOrganizer := organizerService.Repository.Save(organizer)
 	if savedOrganizer != nil {
@@ -73,6 +74,14 @@ func (organizerService *appOrganizerService) GetById(id uint64) (*models.Organiz
 		return nil, errors.New("organization not found")
 	}
 	return org, nil
+}
+
+func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *request.AddEventStaffRequest) (*response.RaveResponse[string], error) {
+	res, err := organizerService.eventStaffService.Create(&request.CreateEventStaffRequest{StaffEmails: addStaffRequest.StaffEmails})
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *models.Organizer {

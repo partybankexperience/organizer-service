@@ -7,11 +7,9 @@ type EventStaffRepository interface {
 }
 
 type raveEventStaffRepository struct {
-	*repositoryImpl[models.EventStaff, uint64]
+	repositoryImpl[models.EventStaff, uint64]
 }
 
 func NewEventStaffRepository() EventStaffRepository {
-	return &raveEventStaffRepository{
-		&repositoryImpl[models.EventStaff, uint64]{},
-	}
+	return &repositoryImpl[models.EventStaff, uint64]{}
 }

@@ -14,26 +14,22 @@ type EventService interface {
 }
 
 type raveEventService struct {
-	repositories.EventRepository
 	OrganizerService
 }
 
 func NewEventService() EventService {
-	return &raveEventService{
-		repositories.NewEventRepository(),
-		NewOrganizerService(),
-	}
+	return &raveEventService{}
 }
 
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error) {
-	organizerService := raveEventService.OrganizerService
+	organizerService := NewOrganizerService()
 	organizer, err := organizerService.GetById(createEventRequest.OrganizerId)
 	if err != nil {
 		return nil, err
 	}
 	event := mapCreateEventRequestToEvent(createEventRequest)
 	event.Organizer = organizer
-	eventRepository := raveEventService.EventRepository
+	eventRepository := repositories.NewEventRepository()
 	savedEvent := eventRepository.Save(event)
 	if savedEvent == nil {
 		return nil, err
@@ -44,7 +40,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 }
 
 func (raveEventService *raveEventService) GetById(id uint64) (*response.EventResponse, error) {
-	foundEvent := raveEventService.EventRepository.FindById(id)
+	foundEvent := repositories.NewEventRepository().FindById(id)
 	if foundEvent == nil {
 		return nil, errors.New("event not found")
 	}

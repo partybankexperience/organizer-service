@@ -11,7 +11,5 @@ type raveEventRepository struct {
 }
 
 func NewEventRepository() EventRepository {
-	return &raveEventRepository{
-		&repositoryImpl[models.Event, uint64]{},
-	}
+	return &repositoryImpl[models.Event, uint64]{}
 }

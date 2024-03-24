@@ -16,7 +16,9 @@ type organizerRepositoryImpl struct {
 }
 
 func NewOrganizerRepository() OrganizerRepository {
-	var organizerRepository OrganizerRepository = &organizerRepositoryImpl{}
+	var organizerRepository OrganizerRepository = &organizerRepositoryImpl{
+		repositoryImpl[models.Organizer, uint64]{},
+	}
 	return organizerRepository
 }
 

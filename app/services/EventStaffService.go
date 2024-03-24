@@ -13,21 +13,18 @@ type EventStaffService interface {
 }
 
 type raveEventStaffService struct {
-	repositories.EventStaffRepository
 	EventService
-	MailService
 }
 
 func NewEventStaffService() EventStaffService {
 	return &raveEventStaffService{
-		repositories.NewEventStaffRepository(),
 		NewEventService(),
-		NewMailService(),
 	}
 }
 
 func (eventStaffService *raveEventStaffService) Create(createUserRequest *request.CreateEventStaffRequest) (*response.RaveResponse[string], error) {
-	repo := eventStaffService.EventStaffRepository
+	repo := repositories.NewEventStaffRepository()
+	mailService := NewMailService()
 	for _, email := range createUserRequest.StaffEmails {
 		eventStaff := mapMailToEventStaff(email)
 		savedStaff := repo.Save(eventStaff)
@@ -35,7 +32,7 @@ func (eventStaffService *raveEventStaffService) Create(createUserRequest *reques
 			notification := request.NewEmailNotificationRequest(email, `
 				welcome to rave, sign in using this email address
 			`)
-			res, err := eventStaffService.MailService.Send(notification)
+			res, err := mailService.Send(notification)
 			if err != nil {
 				return nil, err
 			}

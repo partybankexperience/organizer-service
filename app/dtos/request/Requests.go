@@ -18,6 +18,10 @@ type CreateUserRequest struct {
 	Username string `json:"username"`
 }
 
+type AddEventStaffRequest struct {
+	StaffEmails []string `json:"staff_emails"`
+}
+
 type CreateEventStaffRequest struct {
 	StaffEmails []string `json:"staff_emails"`
 }

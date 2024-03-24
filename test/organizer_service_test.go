@@ -1,6 +1,7 @@
 package test
 
 import (
+	request "github.com/djfemz/rave/app/dtos/request"
 	"github.com/djfemz/rave/app/security/otp"
 	"github.com/djfemz/rave/app/services"
 	"github.com/stretchr/testify/assert"
@@ -19,5 +20,14 @@ func TestUpdateOtpForOrganizer(t *testing.T) {
 func TestGetById(t *testing.T) {
 	organizer, err := organizerService.GetById(23)
 	assert.NotNil(t, organizer)
+	assert.Nil(t, err)
+}
+
+func TestAddEventStaff(t *testing.T) {
+	addEventStaff := &request.AddEventStaffRequest{
+		StaffEmails: []string{"test@email.com"},
+	}
+	response, err := organizerService.AddEventStaff(addEventStaff)
+	assert.NotNil(t, response)
 	assert.Nil(t, err)
 }
