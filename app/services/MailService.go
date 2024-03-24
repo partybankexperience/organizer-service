@@ -6,7 +6,6 @@ import (
 	request "github.com/djfemz/rave/app/dtos/request"
 	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/config"
-	"log"
 	"net/http"
 )
 
@@ -18,7 +17,7 @@ const (
 )
 
 type MailService interface {
-	Send(emailRequest *request.EmailNotificationRequest) string
+	Send(emailRequest *request.EmailNotificationRequest) (string, error)
 }
 
 type raveMailService struct{}
@@ -27,20 +26,20 @@ func NewMailService() MailService {
 	return &raveMailService{}
 }
 
-func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotificationRequest) string {
+func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotificationRequest) (string, error) {
 	jsonData, _ := json.Marshal(emailRequest)
 	appConfig := config.LoadConfigFile()
 	req, err := http.NewRequest(http.MethodPost, appConfig.MAIL_API_URL, bytes.NewReader(jsonData))
 	if err != nil {
-		log.Fatal("Error Creating request", err)
+		return "", err
 	}
 	addHeadersTo(req, appConfig)
 
 	client := &http.Client{}
 	if _, err = client.Do(req); err != nil {
-		log.Fatal("Error sending mail: ", err)
+		return "", err
 	}
-	return response.MAIL_SENDING_SUCCESS_MESSAGE
+	return response.MAIL_SENDING_SUCCESS_MESSAGE, nil
 }
 
 func addHeadersTo(req *http.Request, appConfig *config.EnvConfig) {

@@ -11,7 +11,7 @@ var mailService = services.NewMailService()
 
 func TestSendMail(t *testing.T) {
 	var mailRequest = buildMailRequest()
-	var response = mailService.Send(mailRequest)
+	response, _ := mailService.Send(mailRequest)
 	assert.NotNil(t, response)
 	assert.NotEmpty(t, response)
 }

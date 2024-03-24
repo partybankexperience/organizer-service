@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	CONFIG_PATH      = "config/"
+	CONFIG_PATH      = "../config/"
 	CONFIG_FILE_NAME = "config"
 	CONFIG_TYPE      = "env"
 )

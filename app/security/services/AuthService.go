@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	request "github.com/djfemz/rave/app/dtos/request"
 	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/app/models"
@@ -33,7 +34,8 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 		if err != nil {
 			return nil, err
 		}
-		authenticationService.mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(password.Code)))
+		content := fmt.Sprintf("Your One Time Password is %s", password)
+		authenticationService.mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content)))
 		return createAuthResponse(org), nil
 	}
 }

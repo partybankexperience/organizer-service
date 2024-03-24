@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-	"fmt"
 	request "github.com/djfemz/rave/app/dtos/request"
 	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/app/models"
@@ -86,6 +85,6 @@ func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *m
 	}
 }
 
-func CreateNewOrganizerEmail(otp string) string {
-	return fmt.Sprintf("Your One Time Password is %s", otp)
+func CreateNewOrganizerEmail(content string) string {
+	return content
 }
