@@ -25,3 +25,9 @@ func TestCreateEvent(t *testing.T) {
 	assert.NotNil(t, res)
 	assert.Nil(t, err)
 }
+
+func TestGetEventById(t *testing.T) {
+	event, err := eventService.GetById(1)
+	assert.NotNil(t, event)
+	assert.Nil(t, err)
+}

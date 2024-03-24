@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	request "github.com/djfemz/rave/app/dtos/request"
 	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/app/models"
@@ -9,6 +10,7 @@ import (
 
 type EventService interface {
 	Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error)
+	GetById(i uint64) (*response.EventResponse, error)
 }
 
 type raveEventService struct {
@@ -39,6 +41,14 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	return &response.RaveResponse[*response.EventResponse]{
 		Data: mapEventToEventResponse(savedEvent),
 	}, nil
+}
+
+func (raveEventService *raveEventService) GetById(id uint64) (*response.EventResponse, error) {
+	foundEvent := raveEventService.EventRepository.FindById(id)
+	if foundEvent == nil {
+		return nil, errors.New("event not found")
+	}
+	return mapEventToEventResponse(foundEvent), nil
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
