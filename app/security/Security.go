@@ -28,7 +28,7 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	var organizerService = services.NewOrganizerService()
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte("secret"), nil
-	})
+	}, jwt.WithIssuer("app"), jwt.WithExpirationRequired())
 
 	if !tok.Valid {
 		return nil, errors.New("access token is not valid")
