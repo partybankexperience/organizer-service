@@ -2,7 +2,7 @@
 FROM golang:1.19.2-bullseye
  
 # Creates an app directory to hold your app’s source code
-WORKDIR /app
+WORKDIR /rave
  
 # Copies everything from your root directory into /app
 COPY . .
@@ -17,4 +17,4 @@ RUN go build -o /rave bin .
 EXPOSE 8082
  
 # Specifies the executable command that runs when the container starts
-CMD ["/rave/bin" ]
+CMD ["/rave/bin"]
