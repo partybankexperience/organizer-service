@@ -1,11 +1,11 @@
 package services
 
 import (
-	request "github.com/djfemz/rave/app/dtos/request"
-	response "github.com/djfemz/rave/app/dtos/response"
-	"github.com/djfemz/rave/app/models"
-	"github.com/djfemz/rave/app/repositories"
-	"github.com/djfemz/rave/app/security/otp"
+	request "github.com/djfemz/rave/rave-app/dtos/request"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/repositories"
+	"github.com/djfemz/rave/rave-app/security/otp"
 
 	"log"
 )

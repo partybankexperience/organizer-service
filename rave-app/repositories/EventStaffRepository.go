@@ -1,6 +1,6 @@
 package repositories
 
-import "github.com/djfemz/rave/app/models"
+import "github.com/djfemz/rave/rave-app/models"
 
 type EventStaffRepository interface {
 	crudRepository[models.EventStaff, uint64]

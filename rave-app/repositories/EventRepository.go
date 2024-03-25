@@ -1,6 +1,6 @@
 package repositories
 
-import "github.com/djfemz/rave/app/models"
+import "github.com/djfemz/rave/rave-app/models"
 
 type EventRepository interface {
 	crudRepository[models.Event, uint64]

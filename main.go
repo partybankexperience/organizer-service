@@ -1,8 +1,8 @@
 package main
 
 import (
-	security "github.com/djfemz/rave/app/security/controllers"
-	"github.com/djfemz/rave/app/security/middlewares"
+	security "github.com/djfemz/rave/rave-app/security/controllers"
+	"github.com/djfemz/rave/rave-app/security/middlewares"
 	"log"
 
 	"github.com/gin-gonic/gin"
