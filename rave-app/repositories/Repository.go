@@ -3,11 +3,11 @@ package repositories
 import (
 	"errors"
 	"fmt"
-	"github.com/djfemz/rave/config"
 	"github.com/djfemz/rave/rave-app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -84,12 +84,11 @@ func (r *repositoryImpl[T, U]) DeleteById(id U) error {
 }
 
 func connect() *gorm.DB {
-	env := &config.EnvConfig{}
-	port, err := strconv.Atoi(env.DATABASE_PORT)
+	port, err := strconv.ParseUint(os.Getenv("DATABASE_PORT"), 10, 64)
 	if err != nil {
-		log.Println("error reading port: ", err)
+		log.Fatal(err)
 	}
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Africa/Lagos", env.DATABASE_HOST, env.DATABASE_USERNAME, env.DATABASE_PASSWORD, env.DATABASE_NAME, port)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Africa/Lagos", os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_NAME"), port)
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true}), &gorm.Config{})
