@@ -21,7 +21,7 @@ func TestCreateEvent(t *testing.T) {
 	}
 
 	res, err := eventService.Create(createEvent)
-	log.Println("event response: ", *res.Data)
+	log.Println("event response: ", *res)
 	assert.NotNil(t, res)
 	assert.Nil(t, err)
 }

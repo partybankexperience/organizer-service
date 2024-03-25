@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -84,7 +85,11 @@ func (r *repositoryImpl[T, U]) DeleteById(id U) error {
 
 func connect() *gorm.DB {
 	env := &config.EnvConfig{}
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Africa/Lagos", env.DATABASE_HOST, env.DATABASE_USERNAME, env.DATABASE_PASSWORD, env.DATABASE_NAME, env.DATABASE_PORT)
+	port, err := strconv.Atoi(env.DATABASE_PORT)
+	if err != nil {
+		log.Println("error reading port: ", err)
+	}
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Africa/Lagos", env.DATABASE_HOST, env.DATABASE_USERNAME, env.DATABASE_PASSWORD, env.DATABASE_NAME, port)
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true}), &gorm.Config{})
