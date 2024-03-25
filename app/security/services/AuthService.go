@@ -5,6 +5,7 @@ import (
 	request "github.com/djfemz/rave/app/dtos/request"
 	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/app/models"
+	"github.com/djfemz/rave/app/security"
 	"github.com/djfemz/rave/app/security/otp"
 	"github.com/djfemz/rave/app/services"
 	"log"
@@ -38,6 +39,19 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 		authenticationService.mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content)))
 		return createAuthResponse(org), nil
 	}
+}
+
+func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[string], error) {
+	organizerService := authenticationService.organizerService
+	org, err := organizerService.GetByOtp(otp)
+	if err != nil {
+		return nil, err
+	}
+	token, err := security.GenerateAccessTokenFor(org)
+	if err != nil {
+		return nil, err
+	}
+	return &response.RaveResponse[string]{Data: token}, nil
 }
 
 func addUser(authRequest *request.AuthRequest, err error, organizerService services.OrganizerService, org *models.Organizer) (*response.LoginResponse, error) {

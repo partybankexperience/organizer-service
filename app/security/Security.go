@@ -5,6 +5,7 @@ import (
 	"github.com/djfemz/rave/app/models"
 	"github.com/djfemz/rave/app/services"
 	"github.com/golang-jwt/jwt/v5"
+	"log"
 	"time"
 )
 
@@ -25,6 +26,7 @@ func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
 
 func ExtractUserFrom(token string) (*models.Organizer, error) {
 	var organizerService = services.NewOrganizerService()
+	log.Println("token: ", token)
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte("secret"), nil
 	}, jwt.WithIssuer("app"), jwt.WithExpirationRequired())

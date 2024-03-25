@@ -15,11 +15,11 @@ type Repository[T, U any] interface {
 }
 
 type crudRepository[T, U any] interface {
-	Save(t *T) *T
-	FindById(id U) *T
-	FindAll() []*T
-	FindAllBy(pageable Pageable) []*T
-	DeleteById(id U)
+	Save(t *T) (*T, error)
+	FindById(id U) (*T, error)
+	FindAll() ([]*T, error)
+	FindAllBy(pageable Pageable) ([]*T, error)
+	DeleteById(id U) error
 }
 
 type repositoryImpl[T, U any] struct {
@@ -27,37 +27,57 @@ type repositoryImpl[T, U any] struct {
 
 var db *gorm.DB
 
-func (r *repositoryImpl[T, U]) Save(t *T) *T {
+func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
 	db = connect()
-	db = db.Save(t)
+	err := db.Save(t).Error
+	if err != nil {
+		return nil, err
+	}
 	var id, _ = GetId(*t)
-	db.First(t, id)
-	return t
+	err = db.First(t, id).Error
+	if err != nil {
+		return nil, err
+	}
+	return t, nil
 }
 
-func (r *repositoryImpl[T, U]) FindById(id U) *T {
+func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
 	db = connect()
 	var t = new(T)
-	db.First(t, id)
-	return t
+	err := db.First(t, id).Error
+	if err != nil {
+		return nil, err
+	}
+	return t, nil
 }
 
-func (r *repositoryImpl[T, U]) FindAll() []*T {
+func (r *repositoryImpl[T, U]) FindAll() ([]*T, error) {
 	db = connect()
 	var organizations []*T
-	db.Find(&organizations)
-	return organizations
+	err := db.Find(&organizations).Error
+	if err != nil {
+		return nil, err
+	}
+	return organizations, nil
 }
 
-func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) []*T {
+func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) ([]*T, error) {
 	db = connect()
 	page := getPage[T](db, pageable)
-	return page.GetElements()
+	if page == nil {
+		return nil, errors.New("failed to find page")
+	}
+	return page.GetElements(), nil
 }
 
-func (r *repositoryImpl[T, U]) DeleteById(id U) {
+func (r *repositoryImpl[T, U]) DeleteById(id U) error {
 	db = connect()
-	db.Delete(new(T), id)
+	err := db.Delete(new(T), id).Error
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func connect() *gorm.DB {

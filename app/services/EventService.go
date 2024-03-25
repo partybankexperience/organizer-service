@@ -1,7 +1,6 @@
 package services
 
 import (
-	"errors"
 	request "github.com/djfemz/rave/app/dtos/request"
 	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/app/models"
@@ -9,8 +8,9 @@ import (
 )
 
 type EventService interface {
-	Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error)
-	GetById(i uint64) (*response.EventResponse, error)
+	Create(createEventRequest *request.CreateEventRequest) (*models.Event, error)
+	GetById(id uint64) (*response.EventResponse, error)
+	GetEventBy(id uint64) (*models.Event, error)
 }
 
 type raveEventService struct {
@@ -21,37 +21,33 @@ func NewEventService() EventService {
 	return &raveEventService{}
 }
 
-func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error) {
-	organizerService := NewOrganizerService()
-	organizer, err := organizerService.GetById(createEventRequest.OrganizerId)
+func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*models.Event, error) {
+	event := mapCreateEventRequestToEvent(createEventRequest)
+	eventRepository := repositories.NewEventRepository()
+	savedEvent, err := eventRepository.Save(event)
 	if err != nil {
 		return nil, err
 	}
-	event := mapCreateEventRequestToEvent(createEventRequest)
-	event.Organizer = organizer
-	eventRepository := repositories.NewEventRepository()
-	savedEvent := eventRepository.Save(event)
-	if savedEvent == nil {
-		return nil, err
-	}
-	return &response.RaveResponse[*response.EventResponse]{
-		Data: mapEventToEventResponse(savedEvent),
-	}, nil
+	return savedEvent, nil
 }
 
 func (raveEventService *raveEventService) GetById(id uint64) (*response.EventResponse, error) {
-	foundEvent := repositories.NewEventRepository().FindById(id)
-	if foundEvent == nil {
-		return nil, errors.New("event not found")
+	foundEvent, err := repositories.NewEventRepository().FindById(id)
+	if err != nil {
+		return nil, err
 	}
 	return mapEventToEventResponse(foundEvent), nil
+}
+
+func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, error) {
+	raveEventRepository := repositories.NewEventRepository()
+	return raveEventRepository.FindById(id)
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 	return &response.EventResponse{
 		Message:            "event created successfully",
 		Name:               event.Name,
-		Organizer:          event.Organizer.Name,
 		Location:           event.Location,
 		Date:               event.Date,
 		Time:               event.Time,
@@ -67,6 +63,7 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 		Location:           createEventRequest.Location,
 		Date:               createEventRequest.Date,
 		Time:               createEventRequest.Time,
+		OrganizerID:        createEventRequest.OrganizerId,
 		ContactInformation: createEventRequest.ContactInformation,
 		Description:        createEventRequest.Description,
 		Status:             models.NOT_STARTED,

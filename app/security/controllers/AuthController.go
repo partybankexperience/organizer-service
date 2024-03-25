@@ -5,22 +5,23 @@ import (
 	response "github.com/djfemz/rave/app/dtos/response"
 	authService "github.com/djfemz/rave/app/security/services"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
 var err error
 
-type AutController struct {
+type AuthController struct {
 	*authService.AuthService
 }
 
-func NewAuthController() *AutController {
-	return &AutController{
+func NewAuthController() *AuthController {
+	return &AuthController{
 		authService.NewAuthService(),
 	}
 }
 
-func (authController *AutController) LoginHandler(ctx *gin.Context) {
+func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 	var signInRequest request.AuthRequest
 	if err = ctx.BindJSON(&signInRequest); err != nil {
 		handleError(ctx, err)
@@ -33,6 +34,19 @@ func (authController *AutController) LoginHandler(ctx *gin.Context) {
 	} else {
 		handleError(ctx, err)
 	}
+}
+
+func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
+	log.Println("ctx: ", ctx)
+	code := ctx.Query("code")
+	log.Println("code: ", code)
+
+	res, err := authController.AuthService.ValidateOtp(code)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.LoginResponse{Message: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, res)
 }
 
 func handleError(ctx *gin.Context, err error) {

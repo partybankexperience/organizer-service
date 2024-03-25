@@ -20,10 +20,12 @@ type CreateUserRequest struct {
 
 type AddEventStaffRequest struct {
 	StaffEmails []string `json:"staff_emails"`
+	EventId     uint64   `json:"event_id"`
 }
 
 type CreateEventStaffRequest struct {
 	StaffEmails []string `json:"staff_emails"`
+	EventId     uint64   `json:"event_id"`
 }
 
 type Sender struct {

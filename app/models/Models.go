@@ -22,8 +22,8 @@ const (
 
 // Used to register entities
 func init() {
-	Entities[reflect.ValueOf(Organizer{}).String()] = Organizer{}
 	Entities[reflect.ValueOf(Event{}).String()] = Event{}
+	Entities[reflect.ValueOf(Organizer{}).String()] = Organizer{}
 	Entities[reflect.ValueOf(EventStaff{}).String()] = EventStaff{}
 }
 
@@ -33,6 +33,8 @@ type Organizer struct {
 	Name      string
 	CreatedAt time.Time
 	Otp       *otp.OneTimePassword `gorm:"embedded;embeddedPrefix:otp"`
+	EventId   uint64
+	Events    []*Event
 }
 
 type User struct {
@@ -43,19 +45,21 @@ type User struct {
 }
 
 type Event struct {
-	ID                 uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	ID                 uint64 `id:"EventId" gorm:"primaryKey" json:"id"`
 	Name               string `json:"name"`
-	*Organizer         `json:"_organizer" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 	Location           string `json:"location"`
 	Date               string `json:"date"`
 	Time               string
 	ContactInformation string
 	Description        string
+	OrganizerID        uint64
 	Status             string `json:"status"`
+	EventStaffID       uint64
+	EventStaff         []*EventStaff
 }
 
 type EventStaff struct {
-	ID     uint64 `id:"ID" gorm:"primaryKey" json:"id"`
-	*User  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	*Event `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	ID      uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	*User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	EventID uint64
 }

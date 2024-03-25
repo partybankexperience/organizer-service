@@ -1,26 +1,21 @@
 package middlewares
 
 import (
+	control "github.com/djfemz/rave/app/controllers"
 	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/app/security"
 	"github.com/djfemz/rave/app/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"slices"
 	"strings"
 )
 
-var appPaths = make(map[string][]string)
-
-func NewPathToAuthority(path string, authorities ...string) {
-	appPaths[path] = authorities
-}
-
 func Routers(router *gin.Engine) {
+	organizerController := control.NewOrganizerController()
 	protected := router.Group("/protected")
 	{
-		protected.POST("")
-		protected.POST("")
+		protected.POST("/event", organizerController.CreateEvent)
+		protected.POST("/event-staff", organizerController.AddEventStaff)
 	}
 }
 
@@ -34,8 +29,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			ctx.JSON(http.StatusForbidden, &response.RaveResponse[string]{Data: "token is invalid"})
 			return
 		}
-		path := ctx.FullPath()
-		if org != nil && slices.Contains(appPaths[path], org.Role) {
+		if org != nil {
 			ctx.Next()
 		}
 	}
