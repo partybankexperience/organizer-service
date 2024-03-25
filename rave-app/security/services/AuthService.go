@@ -2,12 +2,12 @@ package services
 
 import (
 	"fmt"
-	request "github.com/djfemz/rave/app/dtos/request"
-	response "github.com/djfemz/rave/app/dtos/response"
-	"github.com/djfemz/rave/app/models"
-	"github.com/djfemz/rave/app/security"
-	"github.com/djfemz/rave/app/security/otp"
-	"github.com/djfemz/rave/app/services"
+	request "github.com/djfemz/rave/rave-app/dtos/request"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/security"
+	"github.com/djfemz/rave/rave-app/security/otp"
+	"github.com/djfemz/rave/rave-app/services"
 	"log"
 )
 

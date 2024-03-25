@@ -2,9 +2,9 @@ package security
 
 import (
 	"errors"
-	"github.com/djfemz/rave/app/models"
-	"github.com/djfemz/rave/app/services"
 	"github.com/djfemz/rave/config"
+	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/services"
 	"github.com/golang-jwt/jwt/v5"
 	"strconv"
 	"time"

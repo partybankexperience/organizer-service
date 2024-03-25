@@ -3,9 +3,9 @@ package services
 import (
 	"bytes"
 	"encoding/json"
-	request "github.com/djfemz/rave/app/dtos/request"
-	response "github.com/djfemz/rave/app/dtos/response"
 	"github.com/djfemz/rave/config"
+	request "github.com/djfemz/rave/rave-app/dtos/request"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"net/http"
 )
 

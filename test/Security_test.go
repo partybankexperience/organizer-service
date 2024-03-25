@@ -1,8 +1,8 @@
 package test
 
 import (
-	"github.com/djfemz/rave/app/models"
-	"github.com/djfemz/rave/app/security"
+	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/security"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"

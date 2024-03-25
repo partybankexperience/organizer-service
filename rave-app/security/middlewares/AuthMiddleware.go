@@ -1,10 +1,10 @@
 package middlewares
 
 import (
-	control "github.com/djfemz/rave/app/controllers"
-	response "github.com/djfemz/rave/app/dtos/response"
-	"github.com/djfemz/rave/app/security"
-	"github.com/djfemz/rave/app/utils"
+	control "github.com/djfemz/rave/rave-app/controllers"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"github.com/djfemz/rave/rave-app/security"
+	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"

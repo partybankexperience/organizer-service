@@ -3,8 +3,8 @@ package repositories
 import (
 	"errors"
 	"fmt"
-	"github.com/djfemz/rave/app/models"
 	"github.com/djfemz/rave/config"
+	"github.com/djfemz/rave/rave-app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"

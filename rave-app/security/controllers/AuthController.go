@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	request "github.com/djfemz/rave/app/dtos/request"
-	response "github.com/djfemz/rave/app/dtos/response"
-	authService "github.com/djfemz/rave/app/security/services"
+	request "github.com/djfemz/rave/rave-app/dtos/request"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
+	authService "github.com/djfemz/rave/rave-app/security/services"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"

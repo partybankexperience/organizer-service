@@ -1,8 +1,8 @@
 package test
 
 import (
-	request "github.com/djfemz/rave/app/dtos/request"
-	"github.com/djfemz/rave/app/services"
+	request "github.com/djfemz/rave/rave-app/dtos/request"
+	"github.com/djfemz/rave/rave-app/services"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
