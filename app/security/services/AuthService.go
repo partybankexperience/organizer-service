@@ -62,7 +62,6 @@ func addUser(authRequest *request.AuthRequest, err error, organizerService servi
 	org, err = organizerService.GetByUsername(organizer.Username)
 	if err != nil {
 		log.Fatal("Error: ", err)
-
 	}
 	return createAuthResponse(org), err
 }

@@ -12,9 +12,10 @@ const (
 )
 
 type EnvConfig struct {
-	DbUrl        string
-	MAIL_API_KEY string
-	MAIL_API_URL string
+	DbUrl           string
+	MAIL_API_KEY    string
+	MAIL_API_URL    string
+	JWT_SIGNING_KEY string
 }
 
 func LoadConfigFile() *EnvConfig {
