@@ -2,10 +2,10 @@ package security
 
 import (
 	"errors"
-	"github.com/djfemz/rave/config"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/golang-jwt/jwt/v5"
+	"os"
 	"strconv"
 	"time"
 )
@@ -16,18 +16,12 @@ type payload struct {
 	ExpiredAt time.Time `json:"expired_at"`
 }
 
-var env *config.EnvConfig
-
 const APP_NAME = "rave"
-
-func init() {
-	env = &config.EnvConfig{}
-}
 
 func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
 	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsFor(user))
 
-	accessToken, err := token.SignedString([]byte(env.JWT_SIGNING_KEY))
+	accessToken, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
 	if err != nil {
 		return "", err
 	}
@@ -37,7 +31,7 @@ func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
 func ExtractUserFrom(token string) (*models.Organizer, error) {
 	var organizerService = services.NewOrganizerService()
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
-		return []byte(env.JWT_SIGNING_KEY), nil
+		return []byte(os.Getenv("JWT_SIGNING_KEY")), nil
 	}, jwt.WithIssuer(APP_NAME), jwt.WithExpirationRequired())
 
 	if !tok.Valid {
