@@ -2,7 +2,9 @@ package repositories
 
 import (
 	"errors"
+	"fmt"
 	"github.com/djfemz/rave/app/models"
+	"github.com/djfemz/rave/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -81,7 +83,8 @@ func (r *repositoryImpl[T, U]) DeleteById(id U) error {
 }
 
 func connect() *gorm.DB {
-	dsn := "host=localhost user=postgres password=postgres dbname=rave port=5432 sslmode=disable TimeZone=Africa/Lagos"
+	env := &config.EnvConfig{}
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Africa/Lagos", env.DATABASE_HOST, env.DATABASE_USERNAME, env.DATABASE_PASSWORD, env.DATABASE_NAME, env.DATABASE_PORT)
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true}), &gorm.Config{})
