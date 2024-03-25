@@ -11,10 +11,10 @@ COPY . .
 RUN go mod download
  
 # Builds your app with optional configuration
-RUN go build -o /godocker
+RUN go build -o /rave bin .
  
 # Tells Docker which network port your container listens on
 EXPOSE 8082
  
 # Specifies the executable command that runs when the container starts
-CMD [“/godocker” ]
+CMD ["/rave/bin" ]

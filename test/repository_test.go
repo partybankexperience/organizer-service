@@ -14,7 +14,7 @@ var repository = repositories.NewOrganizerRepository()
 
 func TestRepositoryImpl_Save(t *testing.T) {
 	username := "johnny@email.com"
-	var savedOrg = repository.Save(&models.Organizer{
+	var savedOrg, _ = repository.Save(&models.Organizer{
 		Name:      "John",
 		CreatedAt: time.Now(),
 		User: &models.User{
@@ -33,13 +33,13 @@ func TestFindByUsername(t *testing.T) {
 }
 
 func TestRepositoryImpl_FindById(t *testing.T) {
-	foundOrg := repository.FindById(3)
+	foundOrg, _ := repository.FindById(3)
 	log.Println(foundOrg)
 	assert.NotNil(t, foundOrg)
 }
 
 func TestRepositoryImpl_FindAll(t *testing.T) {
-	orgs := repository.FindAll()
+	orgs, _ := repository.FindAll()
 	log.Println(orgs)
 	assert.Equal(t, 3, len(orgs))
 
@@ -47,14 +47,14 @@ func TestRepositoryImpl_FindAll(t *testing.T) {
 
 func TestRepository_FindAll_Pagination(t *testing.T) {
 	var pageable = repositories.NewPageAble(1, 1)
-	orgs := repository.FindAllBy(pageable)
+	orgs, _ := repository.FindAllBy(pageable)
 	assert.NotNil(t, orgs)
 	assert.Equal(t, 1, len(orgs))
 }
 
 func TestRepositoryImpl_DeleteById(t *testing.T) {
 	repository.DeleteById(1)
-	orgs := repository.FindAll()
+	orgs, _ := repository.FindAll()
 	assert.Equal(t, 2, len(orgs))
 }
 
@@ -66,9 +66,9 @@ func TestFindByOtp(t *testing.T) {
 
 func TestGetId(t *testing.T) {
 	var event = models.Event{
-		EventId: 24,
-		Name:    "John",
-		Date:    time.Now().String(),
+		ID:   24,
+		Name: "John",
+		Date: time.Now().String(),
 	}
 	var id, _ = repositories.GetId(event)
 	assert.Equal(t, uint64(24), id)
