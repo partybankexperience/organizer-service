@@ -3,10 +3,10 @@ package services
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/djfemz/rave/config"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"net/http"
+	"os"
 )
 
 const (
@@ -28,12 +28,11 @@ func NewMailService() MailService {
 
 func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotificationRequest) (string, error) {
 	jsonData, _ := json.Marshal(emailRequest)
-	appConfig := config.LoadConfigFile()
-	req, err := http.NewRequest(http.MethodPost, appConfig.MAIL_API_URL, bytes.NewReader(jsonData))
+	req, err := http.NewRequest(http.MethodPost, os.Getenv("MAIL_API_URL"), bytes.NewReader(jsonData))
 	if err != nil {
 		return "", err
 	}
-	addHeadersTo(req, appConfig)
+	addHeadersTo(req)
 
 	client := &http.Client{}
 	if _, err = client.Do(req); err != nil {
@@ -42,8 +41,8 @@ func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotifica
 	return response.MAIL_SENDING_SUCCESS_MESSAGE, nil
 }
 
-func addHeadersTo(req *http.Request, appConfig *config.EnvConfig) {
-	req.Header.Add(API_KEY_VALUE, appConfig.MAIL_API_KEY)
+func addHeadersTo(req *http.Request) {
+	req.Header.Add(API_KEY_VALUE, os.Getenv("MAIL_API_KEY"))
 	req.Header.Add(CONTENT_TYPE_KEY, APPLICATION_JSON_VALUE)
 	req.Header.Add(ACCEPT_HEADER_KEY, APPLICATION_JSON_VALUE)
 }
