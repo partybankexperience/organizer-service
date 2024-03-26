@@ -1,5 +1,5 @@
 package utils
 
 const (
-	AUTHORIZATION = "AUTHORIZATION"
+	AUTHORIZATION = "Authorization"
 )

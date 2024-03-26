@@ -33,13 +33,13 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SIGNING_KEY")), nil
 	}, jwt.WithIssuer(APP_NAME), jwt.WithExpirationRequired())
-
-	if !tok.Valid {
-		return nil, errors.New("access token is not valid")
-	}
 	if err != nil {
 		return nil, err
 	}
+	if !tok.Valid {
+		return nil, errors.New("access token is not valid")
+	}
+
 	subject, err := tok.Claims.GetSubject()
 	if err != nil {
 		return nil, err
