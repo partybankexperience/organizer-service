@@ -16,7 +16,7 @@ func Routers(router *gin.Engine) {
 	protected := router.Group("/protected", AuthMiddleware())
 	{
 		protected.POST("/event", organizerController.CreateEvent)
-		protected.PUT("/event", eventController.EditEvent)
+		protected.PUT("/event/:id", eventController.EditEvent)
 		protected.POST("/event-staff", organizerController.AddEventStaff)
 	}
 }
