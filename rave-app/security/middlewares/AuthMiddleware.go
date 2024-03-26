@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	control "github.com/djfemz/rave/rave-app/controllers"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		token := extractTokenFrom(authHeader)
 		org, err := security.ExtractUserFrom(token)
 		if err != nil {
-			_ = ctx.AbortWithError(http.StatusForbidden, err)
+			ctx.AbortWithStatusJSON(http.StatusForbidden,
+				&response.RaveResponse[string]{Data: err.Error()})
 			return
 		}
 		if org != nil {
