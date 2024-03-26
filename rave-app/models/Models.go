@@ -44,6 +44,23 @@ type User struct {
 	Role     string `json:"role"`
 }
 
+type Ticket struct {
+	Type string
+	Name string
+	*Event
+	Stock                        uint64
+	NumberAvailable              uint64
+	Price                        float64
+	PurchaseLimit                uint64
+	DiscountType                 string
+	Percentage                   float64
+	DiscountPrice                float64
+	DiscountCode                 string
+	AvailableDiscountedTickets   uint64
+	IsTransferPaymentFeesToGuest bool
+	AdditionalInformationFields  []string
+}
+
 type Event struct {
 	ID                 uint64 `id:"EventId" gorm:"primaryKey" json:"id"`
 	Name               string `json:"name"`
