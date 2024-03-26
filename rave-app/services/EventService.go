@@ -1,16 +1,19 @@
 package services
 
 import (
+	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
+	"gopkg.in/jeevatkm/go-model.v1"
 )
 
 type EventService interface {
 	Create(createEventRequest *request.CreateEventRequest) (*models.Event, error)
 	GetById(id uint64) (*response.EventResponse, error)
 	GetEventBy(id uint64) (*models.Event, error)
+	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
 }
 
 type raveEventService struct {
@@ -42,6 +45,28 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, error) {
 	raveEventRepository := repositories.NewEventRepository()
 	return raveEventRepository.FindById(id)
+}
+
+func (raveEventService *raveEventService) UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error) {
+	updateEventResponse := &response.EventResponse{}
+	eventRepository := repositories.NewEventRepository()
+	foundEvent, err := eventRepository.FindById(id)
+	if err != nil {
+		return nil, err
+	}
+	copyErrors := model.Copy(foundEvent, updateRequest)
+	if len(copyErrors) != 0 {
+		return nil, errors.New("could not update event")
+	}
+	savedEvent, err := eventRepository.Save(foundEvent)
+	if err != nil {
+		return nil, err
+	}
+	copyErrors = model.Copy(updateEventResponse, savedEvent)
+	if len(copyErrors) != 0 {
+		return nil, errors.New("could not update event")
+	}
+	return updateEventResponse, nil
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {

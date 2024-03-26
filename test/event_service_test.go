@@ -33,5 +33,17 @@ func TestGetEventById(t *testing.T) {
 }
 
 func TestEditEventDetails(t *testing.T) {
+	updateRequest := &request.UpdateEventRequest{
+		Name:               "test event",
+		Location:           "Sabo Yaba",
+		Date:               "2024-03-23",
+		Time:               "12:00:00",
+		ContactInformation: "09023256887",
+		Description:        "this is a test event",
+	}
 
+	updateResponse, err := eventService.UpdateEventInformation(2, updateRequest)
+	assert.NotNil(t, updateResponse)
+	assert.Equal(t, updateResponse.ContactInformation, updateRequest.ContactInformation)
+	assert.Nil(t, err)
 }
