@@ -45,9 +45,8 @@ type User struct {
 }
 
 type Ticket struct {
-	Type string
-	Name string
-	*Event
+	Type                         string
+	Name                         string
 	Stock                        uint64
 	NumberAvailable              uint64
 	Price                        float64
@@ -72,6 +71,8 @@ type Event struct {
 	OrganizerID        uint64
 	Status             string `json:"status"`
 	EventStaffID       uint64
+	TicketID           uint64
+	Tickets            []*Ticket
 	EventStaff         []*EventStaff
 }
 
