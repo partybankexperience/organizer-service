@@ -1,5 +1,7 @@
 package dtos
 
+import "github.com/djfemz/rave/rave-app/models"
+
 type AuthRequest struct {
 	CreateUserRequest
 }
@@ -24,20 +26,21 @@ type UpdateEventRequest struct {
 	OrganizerId        uint64 `json:"organizer_id"`
 }
 
-type TicketRequest struct {
-	Type                         string   `json:"ticket_type"`
-	Name                         string   `json:"name"`
-	Stock                        uint64   `json:"stock"`
-	NumberAvailable              uint64   `json:"number_in_stock"`
-	Price                        float64  `json:"price"`
-	PurchaseLimit                uint64   `json:"purchase_limit"`
-	DiscountType                 string   `json:"discount_type"`
-	Percentage                   float64  `json:"percentage"`
-	DiscountPrice                float64  `json:"discount_price"`
-	DiscountCode                 string   `json:"discount_code"`
-	AvailableDiscountedTickets   uint64   `json:"available_discounted_tickets"`
-	IsTransferPaymentFeesToGuest bool     `json:"is_transfer_payment_fees_to_guest"`
-	AdditionalInformationFields  []string `json:"additional_information_fields"`
+type CreateTicketRequest struct {
+	Type                         string                             `json:"ticket_type"`
+	Name                         string                             `json:"name"`
+	Stock                        uint64                             `json:"stock"`
+	NumberAvailable              uint64                             `json:"number_in_stock"`
+	Price                        float64                            `json:"price"`
+	PurchaseLimit                uint64                             `json:"purchase_limit"`
+	DiscountType                 string                             `json:"discount_type"`
+	Percentage                   float64                            `json:"percentage"`
+	DiscountPrice                float64                            `json:"discount_price"`
+	DiscountCode                 string                             `json:"discount_code"`
+	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
+	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
+	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
+	EventId                      uint64                             `json:"event_id"`
 }
 
 type CreateUserRequest struct {

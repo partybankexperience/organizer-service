@@ -14,6 +14,7 @@ type EventService interface {
 	GetById(id uint64) (*response.EventResponse, error)
 	GetEventBy(id uint64) (*models.Event, error)
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
+	UpdateEvent(event *models.Event) error
 }
 
 type raveEventService struct {
@@ -67,6 +68,12 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 		return nil, errors.New("could not update event")
 	}
 	return updateEventResponse, nil
+}
+
+func (raveEventService *raveEventService) UpdateEvent(event *models.Event) error {
+	eventRepository := repositories.NewEventRepository()
+	_, err := eventRepository.Save(event)
+	return err
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {

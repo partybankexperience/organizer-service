@@ -95,15 +95,19 @@ func connect() *gorm.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_ = addEntities(models.Entities, db)
+	err = addEntities(models.Entities, db)
+	if err != nil {
+		log.Fatal("error migrating: ", err)
+	}
 	return db
 }
 
 func addEntities(m map[string]any, db *gorm.DB) error {
 	for _, v := range m {
+		log.Println("type: ", reflect.TypeOf(v).Name())
 		err := db.AutoMigrate(v)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("error migrating: ", err)
 		}
 	}
 
