@@ -31,3 +31,7 @@ func TestGetEventById(t *testing.T) {
 	assert.NotNil(t, event)
 	assert.Nil(t, err)
 }
+
+func TestEditEventDetails(t *testing.T) {
+
+}
