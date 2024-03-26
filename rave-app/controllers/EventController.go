@@ -2,6 +2,7 @@ package controllers
 
 import (
 	request "github.com/djfemz/rave/rave-app/dtos/request"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -22,18 +23,21 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 	updateEventRequest := &request.UpdateEventRequest{}
 	eventId, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusBadRequest, err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest,
+			&response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
 	err = ctx.BindJSON(updateEventRequest)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusBadRequest, err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest,
+			&response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
-	response, err := eventController.EventService.UpdateEventInformation(eventId, updateEventRequest)
+	updateEventResponse, err := eventController.EventService.UpdateEventInformation(eventId, updateEventRequest)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusBadRequest, err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest,
+			&response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, response)
+	ctx.JSON(http.StatusOK, updateEventResponse)
 }
