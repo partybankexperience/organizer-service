@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	control "github.com/djfemz/rave/rave-app/controllers"
+	handlers "github.com/djfemz/rave/rave-app/controllers"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/utils"
@@ -11,14 +11,16 @@ import (
 )
 
 func Routers(router *gin.Engine) {
-	organizerController := control.NewOrganizerController()
-	eventController := control.NewEventController()
+	organizerController := handlers.NewOrganizerController()
+	eventController := handlers.NewEventController()
+	ticketController := handlers.NewTicketController()
 	protected := router.Group("/protected", AuthMiddleware())
 	{
 		protected.POST("/event", organizerController.CreateEvent)
 		protected.GET("/event/:id", eventController.GetEventById)
 		protected.PUT("/event/:id", eventController.EditEvent)
-		protected.POST("/event-staff", organizerController.AddEventStaff)
+		protected.POST("/event/staff", organizerController.AddEventStaff)
+		protected.POST("/ticket", ticketController.AddTicketToEvent)
 	}
 }
 

@@ -12,7 +12,11 @@ import (
 
 type TicketService interface {
 	CreateTicketFor(request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error)
+	GetTicketById(id uint64) (*response.TicketResponse, error)
+	GetAllTicketsFor(eventId uint64) ([]*models.Ticket, error)
 }
+
+var ticketRepository = repositories.NewTicketRepository()
 
 type raveTicketService struct {
 }
@@ -22,7 +26,6 @@ func NewTicketService() TicketService {
 }
 
 func (raveTicketService *raveTicketService) CreateTicketFor(request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error) {
-	ticketRepository := repositories.NewTicketRepository()
 	eventService := NewEventService()
 	event, err := eventService.GetEventBy(request.EventId)
 
@@ -46,4 +49,26 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 	createTicketResponse := &response.TicketResponse{}
 	errs = model.Copy(createTicketResponse, savedTicket)
 	return createTicketResponse, nil
+}
+
+func (raveTicketService *raveTicketService) GetTicketById(id uint64) (*response.TicketResponse, error) {
+	ticket, err := ticketRepository.FindById(id)
+	if err != nil {
+		return nil, err
+	}
+	res := &response.TicketResponse{}
+	errs := model.Copy(res, ticket)
+	if len(errs) > 0 {
+		return nil, errs[0]
+	}
+	return res, nil
+}
+
+func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64) ([]*models.Ticket, error) {
+	tickets, err := ticketRepository.FindAllByEventId(eventId)
+	if err != nil {
+		return nil, err
+	}
+
+	return tickets, nil
 }

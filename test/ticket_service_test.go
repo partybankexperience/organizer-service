@@ -22,3 +22,16 @@ func TestAddTicket(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, res)
 }
+
+func TestGetTicketById(t *testing.T) {
+	ticket, err := ticketService.GetTicketById(2)
+	assert.Nil(t, err)
+	assert.NotNil(t, ticket)
+}
+
+func TestGetAllTicketsForEvent(t *testing.T) {
+	tickets, err := ticketService.GetAllTicketsFor(2)
+	assert.Nil(t, err)
+	assert.NotNil(t, tickets)
+	assert.NotEmpty(t, tickets)
+}

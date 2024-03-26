@@ -104,7 +104,6 @@ func connect() *gorm.DB {
 
 func addEntities(m map[string]any, db *gorm.DB) error {
 	for _, v := range m {
-		log.Println("type: ", reflect.TypeOf(v).Name())
 		err := db.AutoMigrate(v)
 		if err != nil {
 			log.Fatal("error migrating: ", err)
