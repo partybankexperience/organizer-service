@@ -12,7 +12,7 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error starting server: ", err)
+		log.Println("Error starting server: ", err)
 	}
 	router := gin.Default()
 	middlewares.Routers(router)
