@@ -47,3 +47,10 @@ func TestEditEventDetails(t *testing.T) {
 	assert.Equal(t, updateResponse.ContactInformation, updateRequest.ContactInformation)
 	assert.Nil(t, err)
 }
+
+func TestGetAllEventsForOrganizer(t *testing.T) {
+	events, err := eventService.GetAllEventsFor(1)
+	assert.Nil(t, err)
+	assert.NotNil(t, events)
+	assert.NotEmpty(t, events)
+}

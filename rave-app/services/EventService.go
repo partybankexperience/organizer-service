@@ -15,7 +15,10 @@ type EventService interface {
 	GetEventBy(id uint64) (*models.Event, error)
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
 	UpdateEvent(event *models.Event) error
+	GetAllEventsFor(organizerId uint64) ([]*models.Event, error)
 }
+
+var eventRepository = repositories.NewEventRepository()
 
 type raveEventService struct {
 	OrganizerService
@@ -27,7 +30,6 @@ func NewEventService() EventService {
 
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*models.Event, error) {
 	event := mapCreateEventRequestToEvent(createEventRequest)
-	eventRepository := repositories.NewEventRepository()
 	savedEvent, err := eventRepository.Save(event)
 	if err != nil {
 		return nil, err
@@ -36,7 +38,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 }
 
 func (raveEventService *raveEventService) GetById(id uint64) (*response.EventResponse, error) {
-	foundEvent, err := repositories.NewEventRepository().FindById(id)
+	foundEvent, err := eventRepository.FindById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -44,13 +46,12 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 }
 
 func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, error) {
-	raveEventRepository := repositories.NewEventRepository()
-	return raveEventRepository.FindById(id)
+	return eventRepository.FindById(id)
 }
 
 func (raveEventService *raveEventService) UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error) {
 	updateEventResponse := &response.EventResponse{}
-	eventRepository := repositories.NewEventRepository()
+
 	foundEvent, err := eventRepository.FindById(id)
 	if err != nil {
 		return nil, err
@@ -71,9 +72,16 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 }
 
 func (raveEventService *raveEventService) UpdateEvent(event *models.Event) error {
-	eventRepository := repositories.NewEventRepository()
 	_, err := eventRepository.Save(event)
 	return err
+}
+
+func (raveEventService *raveEventService) GetAllEventsFor(organizerId uint64) ([]*models.Event, error) {
+	events, err := eventRepository.FindAllByOrganizer(organizerId)
+	if err != nil {
+		return nil, err
+	}
+	return events, nil
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {

@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+var routesAuthorities map[string][]string
+
 func Routers(router *gin.Engine) {
 	organizerController := handlers.NewOrganizerController()
 	eventController := handlers.NewEventController()
