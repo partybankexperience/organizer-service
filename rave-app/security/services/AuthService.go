@@ -35,7 +35,7 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 		if err != nil {
 			return nil, err
 		}
-		content := fmt.Sprintf("Your One Time Password is %s", password)
+		content := fmt.Sprintf("Your One Time Password is %s", password.Code)
 		authenticationService.mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content)))
 		return createAuthResponse(org), nil
 	}
