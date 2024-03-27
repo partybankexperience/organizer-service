@@ -39,6 +39,20 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, updateEventResponse)
 }
 
+func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Context) {
+	organizerId, err := strconv.ParseUint(ctx.Query("organizerId"), 10, 64)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	events, err := eventController.EventService.GetAllEventsFor(organizerId)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, events)
+}
+
 func handleError(ctx *gin.Context, err error) {
 	ctx.AbortWithStatusJSON(http.StatusBadRequest,
 		&response.RaveResponse[string]{Data: err.Error()})

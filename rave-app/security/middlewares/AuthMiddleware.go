@@ -6,9 +6,12 @@ import (
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"strings"
 )
+
+var routesAuthorities map[string][]string
 
 func Routers(router *gin.Engine) {
 	organizerController := handlers.NewOrganizerController()
@@ -19,10 +22,12 @@ func Routers(router *gin.Engine) {
 		protected.POST("/event", organizerController.CreateEvent)
 		protected.GET("/event/:id", eventController.GetEventById)
 		protected.PUT("/event/:id", eventController.EditEvent)
+		protected.GET("/event", eventController.EditEvent)
+		protected.GET("/event/organizer", eventController.GetAllEventsForOrganizer)
 		protected.POST("/event/staff", organizerController.AddEventStaff)
 		protected.POST("/ticket", ticketController.AddTicketToEvent)
 		protected.GET("/ticket/:eventId", ticketController.GetAllTicketsForEvent)
-		protected.GET("/ticket/:id", ticketController.GetTicketById)
+		protected.GET("/ticket", ticketController.GetTicketById)
 	}
 }
 
@@ -41,6 +46,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 func isValid(token string) bool {
 	org, err := security.ExtractUserFrom(token)
+	log.Println("\norg: ", org, "\nerr: ", err)
 	if err != nil || org == nil {
 		return false
 	}

@@ -5,6 +5,7 @@ import (
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 type TicketController struct {
@@ -46,7 +47,7 @@ func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context
 }
 
 func (ticketController *TicketController) GetTicketById(ctx *gin.Context) {
-	eventId, err := extractIdFrom("eventId", ctx)
+	eventId, err := strconv.ParseUint(ctx.Query("ticketId"), 10, 64)
 	if err != nil {
 		handleError(ctx, err)
 		return

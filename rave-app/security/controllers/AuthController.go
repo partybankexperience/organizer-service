@@ -5,7 +5,6 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	authService "github.com/djfemz/rave/rave-app/security/services"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
@@ -37,9 +36,7 @@ func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 }
 
 func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
-	log.Println("ctx: ", ctx)
 	code := ctx.Query("code")
-	log.Println("code: ", code)
 
 	res, err := authController.AuthService.ValidateOtp(code)
 	if err != nil {
