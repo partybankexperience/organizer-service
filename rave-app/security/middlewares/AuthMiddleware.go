@@ -21,6 +21,8 @@ func Routers(router *gin.Engine) {
 		protected.PUT("/event/:id", eventController.EditEvent)
 		protected.POST("/event/staff", organizerController.AddEventStaff)
 		protected.POST("/ticket", ticketController.AddTicketToEvent)
+		protected.GET("/ticket/:eventId", ticketController.GetAllTicketsForEvent)
+		protected.GET("/ticket/:id", ticketController.GetTicketById)
 	}
 }
 
@@ -28,16 +30,21 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader(utils.AUTHORIZATION)
 		token := extractTokenFrom(authHeader)
-		org, err := security.ExtractUserFrom(token)
-		if err != nil {
+		if !isValid(token) {
 			ctx.AbortWithStatusJSON(http.StatusForbidden,
-				&response.RaveResponse[string]{Data: err.Error()})
+				&response.RaveResponse[string]{Data: "access token is invalid"})
 			return
 		}
-		if org != nil {
-			ctx.Next()
-		}
+		ctx.Next()
 	}
+}
+
+func isValid(token string) bool {
+	org, err := security.ExtractUserFrom(token)
+	if err != nil || org == nil {
+		return false
+	}
+	return true
 }
 
 func extractTokenFrom(authHeader string) string {
