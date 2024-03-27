@@ -40,7 +40,7 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 }
 
 func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Context) {
-	organizerId, err := extractIdFrom("organizerId", ctx)
+	organizerId, err := strconv.ParseUint(ctx.Query("organizerId"), 10, 64)
 	if err != nil {
 		handleError(ctx, err)
 		return
