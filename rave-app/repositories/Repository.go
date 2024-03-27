@@ -89,14 +89,16 @@ func connect() *gorm.DB {
 		log.Fatal(err)
 	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d TimeZone=Africa/Lagos", os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_NAME"), port)
-	log.Println("DB_URL", dsn)
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true}), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	_ = addEntities(models.Entities, db)
+	err = addEntities(models.Entities, db)
+	if err != nil {
+		log.Fatal("error migrating: ", err)
+	}
 	return db
 }
 
@@ -104,7 +106,7 @@ func addEntities(m map[string]any, db *gorm.DB) error {
 	for _, v := range m {
 		err := db.AutoMigrate(v)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("error migrating: ", err)
 		}
 	}
 

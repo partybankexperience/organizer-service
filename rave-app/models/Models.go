@@ -25,6 +25,7 @@ func init() {
 	Entities[reflect.ValueOf(Event{}).String()] = Event{}
 	Entities[reflect.ValueOf(Organizer{}).String()] = Organizer{}
 	Entities[reflect.ValueOf(EventStaff{}).String()] = EventStaff{}
+	Entities[reflect.ValueOf(Ticket{}).String()] = Ticket{}
 }
 
 type Organizer struct {
@@ -44,6 +45,26 @@ type User struct {
 	Role     string `json:"role"`
 }
 
+type AdditionalInformationFields []string
+
+type Ticket struct {
+	ID                           uint64 `gorm:"primaryKey"`
+	Type                         string
+	Name                         string
+	Stock                        uint64
+	NumberAvailable              uint64
+	Price                        float64
+	PurchaseLimit                uint64
+	DiscountType                 string
+	Percentage                   float64
+	DiscountPrice                float64
+	DiscountCode                 string
+	AvailableDiscountedTickets   uint64
+	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)"`
+	IsTransferPaymentFeesToGuest bool
+	EventId                      uint64
+}
+
 type Event struct {
 	ID                 uint64 `id:"EventId" gorm:"primaryKey" json:"id"`
 	Name               string `json:"name"`
@@ -55,6 +76,8 @@ type Event struct {
 	OrganizerID        uint64
 	Status             string `json:"status"`
 	EventStaffID       uint64
+	TicketID           uint64
+	Tickets            []*Ticket
 	EventStaff         []*EventStaff
 }
 

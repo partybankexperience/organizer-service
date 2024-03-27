@@ -1,5 +1,7 @@
 package dtos
 
+import "github.com/djfemz/rave/rave-app/models"
+
 const (
 	MAIL_SENDING_SUCCESS_MESSAGE = "mail sent successfully"
 	USER_CREATED_SUCCESSFULLY    = "user created successfully"
@@ -29,4 +31,20 @@ type EventResponse struct {
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
 	Status             string `json:"status"`
+}
+
+type TicketResponse struct {
+	Type                         string                             `json:"ticket_type"`
+	Name                         string                             `json:"name"`
+	Stock                        uint64                             `json:"stock"`
+	NumberAvailable              uint64                             `json:"number_in_stock"`
+	Price                        float64                            `json:"price"`
+	PurchaseLimit                uint64                             `json:"purchase_limit"`
+	DiscountType                 string                             `json:"discount_type"`
+	Percentage                   float64                            `json:"percentage"`
+	DiscountPrice                float64                            `json:"discount_price"`
+	DiscountCode                 string                             `json:"discount_code"`
+	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
+	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
+	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
 }

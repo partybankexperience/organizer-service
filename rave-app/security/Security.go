@@ -6,6 +6,7 @@ import (
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/golang-jwt/jwt/v5"
 	"os"
+	"slices"
 	"strconv"
 	"time"
 )
@@ -33,13 +34,13 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SIGNING_KEY")), nil
 	}, jwt.WithIssuer(APP_NAME), jwt.WithExpirationRequired())
-
-	if !tok.Valid {
-		return nil, errors.New("access token is not valid")
-	}
 	if err != nil {
 		return nil, err
 	}
+	if !tok.Valid {
+		return nil, errors.New("access token is not valid")
+	}
+
 	subject, err := tok.Claims.GetSubject()
 	if err != nil {
 		return nil, err
@@ -47,6 +48,10 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	org, err := organizerService.GetByUsername(subject)
 	if err != nil {
 		return nil, err
+	}
+	claims, err := tok.Claims.GetAudience()
+	if slices.Contains(claims, org.Role) {
+		return nil, errors.New("user is not authorized to access this resource")
 	}
 	return org, nil
 }

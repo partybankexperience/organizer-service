@@ -40,7 +40,7 @@ func TestOrganizerCanAddEvent(t *testing.T) {
 		Time:               "12:00:00",
 		ContactInformation: "09023456789",
 		Description:        "this is a test event",
-		OrganizerId:        23,
+		OrganizerId:        1,
 	}
 	response, err := organizerService.AddEvent(addEventRequest)
 	assert.NotNil(t, response)
