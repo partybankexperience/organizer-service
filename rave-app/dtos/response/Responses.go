@@ -46,5 +46,5 @@ type TicketResponse struct {
 	DiscountCode                 string                             `json:"discount_code"`
 	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
 	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
-	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
+	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
 }

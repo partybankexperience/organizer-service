@@ -20,6 +20,12 @@ const (
 	ENDED       = "ENDED"
 )
 
+const (
+	ACTIVE    = "ACTIVE"
+	SUSPENDED = "SUSPENDED"
+	IN_ACTIVE = "IN_ACTIVE"
+)
+
 // Used to register entities
 func init() {
 	Entities[reflect.ValueOf(Event{}).String()] = Event{}
@@ -50,17 +56,17 @@ type AdditionalInformationFields []string
 type Ticket struct {
 	ID                           uint64 `gorm:"primaryKey"`
 	Type                         string
-	Name                         string
-	Stock                        uint64
-	NumberAvailable              uint64
-	Price                        float64
-	PurchaseLimit                uint64
-	DiscountType                 string
-	Percentage                   float64
-	DiscountPrice                float64
-	DiscountCode                 string
-	AvailableDiscountedTickets   uint64
-	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)"`
+	Name                         string                      `json:"name"`
+	Stock                        uint64                      `json:"stock"`
+	NumberAvailable              uint64                      `json:"number_available"`
+	Price                        float64                     `json:"price"`
+	PurchaseLimit                uint64                      `json:"purchase_limit"`
+	DiscountType                 string                      `json:"discount_type"`
+	Percentage                   float64                     `json:"percentage"`
+	DiscountPrice                float64                     `json:"discount_price"`
+	DiscountCode                 string                      `json:"discount_code"`
+	AvailableDiscountedTickets   uint64                      `json:"available_discounted_tickets"`
+	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)" json:"additional_information_fields,omitempty"`
 	IsTransferPaymentFeesToGuest bool
 	EventId                      uint64
 }
@@ -71,18 +77,18 @@ type Event struct {
 	Location           string `json:"location"`
 	Date               string `json:"date"`
 	Time               string
-	ContactInformation string
-	Description        string
+	ContactInformation string `json:"contact_information"`
+	Description        string `json:"description"`
 	OrganizerID        uint64
 	Status             string `json:"status"`
-	EventStaffID       uint64
-	TicketID           uint64
+	EventStaffID       uint64 `json:"event_staff_id"`
+	TicketID           uint64 `json:"ticket_id"`
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
 }
 
 type EventStaff struct {
 	ID      uint64 `id:"ID" gorm:"primaryKey" json:"id"`
-	*User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	*User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"user,omitempty"`
 	EventID uint64
 }

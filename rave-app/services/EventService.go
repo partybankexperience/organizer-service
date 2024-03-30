@@ -85,6 +85,11 @@ func (raveEventService *raveEventService) GetAllEventsFor(organizerId uint64) ([
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
+	OrganizerService := NewOrganizerService()
+	org, err := OrganizerService.GetById(event.OrganizerID)
+	if err != nil {
+		return nil
+	}
 	return &response.EventResponse{
 		Message:            "event created successfully",
 		Name:               event.Name,
@@ -94,6 +99,7 @@ func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
+		Organizer:          org.Username,
 	}
 }
 
