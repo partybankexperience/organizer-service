@@ -1,13 +1,14 @@
 package services
 
 import (
-	"fmt"
+	"bytes"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/otp"
 	"github.com/djfemz/rave/rave-app/services"
+	"html/template"
 	"log"
 )
 
@@ -35,10 +36,30 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 		if err != nil {
 			return nil, err
 		}
-		content := fmt.Sprintf("Your One Time Password is %s", password.Code)
-		authenticationService.mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content)))
+		content, err := getMailTemplate(password.Code)
+		if err != nil {
+			return nil, err
+		}
+		mailService := services.NewMailService()
+		_, err = mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content.String())))
+		if err != nil {
+			return nil, err
+		}
 		return createAuthResponse(org), nil
 	}
+}
+
+func getMailTemplate(data string) (*bytes.Buffer, error) {
+	mailTemplate, err := template.ParseFiles("rave-mail-template.html")
+	if err != nil {
+		return nil, err
+	}
+	var body bytes.Buffer
+	err = mailTemplate.Execute(&body, data)
+	if err != nil {
+		return nil, err
+	}
+	return &body, nil
 }
 
 func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[string], error) {
