@@ -1,9 +1,10 @@
 package models
 
 import (
-	"github.com/djfemz/rave/rave-app/security/otp"
 	"reflect"
 	"time"
+
+	"github.com/djfemz/rave/rave-app/security/otp"
 )
 
 var Entities = make(map[string]any, 100)
