@@ -6,6 +6,14 @@ type AuthRequest struct {
 	CreateUserRequest
 }
 
+type CreateDiscountRequest struct {
+	Name  string
+	Code  string
+	Count uint64
+	Value string
+	Price float64
+}
+
 type CreateEventRequest struct {
 	Name               string `json:"name"`
 	Location           string `json:"location"`

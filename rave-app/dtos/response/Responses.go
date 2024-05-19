@@ -11,6 +11,10 @@ type RaveResponse[T any] struct {
 	Data T `json:"data"`
 }
 
+type CreateDiscountResponse struct {
+	Id uint64 `json:"id"`
+}
+
 type LoginResponse struct {
 	Message  string `json:"message,omitempty"`
 	Username string `json:"username,omitempty"`
