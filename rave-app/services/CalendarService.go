@@ -13,6 +13,7 @@ type CalendarService interface {
 	CreateCalendar(createCalendarRequest *dtos.CreateCalendarRequest) (*response.CreateCalendarResponse, error)
 	GetById(id uint64) (*models.Calendar, error)
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Calendar, error)
+	GetCalendar(id uint64) (*response.CreateCalendarResponse, error)
 }
 
 type raveCalendarService struct {
@@ -47,6 +48,19 @@ func (raveCalendarService *raveCalendarService) GetById(id uint64) (*models.Cale
 		return nil, err
 	}
 	return calendar, nil
+}
+
+func (raveCalendarService *raveCalendarService) GetCalendar(id uint64) (*response.CreateCalendarResponse, error) {
+	resp := &response.CreateCalendarResponse{}
+	calendar, err := raveCalendarService.GetById(id)
+	if err != nil {
+		return nil, err
+	}
+	errs := model.Copy(resp, calendar)
+	if len(errs) > 0 {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (raveCalendarService *raveCalendarService) AddEventToCalendar(id uint64, event *models.Event) (*models.Calendar, error) {

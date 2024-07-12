@@ -21,7 +21,7 @@ func NewEventController() *EventController {
 
 func (eventController *EventController) EditEvent(ctx *gin.Context) {
 	updateEventRequest := &request.UpdateEventRequest{}
-	eventId, err := extractIdFrom("id", ctx)
+	eventId, err := extractParamFromRequest("id", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -59,12 +59,12 @@ func handleError(ctx *gin.Context, err error) {
 	return
 }
 
-func extractIdFrom(key string, ctx *gin.Context) (uint64, error) {
-	return strconv.ParseUint(ctx.Param(key), 10, 64)
+func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
+	return strconv.ParseUint(ctx.Param(paramName), 10, 64)
 }
 
 func (eventController *EventController) GetEventById(ctx *gin.Context) {
-	id, err := extractIdFrom("id", ctx)
+	id, err := extractParamFromRequest("id", ctx)
 	if err != nil {
 		handleError(ctx, err)
 	}

@@ -33,7 +33,7 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 }
 
 func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context) {
-	eventId, err := extractIdFrom("eventId", ctx)
+	eventId, err := extractParamFromRequest("eventId", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return

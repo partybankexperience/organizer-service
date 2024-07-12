@@ -29,6 +29,7 @@ type CreateCalendarResponse struct {
 	Message string
 	ID      uint64
 	Name    string
+	Events  []*EventResponse
 }
 
 type CalendarResponse struct {
