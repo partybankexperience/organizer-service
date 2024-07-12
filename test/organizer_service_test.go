@@ -10,6 +10,14 @@ import (
 
 var organizerService = services.NewOrganizerService()
 
+func TestCreateOrganizer(t *testing.T) {
+	createOrganizer := &request.CreateUserRequest{Username: "oladejifemi00@gmail.com"}
+
+	response, err := organizerService.Create(createOrganizer)
+	assert.Nil(t, err)
+	assert.NotNil(t, response)
+}
+
 func TestUpdateOtpForOrganizer(t *testing.T) {
 	testOtp := otp.GenerateOtp()
 	organizer, _ := organizerService.UpdateOtpFor(14, testOtp)
@@ -32,17 +40,17 @@ func TestOrganizerCanAddEventStaff(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestOrganizerCanAddEvent(t *testing.T) {
-	addEventRequest := &request.CreateEventRequest{
-		Name:               "test event",
-		Location:           "Sabo Yaba",
-		Date:               "2024-03-23",
-		Time:               "12:00:00",
-		ContactInformation: "09023456789",
-		Description:        "this is a test event",
-		OrganizerId:        1,
-	}
-	response, err := organizerService.AddEvent(addEventRequest)
-	assert.NotNil(t, response)
-	assert.Nil(t, err)
-}
+//func TestOrganizerCanAddEvent(t *testing.T) {
+//	addEventRequest := &request.CreateEventRequest{
+//		Name:               "test event",
+//		Location:           "Sabo Yaba",
+//		Date:               "2024-03-23",
+//		Time:               "12:00:00",
+//		ContactInformation: "09023456789",
+//		Description:        "this is a test event",
+//		CalendarId:        1,
+//	}
+//	response, err := organizerService.AddEvent(addEventRequest)
+//	assert.NotNil(t, response)
+//	assert.Nil(t, err)
+//}

@@ -4,7 +4,7 @@ import "github.com/djfemz/rave/rave-app/models"
 
 type EventRepository interface {
 	crudRepository[models.Event, uint64]
-	FindAllByOrganizer(organizerId uint64) ([]*models.Event, error)
+	FindAllByCalendar(organizerId uint64) ([]*models.Event, error)
 }
 
 type raveEventRepository struct {
@@ -17,10 +17,10 @@ func NewEventRepository() EventRepository {
 	}
 }
 
-func (raveEventRepository *raveEventRepository) FindAllByOrganizer(organizerId uint64) ([]*models.Event, error) {
+func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uint64) ([]*models.Event, error) {
 	var events []*models.Event
 	db := connect()
-	err := db.Where(&models.Event{OrganizerID: organizerId}).Find(&events).Error
+	err := db.Where(&models.Event{CalendarID: calendarId}).Find(&events).Error
 	if err != nil {
 		return nil, err
 	}

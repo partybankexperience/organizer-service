@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/djfemz/rave/rave-app/models"
 	otp2 "github.com/djfemz/rave/rave-app/security/otp"
+	"log"
 )
 
 type OrganizerRepository interface {
@@ -34,7 +35,9 @@ func (organizerRepository *organizerRepositoryImpl) FindByOtp(otp string) (*mode
 	db = connect()
 	err := db.Where(&models.Organizer{Otp: &otp2.OneTimePassword{Code: otp}}).Find(&organizer).Error
 	if err != nil {
+		log.Println("err: ", err)
 		return nil, err
 	}
+	log.Println("found org: ", organizer)
 	return &organizer, nil
 }

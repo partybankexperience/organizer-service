@@ -5,6 +5,7 @@ import (
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/golang-jwt/jwt/v5"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -19,6 +20,7 @@ type payload struct {
 const APP_NAME = "rave"
 
 func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
+	log.Println("user: ", user)
 	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsFor(user))
 
 	accessToken, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))

@@ -16,7 +16,7 @@ type OrganizerService interface {
 	UpdateOtpFor(id uint64, testOtp *otp.OneTimePassword) (*models.Organizer, error)
 	GetById(id uint64) (*models.Organizer, error)
 	AddEventStaff(staff *request.AddEventStaffRequest) (*response.RaveResponse[string], error)
-	AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error)
+	//AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error)
 	GetByOtp(otp string) (*models.Organizer, error)
 }
 
@@ -88,28 +88,29 @@ func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *requ
 	return res, nil
 }
 
-func (organizerService *appOrganizerService) AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error) {
-	eventService := NewEventService()
-	org, err := organizerService.GetById(eventRequest.OrganizerId)
-	if err != nil {
-		return nil, err
-	}
-	event, err := eventService.Create(eventRequest)
-	if err != nil {
-		return nil, err
-	}
-	event.OrganizerID = org.ID
-	events := append(org.Events, event)
-	log.Println(events)
-	_, err = organizerService.Repository.Save(org)
-	if err != nil {
-		return nil, err
-	}
-	return &response.RaveResponse[*response.EventResponse]{Data: mapEventToEventResponse(event)}, nil
-}
+//func (organizerService *appOrganizerService) AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error) {
+//	eventService := NewEventService()
+//	org, err := organizerService.GetById(eventRequest.OrganizerId)
+//	if err != nil {
+//		return nil, err
+//	}
+//	event, err := eventService.Create(eventRequest)
+//	if err != nil {
+//		return nil, err
+//	}
+//	event.OrganizerID = org.ID
+//	events := append(org.Events, event)
+//	log.Println(events)
+//	_, err = organizerService.Repository.Save(org)
+//	if err != nil {
+//		return nil, err
+//	}
+//	return &response.RaveResponse[*response.EventResponse]{Data: mapEventToEventResponse(event)}, nil
+//}
 
 func (organizerService *appOrganizerService) GetByOtp(otp string) (*models.Organizer, error) {
 	organizerRepository := organizerService.Repository
+	log.Println("repo:", organizerRepository)
 	return organizerRepository.FindByOtp(otp)
 }
 

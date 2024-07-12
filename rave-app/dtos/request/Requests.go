@@ -21,7 +21,7 @@ type CreateEventRequest struct {
 	Time               string `json:"time"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	OrganizerId        uint64 `json:"organizer_id"`
+	CalendarId         uint64 `json:"calendar_id"`
 }
 
 type UpdateEventRequest struct {
@@ -65,6 +65,31 @@ type CreateEventStaffRequest struct {
 	EventId     uint64   `json:"event_id"`
 }
 
+type NewTicketMessage struct {
+	Type                         string                             `json:"ticket_type"`
+	Name                         string                             `json:"name"`
+	Stock                        uint64                             `json:"stock"`
+	NumberAvailable              uint64                             `json:"number_in_stock"`
+	Price                        float64                            `json:"price"`
+	PurchaseLimit                uint64                             `json:"purchase_limit"`
+	DiscountType                 string                             `json:"discount_type"`
+	Percentage                   float64                            `json:"percentage"`
+	DiscountPrice                float64                            `json:"discount_price"`
+	DiscountCode                 string                             `json:"discount_code"`
+	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
+	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
+	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
+	Message                      string                             `json:"message,omitempty"`
+	EventName                    string                             `json:"event_name"`
+	Organizer                    string                             `json:"organizer"`
+	Location                     string                             `json:"location"`
+	Date                         string                             `json:"date"`
+	Time                         string                             `json:"time"`
+	ContactInformation           string                             `json:"contact_information"`
+	Description                  string                             `json:"description"`
+	Status                       string                             `json:"status"`
+}
+
 type Sender struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
@@ -80,6 +105,10 @@ type EmailNotificationRequest struct {
 	Recipients []Recipient `json:"to"`
 	Subject    string      `json:"subject"`
 	Content    string      `json:"htmlContent"`
+}
+
+type CreateCalendarRequest struct {
+	Name string
 }
 
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {

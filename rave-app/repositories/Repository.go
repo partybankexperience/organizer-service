@@ -6,6 +6,7 @@ import (
 	"github.com/djfemz/rave/rave-app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"log"
 	"os"
 	"reflect"
@@ -47,7 +48,7 @@ func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
 func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
 	db = connect()
 	var t = new(T)
-	err := db.First(t, id).Error
+	err := db.Preload(clause.Associations).First(t, id).Error
 	if err != nil {
 		return nil, err
 	}

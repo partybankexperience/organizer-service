@@ -1,6 +1,7 @@
 package models
 
 import (
+	"gorm.io/gorm"
 	"reflect"
 	"time"
 
@@ -33,6 +34,7 @@ func init() {
 	Entities[reflect.ValueOf(Organizer{}).String()] = Organizer{}
 	Entities[reflect.ValueOf(EventStaff{}).String()] = EventStaff{}
 	Entities[reflect.ValueOf(Ticket{}).String()] = Ticket{}
+	Entities[reflect.ValueOf(Calendar{}).String()] = Calendar{}
 }
 
 type Organizer struct {
@@ -42,7 +44,7 @@ type Organizer struct {
 	CreatedAt time.Time
 	Otp       *otp.OneTimePassword `gorm:"embedded;embeddedPrefix:otp"`
 	EventId   uint64
-	Events    []*Event
+	Calendars []*Calendar
 }
 
 type User struct {
@@ -80,12 +82,20 @@ type Event struct {
 	Time               string
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	OrganizerID        uint64
+	CalendarID         uint64
 	Status             string `json:"status"`
 	EventStaffID       uint64 `json:"event_staff_id"`
 	TicketID           uint64 `json:"ticket_id"`
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
+}
+
+type Calendar struct {
+	ID   uint64 `id:"CalendarId" gorm:"primaryKey" json:"id"`
+	Name string
+	gorm.Model
+	Events      []*Event
+	OrganizerID uint64 `json:"organizer_id"`
 }
 
 type EventStaff struct {

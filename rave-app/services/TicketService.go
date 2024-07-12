@@ -1,6 +1,8 @@
 package services
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
@@ -8,6 +10,8 @@ import (
 	"github.com/djfemz/rave/rave-app/repositories"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
+	"net/http"
+	"os"
 )
 
 type TicketService interface {
@@ -46,6 +50,9 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 	}
 	createTicketResponse := &response.TicketResponse{}
 	errs = model.Copy(createTicketResponse, savedTicket)
+
+	log.Println("new ticket created: ", savedTicket)
+	go sendNewTicketEvent(event, createTicketResponse)
 	return createTicketResponse, nil
 }
 
@@ -69,4 +76,40 @@ func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64) ([]
 	}
 
 	return tickets, nil
+}
+
+func sendNewTicketEvent(event *models.Event, ticketResponse *response.TicketResponse) {
+	ticketMessage := buildTicketMessage(event, ticketResponse)
+	body, err := json.Marshal(ticketMessage)
+	if err != nil {
+		log.Println("Error: ", err)
+		return
+	}
+	req, err := http.NewRequest(http.MethodPost, os.Getenv("TICKET_SERVICE_URL"), bytes.NewReader(body))
+	req.Header.Add("Content-Type", APPLICATION_JSON_VALUE)
+	client := &http.Client{}
+	_, err = client.Do(req)
+	if err != nil {
+		log.Fatal("Error: ", err)
+	}
+
+}
+
+func buildTicketMessage(event *models.Event, ticketResponse *response.TicketResponse) *request.NewTicketMessage {
+	return &request.NewTicketMessage{
+		Type:                       ticketResponse.Type,
+		Name:                       ticketResponse.Name,
+		Stock:                      ticketResponse.Stock,
+		NumberAvailable:            ticketResponse.NumberAvailable,
+		Price:                      ticketResponse.Price,
+		DiscountCode:               ticketResponse.DiscountCode,
+		DiscountPrice:              ticketResponse.DiscountPrice,
+		PurchaseLimit:              ticketResponse.PurchaseLimit,
+		Percentage:                 ticketResponse.Percentage,
+		AvailableDiscountedTickets: ticketResponse.AvailableDiscountedTickets,
+		EventName:                  event.Name,
+		Description:                event.Description,
+		Location:                   event.Location,
+	}
+
 }

@@ -64,7 +64,9 @@ func getMailTemplate(data string) (*bytes.Buffer, error) {
 
 func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[string], error) {
 	organizerService := authenticationService.organizerService
+	log.Println("otp: ", otp)
 	org, err := organizerService.GetByOtp(otp)
+	log.Println("org: ", org)
 	if err != nil {
 		return nil, err
 	}

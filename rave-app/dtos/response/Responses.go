@@ -25,10 +25,23 @@ type CreateOrganizerResponse struct {
 	Username string `json:"username,omitempty"`
 }
 
+type CreateCalendarResponse struct {
+	Message string
+	ID      uint64
+	Name    string
+}
+
+type CalendarResponse struct {
+	ID     uint64
+	Name   string
+	Events []*EventResponse
+}
+
 type EventResponse struct {
+	ID                 uint64 `json:"id"`
 	Message            string `json:"message,omitempty"`
 	Name               string `json:"name"`
-	Organizer          string `json:"organizer"`
+	Calendar           string `json:"calendar"`
 	Location           string `json:"location"`
 	Date               string `json:"date"`
 	Time               string `json:"time"`

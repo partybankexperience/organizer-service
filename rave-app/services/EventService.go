@@ -30,7 +30,13 @@ func NewEventService() EventService {
 
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*models.Event, error) {
 	event := mapCreateEventRequestToEvent(createEventRequest)
+	calendarService := NewCalendarService()
+	calendar, err := calendarService.GetById(createEventRequest.CalendarId)
+	if err != nil {
+		return nil, err
+	}
 	savedEvent, err := eventRepository.Save(event)
+	calendarService.AddEventToCalendar(calendar.ID, savedEvent)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +83,7 @@ func (raveEventService *raveEventService) UpdateEvent(event *models.Event) error
 }
 
 func (raveEventService *raveEventService) GetAllEventsFor(organizerId uint64) ([]*models.Event, error) {
-	events, err := eventRepository.FindAllByOrganizer(organizerId)
+	events, err := eventRepository.FindAllByCalendar(organizerId)
 	if err != nil {
 		return nil, err
 	}
@@ -85,12 +91,13 @@ func (raveEventService *raveEventService) GetAllEventsFor(organizerId uint64) ([
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
-	OrganizerService := NewOrganizerService()
-	org, err := OrganizerService.GetById(event.OrganizerID)
+	calendarService := NewCalendarService()
+	calendar, err := calendarService.GetById(event.CalendarID)
 	if err != nil {
 		return nil
 	}
 	return &response.EventResponse{
+		ID:                 event.ID,
 		Message:            "event created successfully",
 		Name:               event.Name,
 		Location:           event.Location,
@@ -99,7 +106,7 @@ func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
-		Organizer:          org.Username,
+		Calendar:           calendar.Name,
 	}
 }
 
@@ -109,7 +116,7 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 		Location:           createEventRequest.Location,
 		Date:               createEventRequest.Date,
 		Time:               createEventRequest.Time,
-		OrganizerID:        createEventRequest.OrganizerId,
+		CalendarID:         createEventRequest.CalendarId,
 		ContactInformation: createEventRequest.ContactInformation,
 		Description:        createEventRequest.Description,
 		Status:             models.NOT_STARTED,
