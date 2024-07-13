@@ -14,6 +14,7 @@ type CalendarService interface {
 	GetById(id uint64) (*models.Calendar, error)
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Calendar, error)
 	GetCalendar(id uint64) (*response.CreateCalendarResponse, error)
+	GetPublicCalendarFor(id uint64) (*models.Calendar, error)
 }
 
 type raveCalendarService struct {
@@ -70,6 +71,14 @@ func (raveCalendarService *raveCalendarService) AddEventToCalendar(id uint64, ev
 	}
 	calendar.Events = append(calendar.Events, event)
 	calendar, err = raveCalendarService.CalendarRepository.Save(calendar)
+	if err != nil {
+		return nil, err
+	}
+	return calendar, nil
+}
+
+func (raveCalendarService *raveCalendarService) GetPublicCalendarFor(id uint64) (*models.Calendar, error) {
+	calendar, err := raveCalendarService.CalendarRepository.FindPublicCalendarFor(id)
 	if err != nil {
 		return nil, err
 	}

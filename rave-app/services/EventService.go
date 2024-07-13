@@ -7,6 +7,7 @@ import (
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
 	"gopkg.in/jeevatkm/go-model.v1"
+	"log"
 )
 
 type EventService interface {
@@ -29,14 +30,29 @@ func NewEventService() EventService {
 }
 
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*models.Event, error) {
+	log.Println("event request--->", createEventRequest)
 	event := mapCreateEventRequestToEvent(createEventRequest)
+	var calendar *models.Calendar
+	var err error
 	calendarService := NewCalendarService()
-	calendar, err := calendarService.GetById(createEventRequest.CalendarId)
-	if err != nil {
-		return nil, err
+	if createEventRequest.CalendarId == 0 {
+		log.Println("hereee")
+		calendar, err = calendarService.GetPublicCalendarFor(createEventRequest.OrganizerId)
+		if err != nil {
+			log.Println("error finding public calendar: ", err)
+			return nil, err
+		}
+		log.Println("found public calendar: ", calendar)
+	} else {
+		calendar, err = calendarService.GetById(createEventRequest.CalendarId)
+		if err != nil {
+			return nil, err
+		}
 	}
+	log.Println("calendar--->", calendar)
+	event.CalendarID = calendar.ID
 	savedEvent, err := eventRepository.Save(event)
-	calendarService.AddEventToCalendar(calendar.ID, savedEvent)
+	_, err = calendarService.AddEventToCalendar(calendar.ID, savedEvent)
 	if err != nil {
 		return nil, err
 	}
@@ -82,8 +98,8 @@ func (raveEventService *raveEventService) UpdateEvent(event *models.Event) error
 	return err
 }
 
-func (raveEventService *raveEventService) GetAllEventsFor(organizerId uint64) ([]*models.Event, error) {
-	events, err := eventRepository.FindAllByCalendar(organizerId)
+func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64) ([]*models.Event, error) {
+	events, err := eventRepository.FindAllByCalendar(calendarId)
 	if err != nil {
 		return nil, err
 	}

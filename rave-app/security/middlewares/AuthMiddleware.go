@@ -20,7 +20,7 @@ func Routers(router *gin.Engine) {
 	calendarController := handlers.NewCalendarController()
 	protected := router.Group("/protected", AuthMiddleware())
 	{
-		protected.POST("/event", organizerController.CreateEvent)
+		protected.POST("/event", eventController.CreateEvent)
 		protected.GET("/event/:id", eventController.GetEventById)
 		protected.PUT("/event/:id", eventController.EditEvent)
 		protected.GET("/event", eventController.EditEvent)

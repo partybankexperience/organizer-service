@@ -19,6 +19,21 @@ func NewEventController() *EventController {
 	}
 }
 
+func (eventController *EventController) CreateEvent(ctx *gin.Context) {
+	createEventRequest := &request.CreateEventRequest{}
+	err := ctx.BindJSON(createEventRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		return
+	}
+	res, err := eventController.EventService.Create(createEventRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusCreated, res)
+}
+
 func (eventController *EventController) EditEvent(ctx *gin.Context) {
 	updateEventRequest := &request.UpdateEventRequest{}
 	eventId, err := extractParamFromRequest("id", ctx)

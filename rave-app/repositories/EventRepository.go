@@ -4,7 +4,7 @@ import "github.com/djfemz/rave/rave-app/models"
 
 type EventRepository interface {
 	crudRepository[models.Event, uint64]
-	FindAllByCalendar(organizerId uint64) ([]*models.Event, error)
+	FindAllByCalendar(calendarId uint64) ([]*models.Event, error)
 }
 
 type raveEventRepository struct {

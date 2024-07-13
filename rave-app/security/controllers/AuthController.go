@@ -22,15 +22,18 @@ func NewAuthController() *AuthController {
 }
 
 func (authController *AuthController) AuthHandler(ctx *gin.Context) {
+	log.Println("here")
 	var signInRequest request.AuthRequest
 	if err = ctx.BindJSON(&signInRequest); err != nil {
 		handleError(ctx, err)
 		return
 	}
-
+	log.Println("auth req---> ", signInRequest)
 	res, err := authController.AuthService.Authenticate(&signInRequest)
 	if res != nil {
+		log.Println("auth response---> ", res)
 		ctx.JSON(http.StatusOK, response.RaveResponse[response.LoginResponse]{Data: *res})
+
 	} else {
 		handleError(ctx, err)
 	}

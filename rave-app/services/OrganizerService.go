@@ -16,7 +16,6 @@ type OrganizerService interface {
 	UpdateOtpFor(id uint64, testOtp *otp.OneTimePassword) (*models.Organizer, error)
 	GetById(id uint64) (*models.Organizer, error)
 	AddEventStaff(staff *request.AddEventStaffRequest) (*response.RaveResponse[string], error)
-	//AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error)
 	GetByOtp(otp string) (*models.Organizer, error)
 }
 
@@ -36,9 +35,29 @@ func (organizerService *appOrganizerService) Create(createOrganizerRequest *requ
 	organizer := mapCreateOrganizerRequestTo(createOrganizerRequest)
 	password := otp.GenerateOtp()
 	mailService := NewMailService()
-	mailService.Send(request.NewEmailNotificationRequest(CreateNewOrganizerEmail(password.Code), organizer.Username))
+	calendarService := NewCalendarService()
+
 	organizer.Otp = password
 	savedOrganizer, err := organizerService.Repository.Save(organizer)
+	createCalendarRequest := &request.CreateCalendarRequest{
+		Name:        "Public",
+		OrganizerID: savedOrganizer.ID,
+	}
+	calendarResponse, err := calendarService.CreateCalendar(createCalendarRequest)
+	if err != nil {
+		return nil, err
+	}
+	calendar, err := calendarService.GetById(calendarResponse.ID)
+
+	if err != nil {
+		return nil, err
+	}
+	savedOrganizer.Calendars = append(savedOrganizer.Calendars, calendar)
+	savedOrganizer, err = organizerService.Repository.Save(savedOrganizer)
+
+	go func() {
+		mailService.Send(request.NewEmailNotificationRequest(CreateNewOrganizerEmail(password.Code), organizer.Username))
+	}()
 	if savedOrganizer != nil {
 		return &response.CreateOrganizerResponse{
 			Message:  response.USER_CREATED_SUCCESSFULLY,
@@ -87,26 +106,6 @@ func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *requ
 	}
 	return res, nil
 }
-
-//func (organizerService *appOrganizerService) AddEvent(eventRequest *request.CreateEventRequest) (*response.RaveResponse[*response.EventResponse], error) {
-//	eventService := NewEventService()
-//	org, err := organizerService.GetById(eventRequest.OrganizerId)
-//	if err != nil {
-//		return nil, err
-//	}
-//	event, err := eventService.Create(eventRequest)
-//	if err != nil {
-//		return nil, err
-//	}
-//	event.OrganizerID = org.ID
-//	events := append(org.Events, event)
-//	log.Println(events)
-//	_, err = organizerService.Repository.Save(org)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return &response.RaveResponse[*response.EventResponse]{Data: mapEventToEventResponse(event)}, nil
-//}
 
 func (organizerService *appOrganizerService) GetByOtp(otp string) (*models.Organizer, error) {
 	organizerRepository := organizerService.Repository

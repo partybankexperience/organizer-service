@@ -80,13 +80,13 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 func addUser(authRequest *request.AuthRequest, err error, organizerService services.OrganizerService, org *models.Organizer) (*response.LoginResponse, error) {
 	organizer, err := organizerService.Create(&authRequest.CreateUserRequest)
 	if err != nil {
-		log.Fatal("Error: ", err)
+		log.Println("Error: ", err)
 	}
 	org, err = organizerService.GetByUsername(organizer.Username)
 	if err != nil {
-		log.Fatal("Error: ", err)
+		log.Println("Error: ", err)
 	}
-	return createAuthResponse(org), err
+	return createAuthResponse(org), nil
 }
 
 func createAuthResponse(org *models.Organizer) *response.LoginResponse {

@@ -17,11 +17,12 @@ type CreateDiscountRequest struct {
 type CreateEventRequest struct {
 	Name               string `json:"name"`
 	Location           string `json:"location"`
-	Date               string `json:"date"`
+	Date               string `json:"date" `
 	Time               string `json:"time"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
 	CalendarId         uint64 `json:"calendar_id"`
+	OrganizerId        uint64 `json:"organizer_id"`
 }
 
 type UpdateEventRequest struct {
@@ -108,7 +109,8 @@ type EmailNotificationRequest struct {
 }
 
 type CreateCalendarRequest struct {
-	Name string
+	Name        string `json:"name"`
+	OrganizerID uint64 `json:"organizer_id"`
 }
 
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {

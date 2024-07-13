@@ -26,16 +26,18 @@ type CreateOrganizerResponse struct {
 }
 
 type CreateCalendarResponse struct {
-	Message string
-	ID      uint64
-	Name    string
-	Events  []*EventResponse
+	Message     string
+	ID          uint64
+	Name        string
+	Events      []*EventResponse
+	OrganizerID uint64 `json:"organizer_id"`
 }
 
 type CalendarResponse struct {
-	ID     uint64
-	Name   string
-	Events []*EventResponse
+	ID          uint64
+	Name        string
+	Events      []*EventResponse
+	OrganizerID uint64 `json:"organizer_id"`
 }
 
 type EventResponse struct {

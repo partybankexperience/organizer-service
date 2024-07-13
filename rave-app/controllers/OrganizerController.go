@@ -18,21 +18,6 @@ func NewOrganizerController() *OrganizerController {
 	}
 }
 
-func (orgController *OrganizerController) CreateEvent(ctx *gin.Context) {
-	createEventRequest := &request.CreateEventRequest{}
-	err := ctx.BindJSON(createEventRequest)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
-		return
-	}
-	res, err := orgController.organizerService.AddEvent(createEventRequest)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
-		return
-	}
-	ctx.JSON(http.StatusCreated, res)
-}
-
 func (orgController *OrganizerController) AddEventStaff(ctx *gin.Context) {
 	addEventStaff := &request.AddEventStaffRequest{}
 	err := ctx.BindJSON(addEventStaff)
