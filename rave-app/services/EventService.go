@@ -36,7 +36,6 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	var err error
 	calendarService := NewCalendarService()
 	if createEventRequest.CalendarId == 0 {
-		log.Println("hereee")
 		calendar, err = calendarService.GetPublicCalendarFor(createEventRequest.OrganizerId)
 		if err != nil {
 			log.Println("error finding public calendar: ", err)

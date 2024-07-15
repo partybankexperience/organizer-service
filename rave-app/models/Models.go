@@ -82,7 +82,7 @@ type Event struct {
 	Time               string
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	CalendarID         uint64
+	CalendarID         uint64 `json:"calendar_id"`
 	Status             string `json:"status"`
 	EventStaffID       uint64 `json:"event_staff_id"`
 	TicketID           uint64 `json:"ticket_id"`
@@ -92,10 +92,10 @@ type Event struct {
 
 type Calendar struct {
 	ID   uint64 `id:"CalendarId" gorm:"primaryKey" json:"id"`
-	Name string
+	Name string `json:"name"`
 	gorm.Model
-	Events      []*Event
-	OrganizerID uint64 `json:"organizer_id"`
+	Events      []*Event `json:"events"`
+	OrganizerID uint64   `json:"organizer_id"`
 }
 
 type EventStaff struct {
