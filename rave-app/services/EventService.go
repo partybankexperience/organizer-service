@@ -32,7 +32,7 @@ func NewEventService() EventService {
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*models.Event, error) {
 	log.Println("event request--->", createEventRequest)
 	event := mapCreateEventRequestToEvent(createEventRequest)
-	var calendar *models.Calendar
+	var calendar *models.Series
 	var err error
 	calendarService := NewCalendarService()
 	if createEventRequest.CalendarId == 0 {

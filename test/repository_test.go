@@ -53,8 +53,9 @@ func TestRepository_FindAll_Pagination(t *testing.T) {
 }
 
 func TestRepositoryImpl_DeleteById(t *testing.T) {
-	repository.DeleteById(1)
+	err := repository.DeleteById(1)
 	orgs, _ := repository.FindAll()
+	assert.Nil(t, err)
 	assert.Equal(t, 2, len(orgs))
 }
 

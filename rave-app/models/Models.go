@@ -34,7 +34,7 @@ func init() {
 	Entities[reflect.ValueOf(Organizer{}).String()] = Organizer{}
 	Entities[reflect.ValueOf(EventStaff{}).String()] = EventStaff{}
 	Entities[reflect.ValueOf(Ticket{}).String()] = Ticket{}
-	Entities[reflect.ValueOf(Calendar{}).String()] = Calendar{}
+	Entities[reflect.ValueOf(Series{}).String()] = Series{}
 }
 
 type Organizer struct {
@@ -44,7 +44,7 @@ type Organizer struct {
 	CreatedAt time.Time
 	Otp       *otp.OneTimePassword `gorm:"embedded;embeddedPrefix:otp"`
 	EventId   uint64
-	Calendars []*Calendar
+	Calendars []*Series
 }
 
 type User struct {
@@ -90,7 +90,7 @@ type Event struct {
 	EventStaff         []*EventStaff
 }
 
-type Calendar struct {
+type Series struct {
 	ID   uint64 `id:"CalendarId" gorm:"primaryKey" json:"id"`
 	Name string `json:"name"`
 	gorm.Model
