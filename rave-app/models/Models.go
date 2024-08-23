@@ -96,6 +96,8 @@ type Series struct {
 	gorm.Model
 	Events      []*Event `json:"events"`
 	OrganizerID uint64   `json:"organizer_id"`
+	ImageUrl    string   `json:"image_url"`
+	Description string   `json:"description"`
 }
 
 type EventStaff struct {

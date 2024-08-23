@@ -111,6 +111,8 @@ type EmailNotificationRequest struct {
 type CreateCalendarRequest struct {
 	Name        string `json:"name"`
 	OrganizerID uint64 `json:"organizer_id"`
+	Description string `json:"description"`
+	ImageUrl    string `json:"image_url"`
 }
 
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {

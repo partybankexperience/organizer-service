@@ -34,7 +34,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	event := mapCreateEventRequestToEvent(createEventRequest)
 	var calendar *models.Series
 	var err error
-	calendarService := NewCalendarService()
+	calendarService := NewSeriesService()
 	if createEventRequest.CalendarId == 0 {
 		calendar, err = calendarService.GetPublicCalendarFor(createEventRequest.OrganizerId)
 		if err != nil {
@@ -106,7 +106,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64) ([]
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
-	calendarService := NewCalendarService()
+	calendarService := NewSeriesService()
 	calendar, err := calendarService.GetById(event.CalendarID)
 	if err != nil {
 		return nil

@@ -9,7 +9,7 @@ import (
 	"gopkg.in/jeevatkm/go-model.v1"
 )
 
-type CalendarService interface {
+type SeriesService interface {
 	CreateCalendar(createCalendarRequest *dtos.CreateCalendarRequest) (*response.CreateCalendarResponse, error)
 	GetById(id uint64) (*models.Series, error)
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error)
@@ -17,22 +17,22 @@ type CalendarService interface {
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
 }
 
-type raveCalendarService struct {
-	repositories.CalendarRepository
+type raveSeriesService struct {
+	repositories.SeriesRepository
 }
 
-func NewCalendarService() CalendarService {
-	return &raveCalendarService{repositories.NewCalendarRepository()}
+func NewSeriesService() SeriesService {
+	return &raveSeriesService{repositories.NewSeriesRepository()}
 }
 
-func (raveCalendarService *raveCalendarService) CreateCalendar(createCalendarRequest *dtos.CreateCalendarRequest) (*response.CreateCalendarResponse, error) {
+func (raveCalendarService *raveSeriesService) CreateCalendar(createCalendarRequest *dtos.CreateCalendarRequest) (*response.CreateCalendarResponse, error) {
 	calendar := &models.Series{}
 	errs := model.Copy(calendar, createCalendarRequest)
 	isCopyErrorPresent := len(errs) > 0
 	if isCopyErrorPresent {
 		return nil, errors.New("error creating calendar from request")
 	}
-	savedCalendar, err := raveCalendarService.CalendarRepository.Save(calendar)
+	savedCalendar, err := raveCalendarService.SeriesRepository.Save(calendar)
 	if err != nil {
 		return nil, err
 	}
@@ -43,15 +43,15 @@ func (raveCalendarService *raveCalendarService) CreateCalendar(createCalendarReq
 	return createdCalendarResponse, nil
 }
 
-func (raveCalendarService *raveCalendarService) GetById(id uint64) (*models.Series, error) {
-	calendar, err := raveCalendarService.CalendarRepository.FindById(id)
+func (raveCalendarService *raveSeriesService) GetById(id uint64) (*models.Series, error) {
+	calendar, err := raveCalendarService.SeriesRepository.FindById(id)
 	if err != nil {
 		return nil, err
 	}
 	return calendar, nil
 }
 
-func (raveCalendarService *raveCalendarService) GetCalendar(id uint64) (*response.CreateCalendarResponse, error) {
+func (raveCalendarService *raveSeriesService) GetCalendar(id uint64) (*response.CreateCalendarResponse, error) {
 	resp := &response.CreateCalendarResponse{}
 	calendar, err := raveCalendarService.GetById(id)
 	if err != nil {
@@ -64,21 +64,21 @@ func (raveCalendarService *raveCalendarService) GetCalendar(id uint64) (*respons
 	return resp, nil
 }
 
-func (raveCalendarService *raveCalendarService) AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error) {
+func (raveCalendarService *raveSeriesService) AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error) {
 	calendar, err := raveCalendarService.GetById(id)
 	if err != nil {
 		return nil, err
 	}
 	calendar.Events = append(calendar.Events, event)
-	calendar, err = raveCalendarService.CalendarRepository.Save(calendar)
+	calendar, err = raveCalendarService.SeriesRepository.Save(calendar)
 	if err != nil {
 		return nil, err
 	}
 	return calendar, nil
 }
 
-func (raveCalendarService *raveCalendarService) GetPublicCalendarFor(id uint64) (*models.Series, error) {
-	calendar, err := raveCalendarService.CalendarRepository.FindPublicCalendarFor(id)
+func (raveCalendarService *raveSeriesService) GetPublicCalendarFor(id uint64) (*models.Series, error) {
+	calendar, err := raveCalendarService.SeriesRepository.FindPublicCalendarFor(id)
 	if err != nil {
 		return nil, err
 	}

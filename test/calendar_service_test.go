@@ -9,10 +9,10 @@ import (
 	"time"
 )
 
-var calendarService services.CalendarService
+var calendarService services.SeriesService
 
 func TestCreateCalendar(t *testing.T) {
-	calendarService = services.NewCalendarService()
+	calendarService = services.NewSeriesService()
 	createCalendarRequest := &request.CreateCalendarRequest{
 		Name: "test",
 	}
@@ -24,7 +24,7 @@ func TestCreateCalendar(t *testing.T) {
 }
 
 func TestGetCalendar(t *testing.T) {
-	calendarService = services.NewCalendarService()
+	calendarService = services.NewSeriesService()
 	calendar, err := calendarService.GetById(1)
 	log.Println("calendar: ", calendar.Events)
 	assert.Nil(t, err)
@@ -41,7 +41,7 @@ func TestAddEventToCalendar(t *testing.T) {
 	eventService = services.NewEventService()
 	event, err := eventService.Create(req)
 	assert.Nil(t, err)
-	calendarService = services.NewCalendarService()
+	calendarService = services.NewSeriesService()
 	calendar, err := calendarService.AddEventToCalendar(1, event)
 	assert.Nil(t, err)
 	assert.NotNil(t, calendar)

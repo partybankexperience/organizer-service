@@ -35,7 +35,7 @@ func (organizerService *appOrganizerService) Create(createOrganizerRequest *requ
 	organizer := mapCreateOrganizerRequestTo(createOrganizerRequest)
 	password := otp.GenerateOtp()
 	mailService := NewMailService()
-	calendarService := NewCalendarService()
+	calendarService := NewSeriesService()
 
 	organizer.Otp = password
 	savedOrganizer, err := organizerService.Repository.Save(organizer)

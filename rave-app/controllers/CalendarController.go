@@ -9,16 +9,16 @@ import (
 )
 
 type CalendarController struct {
-	services.CalendarService
+	services.SeriesService
 }
 
 func NewCalendarController() *CalendarController {
-	return &CalendarController{services.NewCalendarService()}
+	return &CalendarController{services.NewSeriesService()}
 }
 
 func (calendarController *CalendarController) CreateCalendar(ctx *gin.Context) {
 	createCalendarRequest := &request.CreateCalendarRequest{}
-	calendarService := calendarController.CalendarService
+	calendarService := calendarController.SeriesService
 	err := ctx.BindJSON(createCalendarRequest)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
@@ -34,7 +34,7 @@ func (calendarController *CalendarController) CreateCalendar(ctx *gin.Context) {
 }
 
 func (calendarController *CalendarController) GetCalendar(ctx *gin.Context) {
-	calendarService := calendarController.CalendarService
+	calendarService := calendarController.SeriesService
 	id, err := extractParamFromRequest("id", ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err)

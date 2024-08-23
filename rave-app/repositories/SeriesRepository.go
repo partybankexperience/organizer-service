@@ -2,7 +2,7 @@ package repositories
 
 import "github.com/djfemz/rave/rave-app/models"
 
-type CalendarRepository interface {
+type SeriesRepository interface {
 	Repository[models.Series, uint64]
 	FindPublicCalendarFor(organizer uint64) (*models.Series, error)
 }
@@ -11,7 +11,7 @@ type raveCalendarRepository struct {
 	repositoryImpl[models.Series, uint64]
 }
 
-func NewCalendarRepository() CalendarRepository {
+func NewSeriesRepository() SeriesRepository {
 	return &raveCalendarRepository{}
 }
 
