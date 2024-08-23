@@ -11,11 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	err := godotenv.Load()
+var err error
+
+func init() {
+	err = godotenv.Load()
 	if err != nil {
 		log.Println("Error loading configuration: ", err)
 	}
+}
+
+func main() {
 	router := gin.Default()
 	middlewares.Routers(router)
 	router.Use(cors.New(configureCors()))
