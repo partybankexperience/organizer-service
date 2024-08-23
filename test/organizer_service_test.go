@@ -44,8 +44,8 @@ func TestOrganizerCanAddEventStaff(t *testing.T) {
 //	addEventRequest := &request.CreateEventRequest{
 //		Name:               "test event",
 //		Location:           "Sabo Yaba",
-//		Date:               "2024-03-23",
-//		Time:               "12:00:00",
+//		EventDate:               "2024-03-23",
+//		StartTime:               "12:00:00",
 //		ContactInformation: "09023456789",
 //		Description:        "this is a test event",
 //		CalendarId:        1,

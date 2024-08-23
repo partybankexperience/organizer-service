@@ -20,7 +20,7 @@ func NewEventRepository() EventRepository {
 func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uint64) ([]*models.Event, error) {
 	var events []*models.Event
 	db := connect()
-	err := db.Where(&models.Event{CalendarID: calendarId}).Find(&events).Error
+	err := db.Where(&models.Event{SeriesID: calendarId}).Find(&events).Error
 	if err != nil {
 		return nil, err
 	}

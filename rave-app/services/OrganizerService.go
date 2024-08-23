@@ -52,7 +52,7 @@ func (organizerService *appOrganizerService) Create(createOrganizerRequest *requ
 	if err != nil {
 		return nil, err
 	}
-	savedOrganizer.Calendars = append(savedOrganizer.Calendars, calendar)
+	savedOrganizer.Series = append(savedOrganizer.Series, calendar)
 	savedOrganizer, err = organizerService.Repository.Save(savedOrganizer)
 
 	go func() {

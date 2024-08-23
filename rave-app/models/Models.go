@@ -44,7 +44,7 @@ type Organizer struct {
 	CreatedAt time.Time
 	Otp       *otp.OneTimePassword `gorm:"embedded;embeddedPrefix:otp"`
 	EventId   uint64
-	Calendars []*Series
+	Series    []*Series
 }
 
 type User struct {
@@ -78,11 +78,12 @@ type Event struct {
 	ID                 uint64 `id:"EventId" gorm:"primaryKey" json:"id"`
 	Name               string `json:"name"`
 	Location           string `json:"location"`
-	Date               string `json:"date"`
-	Time               string
+	EventDate          string `json:"date"`
+	StartTime          string `json:"event_start"`
+	EndTime            string `json:"event_end"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	CalendarID         uint64 `json:"calendar_id"`
+	SeriesID           uint64 `json:"calendar_id"`
 	Status             string `json:"status"`
 	EventStaffID       uint64 `json:"event_staff_id"`
 	TicketID           uint64 `json:"ticket_id"`

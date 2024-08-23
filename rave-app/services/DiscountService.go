@@ -9,6 +9,13 @@ type DiscountService interface {
 	CreateDiscount(request *request.CreateDiscountRequest) (*response.CreateDiscountResponse, error)
 }
 
+type raveDiscountService struct {
+}
+
 func NewDiscountService() DiscountService {
 	return nil
+}
+
+func (raveDiscountService *raveDiscountService) CreateDiscount(request *request.CreateDiscountRequest) (*response.CreateDiscountResponse, error) {
+	return nil, nil
 }

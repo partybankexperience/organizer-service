@@ -7,6 +7,7 @@ import (
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
 	"gopkg.in/jeevatkm/go-model.v1"
+	"log"
 )
 
 type SeriesService interface {
@@ -28,11 +29,13 @@ func NewSeriesService() SeriesService {
 func (raveCalendarService *raveSeriesService) CreateCalendar(createCalendarRequest *dtos.CreateCalendarRequest) (*response.CreateCalendarResponse, error) {
 	calendar := &models.Series{}
 	errs := model.Copy(calendar, createCalendarRequest)
+	log.Println("calendar: ", *calendar)
 	isCopyErrorPresent := len(errs) > 0
 	if isCopyErrorPresent {
 		return nil, errors.New("error creating calendar from request")
 	}
 	savedCalendar, err := raveCalendarService.SeriesRepository.Save(calendar)
+	log.Println("saved: ", *savedCalendar)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +72,9 @@ func (raveCalendarService *raveSeriesService) AddEventToCalendar(id uint64, even
 	if err != nil {
 		return nil, err
 	}
+	log.Println("event: ", *event)
 	calendar.Events = append(calendar.Events, event)
+	log.Println("calendar: ", calendar.Events)
 	calendar, err = raveCalendarService.SeriesRepository.Save(calendar)
 	if err != nil {
 		return nil, err

@@ -67,9 +67,9 @@ func TestFindByOtp(t *testing.T) {
 
 func TestGetId(t *testing.T) {
 	var event = models.Event{
-		ID:   24,
-		Name: "John",
-		Date: time.Now().String(),
+		ID:        24,
+		Name:      "John",
+		EventDate: time.Now().String(),
 	}
 	var id, _ = repositories.GetId(event)
 	assert.Equal(t, uint64(24), id)

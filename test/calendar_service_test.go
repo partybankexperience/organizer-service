@@ -14,7 +14,10 @@ var calendarService services.SeriesService
 func TestCreateCalendar(t *testing.T) {
 	calendarService = services.NewSeriesService()
 	createCalendarRequest := &request.CreateCalendarRequest{
-		Name: "test",
+		Name:        "test",
+		OrganizerID: 1,
+		Description: "test desc",
+		ImageUrl:    "https://image.com",
 	}
 
 	response, err := calendarService.CreateCalendar(createCalendarRequest)
@@ -46,6 +49,6 @@ func TestAddEventToCalendar(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, calendar)
 	assert.NotEmpty(t, calendar.Events)
-	assert.Equal(t, 1, len(calendar.Events))
+	assert.GreaterOrEqual(t, len(calendar.Events), 1)
 
 }

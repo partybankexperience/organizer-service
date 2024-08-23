@@ -49,8 +49,13 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 		}
 	}
 	log.Println("calendar--->", calendar)
-	event.CalendarID = calendar.ID
+	event.SeriesID = calendar.ID
+	log.Println("event: ", event)
 	savedEvent, err := eventRepository.Save(event)
+	if err != nil {
+		log.Println("err saving event: ", err)
+		return nil, err
+	}
 	_, err = calendarService.AddEventToCalendar(calendar.ID, savedEvent)
 	if err != nil {
 		return nil, err
@@ -107,7 +112,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64) ([]
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 	calendarService := NewSeriesService()
-	calendar, err := calendarService.GetById(event.CalendarID)
+	calendar, err := calendarService.GetById(event.SeriesID)
 	if err != nil {
 		return nil
 	}
@@ -116,8 +121,8 @@ func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 		Message:            "event created successfully",
 		Name:               event.Name,
 		Location:           event.Location,
-		Date:               event.Date,
-		Time:               event.Time,
+		Date:               event.EventDate,
+		Time:               event.StartTime,
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
@@ -129,9 +134,9 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 	return &models.Event{
 		Name:               createEventRequest.Name,
 		Location:           createEventRequest.Location,
-		Date:               createEventRequest.Date,
-		Time:               createEventRequest.Time,
-		CalendarID:         createEventRequest.CalendarId,
+		EventDate:          createEventRequest.Date,
+		StartTime:          createEventRequest.Time,
+		SeriesID:           createEventRequest.CalendarId,
 		ContactInformation: createEventRequest.ContactInformation,
 		Description:        createEventRequest.Description,
 		Status:             models.NOT_STARTED,
