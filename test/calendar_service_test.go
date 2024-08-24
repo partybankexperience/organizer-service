@@ -2,8 +2,10 @@ package test
 
 import (
 	request "github.com/djfemz/rave/rave-app/dtos/request"
+	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
 	"testing"
 	"time"
@@ -43,9 +45,13 @@ func TestAddEventToCalendar(t *testing.T) {
 	}
 	eventService = services.NewEventService()
 	event, err := eventService.Create(req)
+	createdEvent := &models.Event{}
+	model.Copy(createdEvent, event)
 	assert.Nil(t, err)
 	calendarService = services.NewSeriesService()
-	calendar, err := calendarService.AddEventToCalendar(1, event)
+	log.Println("eve: ", createdEvent)
+	calendar, err := calendarService.AddEventToCalendar(1, createdEvent)
+
 	assert.Nil(t, err)
 	assert.NotNil(t, calendar)
 	assert.NotEmpty(t, calendar.Events)
