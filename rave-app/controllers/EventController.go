@@ -87,7 +87,7 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /event/organizer [get]
+// @Router       /protected/event/organizer [get]
 func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Context) {
 	organizerId, err := strconv.ParseUint(ctx.Query("organizerId"), 10, 64)
 	if err != nil {

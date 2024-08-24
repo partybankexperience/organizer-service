@@ -43,6 +43,17 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, response)
 }
 
+// GetAllTicketsForEvent godoc
+// @Summary      Get all Tickets for Event
+// @Description   Get all Tickets for Event
+// @Tags         Tickets
+// @Accept       json
+// @Param        eventId path int  true  "eventId"
+// @Produce      json
+// @Success      200  {array}  models.Ticket
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /protected/ticket/{eventId} [get]
 func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context) {
 	eventId, err := extractParamFromRequest("eventId", ctx)
 	if err != nil {
@@ -57,6 +68,17 @@ func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context
 	ctx.JSON(http.StatusOK, tickets)
 }
 
+// GetTicketById godoc
+// @Summary      Get Ticket By id
+// @Description   Get Ticket By id
+// @Tags         Tickets
+// @Accept       json
+// @Param        ticketId  query int  true  "ticketId"
+// @Produce      json
+// @Success      200  {object}  dtos.TicketResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /protected/ticket [get]
 func (ticketController *TicketController) GetTicketById(ctx *gin.Context) {
 	eventId, err := strconv.ParseUint(ctx.Query("ticketId"), 10, 64)
 	if err != nil {
