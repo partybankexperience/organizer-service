@@ -17,6 +17,17 @@ func NewTicketController() *TicketController {
 	return &TicketController{}
 }
 
+// AddTicketToEvent godoc
+// @Summary      Add Ticket to Event
+// @Description  Add Ticket to Event
+// @Tags         Tickets
+// @Accept       json
+// @Param 		 tags body dtos.CreateTicketRequest true "Ticket tags"
+// @Produce      json
+// @Success      200  {object}  dtos.TicketResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /protected/ticket [post]
 func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	addTicketRequest := &request.CreateTicketRequest{}
 	err := ctx.BindJSON(addTicketRequest)
