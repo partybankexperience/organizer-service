@@ -18,6 +18,17 @@ func NewOrganizerController() *OrganizerController {
 	}
 }
 
+// AddEventStaff godoc
+// @Summary      Add Event Staff
+// @Description  Adds Event Staff
+// @Tags         Organizer
+// @Accept       json
+// @Param 		 tags body dtos.AddEventStaffRequest true "Organizer tags"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /protected/event/staff [post]
 func (orgController *OrganizerController) AddEventStaff(ctx *gin.Context) {
 	addEventStaff := &request.AddEventStaffRequest{}
 	err := ctx.BindJSON(addEventStaff)

@@ -16,20 +16,30 @@ func NewSeriesController() *SeriesController {
 	return &SeriesController{services.NewSeriesService()}
 }
 
+// CreateSeries godoc
+// @Summary      Add New Series
+// @Description  Adds New Series
+// @Tags         Series
+// @Accept       json
+// @Param 		 tags body dtos.CreateSeriesRequest true "Series tags"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /protected/series [post]
 func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 	createSeriesRequest := &request.CreateSeriesRequest{}
 	err := ctx.BindJSON(createSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
 	}
 	resp, err := seriesController.AddSeries(createSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
 	}
-	ctx.JSON(http.StatusCreated, &response.RaveResponse[*response.CreateCalendarResponse]{resp})
-
+	ctx.JSON(http.StatusCreated, &response.RaveResponse[*response.CreateCalendarResponse]{Data: resp})
 }
 
 // GetSeriesById godoc

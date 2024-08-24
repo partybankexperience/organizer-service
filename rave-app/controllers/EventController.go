@@ -19,6 +19,17 @@ func NewEventController() *EventController {
 	}
 }
 
+// CreateEvent godoc
+// @Summary      Add Event
+// @Description  Adds Event
+// @Tags         Events
+// @Accept       json
+// @Param 		 tags body dtos.CreateEventRequest true "Event tags"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /protected/event/staff [post]
 func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 	createEventRequest := &request.CreateEventRequest{}
 	err := ctx.BindJSON(createEventRequest)
@@ -31,7 +42,7 @@ func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, res)
+	ctx.JSON(http.StatusCreated, &response.RaveResponse[response.EventResponse]{Data: *res})
 }
 
 func (eventController *EventController) EditEvent(ctx *gin.Context) {

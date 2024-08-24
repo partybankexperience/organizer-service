@@ -108,6 +108,96 @@
                 }
             }
         },
+        "/protected/event/staff": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Adds Event Staff",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizer"
+                ],
+                "summary": "Add Event Staff",
+                "parameters": [
+                    {
+                        "description": "Organizer tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.AddEventStaffRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/protected/series": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Adds New Series",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Series"
+                ],
+                "summary": "Add New Series",
+                "parameters": [
+                    {
+                        "description": "Series tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CreateSeriesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/protected/series/{id}": {
             "get": {
                 "security": [
@@ -159,11 +249,71 @@
         }
     },
     "definitions": {
+        "dtos.AddEventStaffRequest": {
+            "type": "object",
+            "properties": {
+                "event_id": {
+                    "type": "integer"
+                },
+                "staff_emails": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dtos.AuthRequest": {
             "type": "object",
             "properties": {
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.CreateEventRequest": {
+            "type": "object",
+            "properties": {
+                "calendar_id": {
+                    "type": "integer"
+                },
+                "contact_information": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organizer_id": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CreateSeriesRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organizer_id": {
+                    "type": "integer"
                 }
             }
         },

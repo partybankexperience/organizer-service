@@ -11,7 +11,7 @@ import (
 )
 
 type EventService interface {
-	Create(createEventRequest *request.CreateEventRequest) (*models.Event, error)
+	Create(createEventRequest *request.CreateEventRequest) (*response.EventResponse, error)
 	GetById(id uint64) (*response.EventResponse, error)
 	GetEventBy(id uint64) (*models.Event, error)
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
@@ -29,8 +29,7 @@ func NewEventService() EventService {
 	return &raveEventService{}
 }
 
-func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*models.Event, error) {
-	log.Println("event request--->", createEventRequest)
+func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.EventResponse, error) {
 	event := mapCreateEventRequestToEvent(createEventRequest)
 	var calendar *models.Series
 	var err error
@@ -48,9 +47,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 			return nil, err
 		}
 	}
-	log.Println("calendar--->", calendar)
 	event.SeriesID = calendar.ID
-	log.Println("event: ", event)
 	savedEvent, err := eventRepository.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)
@@ -60,7 +57,9 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	if err != nil {
 		return nil, err
 	}
-	return savedEvent, nil
+	res := &response.EventResponse{}
+	model.Copy(res, savedEvent)
+	return res, nil
 }
 
 func (raveEventService *raveEventService) GetById(id uint64) (*response.EventResponse, error) {

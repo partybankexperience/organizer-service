@@ -44,6 +44,7 @@ func Routers(router *gin.Engine) {
 func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader(utils.AUTHORIZATION)
+		log.Println("auth header: ", authHeader)
 		token := extractTokenFrom(authHeader)
 		if !isValid(token) {
 			ctx.AbortWithStatusJSON(http.StatusForbidden,
@@ -66,6 +67,7 @@ func isValid(token string) bool {
 func extractTokenFrom(authHeader string) string {
 	authValue := strings.Split(authHeader, " ")
 	token := authValue[len(authValue)-1]
+	log.Println("token: ", token)
 	return token
 }
 

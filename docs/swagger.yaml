@@ -1,9 +1,48 @@
 basePath: /
 definitions:
+  dtos.AddEventStaffRequest:
+    properties:
+      event_id:
+        type: integer
+      staff_emails:
+        items:
+          type: string
+        type: array
+    type: object
   dtos.AuthRequest:
     properties:
       username:
         type: string
+    type: object
+  dtos.CreateEventRequest:
+    properties:
+      calendar_id:
+        type: integer
+      contact_information:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      organizer_id:
+        type: integer
+      time:
+        type: string
+    type: object
+  dtos.CreateSeriesRequest:
+    properties:
+      description:
+        type: string
+      image_url:
+        type: string
+      name:
+        type: string
+      organizer_id:
+        type: integer
     type: object
   dtos.RaveResponse:
     type: object
@@ -80,6 +119,62 @@ paths:
       summary: Validate Otp
       tags:
       - Auth
+  /protected/event/staff:
+    post:
+      consumes:
+      - application/json
+      description: Adds Event Staff
+      parameters:
+      - description: Organizer tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AddEventStaffRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add Event Staff
+      tags:
+      - Organizer
+  /protected/series:
+    post:
+      consumes:
+      - application/json
+      description: Adds New Series
+      parameters:
+      - description: Series tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateSeriesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add New Series
+      tags:
+      - Series
   /protected/series/{id}:
     get:
       consumes:
