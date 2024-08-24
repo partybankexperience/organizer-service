@@ -44,7 +44,47 @@ definitions:
       organizer_id:
         type: integer
     type: object
+  dtos.EventResponse:
+    properties:
+      calendar:
+        type: string
+      contact_information:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      location:
+        type: string
+      message:
+        type: string
+      name:
+        type: string
+      status:
+        type: string
+      time:
+        type: string
+    type: object
   dtos.RaveResponse:
+    type: object
+  dtos.UpdateEventRequest:
+    properties:
+      contact_information:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      organizer_id:
+        type: integer
+      time:
+        type: string
     type: object
 host: localhost:8082
 info:
@@ -119,6 +159,120 @@ paths:
       summary: Validate Otp
       tags:
       - Auth
+  /event/organizer:
+    get:
+      consumes:
+      - application/json
+      description: Get all Events for organizer
+      parameters:
+      - description: organizerId
+        in: query
+        name: organizerId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get all Events for organizer
+      tags:
+      - Events
+  /protected/event:
+    post:
+      consumes:
+      - application/json
+      description: Adds Event
+      parameters:
+      - description: Event tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add Event
+      tags:
+      - Events
+  /protected/event/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Event By id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get Event By id
+      tags:
+      - Events
+    put:
+      consumes:
+      - application/json
+      description: Edits Event
+      parameters:
+      - description: Event tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateEventRequest'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Edit Event
+      tags:
+      - Events
   /protected/event/staff:
     post:
       consumes:

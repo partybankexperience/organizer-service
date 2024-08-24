@@ -83,7 +83,7 @@ type Event struct {
 	EndTime            string `json:"event_end"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	SeriesID           uint64 `json:"calendar_id"`
+	SeriesID           uint64 `json:"series_id"`
 	Status             string `json:"status"`
 	EventStaffID       uint64 `json:"event_staff_id"`
 	TicketID           uint64 `json:"ticket_id"`
