@@ -5,7 +5,6 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	authService "github.com/djfemz/rave/rave-app/security/services"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
@@ -21,27 +20,44 @@ func NewAuthController() *AuthController {
 	}
 }
 
+// AuthHandler godoc
+// @Summary      Authenticate user
+// @Description  Authenticate user
+// @Tags         Auth
+// @Accept       json
+// @Param 		 tags body dtos.AuthRequest true "Auth tags"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      500  {object}  dtos.RaveResponse
+// @Router       /auth/login [post]
 func (authController *AuthController) AuthHandler(ctx *gin.Context) {
-	log.Println("here")
 	var signInRequest request.AuthRequest
 	if err = ctx.BindJSON(&signInRequest); err != nil {
 		handleError(ctx, err)
 		return
 	}
-	log.Println("auth req---> ", signInRequest)
 	res, err := authController.AuthService.Authenticate(&signInRequest)
 	if res != nil {
-		log.Println("auth response---> ", res)
 		ctx.JSON(http.StatusOK, response.RaveResponse[response.LoginResponse]{Data: *res})
-
 	} else {
 		handleError(ctx, err)
 	}
 }
 
+// ValidateOtp godoc
+// @Summary      Validate Otp
+// @Description  Validate Otp
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        code   query   int  true  "otp code"
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      500  {object}  dtos.RaveResponse
+// @Router       /auth/validate-otp [get]
 func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
 	code := ctx.Query("code")
-	log.Println("code: ", code)
 	res, err := authController.AuthService.ValidateOtp(code)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.LoginResponse{Message: err.Error()})

@@ -1,4 +1,119 @@
+basePath: /
+definitions:
+  dtos.AuthRequest:
+    properties:
+      username:
+        type: string
+    type: object
+  dtos.RaveResponse:
+    type: object
+host: localhost:8082
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: unavailable
+    name: API Support
+    url: https://www.thepartybank.com
+  description: Partybank Organizer Service.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Partybank Organizer Service
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user
+      parameters:
+      - description: Auth tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Authenticate user
+      tags:
+      - Auth
+  /auth/validate-otp:
+    get:
+      consumes:
+      - application/json
+      description: Validate Otp
+      parameters:
+      - description: otp code
+        in: query
+        name: code
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Validate Otp
+      tags:
+      - Auth
+  /protected/series/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Series by id
+      parameters:
+      - description: series id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get Series by id
+      tags:
+      - Series
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

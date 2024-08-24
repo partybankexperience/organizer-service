@@ -11,7 +11,7 @@ import (
 )
 
 type SeriesService interface {
-	CreateCalendar(createCalendarRequest *dtos.CreateCalendarRequest) (*response.CreateCalendarResponse, error)
+	AddSeries(createCalendarRequest *dtos.CreateSeriesRequest) (*response.CreateCalendarResponse, error)
 	GetById(id uint64) (*models.Series, error)
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error)
 	GetCalendar(id uint64) (*response.CreateCalendarResponse, error)
@@ -26,9 +26,9 @@ func NewSeriesService() SeriesService {
 	return &raveSeriesService{repositories.NewSeriesRepository()}
 }
 
-func (raveCalendarService *raveSeriesService) CreateCalendar(createCalendarRequest *dtos.CreateCalendarRequest) (*response.CreateCalendarResponse, error) {
+func (raveCalendarService *raveSeriesService) AddSeries(createSeriesRequest *dtos.CreateSeriesRequest) (*response.CreateCalendarResponse, error) {
 	calendar := &models.Series{}
-	errs := model.Copy(calendar, createCalendarRequest)
+	errs := model.Copy(calendar, createSeriesRequest)
 	log.Println("calendar: ", *calendar)
 	isCopyErrorPresent := len(errs) > 0
 	if isCopyErrorPresent {

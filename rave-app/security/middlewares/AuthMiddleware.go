@@ -4,7 +4,9 @@ import (
 	handlers "github.com/djfemz/rave/rave-app/controllers"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/security"
+	"github.com/djfemz/rave/rave-app/security/controllers"
 	"github.com/djfemz/rave/rave-app/utils"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -17,7 +19,8 @@ func Routers(router *gin.Engine) {
 	organizerController := handlers.NewOrganizerController()
 	eventController := handlers.NewEventController()
 	ticketController := handlers.NewTicketController()
-	calendarController := handlers.NewCalendarController()
+	calendarController := handlers.NewSeriesController()
+
 	protected := router.Group("/protected", AuthMiddleware())
 	{
 		protected.POST("/event", eventController.CreateEvent)
@@ -29,9 +32,13 @@ func Routers(router *gin.Engine) {
 		protected.POST("/ticket", ticketController.AddTicketToEvent)
 		protected.GET("/ticket/:eventId", ticketController.GetAllTicketsForEvent)
 		protected.GET("/ticket", ticketController.GetTicketById)
-		protected.POST("/calendar", calendarController.CreateCalendar)
-		protected.GET("/calendar/:id", calendarController.GetCalendar)
+		protected.POST("/series", calendarController.CreateSeries)
+		protected.GET("/series/:id", calendarController.GetSeriesById)
 	}
+	router.Use(cors.New(configureCors()))
+	authController := controllers.NewAuthController()
+	router.POST("/auth/login", authController.AuthHandler)
+	router.GET("/auth/validate-otp", authController.ValidateOtp)
 }
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -60,4 +67,13 @@ func extractTokenFrom(authHeader string) string {
 	authValue := strings.Split(authHeader, " ")
 	token := authValue[len(authValue)-1]
 	return token
+}
+
+func configureCors() cors.Config {
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowCredentials = true
+	config.AllowMethods = []string{http.MethodOptions,
+		http.MethodPost, http.MethodOptions, http.MethodPost, http.MethodGet}
+	return config
 }

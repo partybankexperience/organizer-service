@@ -8,7 +8,7 @@ const (
 )
 
 type RaveResponse[T any] struct {
-	Data T `json:"data"`
+	Data T `json:"data" swaggerignore:"true"`
 }
 
 type CreateDiscountResponse struct {

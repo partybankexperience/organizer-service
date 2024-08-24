@@ -39,11 +39,11 @@ func (organizerService *appOrganizerService) Create(createOrganizerRequest *requ
 
 	organizer.Otp = password
 	savedOrganizer, err := organizerService.Repository.Save(organizer)
-	createCalendarRequest := &request.CreateCalendarRequest{
+	createCalendarRequest := &request.CreateSeriesRequest{
 		Name:        "Public",
 		OrganizerID: savedOrganizer.ID,
 	}
-	calendarResponse, err := calendarService.CreateCalendar(createCalendarRequest)
+	calendarResponse, err := calendarService.AddSeries(createCalendarRequest)
 	if err != nil {
 		return nil, err
 	}

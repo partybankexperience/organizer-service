@@ -108,7 +108,7 @@ type EmailNotificationRequest struct {
 	Content    string      `json:"htmlContent"`
 }
 
-type CreateCalendarRequest struct {
+type CreateSeriesRequest struct {
 	Name        string `json:"name"`
 	OrganizerID uint64 `json:"organizer_id"`
 	Description string `json:"description"`

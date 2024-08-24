@@ -13,14 +13,14 @@ var calendarService services.SeriesService
 
 func TestCreateCalendar(t *testing.T) {
 	calendarService = services.NewSeriesService()
-	createCalendarRequest := &request.CreateCalendarRequest{
+	createCalendarRequest := &request.CreateSeriesRequest{
 		Name:        "test",
 		OrganizerID: 1,
 		Description: "test desc",
 		ImageUrl:    "https://image.com",
 	}
 
-	response, err := calendarService.CreateCalendar(createCalendarRequest)
+	response, err := calendarService.AddSeries(createCalendarRequest)
 	assert.NotNil(t, response)
 	assert.NotNil(t, response.Message)
 	assert.Nil(t, err)
