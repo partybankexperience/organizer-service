@@ -21,7 +21,7 @@ func Routers(router *gin.Engine) {
 	ticketController := handlers.NewTicketController()
 	calendarController := handlers.NewSeriesController()
 
-	protected := router.Group("/protected", AuthMiddleware())
+	protected := router.Group("/api/v1", AuthMiddleware())
 	{
 		protected.POST("/event", eventController.CreateEvent)
 		protected.GET("/event/:id", eventController.GetEventById)

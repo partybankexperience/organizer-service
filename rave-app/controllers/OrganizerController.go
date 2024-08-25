@@ -28,7 +28,7 @@ func NewOrganizerController() *OrganizerController {
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/event/staff [post]
+// @Router       /api/v1/event/staff [post]
 func (orgController *OrganizerController) AddEventStaff(ctx *gin.Context) {
 	addEventStaff := &request.AddEventStaffRequest{}
 	err := ctx.BindJSON(addEventStaff)

@@ -27,7 +27,7 @@ func NewTicketController() *TicketController {
 // @Success      200  {object}  dtos.TicketResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/ticket [post]
+// @Router       /api/v1/ticket [post]
 func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	addTicketRequest := &request.CreateTicketRequest{}
 	err := ctx.BindJSON(addTicketRequest)
@@ -53,7 +53,7 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 // @Success      200  {array}  models.Ticket
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/ticket/{eventId} [get]
+// @Router       /api/v1/ticket/{eventId} [get]
 func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context) {
 	eventId, err := extractParamFromRequest("eventId", ctx)
 	if err != nil {
@@ -78,7 +78,7 @@ func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context
 // @Success      200  {object}  dtos.TicketResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/ticket [get]
+// @Router       /api/v1/ticket [get]
 func (ticketController *TicketController) GetTicketById(ctx *gin.Context) {
 	eventId, err := strconv.ParseUint(ctx.Query("ticketId"), 10, 64)
 	if err != nil {

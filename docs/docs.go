@@ -24,140 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/login": {
-            "post": {
-                "description": "Authenticate user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Authenticate user",
-                "parameters": [
-                    {
-                        "description": "Auth tags",
-                        "name": "tags",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.AuthRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/validate-otp": {
-            "get": {
-                "description": "Validate Otp",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Validate Otp",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "otp code",
-                        "name": "code",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/event/organizer": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Get all Events for organizer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Events"
-                ],
-                "summary": "Get all Events for organizer",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "organizerId",
-                        "name": "organizerId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.EventResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/protected/event": {
+        "/api/v1/event": {
             "post": {
                 "security": [
                     {
@@ -202,7 +69,50 @@ const docTemplate = `{
                 }
             }
         },
-        "/protected/event/staff": {
+        "/api/v1/event/organizer": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get all Events for organizer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get all Events for organizer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "organizerId",
+                        "name": "organizerId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.EventResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/event/staff": {
             "post": {
                 "security": [
                     {
@@ -247,7 +157,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/protected/event/{id}": {
+        "/api/v1/event/{id}": {
             "get": {
                 "security": [
                     {
@@ -340,7 +250,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/protected/series": {
+        "/api/v1/series": {
             "post": {
                 "security": [
                     {
@@ -385,7 +295,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/protected/series/{id}": {
+        "/api/v1/series/{id}": {
             "get": {
                 "security": [
                     {
@@ -409,6 +319,228 @@ const docTemplate = `{
                         "description": "series id",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ticket": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get Ticket By id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Get Ticket By id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ticketId",
+                        "name": "ticketId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.TicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Add Ticket to Event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Add Ticket to Event",
+                "parameters": [
+                    {
+                        "description": "Ticket tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CreateTicketRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.TicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ticket/{eventId}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get all Tickets for Event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Get all Tickets for Event",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "eventId",
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Ticket"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "Authenticate user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Authenticate user",
+                "parameters": [
+                    {
+                        "description": "Auth tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.AuthRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/validate-otp": {
+            "get": {
+                "description": "Validate Otp",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Validate Otp",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "otp code",
+                        "name": "code",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -504,6 +636,56 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.CreateTicketRequest": {
+            "type": "object",
+            "properties": {
+                "additional_information_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "available_discounted_tickets": {
+                    "type": "integer"
+                },
+                "discount_code": {
+                    "type": "string"
+                },
+                "discount_price": {
+                    "type": "number"
+                },
+                "discount_type": {
+                    "type": "string"
+                },
+                "event_id": {
+                    "type": "integer"
+                },
+                "is_transfer_payment_fees_to_guest": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number_in_stock": {
+                    "type": "integer"
+                },
+                "percentage": {
+                    "type": "number"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "purchase_limit": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "ticket_type": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.EventResponse": {
             "type": "object",
             "properties": {
@@ -542,6 +724,53 @@ const docTemplate = `{
         "dtos.RaveResponse": {
             "type": "object"
         },
+        "dtos.TicketResponse": {
+            "type": "object",
+            "properties": {
+                "additional_information_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "available_discounted_tickets": {
+                    "type": "integer"
+                },
+                "discount_code": {
+                    "type": "string"
+                },
+                "discount_price": {
+                    "type": "number"
+                },
+                "discount_type": {
+                    "type": "string"
+                },
+                "is_transfer_payment_fees_to_guest": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number_in_stock": {
+                    "type": "integer"
+                },
+                "percentage": {
+                    "type": "number"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "purchase_limit": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "ticket_type": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.UpdateEventRequest": {
             "type": "object",
             "properties": {
@@ -564,6 +793,59 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "time": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Ticket": {
+            "type": "object",
+            "properties": {
+                "additional_information_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "available_discounted_tickets": {
+                    "type": "integer"
+                },
+                "discount_code": {
+                    "type": "string"
+                },
+                "discount_price": {
+                    "type": "number"
+                },
+                "discount_type": {
+                    "type": "string"
+                },
+                "eventId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isTransferPaymentFeesToGuest": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number_available": {
+                    "type": "integer"
+                },
+                "percentage": {
+                    "type": "number"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "purchase_limit": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "type": {
                     "type": "string"
                 }
             }

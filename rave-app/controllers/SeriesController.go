@@ -26,7 +26,7 @@ func NewSeriesController() *SeriesController {
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/series [post]
+// @Router       /api/v1/series [post]
 func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 	createSeriesRequest := &request.CreateSeriesRequest{}
 	err := ctx.BindJSON(createSeriesRequest)
@@ -53,7 +53,7 @@ func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 // @Failure      400  {object}  dtos.RaveResponse
 // @Failure      500  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/series/{id} [get]
+// @Router       /api/v1/series/{id} [get]
 func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 	calendarService := seriesController.SeriesService
 	id, err := extractParamFromRequest("id", ctx)

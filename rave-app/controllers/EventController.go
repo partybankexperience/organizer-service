@@ -29,7 +29,7 @@ func NewEventController() *EventController {
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/event [post]
+// @Router       /api/v1/event [post]
 func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 	createEventRequest := &request.CreateEventRequest{}
 	err := ctx.BindJSON(createEventRequest)
@@ -56,7 +56,7 @@ func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/event/{id} [put]
+// @Router       /api/v1/event/{id} [put]
 func (eventController *EventController) EditEvent(ctx *gin.Context) {
 	updateEventRequest := &request.UpdateEventRequest{}
 	eventId, err := extractParamFromRequest("id", ctx)
@@ -87,7 +87,7 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/event/organizer [get]
+// @Router       /api/v1/event/organizer [get]
 func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Context) {
 	organizerId, err := strconv.ParseUint(ctx.Query("organizerId"), 10, 64)
 	if err != nil {
@@ -112,7 +112,7 @@ func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Contex
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /protected/event/{id} [get]
+// @Router       /api/v1/event/{id} [get]
 func (eventController *EventController) GetEventById(ctx *gin.Context) {
 	id, err := extractParamFromRequest("id", ctx)
 	if err != nil {

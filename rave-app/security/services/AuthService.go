@@ -49,20 +49,7 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 	}
 }
 
-func getMailTemplate(data string) (*bytes.Buffer, error) {
-	mailTemplate, err := template.ParseFiles("rave-mail-template.html")
-	if err != nil {
-		return nil, err
-	}
-	var body bytes.Buffer
-	err = mailTemplate.Execute(&body, data)
-	if err != nil {
-		return nil, err
-	}
-	return &body, nil
-}
-
-func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[string], error) {
+func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[map[string]any], error) {
 	organizerService := authenticationService.organizerService
 	log.Println("otp: ", otp)
 	org, err := organizerService.GetByOtp(otp)
@@ -74,7 +61,11 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 	if err != nil {
 		return nil, err
 	}
-	return &response.RaveResponse[string]{Data: token}, nil
+	res := map[string]any{
+		"token": token,
+		"user":  org,
+	}
+	return &response.RaveResponse[map[string]any]{Data: res}, nil
 }
 
 func addUser(authRequest *request.AuthRequest, err error, organizerService services.OrganizerService, org *models.Organizer) (*response.LoginResponse, error) {
@@ -94,4 +85,17 @@ func createAuthResponse(org *models.Organizer) *response.LoginResponse {
 		Username: org.Username,
 		Message:  "check your email for one-time-password",
 	}
+}
+
+func getMailTemplate(data string) (*bytes.Buffer, error) {
+	mailTemplate, err := template.ParseFiles("rave-mail-template.html")
+	if err != nil {
+		return nil, err
+	}
+	var body bytes.Buffer
+	err = mailTemplate.Execute(&body, data)
+	if err != nil {
+		return nil, err
+	}
+	return &body, nil
 }
