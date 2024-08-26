@@ -88,7 +88,7 @@ func createAuthResponse(org *models.Organizer) *response.LoginResponse {
 }
 
 func getMailTemplate(data string) (*bytes.Buffer, error) {
-	mailTemplate, err := template.ParseFiles("rave-mail-template.html")
+	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {
 		return nil, err
 	}

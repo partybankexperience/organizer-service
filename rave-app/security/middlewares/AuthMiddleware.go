@@ -8,6 +8,8 @@ import (
 	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"net/http"
 	"strings"
@@ -22,6 +24,7 @@ func Routers(router *gin.Engine) {
 	calendarController := handlers.NewSeriesController()
 
 	protected := router.Group("/api/v1", AuthMiddleware())
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	{
 		protected.POST("/event", eventController.CreateEvent)
 		protected.GET("/event/:id", eventController.GetEventById)
@@ -38,7 +41,7 @@ func Routers(router *gin.Engine) {
 	router.Use(cors.New(configureCors()))
 	authController := controllers.NewAuthController()
 	router.POST("/auth/login", authController.AuthHandler)
-	router.GET("/auth/validate-otp", authController.ValidateOtp)
+	router.GET("/auth/otp/validate", authController.ValidateOtp)
 }
 
 func AuthMiddleware() gin.HandlerFunc {

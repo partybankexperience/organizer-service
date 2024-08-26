@@ -29,7 +29,8 @@ func NewDiscountService() DiscountService {
 func (raveDiscountService *raveDiscountService) CreateDiscount(request *request.CreateDiscountRequest) (*response.CreateDiscountResponse, error) {
 	ticketId := request.TicketId
 	ticket, err := ticketRepository.FindById(ticketId)
-	if err != nil || ticket == nil {
+	isTicketNotExists := err != nil || ticket == nil
+	if isTicketNotExists {
 		return nil, errors.New(fmt.Sprintf("Cannot create Discount\n reason: Failed to find ticket with id: %d", ticketId))
 	}
 	discount := &models.Discount{}

@@ -5,8 +5,6 @@ import (
 	"github.com/djfemz/rave/rave-app/security/middlewares"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 )
 
@@ -36,7 +34,7 @@ func init() {
 // @externalDocs.description  OpenAPI
 func main() {
 	router := gin.Default()
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	middlewares.Routers(router)
 
 	err = router.Run(":8082")

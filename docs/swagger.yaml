@@ -16,8 +16,6 @@ definitions:
     type: object
   dtos.CreateEventRequest:
     properties:
-      calendar_id:
-        type: integer
       contact_information:
         type: string
       date:
@@ -29,6 +27,8 @@ definitions:
       name:
         type: string
       organizer_id:
+        type: integer
+      series_id:
         type: integer
       time:
         type: string
@@ -513,7 +513,7 @@ paths:
       summary: Authenticate user
       tags:
       - Auth
-  /auth/validate-otp:
+  /auth/otp/validate:
     get:
       consumes:
       - application/json

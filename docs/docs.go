@@ -522,7 +522,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/validate-otp": {
+        "/auth/otp/validate": {
             "get": {
                 "description": "Validate Otp",
                 "consumes": [
@@ -593,9 +593,6 @@ const docTemplate = `{
         "dtos.CreateEventRequest": {
             "type": "object",
             "properties": {
-                "calendar_id": {
-                    "type": "integer"
-                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -612,6 +609,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "organizer_id": {
+                    "type": "integer"
+                },
+                "series_id": {
                     "type": "integer"
                 },
                 "time": {
