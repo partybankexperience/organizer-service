@@ -883,8 +883,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "https://eerie-madel-thepartybank-2968818d.koyeb.app/",
-	BasePath:         "/",
+	Host:             "https://eerie-madel-thepartybank-2968818d.koyeb.app",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",

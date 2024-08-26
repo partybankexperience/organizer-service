@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   dtos.AddEventStaffRequest:
     properties:
@@ -199,7 +198,7 @@ definitions:
       type:
         type: string
     type: object
-host: https://eerie-madel-thepartybank-2968818d.koyeb.app/
+host: https://eerie-madel-thepartybank-2968818d.koyeb.app
 info:
   contact:
     email: unavailable

@@ -15,8 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "https://eerie-madel-thepartybank-2968818d.koyeb.app/",
-    "basePath": "/",
+    "host": "https://eerie-madel-thepartybank-2968818d.koyeb.app",
     "paths": {
         "/api/v1/event": {
             "post": {
