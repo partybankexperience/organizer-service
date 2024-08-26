@@ -8,7 +8,6 @@ import (
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
 	"gopkg.in/jeevatkm/go-model.v1"
-	"log"
 )
 
 type DiscountService interface {
@@ -38,7 +37,6 @@ func (raveDiscountService *raveDiscountService) CreateDiscount(request *request.
 	model.Copy(discount, request)
 	discount.Ticket = ticket
 	savedDiscount, err := raveDiscountService.Save(discount)
-	log.Println("saved discount: ", savedDiscount)
 	if err != nil {
 		return nil, err
 	}
