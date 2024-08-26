@@ -199,7 +199,7 @@ definitions:
       type:
         type: string
     type: object
-host: localhost:8082
+host: https://eerie-madel-thepartybank-2968818d.koyeb.app/
 info:
   contact:
     email: unavailable
