@@ -87,7 +87,7 @@ func (r *repositoryImpl[T, U]) DeleteById(id U) error {
 func connect() *gorm.DB {
 	port, err := strconv.ParseUint(os.Getenv("DATABASE_PORT"), 10, 64)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("error reading port: ", err)
 	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d TimeZone=Africa/Lagos sslmode=disable", os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_NAME"), port)
 	db, err := gorm.Open(postgres.New(postgres.Config{
