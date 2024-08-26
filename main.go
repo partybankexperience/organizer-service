@@ -27,7 +27,6 @@ func init() {
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 // @host      https://eerie-madel-thepartybank-2968818d.koyeb.app
-// @BasePath  /
 // @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization
