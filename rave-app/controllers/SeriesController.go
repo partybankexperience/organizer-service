@@ -5,15 +5,20 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 )
 
 type SeriesController struct {
 	services.SeriesService
+	*validator.Validate
 }
 
 func NewSeriesController() *SeriesController {
-	return &SeriesController{services.NewSeriesService()}
+	return &SeriesController{
+		services.NewSeriesService(),
+		validator.New(),
+	}
 }
 
 // CreateSeries godoc
@@ -30,6 +35,11 @@ func NewSeriesController() *SeriesController {
 func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 	createSeriesRequest := &request.CreateSeriesRequest{}
 	err := ctx.BindJSON(createSeriesRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	err = seriesController.Struct(createSeriesRequest)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return

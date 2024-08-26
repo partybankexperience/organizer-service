@@ -5,17 +5,21 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	"strconv"
 )
 
 type EventController struct {
 	services.EventService
+	*validator.Validate
 }
 
 func NewEventController() *EventController {
+	validator.New()
 	return &EventController{
 		services.NewEventService(),
+		validator.New(),
 	}
 }
 
@@ -33,6 +37,11 @@ func NewEventController() *EventController {
 func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 	createEventRequest := &request.CreateEventRequest{}
 	err := ctx.BindJSON(createEventRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		return
+	}
+	err = eventController.Struct(createEventRequest)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
@@ -65,6 +74,11 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 		return
 	}
 	err = ctx.BindJSON(updateEventRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	err = eventController.Struct(updateEventRequest)
 	if err != nil {
 		handleError(ctx, err)
 		return

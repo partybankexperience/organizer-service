@@ -4,17 +4,21 @@ import (
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	"strconv"
 )
 
 type TicketController struct {
+	*validator.Validate
 }
 
 var ticketService = services.NewTicketService()
 
 func NewTicketController() *TicketController {
-	return &TicketController{}
+	return &TicketController{
+		validator.New(),
+	}
 }
 
 // AddTicketToEvent godoc
@@ -31,6 +35,11 @@ func NewTicketController() *TicketController {
 func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	addTicketRequest := &request.CreateTicketRequest{}
 	err := ctx.BindJSON(addTicketRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	err = ticketController.Struct(addTicketRequest)
 	if err != nil {
 		handleError(ctx, err)
 		return

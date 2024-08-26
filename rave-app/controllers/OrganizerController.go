@@ -5,16 +5,19 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 )
 
 type OrganizerController struct {
 	organizerService services.OrganizerService
+	*validator.Validate
 }
 
 func NewOrganizerController() *OrganizerController {
 	return &OrganizerController{
 		services.NewOrganizerService(),
+		validator.New(),
 	}
 }
 
@@ -32,6 +35,11 @@ func NewOrganizerController() *OrganizerController {
 func (orgController *OrganizerController) AddEventStaff(ctx *gin.Context) {
 	addEventStaff := &request.AddEventStaffRequest{}
 	err := ctx.BindJSON(addEventStaff)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		return
+	}
+	err = orgController.Struct(addEventStaff)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
