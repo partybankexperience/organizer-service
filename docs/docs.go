@@ -570,6 +570,9 @@ const docTemplate = `{
     "definitions": {
         "dtos.AddEventStaffRequest": {
             "type": "object",
+            "required": [
+                "event_id"
+            ],
             "properties": {
                 "event_id": {
                     "type": "integer"
@@ -584,6 +587,9 @@ const docTemplate = `{
         },
         "dtos.AuthRequest": {
             "type": "object",
+            "required": [
+                "username"
+            ],
             "properties": {
                 "username": {
                     "type": "string"
@@ -592,6 +598,11 @@ const docTemplate = `{
         },
         "dtos.CreateEventRequest": {
             "type": "object",
+            "required": [
+                "name",
+                "organizer_id",
+                "series_id"
+            ],
             "properties": {
                 "contact_information": {
                     "type": "string"
@@ -621,6 +632,9 @@ const docTemplate = `{
         },
         "dtos.CreateSeriesRequest": {
             "type": "object",
+            "required": [
+                "organizer_id"
+            ],
             "properties": {
                 "description": {
                     "type": "string"
@@ -638,6 +652,9 @@ const docTemplate = `{
         },
         "dtos.CreateTicketRequest": {
             "type": "object",
+            "required": [
+                "event_id"
+            ],
             "properties": {
                 "additional_information_fields": {
                     "type": "array",
@@ -773,6 +790,9 @@ const docTemplate = `{
         },
         "dtos.UpdateEventRequest": {
             "type": "object",
+            "required": [
+                "organizer_id"
+            ],
             "properties": {
                 "contact_information": {
                     "type": "string"

@@ -7,7 +7,7 @@ type AuthRequest struct {
 }
 
 type CreateDiscountRequest struct {
-	TicketId uint64  `json:"ticket_id"`
+	TicketId uint64  `json:"ticket_id" validate:"required"`
 	Name     string  `json:"name"`
 	Code     string  `json:"code"`
 	Count    uint64  `json:"count"`
@@ -16,14 +16,14 @@ type CreateDiscountRequest struct {
 }
 
 type CreateEventRequest struct {
-	Name               string `json:"name"`
+	Name               string `json:"name" validate:"required"`
 	Location           string `json:"location"`
 	Date               string `json:"date" `
 	Time               string `json:"time"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	SeriesId           uint64 `json:"series_id"`
-	OrganizerId        uint64 `json:"organizer_id"`
+	SeriesId           uint64 `json:"series_id" validate:"required"`
+	OrganizerId        uint64 `json:"organizer_id" validate:"required"`
 }
 
 type UpdateEventRequest struct {
@@ -33,7 +33,7 @@ type UpdateEventRequest struct {
 	Time               string `json:"time"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	OrganizerId        uint64 `json:"organizer_id"`
+	OrganizerId        uint64 `json:"organizer_id" validate:"required"`
 }
 
 type CreateTicketRequest struct {
@@ -50,21 +50,21 @@ type CreateTicketRequest struct {
 	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
 	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
-	EventId                      uint64                             `json:"event_id"`
+	EventId                      uint64                             `json:"event_id" validate:"required"`
 }
 
 type CreateUserRequest struct {
-	Username string `json:"username"`
+	Username string `json:"username" validate:"required"`
 }
 
 type AddEventStaffRequest struct {
 	StaffEmails []string `json:"staff_emails"`
-	EventId     uint64   `json:"event_id"`
+	EventId     uint64   `json:"event_id" validate:"required"`
 }
 
 type CreateEventStaffRequest struct {
 	StaffEmails []string `json:"staff_emails"`
-	EventId     uint64   `json:"event_id"`
+	EventId     uint64   `json:"event_id" validate:"required"`
 }
 
 type NewTicketMessage struct {
@@ -111,7 +111,7 @@ type EmailNotificationRequest struct {
 
 type CreateSeriesRequest struct {
 	Name        string `json:"name"`
-	OrganizerID uint64 `json:"organizer_id"`
+	OrganizerID uint64 `json:"organizer_id" validate:"required"`
 	Description string `json:"description"`
 	ImageUrl    string `json:"image_url"`
 }

@@ -564,6 +564,9 @@
     "definitions": {
         "dtos.AddEventStaffRequest": {
             "type": "object",
+            "required": [
+                "event_id"
+            ],
             "properties": {
                 "event_id": {
                     "type": "integer"
@@ -578,6 +581,9 @@
         },
         "dtos.AuthRequest": {
             "type": "object",
+            "required": [
+                "username"
+            ],
             "properties": {
                 "username": {
                     "type": "string"
@@ -586,6 +592,11 @@
         },
         "dtos.CreateEventRequest": {
             "type": "object",
+            "required": [
+                "name",
+                "organizer_id",
+                "series_id"
+            ],
             "properties": {
                 "contact_information": {
                     "type": "string"
@@ -615,6 +626,9 @@
         },
         "dtos.CreateSeriesRequest": {
             "type": "object",
+            "required": [
+                "organizer_id"
+            ],
             "properties": {
                 "description": {
                     "type": "string"
@@ -632,6 +646,9 @@
         },
         "dtos.CreateTicketRequest": {
             "type": "object",
+            "required": [
+                "event_id"
+            ],
             "properties": {
                 "additional_information_fields": {
                     "type": "array",
@@ -767,6 +784,9 @@
         },
         "dtos.UpdateEventRequest": {
             "type": "object",
+            "required": [
+                "organizer_id"
+            ],
             "properties": {
                 "contact_information": {
                     "type": "string"
