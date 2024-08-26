@@ -92,7 +92,7 @@ type Event struct {
 }
 
 type Series struct {
-	ID   uint64 `id:"CalendarId" gorm:"primaryKey" json:"id"`
+	ID   uint64 `id:"seriesId" gorm:"primaryKey" json:"id"`
 	Name string `json:"name"`
 	gorm.Model
 	Events      []*Event `json:"events"`

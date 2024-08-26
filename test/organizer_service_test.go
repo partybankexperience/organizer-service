@@ -48,7 +48,7 @@ func TestOrganizerCanAddEventStaff(t *testing.T) {
 //		StartTime:               "12:00:00",
 //		ContactInformation: "09023456789",
 //		Description:        "this is a test event",
-//		CalendarId:        1,
+//		seriesId:        1,
 //	}
 //	response, err := organizerService.AddEvent(addEventRequest)
 //	assert.NotNil(t, response)

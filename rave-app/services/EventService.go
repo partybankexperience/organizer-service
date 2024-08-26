@@ -34,7 +34,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	var calendar *models.Series
 	var err error
 	calendarService := NewSeriesService()
-	if createEventRequest.CalendarId == 0 {
+	if createEventRequest.SeriesId == 0 {
 		calendar, err = calendarService.GetPublicCalendarFor(createEventRequest.OrganizerId)
 		if err != nil {
 			log.Println("error finding public calendar: ", err)
@@ -42,7 +42,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 		}
 		log.Println("found public calendar: ", calendar)
 	} else {
-		calendar, err = calendarService.GetById(createEventRequest.CalendarId)
+		calendar, err = calendarService.GetById(createEventRequest.SeriesId)
 		if err != nil {
 			return nil, err
 		}
@@ -135,7 +135,7 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 		Location:           createEventRequest.Location,
 		EventDate:          createEventRequest.Date,
 		StartTime:          createEventRequest.Time,
-		SeriesID:           createEventRequest.CalendarId,
+		SeriesID:           createEventRequest.SeriesId,
 		ContactInformation: createEventRequest.ContactInformation,
 		Description:        createEventRequest.Description,
 		Status:             models.NOT_STARTED,

@@ -21,7 +21,7 @@ type CreateEventRequest struct {
 	Time               string `json:"time"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
-	CalendarId         uint64 `json:"calendar_id"`
+	SeriesId           uint64 `json:"series_id"`
 	OrganizerId        uint64 `json:"organizer_id"`
 }
 

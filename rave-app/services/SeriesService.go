@@ -16,6 +16,7 @@ type SeriesService interface {
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error)
 	GetCalendar(id uint64) (*response.CreateCalendarResponse, error)
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
+	GetSeriesFor(organizerId uint64) (*response.CalendarResponse, error)
 }
 
 type raveSeriesService struct {
@@ -88,4 +89,9 @@ func (raveSeriesService *raveSeriesService) GetPublicCalendarFor(id uint64) (*mo
 		return nil, err
 	}
 	return calendar, nil
+}
+
+// TODO: implement me
+func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64) (*response.CalendarResponse, error) {
+	return nil, nil
 }

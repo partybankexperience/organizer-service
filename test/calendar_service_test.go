@@ -38,10 +38,10 @@ func TestGetCalendar(t *testing.T) {
 
 func TestAddEventToCalendar(t *testing.T) {
 	req := &request.CreateEventRequest{
-		CalendarId: 1,
-		Name:       "rave",
-		Location:   "Abuja",
-		Time:       time.Now().String(),
+		seriesId: 1,
+		Name:     "rave",
+		Location: "Abuja",
+		Time:     time.Now().String(),
 	}
 	eventService = services.NewEventService()
 	event, err := eventService.Create(req)
