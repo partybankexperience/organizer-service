@@ -106,3 +106,13 @@ type EventStaff struct {
 	*User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"user,omitempty"`
 	EventID uint64
 }
+
+type Discount struct {
+	ID uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	*Ticket
+	Name  string
+	Code  string
+	Count uint64
+	Value string
+	Price float64
+}

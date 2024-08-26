@@ -12,7 +12,12 @@ type RaveResponse[T any] struct {
 }
 
 type CreateDiscountResponse struct {
-	Id uint64 `json:"id"`
+	Id    uint64 `json:"id"`
+	Name  string
+	Code  string
+	Count uint64
+	Value string
+	Price float64
 }
 
 type LoginResponse struct {

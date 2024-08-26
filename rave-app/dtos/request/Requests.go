@@ -7,11 +7,12 @@ type AuthRequest struct {
 }
 
 type CreateDiscountRequest struct {
-	Name  string
-	Code  string
-	Count uint64
-	Value string
-	Price float64
+	TicketId uint64  `json:"ticket_id"`
+	Name     string  `json:"name"`
+	Code     string  `json:"code"`
+	Count    uint64  `json:"count"`
+	Value    string  `json:"value"`
+	Price    float64 `json:"price"`
 }
 
 type CreateEventRequest struct {
