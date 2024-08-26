@@ -38,7 +38,7 @@ func TestGetCalendar(t *testing.T) {
 
 func TestAddEventToCalendar(t *testing.T) {
 	req := &request.CreateEventRequest{
-		seriesId: 1,
+		SeriesId: 1,
 		Name:     "rave",
 		Location: "Abuja",
 		Time:     time.Now().String(),
