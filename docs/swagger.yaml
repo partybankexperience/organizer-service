@@ -198,7 +198,7 @@ definitions:
       type:
         type: string
     type: object
-host: https://eerie-madel-thepartybank-2968818d.koyeb.app
+host: eerie-madel-thepartybank-2968818d.koyeb.app
 info:
   contact:
     email: unavailable
@@ -555,6 +555,8 @@ paths:
       summary: Validate Otp
       tags:
       - Auth
+schemes:
+- https
 securityDefinitions:
   Bearer:
     in: header

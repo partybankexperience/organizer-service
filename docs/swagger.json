@@ -1,4 +1,7 @@
 {
+    "schemes": [
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
         "description": "Partybank Organizer Service.",
@@ -15,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "https://eerie-madel-thepartybank-2968818d.koyeb.app",
+    "host": "eerie-madel-thepartybank-2968818d.koyeb.app",
     "paths": {
         "/api/v1/event": {
             "post": {
