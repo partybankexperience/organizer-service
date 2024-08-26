@@ -37,7 +37,7 @@ func main() {
 
 	middlewares.Routers(router)
 
-	err = router.Run(":8082")
+	err = router.Run(":8000")
 	if err != nil {
 		log.Println("Error starting server: ", err)
 	}
