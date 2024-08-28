@@ -2,6 +2,7 @@ package dtos
 
 import (
 	"github.com/djfemz/rave/rave-app/models"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -37,6 +38,13 @@ type UserResponse struct {
 }
 
 type SeriesResponse struct {
+	ID   uint64 `id:"seriesId" gorm:"primaryKey" json:"id"`
+	Name string `json:"name"`
+	gorm.Model
+	Events      []*EventResponse `json:"events"`
+	OrganizerID uint64           `json:"organizer_id"`
+	ImageUrl    string           `json:"image_url"`
+	Description string           `json:"description"`
 }
 
 type LoginResponse struct {

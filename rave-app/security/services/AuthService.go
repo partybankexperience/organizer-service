@@ -105,3 +105,19 @@ func getMailTemplate(data string) (*bytes.Buffer, error) {
 	}
 	return &body, nil
 }
+
+func mapOrgToOrgResponse(organizer *models.Organizer) (orgResponse *response.OrganizationResponse) {
+	//var series = make([]*response.SeriesResponse, 0)
+	orgResponse.UserResponse.ID = organizer.ID
+	orgResponse.UserResponse.Username = organizer.Username
+	orgResponse.CreatedAt = organizer.CreatedAt
+	orgResponse.Name = organizer.Name
+	orgResponse.Role = organizer.Name
+
+	//for _, orgSeries := range organizer.Series {
+	//	createdSeries:=&response.SeriesResponse{
+	//
+	//	}
+	//}
+	return nil
+}
