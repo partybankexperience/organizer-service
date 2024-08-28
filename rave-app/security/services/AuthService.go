@@ -2,12 +2,14 @@ package services
 
 import (
 	"bytes"
+	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/otp"
 	"github.com/djfemz/rave/rave-app/services"
+	"gopkg.in/jeevatkm/go-model.v1"
 	"html/template"
 	"log"
 )
@@ -51,11 +53,15 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 
 func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[map[string]any], error) {
 	organizerService := authenticationService.organizerService
-	log.Println("otp: ", otp)
+	orgResponse := &response.OrganizationResponse{}
+
 	org, err := organizerService.GetByOtp(otp)
-	log.Println("org: ", org)
 	if err != nil {
 		return nil, err
+	}
+	errs := model.Copy(orgResponse, org)
+	if len(errs) > 0 {
+		return nil, errors.New("error building organizer response")
 	}
 	token, err := security.GenerateAccessTokenFor(org)
 	if err != nil {
@@ -63,7 +69,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 	}
 	res := map[string]any{
 		"token": token,
-		"user":  org,
+		"user":  orgResponse,
 	}
 	return &response.RaveResponse[map[string]any]{Data: res}, nil
 }

@@ -1,6 +1,9 @@
 package dtos
 
-import "github.com/djfemz/rave/rave-app/models"
+import (
+	"github.com/djfemz/rave/rave-app/models"
+	"time"
+)
 
 const (
 	MAIL_SENDING_SUCCESS_MESSAGE = "mail sent successfully"
@@ -18,6 +21,22 @@ type CreateDiscountResponse struct {
 	Count uint64
 	Value string
 	Price float64
+}
+
+type OrganizationResponse struct {
+	*UserResponse
+	Name      string            `json:"name"`
+	CreatedAt time.Time         `json:"created_at"`
+	Series    []*SeriesResponse `json:"series"`
+}
+
+type UserResponse struct {
+	ID       uint64 `id:"ID" json:"id"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
+}
+
+type SeriesResponse struct {
 }
 
 type LoginResponse struct {
