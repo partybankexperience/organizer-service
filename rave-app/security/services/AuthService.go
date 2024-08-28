@@ -56,6 +56,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 		return nil, err
 	}
 	orgResponse := mapOrgToOrgResponse(org)
+	log.Println("orgResponse: ", orgResponse)
 	token, err := security.GenerateAccessTokenFor(org)
 	if err != nil {
 		return nil, err
