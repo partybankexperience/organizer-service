@@ -2,14 +2,12 @@ package services
 
 import (
 	"bytes"
-	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/otp"
 	"github.com/djfemz/rave/rave-app/services"
-	"gopkg.in/jeevatkm/go-model.v1"
 	"html/template"
 	"log"
 )
@@ -53,16 +51,11 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 
 func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[map[string]any], error) {
 	organizerService := authenticationService.organizerService
-	orgResponse := &response.OrganizationResponse{}
-
 	org, err := organizerService.GetByOtp(otp)
 	if err != nil {
 		return nil, err
 	}
-	errs := model.Copy(orgResponse, org)
-	if len(errs) > 0 {
-		return nil, errors.New("error building organizer response")
-	}
+	orgResponse := mapOrgToOrgResponse(org)
 	token, err := security.GenerateAccessTokenFor(org)
 	if err != nil {
 		return nil, err
@@ -107,17 +100,22 @@ func getMailTemplate(data string) (*bytes.Buffer, error) {
 }
 
 func mapOrgToOrgResponse(organizer *models.Organizer) (orgResponse *response.OrganizationResponse) {
-	//var series = make([]*response.SeriesResponse, 0)
+	var series = make([]*response.SeriesResponse, 0)
 	orgResponse.UserResponse.ID = organizer.ID
 	orgResponse.UserResponse.Username = organizer.Username
 	orgResponse.CreatedAt = organizer.CreatedAt
 	orgResponse.Name = organizer.Name
 	orgResponse.Role = organizer.Name
 
-	//for _, orgSeries := range organizer.Series {
-	//	createdSeries:=&response.SeriesResponse{
-	//
-	//	}
-	//}
-	return nil
+	for _, orgSeries := range organizer.Series {
+		createdSeries := &response.SeriesResponse{
+			ID:          orgSeries.ID,
+			Name:        orgSeries.Name,
+			ImageUrl:    orgSeries.ImageUrl,
+			Description: orgSeries.Description,
+		}
+		series = append(series, createdSeries)
+	}
+	orgResponse.Series = series
+	return orgResponse
 }
