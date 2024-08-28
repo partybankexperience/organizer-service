@@ -57,8 +57,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	if err != nil {
 		return nil, err
 	}
-	res := &response.EventResponse{}
-	model.Copy(res, savedEvent)
+	res := mapEventToEventResponse(savedEvent)
 	return res, nil
 }
 
@@ -111,7 +110,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64) ([]
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 	calendarService := NewSeriesService()
-	calendar, err := calendarService.GetById(event.SeriesID)
+	_, err := calendarService.GetById(event.SeriesID)
 	if err != nil {
 		return nil
 	}
@@ -125,7 +124,6 @@ func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
-		Calendar:           calendar.Name,
 	}
 }
 

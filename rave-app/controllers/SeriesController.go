@@ -77,6 +77,6 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, &response.RaveResponse[*response.CreateCalendarResponse]{Data: calendar})
+	ctx.JSON(http.StatusOK, &response.RaveResponse[*response.SeriesResponse]{Data: calendar})
 
 }

@@ -2,7 +2,6 @@ package dtos
 
 import (
 	"github.com/djfemz/rave/rave-app/models"
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -16,35 +15,34 @@ type RaveResponse[T any] struct {
 }
 
 type CreateDiscountResponse struct {
-	Id    uint64 `json:"id"`
-	Name  string
-	Code  string
-	Count uint64
-	Value string
-	Price float64
+	Id    uint64  `json:"id"`
+	Name  string  `json:"name,omitempty"`
+	Code  string  `json:"code,omitempty"`
+	Count uint64  `json:"count,omitempty"`
+	Value string  `json:"value,omitempty"`
+	Price float64 `json:"price,omitempty"`
 }
 
 type OrganizationResponse struct {
 	*UserResponse
-	Name      string            `json:"name"`
-	CreatedAt time.Time         `json:"created_at"`
-	Series    []*SeriesResponse `json:"series"`
+	Name      string            `json:"name,omitempty"`
+	CreatedAt time.Time         `json:"created_at,omitempty"`
+	Series    []*SeriesResponse `json:"series,omitempty"`
 }
 
 type UserResponse struct {
 	ID       uint64 `id:"ID" json:"id"`
-	Username string `json:"username"`
-	Role     string `json:"role"`
+	Username string `json:"username,omitempty"`
+	Role     string `json:"role,omitempty"`
 }
 
 type SeriesResponse struct {
-	ID   uint64 `id:"seriesId" gorm:"primaryKey" json:"id"`
-	Name string `json:"name"`
-	gorm.Model
-	Events      []*EventResponse `json:"events"`
-	OrganizerID uint64           `json:"organizer_id"`
-	ImageUrl    string           `json:"image_url"`
-	Description string           `json:"description"`
+	ID          uint64           `id:"seriesId" gorm:"primaryKey" json:"id,omitempty"`
+	Name        string           `json:"name,omitempty"`
+	Events      []*EventResponse `json:"events,omitempty"`
+	OrganizerID uint64           `json:"organizer_id,omitempty"`
+	ImageUrl    string           `json:"image_url,omitempty"`
+	Description string           `json:"description,omitempty"`
 }
 
 type LoginResponse struct {
@@ -58,45 +56,44 @@ type CreateOrganizerResponse struct {
 }
 
 type CreateCalendarResponse struct {
-	Message     string           `json:"message"`
-	ID          uint64           `json:"id"`
-	Name        string           `json:"name"`
-	Events      []*EventResponse `json:"events"`
-	OrganizerID uint64           `json:"organizer_id"`
+	Message     string           `json:"message,omitempty"`
+	ID          uint64           `json:"id,omitempty"`
+	Name        string           `json:"name,omitempty"`
+	Events      []*EventResponse `json:"events,omitempty"`
+	OrganizerID uint64           `json:"organizer_id,omitempty"`
 }
 
 type CalendarResponse struct {
-	ID          uint64           `json:"id"`
-	Name        string           `json:"name"`
-	Events      []*EventResponse `json:"events"`
-	OrganizerID uint64           `json:"organizer_id"`
+	ID          uint64           `json:"id,omitempty"`
+	Name        string           `json:"name,omitempty"`
+	Events      []*EventResponse `json:"events,omitempty"`
+	OrganizerID uint64           `json:"organizer_id,omitempty"`
 }
 
 type EventResponse struct {
 	ID                 uint64 `json:"id"`
 	Message            string `json:"message,omitempty"`
-	Name               string `json:"name"`
-	Calendar           string `json:"calendar"`
-	Location           string `json:"location"`
-	Date               string `json:"date"`
-	Time               string `json:"time"`
-	ContactInformation string `json:"contact_information"`
-	Description        string `json:"description"`
-	Status             string `json:"status"`
+	Name               string `json:"name,omitempty"`
+	Location           string `json:"location,omitempty"`
+	Date               string `json:"date,omitempty"`
+	Time               string `json:"time,omitempty"`
+	ContactInformation string `json:"contact_information,omitempty"`
+	Description        string `json:"description,omitempty"`
+	Status             string `json:"status,omitempty"`
 }
 
 type TicketResponse struct {
-	Type                         string                             `json:"ticket_type"`
-	Name                         string                             `json:"name"`
-	Stock                        uint64                             `json:"stock"`
-	NumberAvailable              uint64                             `json:"number_in_stock"`
-	Price                        float64                            `json:"price"`
-	PurchaseLimit                uint64                             `json:"purchase_limit"`
-	DiscountType                 string                             `json:"discount_type"`
-	Percentage                   float64                            `json:"percentage"`
-	DiscountPrice                float64                            `json:"discount_price"`
-	DiscountCode                 string                             `json:"discount_code"`
-	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
-	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
+	Type                         string                             `json:"ticket_type,omitempty"`
+	Name                         string                             `json:"name,omitempty"`
+	Stock                        uint64                             `json:"stock,omitempty"`
+	NumberAvailable              uint64                             `json:"number_in_stock,omitempty"`
+	Price                        float64                            `json:"price,omitempty"`
+	PurchaseLimit                uint64                             `json:"purchase_limit,omitempty"`
+	DiscountType                 string                             `json:"discount_type,omitempty"`
+	Percentage                   float64                            `json:"percentage,omitempty"`
+	DiscountPrice                float64                            `json:"discount_price,omitempty"`
+	DiscountCode                 string                             `json:"discount_code,omitempty"`
+	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets,omitempty"`
+	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest,omitempty"`
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
 }

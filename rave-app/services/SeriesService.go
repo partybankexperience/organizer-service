@@ -14,7 +14,7 @@ type SeriesService interface {
 	AddSeries(createCalendarRequest *dtos.CreateSeriesRequest) (*response.CreateCalendarResponse, error)
 	GetById(id uint64) (*models.Series, error)
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error)
-	GetCalendar(id uint64) (*response.CreateCalendarResponse, error)
+	GetCalendar(id uint64) (*response.SeriesResponse, error)
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
 	GetSeriesFor(organizerId uint64) (*response.CalendarResponse, error)
 }
@@ -55,17 +55,36 @@ func (raveSeriesService *raveSeriesService) GetById(id uint64) (*models.Series, 
 	return calendar, nil
 }
 
-func (raveSeriesService *raveSeriesService) GetCalendar(id uint64) (*response.CreateCalendarResponse, error) {
-	resp := &response.CreateCalendarResponse{}
+func (raveSeriesService *raveSeriesService) GetCalendar(id uint64) (*response.SeriesResponse, error) {
 	calendar, err := raveSeriesService.GetById(id)
 	if err != nil {
 		return nil, err
 	}
-	errs := model.Copy(resp, calendar)
-	if len(errs) > 0 {
-		return nil, err
-	}
+	resp := mapSeriesToSeriesResponse(calendar)
 	return resp, nil
+}
+
+func mapSeriesToSeriesResponse(series *models.Series) *response.SeriesResponse {
+	events := make([]*response.EventResponse, 0)
+	for _, event := range series.Events {
+		seriesEvent := &response.EventResponse{
+			ID:          event.ID,
+			Name:        event.Name,
+			Date:        event.EventDate,
+			Time:        event.StartTime,
+			Description: event.Description,
+			Status:      event.Status,
+		}
+		events = append(events, seriesEvent)
+	}
+	res := &response.SeriesResponse{}
+	res.Name = series.Name
+	res.ImageUrl = series.ImageUrl
+	res.Description = series.Description
+	res.ID = series.ID
+	res.OrganizerID = series.OrganizerID
+	res.Events = events
+	return res
 }
 
 func (raveSeriesService *raveSeriesService) AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error) {

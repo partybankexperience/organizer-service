@@ -6,6 +6,7 @@ import (
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -140,7 +141,9 @@ func (eventController *EventController) GetEventById(ctx *gin.Context) {
 }
 
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
-	return strconv.ParseUint(ctx.Param(paramName), 10, 64)
+	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)
+	log.Println("id: ", id)
+	return id, err
 }
 
 func handleError(ctx *gin.Context, err error) {
