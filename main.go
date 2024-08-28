@@ -4,17 +4,16 @@ import (
 	_ "github.com/djfemz/rave/docs"
 	"github.com/djfemz/rave/rave-app/security/middlewares"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"log"
 )
 
 var err error
 
 func init() {
-	err = godotenv.Load()
-	if err != nil {
-		log.Println("Error loading configuration: ", err)
-	}
+	//err = godotenv.Load()
+	//if err != nil {
+	//	log.Println("Error loading configuration: ", err)
+	//}
 }
 
 // @title           Partybank Organizer Service
