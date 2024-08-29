@@ -4,6 +4,7 @@ import (
 	"errors"
 	dtos "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"github.com/djfemz/rave/rave-app/mappers"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
 	"gopkg.in/jeevatkm/go-model.v1"
@@ -16,7 +17,7 @@ type SeriesService interface {
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error)
 	GetCalendar(id uint64) (*response.SeriesResponse, error)
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
-	GetSeriesFor(organizerId uint64) (*response.CalendarResponse, error)
+	GetSeriesFor(organizerId uint64) ([]*response.SeriesResponse, error)
 }
 
 type raveSeriesService struct {
@@ -97,20 +98,25 @@ func (raveSeriesService *raveSeriesService) AddEventToCalendar(id uint64, event 
 	log.Println("calendar: ", calendar.Events)
 	calendar, err = raveSeriesService.SeriesRepository.Save(calendar)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("error Adding event to series")
 	}
 	return calendar, nil
 }
 
 func (raveSeriesService *raveSeriesService) GetPublicCalendarFor(id uint64) (*models.Series, error) {
-	calendar, err := raveSeriesService.SeriesRepository.FindPublicCalendarFor(id)
+	calendar, err := raveSeriesService.SeriesRepository.FindPublicSeriesFor(id)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("error finding requested resource")
 	}
 	return calendar, nil
 }
 
-// TODO: implement me
-func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64) (*response.CalendarResponse, error) {
-	return nil, nil
+func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64) ([]*response.SeriesResponse, error) {
+	userSeries, err := raveSeriesService.FindAllSeriesFor(organizerId)
+	if err != nil {
+		log.Println("Error: ", err)
+		return nil, errors.New("error finding requested resource")
+	}
+	seriesResponses := mappers.MapSeriesCollectionToSeriesResponseCollection(userSeries)
+	return seriesResponses, nil
 }

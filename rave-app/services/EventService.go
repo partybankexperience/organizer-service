@@ -16,7 +16,7 @@ type EventService interface {
 	GetEventBy(id uint64) (*models.Event, error)
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
 	UpdateEvent(event *models.Event) error
-	GetAllEventsFor(organizerId uint64) ([]*models.Event, error)
+	GetAllEventsFor(organizerId uint64) ([]*response.EventResponse, error)
 }
 
 var eventRepository = repositories.NewEventRepository()
@@ -100,17 +100,22 @@ func (raveEventService *raveEventService) UpdateEvent(event *models.Event) error
 	return err
 }
 
-func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64) ([]*models.Event, error) {
+func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64) ([]*response.EventResponse, error) {
 	events, err := eventRepository.FindAllByCalendar(calendarId)
+	eventsResponses := make([]*response.EventResponse, 0)
 	if err != nil {
 		return nil, err
 	}
-	return events, nil
+	for _, event := range events {
+		eventResponse := mapEventToEventResponse(event)
+		eventsResponses = append(eventsResponses, eventResponse)
+	}
+	return eventsResponses, nil
 }
 
 func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 	calendarService := NewSeriesService()
-	_, err := calendarService.GetById(event.SeriesID)
+	series, err := calendarService.GetById(event.SeriesID)
 	if err != nil {
 		return nil
 	}
@@ -124,6 +129,7 @@ func mapEventToEventResponse(event *models.Event) *response.EventResponse {
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
+		SeriesID:           series.ID,
 	}
 }
 

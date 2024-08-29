@@ -4,7 +4,8 @@ import "github.com/djfemz/rave/rave-app/models"
 
 type SeriesRepository interface {
 	Repository[models.Series, uint64]
-	FindPublicCalendarFor(organizer uint64) (*models.Series, error)
+	FindPublicSeriesFor(organizer uint64) (*models.Series, error)
+	FindAllSeriesFor(organizer uint64) ([]*models.Series, error)
 }
 
 type raveCalendarRepository struct {
@@ -15,11 +16,20 @@ func NewSeriesRepository() SeriesRepository {
 	return &raveCalendarRepository{}
 }
 
-func (raveCalendarRepository raveCalendarRepository) FindPublicCalendarFor(organizer uint64) (*models.Series, error) {
-	foundCalendar := &models.Series{}
-	err := db.Where(&models.Series{Name: "Public", OrganizerID: organizer}).Find(foundCalendar).Error
+func (raveCalendarRepository *raveCalendarRepository) FindPublicSeriesFor(organizer uint64) (*models.Series, error) {
+	foundSeries := &models.Series{}
+	err := db.Where(&models.Series{Name: "Public", OrganizerID: organizer}).Find(foundSeries).Error
 	if err != nil {
 		return nil, err
 	}
-	return foundCalendar, nil
+	return foundSeries, nil
+}
+
+func (raveCalendarRepository *raveCalendarRepository) FindAllSeriesFor(organizer uint64) ([]*models.Series, error) {
+	userSeries := make([]*models.Series, 0)
+	err := db.Where(&models.Series{OrganizerID: organizer}).Find(&userSeries).Error
+	if err != nil {
+		return nil, err
+	}
+	return userSeries, nil
 }

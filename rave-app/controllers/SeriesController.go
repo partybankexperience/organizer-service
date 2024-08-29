@@ -6,6 +6,7 @@ import (
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"log"
 	"net/http"
 )
 
@@ -65,13 +66,13 @@ func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 // @Security Bearer
 // @Router       /api/v1/series/{id} [get]
 func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
-	calendarService := seriesController.SeriesService
+	seriesService := seriesController.SeriesService
 	id, err := extractParamFromRequest("id", ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
 	}
-	calendar, err := calendarService.GetCalendar(id)
+	calendar, err := seriesService.GetCalendar(id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
@@ -79,4 +80,30 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, &response.RaveResponse[*response.SeriesResponse]{Data: calendar})
 
+}
+
+// GetSeriesForOrganizer godoc
+// @Summary      Get Series by organizerId
+// @Description  Get Series by organizerId
+// @Tags         Series
+// @Accept       json
+// @Produce      json
+// @Param        id   path   int  true  "organizer id"
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/series/organizer/{organizerId} [get]
+func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context) {
+	organizerId, err := extractParamFromRequest("organizerId", ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	orgSeries, err := seriesController.SeriesService.GetSeriesFor(organizerId)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	log.Println("series for org: ", orgSeries)
+	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.SeriesResponse]{Data: orgSeries})
 }

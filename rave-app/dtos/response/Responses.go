@@ -72,6 +72,7 @@ type CalendarResponse struct {
 
 type EventResponse struct {
 	ID                 uint64 `json:"id"`
+	SeriesID           uint64 `json:"series_id,omitempty"`
 	Message            string `json:"message,omitempty"`
 	Name               string `json:"name,omitempty"`
 	Location           string `json:"location,omitempty"`

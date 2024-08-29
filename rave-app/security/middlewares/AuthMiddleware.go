@@ -37,6 +37,7 @@ func Routers(router *gin.Engine) {
 		protected.GET("/ticket", ticketController.GetTicketById)
 		protected.POST("/series", calendarController.CreateSeries)
 		protected.GET("/series/:id", calendarController.GetSeriesById)
+		protected.GET("/series/organizer/:organizerId", calendarController.GetSeriesForOrganizer)
 	}
 	router.Use(cors.New(configureCors()))
 	authController := controllers.NewAuthController()
