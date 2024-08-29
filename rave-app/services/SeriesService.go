@@ -17,7 +17,7 @@ type SeriesService interface {
 	AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error)
 	GetCalendar(id uint64) (*response.SeriesResponse, error)
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
-	GetSeriesFor(organizerId uint64) ([]*response.SeriesResponse, error)
+	GetSeriesFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.SeriesResponse, error)
 }
 
 type raveSeriesService struct {
@@ -111,8 +111,8 @@ func (raveSeriesService *raveSeriesService) GetPublicCalendarFor(id uint64) (*mo
 	return calendar, nil
 }
 
-func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64) ([]*response.SeriesResponse, error) {
-	userSeries, err := raveSeriesService.FindAllSeriesFor(organizerId)
+func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.SeriesResponse, error) {
+	userSeries, err := raveSeriesService.FindAllSeriesFor(organizerId, pageNumber, pageSize)
 	if err != nil {
 		log.Println("Error: ", err)
 		return nil, errors.New("error finding requested resource")

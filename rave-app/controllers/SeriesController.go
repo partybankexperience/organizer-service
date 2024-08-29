@@ -4,6 +4,7 @@ import (
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
+	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"log"
@@ -89,6 +90,8 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path   int  true  "organizer id"
+// @Param        page   query   int  true  "page"
+// @Param        size   query   int  true  "size"
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
@@ -99,7 +102,19 @@ func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
 	}
-	orgSeries, err := seriesController.SeriesService.GetSeriesFor(organizerId)
+	page := ctx.Query("page")
+	size := ctx.Query("size")
+	pageNumber, err := utils.ConvertQueryStringToInt(page)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	pageSize, err := utils.ConvertQueryStringToInt(size)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	orgSeries, err := seriesController.SeriesService.GetSeriesFor(organizerId, pageNumber, pageSize)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
