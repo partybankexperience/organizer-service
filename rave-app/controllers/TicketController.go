@@ -2,7 +2,9 @@ package controllers
 
 import (
 	request "github.com/djfemz/rave/rave-app/dtos/request"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
+	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
@@ -58,6 +60,8 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 // @Tags         Tickets
 // @Accept       json
 // @Param        eventId path int  true  "eventId"
+// @Param        page   query   int  true  "page"
+// @Param        size   query   int  true  "size"
 // @Produce      json
 // @Success      200  {array}  models.Ticket
 // @Failure      400  {object}  dtos.RaveResponse
@@ -69,7 +73,19 @@ func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context
 		handleError(ctx, err)
 		return
 	}
-	tickets, err := ticketService.GetAllTicketsFor(eventId)
+	page := ctx.Query("page")
+	size := ctx.Query("size")
+	pageNumber, err := utils.ConvertQueryStringToInt(page)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	pageSize, err := utils.ConvertQueryStringToInt(size)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	tickets, err := ticketService.GetAllTicketsFor(eventId, pageNumber, pageSize)
 	if err != nil {
 		handleError(ctx, err)
 		return

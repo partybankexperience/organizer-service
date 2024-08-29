@@ -99,6 +99,8 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 // @Tags         Events
 // @Accept       json
 // @Param        organizerId  query   int  true  "organizerId"
+// @Param        page   query   int  true  "page"
+// @Param        size   query   int  true  "size"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse

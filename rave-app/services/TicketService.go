@@ -17,7 +17,7 @@ import (
 type TicketService interface {
 	CreateTicketFor(request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error)
 	GetTicketById(id uint64) (*response.TicketResponse, error)
-	GetAllTicketsFor(eventId uint64) ([]*models.Ticket, error)
+	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
 }
 
 var ticketRepository = repositories.NewTicketRepository()
@@ -69,8 +69,8 @@ func (raveTicketService *raveTicketService) GetTicketById(id uint64) (*response.
 	return res, nil
 }
 
-func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64) ([]*models.Ticket, error) {
-	tickets, err := ticketRepository.FindAllByEventId(eventId)
+func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error) {
+	tickets, err := ticketRepository.FindAllByEventId(eventId, pageNumber, pageSize)
 	if err != nil {
 		return nil, err
 	}
