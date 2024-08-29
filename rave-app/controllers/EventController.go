@@ -4,6 +4,7 @@ import (
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
+	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"log"
@@ -109,7 +110,19 @@ func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Contex
 		handleError(ctx, err)
 		return
 	}
-	events, err := eventController.EventService.GetAllEventsFor(organizerId)
+	page := ctx.Query("page")
+	size := ctx.Query("size")
+	pageNumber, err := utils.ConvertQueryStringToInt(page)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	pageSize, err := utils.ConvertQueryStringToInt(size)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	events, err := eventController.EventService.GetAllEventsFor(organizerId, pageNumber, pageSize)
 	if err != nil {
 		handleError(ctx, err)
 		return

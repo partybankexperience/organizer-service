@@ -16,7 +16,7 @@ type EventService interface {
 	GetEventBy(id uint64) (*models.Event, error)
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
 	UpdateEvent(event *models.Event) error
-	GetAllEventsFor(organizerId uint64) ([]*response.EventResponse, error)
+	GetAllEventsFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.EventResponse, error)
 }
 
 var eventRepository = repositories.NewEventRepository()
@@ -100,8 +100,8 @@ func (raveEventService *raveEventService) UpdateEvent(event *models.Event) error
 	return err
 }
 
-func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64) ([]*response.EventResponse, error) {
-	events, err := eventRepository.FindAllByCalendar(calendarId)
+func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pageNumber, pageSize int) ([]*response.EventResponse, error) {
+	events, err := eventRepository.FindAllByCalendar(calendarId, pageNumber, pageSize)
 	eventsResponses := make([]*response.EventResponse, 0)
 	if err != nil {
 		return nil, err
