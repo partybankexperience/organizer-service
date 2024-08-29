@@ -1,6 +1,9 @@
 package repositories
 
-import "github.com/djfemz/rave/rave-app/models"
+import (
+	"github.com/djfemz/rave/rave-app/models"
+	"gorm.io/gorm"
+)
 
 type TicketRepository interface {
 	crudRepository[models.Ticket, uint64]
@@ -11,7 +14,7 @@ type raveTicketRepository struct {
 	*repositoryImpl[models.Ticket, uint64]
 }
 
-func NewTicketRepository() TicketRepository {
+func NewTicketRepository(db *gorm.DB) TicketRepository {
 	return &raveTicketRepository{&repositoryImpl[models.Ticket, uint64]{}}
 }
 
@@ -26,7 +29,7 @@ func (raveTicketRepository *raveTicketRepository) FindAllByEventId(id uint64, pa
 	}
 	offset := (pageNumber - 1) * pageSize
 	var tickets []*models.Ticket
-	db := connect()
+	db := Connect()
 	err := db.Where(&models.Ticket{EventId: id}).Offset(offset).Limit(pageSize).Find(&tickets).Error
 	if err != nil {
 		return nil, err

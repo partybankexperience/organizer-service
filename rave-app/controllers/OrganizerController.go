@@ -14,10 +14,10 @@ type OrganizerController struct {
 	*validator.Validate
 }
 
-func NewOrganizerController() *OrganizerController {
+func NewOrganizerController(organizerService services.OrganizerService, objectValidator *validator.Validate) *OrganizerController {
 	return &OrganizerController{
-		services.NewOrganizerService(),
-		validator.New(),
+		organizerService,
+		objectValidator,
 	}
 }
 

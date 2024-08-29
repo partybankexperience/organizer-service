@@ -17,10 +17,11 @@ type AuthService struct {
 	mailService      services.MailService
 }
 
-func NewAuthService() *AuthService {
+func NewAuthService(organizerService services.OrganizerService,
+	mailService services.MailService) *AuthService {
 	return &AuthService{
-		organizerService: services.NewOrganizerService(),
-		mailService:      services.NewMailService(),
+		organizerService: organizerService,
+		mailService:      mailService,
 	}
 }
 

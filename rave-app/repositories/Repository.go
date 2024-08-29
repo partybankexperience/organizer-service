@@ -32,7 +32,7 @@ type repositoryImpl[T, U any] struct {
 var db *gorm.DB
 
 func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
-	db = connect()
+	db = Connect()
 	err := db.Save(t).Error
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
-	db = connect()
+	db = Connect()
 	var t = new(T)
 	err := db.Preload(clause.Associations).First(t, id).Error
 	if err != nil {
@@ -56,7 +56,7 @@ func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) FindAll() ([]*T, error) {
-	db = connect()
+	db = Connect()
 	var organizations []*T
 	err := db.Find(&organizations).Error
 	if err != nil {
@@ -66,7 +66,7 @@ func (r *repositoryImpl[T, U]) FindAll() ([]*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) ([]*T, error) {
-	db = connect()
+	db = Connect()
 	page := getPage[T](db, pageable)
 	if page == nil {
 		return nil, errors.New("failed to find page")
@@ -75,7 +75,7 @@ func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) ([]*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) DeleteById(id U) error {
-	db = connect()
+	db = Connect()
 	err := db.Delete(new(T), id).Error
 
 	if err != nil {
@@ -84,7 +84,7 @@ func (r *repositoryImpl[T, U]) DeleteById(id U) error {
 	return nil
 }
 
-func connect() *gorm.DB {
+func Connect() *gorm.DB {
 	port, err := strconv.ParseUint(os.Getenv("DATABASE_PORT"), 10, 64)
 	if err != nil {
 		log.Fatal("error reading port: ", err)

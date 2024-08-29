@@ -5,6 +5,7 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/controllers"
+	"github.com/djfemz/rave/rave-app/security/services"
 	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -17,11 +18,9 @@ import (
 
 var routesAuthorities map[string][]string
 
-func Routers(router *gin.Engine) {
-	organizerController := handlers.NewOrganizerController()
-	eventController := handlers.NewEventController()
-	ticketController := handlers.NewTicketController()
-	calendarController := handlers.NewSeriesController()
+func Routers(router *gin.Engine, organizerController *handlers.OrganizerController,
+	eventController *handlers.EventController, seriesController *handlers.SeriesController,
+	ticketController *handlers.TicketController, authService *services.AuthService) {
 
 	protected := router.Group("/api/v1", AuthMiddleware())
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -35,12 +34,12 @@ func Routers(router *gin.Engine) {
 		protected.POST("/ticket", ticketController.AddTicketToEvent)
 		protected.GET("/ticket/:eventId", ticketController.GetAllTicketsForEvent)
 		protected.GET("/ticket", ticketController.GetTicketById)
-		protected.POST("/series", calendarController.CreateSeries)
-		protected.GET("/series/:id", calendarController.GetSeriesById)
-		protected.GET("/series/organizer/:organizerId", calendarController.GetSeriesForOrganizer)
+		protected.POST("/series", seriesController.CreateSeries)
+		protected.GET("/series/:id", seriesController.GetSeriesById)
+		protected.GET("/series/organizer/:organizerId", seriesController.GetSeriesForOrganizer)
 	}
 	router.Use(cors.New(configureCors()))
-	authController := controllers.NewAuthController()
+	authController := controllers.NewAuthController(authService)
 	router.POST("/auth/login", authController.AuthHandler)
 	router.GET("/auth/otp/validate", authController.ValidateOtp)
 }

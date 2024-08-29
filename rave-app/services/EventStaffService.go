@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
@@ -12,26 +13,25 @@ type EventStaffService interface {
 }
 
 type raveEventStaffService struct {
-	EventService
+	repositories.EventStaffRepository
+	repositories.EventRepository
 }
 
-var eventStaffRepository = repositories.NewEventStaffRepository()
-
-func NewEventStaffService() EventStaffService {
+func NewEventStaffService(eventStaffRepository repositories.EventStaffRepository, eventRepository repositories.EventRepository) EventStaffService {
 	return &raveEventStaffService{
-		NewEventService(),
+		eventStaffRepository,
+		eventRepository,
 	}
 }
 
 func (eventStaffService *raveEventStaffService) Create(createUserRequest *request.CreateEventStaffRequest) (*response.RaveResponse[string], error) {
-	eventService := NewEventService()
-	event, err := eventService.GetEventBy(createUserRequest.EventId)
+	event, err := eventStaffService.EventRepository.FindById(createUserRequest.EventId)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("event not found")
 	}
 	mailService := NewMailService()
 	for _, email := range createUserRequest.StaffEmails {
-		savedStaff, err := updateEvent(createUserRequest, email, event, eventStaffRepository)
+		savedStaff, err := updateEvent(email, event, eventStaffService.EventStaffRepository)
 		if err != nil {
 			return nil, err
 		} else if savedStaff != nil {
@@ -48,10 +48,9 @@ func (eventStaffService *raveEventStaffService) Create(createUserRequest *reques
 	return &response.RaveResponse[string]{Data: "event staffs invited"}, nil
 }
 
-func updateEvent(createUserRequest *request.CreateEventStaffRequest, email string, event *models.Event, repo repositories.EventStaffRepository) (*models.EventStaff, error) {
+func updateEvent(email string, event *models.Event, repo repositories.EventStaffRepository) (*models.EventStaff, error) {
 	eventStaff := mapMailToEventStaff(email)
 	eventStaff.EventID = event.ID
-	eventStaff.EventID = createUserRequest.EventId
 	event.EventStaff = append(event.EventStaff, eventStaff)
 	savedStaff, err := repo.Save(eventStaff)
 	return savedStaff, err

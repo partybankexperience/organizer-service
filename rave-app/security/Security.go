@@ -3,6 +3,7 @@ package security
 import (
 	"errors"
 	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/repositories"
 	"github.com/djfemz/rave/rave-app/services"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
@@ -31,7 +32,9 @@ func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
 }
 
 func ExtractUserFrom(token string) (*models.Organizer, error) {
-	var organizerService = services.NewOrganizerService()
+	db := repositories.Connect()
+	organizerRepository := repositories.NewOrganizerRepository(db)
+	var organizerService = services.NewOrganizerService(organizerRepository, nil, nil)
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SIGNING_KEY")), nil
 	}, jwt.WithIssuer(APP_NAME), jwt.WithExpirationRequired())

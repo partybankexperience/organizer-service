@@ -24,8 +24,8 @@ type raveSeriesService struct {
 	repositories.SeriesRepository
 }
 
-func NewSeriesService() SeriesService {
-	return &raveSeriesService{repositories.NewSeriesRepository()}
+func NewSeriesService(seriesRepository repositories.SeriesRepository) SeriesService {
+	return &raveSeriesService{seriesRepository}
 }
 
 func (raveSeriesService *raveSeriesService) AddSeries(createSeriesRequest *dtos.CreateSeriesRequest) (*response.CreateCalendarResponse, error) {

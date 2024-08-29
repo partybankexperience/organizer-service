@@ -16,10 +16,10 @@ type SeriesController struct {
 	*validator.Validate
 }
 
-func NewSeriesController() *SeriesController {
+func NewSeriesController(seriesService services.SeriesService, objectValidator *validator.Validate) *SeriesController {
 	return &SeriesController{
-		services.NewSeriesService(),
-		validator.New(),
+		seriesService,
+		objectValidator,
 	}
 }
 

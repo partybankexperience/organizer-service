@@ -19,16 +19,16 @@ type raveDiscountService struct {
 	TicketService
 }
 
-func NewDiscountService() DiscountService {
+func NewDiscountService(discountRepository repositories.DiscountRepository, ticketService TicketService) DiscountService {
 	return &raveDiscountService{
-		repositories.NewDiscountRepository(),
-		NewTicketService(),
+		discountRepository,
+		ticketService,
 	}
 }
 
 func (raveDiscountService *raveDiscountService) CreateDiscount(request *request.CreateDiscountRequest) (*response.CreateDiscountResponse, error) {
 	ticketId := request.TicketId
-	ticket, err := ticketRepository.FindById(ticketId)
+	ticket, err := raveDiscountService.TicketService.GetTicketById(ticketId)
 	isTicketNotExists := err != nil || ticket == nil
 	if isTicketNotExists {
 		return nil, errors.New(fmt.Sprintf("Cannot create Discount\n reason: Failed to find ticket with id: %d", ticketId))

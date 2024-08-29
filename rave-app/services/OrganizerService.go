@@ -20,14 +20,16 @@ type OrganizerService interface {
 }
 
 type appOrganizerService struct {
-	Repository        repositories.OrganizerRepository
+	repository        repositories.OrganizerRepository
 	eventStaffService EventStaffService
+	seriesService     SeriesService
 }
 
-func NewOrganizerService() OrganizerService {
+func NewOrganizerService(organizerRepository repositories.OrganizerRepository, eventStaffService EventStaffService, seriesService SeriesService) OrganizerService {
 	return &appOrganizerService{
-		Repository:        repositories.NewOrganizerRepository(),
-		eventStaffService: NewEventStaffService(),
+		repository:        organizerRepository,
+		eventStaffService: eventStaffService,
+		seriesService:     seriesService,
 	}
 }
 
@@ -35,25 +37,24 @@ func (organizerService *appOrganizerService) Create(createOrganizerRequest *requ
 	organizer := mapCreateOrganizerRequestTo(createOrganizerRequest)
 	password := otp.GenerateOtp()
 	mailService := NewMailService()
-	calendarService := NewSeriesService()
 
 	organizer.Otp = password
-	savedOrganizer, err := organizerService.Repository.Save(organizer)
+	savedOrganizer, err := organizerService.repository.Save(organizer)
 	createCalendarRequest := &request.CreateSeriesRequest{
 		Name:        "Public",
 		OrganizerID: savedOrganizer.ID,
 	}
-	calendarResponse, err := calendarService.AddSeries(createCalendarRequest)
+	calendarResponse, err := organizerService.seriesService.AddSeries(createCalendarRequest)
 	if err != nil {
 		return nil, err
 	}
-	calendar, err := calendarService.GetById(calendarResponse.ID)
+	calendar, err := organizerService.seriesService.GetById(calendarResponse.ID)
 
 	if err != nil {
 		return nil, err
 	}
 	savedOrganizer.Series = append(savedOrganizer.Series, calendar)
-	savedOrganizer, err = organizerService.Repository.Save(savedOrganizer)
+	savedOrganizer, err = organizerService.repository.Save(savedOrganizer)
 
 	go func() {
 		mailService.Send(request.NewEmailNotificationRequest(CreateNewOrganizerEmail(password.Code), organizer.Username))
@@ -68,7 +69,7 @@ func (organizerService *appOrganizerService) Create(createOrganizerRequest *requ
 }
 
 func (organizerService *appOrganizerService) GetByUsername(username string) (*models.Organizer, error) {
-	organizer, err := organizerService.Repository.FindByUsername(username)
+	organizer, err := organizerService.repository.FindByUsername(username)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +77,7 @@ func (organizerService *appOrganizerService) GetByUsername(username string) (*mo
 }
 
 func (organizerService *appOrganizerService) UpdateOtpFor(id uint64, otp *otp.OneTimePassword) (*models.Organizer, error) {
-	organizerRepository := organizerService.Repository
+	organizerRepository := organizerService.repository
 	organizer, err := organizerRepository.FindById(id)
 	if organizer != nil {
 		organizer.Otp = otp
@@ -91,7 +92,7 @@ func (organizerService *appOrganizerService) UpdateOtpFor(id uint64, otp *otp.On
 }
 
 func (organizerService *appOrganizerService) GetById(id uint64) (*models.Organizer, error) {
-	organizationRepository := organizerService.Repository
+	organizationRepository := organizerService.repository
 	org, err := organizationRepository.FindById(id)
 	if org == nil {
 		return nil, err
@@ -108,7 +109,7 @@ func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *requ
 }
 
 func (organizerService *appOrganizerService) GetByOtp(otp string) (*models.Organizer, error) {
-	organizerRepository := organizerService.Repository
+	organizerRepository := organizerService.repository
 	log.Println("repo:", organizerRepository)
 	return organizerRepository.FindByOtp(otp)
 }

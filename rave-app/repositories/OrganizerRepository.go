@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/djfemz/rave/rave-app/models"
 	otp2 "github.com/djfemz/rave/rave-app/security/otp"
+	"gorm.io/gorm"
 	"log"
 )
 
@@ -16,7 +17,7 @@ type organizerRepositoryImpl struct {
 	repositoryImpl[models.Organizer, uint64]
 }
 
-func NewOrganizerRepository() OrganizerRepository {
+func NewOrganizerRepository(db *gorm.DB) OrganizerRepository {
 	var organizerRepository OrganizerRepository = &organizerRepositoryImpl{
 		repositoryImpl[models.Organizer, uint64]{},
 	}
@@ -24,7 +25,7 @@ func NewOrganizerRepository() OrganizerRepository {
 }
 
 func (organizerRepository *organizerRepositoryImpl) FindByUsername(username string) (*models.Organizer, error) {
-	db = connect()
+	db = Connect()
 	var organization = new(models.Organizer)
 	err := db.Where("username=?", username).First(&organization).Error
 	return organization, err
@@ -32,7 +33,7 @@ func (organizerRepository *organizerRepositoryImpl) FindByUsername(username stri
 
 func (organizerRepository *organizerRepositoryImpl) FindByOtp(otp string) (*models.Organizer, error) {
 	var organizer models.Organizer
-	db = connect()
+	db = Connect()
 	err := db.Where(&models.Organizer{Otp: &otp2.OneTimePassword{Code: otp}}).Find(&organizer).Error
 	if err != nil {
 		log.Println("err: ", err)

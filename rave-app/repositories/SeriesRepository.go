@@ -1,6 +1,9 @@
 package repositories
 
-import "github.com/djfemz/rave/rave-app/models"
+import (
+	"github.com/djfemz/rave/rave-app/models"
+	"gorm.io/gorm"
+)
 
 type SeriesRepository interface {
 	Repository[models.Series, uint64]
@@ -12,7 +15,7 @@ type raveCalendarRepository struct {
 	repositoryImpl[models.Series, uint64]
 }
 
-func NewSeriesRepository() SeriesRepository {
+func NewSeriesRepository(db *gorm.DB) SeriesRepository {
 	return &raveCalendarRepository{}
 }
 

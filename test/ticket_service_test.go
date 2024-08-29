@@ -24,7 +24,7 @@ func TestAddTicket(t *testing.T) {
 }
 
 func TestGetTicketById(t *testing.T) {
-	ticket, err := ticketService.GetTicketById(2)
+	ticket, err := ticketService.GetById(2)
 	assert.Nil(t, err)
 	assert.NotNil(t, ticket)
 }

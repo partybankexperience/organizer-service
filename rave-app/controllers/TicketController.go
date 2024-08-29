@@ -12,14 +12,14 @@ import (
 )
 
 type TicketController struct {
+	services.TicketService
 	*validator.Validate
 }
 
-var ticketService = services.NewTicketService()
-
-func NewTicketController() *TicketController {
+func NewTicketController(ticketService services.TicketService, objectValidator *validator.Validate) *TicketController {
 	return &TicketController{
-		validator.New(),
+		ticketService,
+		objectValidator,
 	}
 }
 
@@ -46,12 +46,12 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	response, err := ticketService.CreateTicketFor(addTicketRequest)
+	ticketResponse, err := ticketController.CreateTicketFor(addTicketRequest)
 	if err != nil {
 		handleError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusCreated, response)
+	ctx.JSON(http.StatusCreated, ticketResponse)
 }
 
 // GetAllTicketsForEvent godoc
@@ -85,7 +85,7 @@ func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
 	}
-	tickets, err := ticketService.GetAllTicketsFor(eventId, pageNumber, pageSize)
+	tickets, err := ticketController.GetAllTicketsFor(eventId, pageNumber, pageSize)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -110,7 +110,7 @@ func (ticketController *TicketController) GetTicketById(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	ticket, err := ticketService.GetTicketById(eventId)
+	ticket, err := ticketController.GetById(eventId)
 	if err != nil {
 		handleError(ctx, err)
 		return

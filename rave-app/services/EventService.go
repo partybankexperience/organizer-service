@@ -19,64 +19,68 @@ type EventService interface {
 	GetAllEventsFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.EventResponse, error)
 }
 
-var eventRepository = repositories.NewEventRepository()
-
 type raveEventService struct {
+	repositories.EventRepository
 	OrganizerService
+	SeriesService
 }
 
-func NewEventService() EventService {
-	return &raveEventService{}
+func NewEventService(eventRepository repositories.EventRepository, organizerService OrganizerService, seriesService SeriesService) EventService {
+	return &raveEventService{
+		eventRepository,
+		organizerService,
+		seriesService,
+	}
 }
 
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.EventResponse, error) {
 	event := mapCreateEventRequestToEvent(createEventRequest)
 	var calendar *models.Series
 	var err error
-	calendarService := NewSeriesService()
+
 	if createEventRequest.SeriesId == 0 {
-		calendar, err = calendarService.GetPublicCalendarFor(createEventRequest.OrganizerId)
+		calendar, err = raveEventService.GetPublicCalendarFor(createEventRequest.OrganizerId)
 		if err != nil {
 			log.Println("error finding public calendar: ", err)
 			return nil, err
 		}
 		log.Println("found public calendar: ", calendar)
 	} else {
-		calendar, err = calendarService.GetById(createEventRequest.SeriesId)
+		calendar, err = raveEventService.SeriesService.GetById(createEventRequest.SeriesId)
 		if err != nil {
 			return nil, err
 		}
 	}
 	event.SeriesID = calendar.ID
-	savedEvent, err := eventRepository.Save(event)
+	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)
 		return nil, err
 	}
-	_, err = calendarService.AddEventToCalendar(calendar.ID, savedEvent)
+	_, err = raveEventService.AddEventToCalendar(calendar.ID, savedEvent)
 	if err != nil {
 		return nil, err
 	}
-	res := mapEventToEventResponse(savedEvent)
+	res := mapEventToEventResponse(savedEvent, raveEventService.SeriesService)
 	return res, nil
 }
 
 func (raveEventService *raveEventService) GetById(id uint64) (*response.EventResponse, error) {
-	foundEvent, err := eventRepository.FindById(id)
+	foundEvent, err := raveEventService.FindById(id)
 	if err != nil {
 		return nil, err
 	}
-	return mapEventToEventResponse(foundEvent), nil
+	return mapEventToEventResponse(foundEvent, raveEventService.SeriesService), nil
 }
 
 func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, error) {
-	return eventRepository.FindById(id)
+	return raveEventService.FindById(id)
 }
 
 func (raveEventService *raveEventService) UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error) {
 	updateEventResponse := &response.EventResponse{}
 
-	foundEvent, err := eventRepository.FindById(id)
+	foundEvent, err := raveEventService.FindById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +88,7 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	if len(copyErrors) != 0 {
 		return nil, errors.New("could not update event")
 	}
-	savedEvent, err := eventRepository.Save(foundEvent)
+	savedEvent, err := raveEventService.Save(foundEvent)
 	if err != nil {
 		return nil, err
 	}
@@ -96,26 +100,25 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 }
 
 func (raveEventService *raveEventService) UpdateEvent(event *models.Event) error {
-	_, err := eventRepository.Save(event)
+	_, err := raveEventService.Save(event)
 	return err
 }
 
 func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pageNumber, pageSize int) ([]*response.EventResponse, error) {
-	events, err := eventRepository.FindAllByCalendar(calendarId, pageNumber, pageSize)
+	events, err := raveEventService.FindAllByCalendar(calendarId, pageNumber, pageSize)
 	eventsResponses := make([]*response.EventResponse, 0)
 	if err != nil {
 		return nil, err
 	}
 	for _, event := range events {
-		eventResponse := mapEventToEventResponse(event)
+		eventResponse := mapEventToEventResponse(event, raveEventService.SeriesService)
 		eventsResponses = append(eventsResponses, eventResponse)
 	}
 	return eventsResponses, nil
 }
 
-func mapEventToEventResponse(event *models.Event) *response.EventResponse {
-	calendarService := NewSeriesService()
-	series, err := calendarService.GetById(event.SeriesID)
+func mapEventToEventResponse(event *models.Event, seriesService SeriesService) *response.EventResponse {
+	series, err := seriesService.GetById(event.SeriesID)
 	if err != nil {
 		return nil
 	}

@@ -17,11 +17,11 @@ type EventController struct {
 	*validator.Validate
 }
 
-func NewEventController() *EventController {
+func NewEventController(eventService services.EventService, objectValidator *validator.Validate) *EventController {
 	validator.New()
 	return &EventController{
-		services.NewEventService(),
-		validator.New(),
+		eventService,
+		objectValidator,
 	}
 }
 
