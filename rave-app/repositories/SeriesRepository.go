@@ -16,12 +16,16 @@ type raveCalendarRepository struct {
 }
 
 func NewSeriesRepository(db *gorm.DB) SeriesRepository {
-	return &raveCalendarRepository{}
+	return &raveCalendarRepository{
+		repositoryImpl[models.Series, uint64]{
+			db,
+		},
+	}
 }
 
 func (raveCalendarRepository *raveCalendarRepository) FindPublicSeriesFor(organizer uint64) (*models.Series, error) {
 	foundSeries := &models.Series{}
-	err := db.Where(&models.Series{Name: "Public", OrganizerID: organizer}).Find(foundSeries).Error
+	err := raveCalendarRepository.Db.Where(&models.Series{Name: "Public", OrganizerID: organizer}).Find(foundSeries).Error
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +43,7 @@ func (raveCalendarRepository *raveCalendarRepository) FindAllSeriesFor(organizer
 	}
 	offset := (pageNumber - 1) * pageSize
 	userSeries := make([]*models.Series, 0)
-	err := db.Where(&models.Series{OrganizerID: organizer}).Offset(offset).Limit(pageSize).Find(&userSeries).Error
+	err := raveCalendarRepository.Db.Where(&models.Series{OrganizerID: organizer}).Offset(offset).Limit(pageSize).Find(&userSeries).Error
 	if err != nil {
 		return nil, err
 	}

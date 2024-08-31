@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "rave.onrender.com",
+    "host": "localhost:8000",
     "paths": {
         "/api/v1/event": {
             "post": {

@@ -198,7 +198,7 @@ definitions:
       type:
         type: string
     type: object
-host: rave.onrender.com
+host: localhost:8000
 info:
   contact:
     email: unavailable

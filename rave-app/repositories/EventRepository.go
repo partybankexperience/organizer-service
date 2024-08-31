@@ -16,7 +16,9 @@ type raveEventRepository struct {
 
 func NewEventRepository(db *gorm.DB) EventRepository {
 	return &raveEventRepository{
-		&repositoryImpl[models.Event, uint64]{},
+		&repositoryImpl[models.Event, uint64]{
+			db,
+		},
 	}
 }
 
@@ -31,8 +33,7 @@ func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uin
 	}
 	offset := (pageNumber - 1) * pageSize
 	var events []*models.Event
-	db := Connect()
-	err := db.Where(&models.Event{SeriesID: calendarId}).Offset(offset).Limit(pageSize).Find(&events).Error
+	err := raveEventRepository.Db.Where(&models.Event{SeriesID: calendarId}).Offset(offset).Limit(pageSize).Find(&events).Error
 	if err != nil {
 		return nil, err
 	}

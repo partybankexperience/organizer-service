@@ -87,6 +87,11 @@ type Event struct {
 	Status             string `json:"status"`
 	EventStaffID       uint64 `json:"event_staff_id"`
 	TicketID           uint64 `json:"ticket_id"`
+	EventTheme         string `json:"event_theme"`
+	MapUrl             string `json:"map_url"`
+	MapEmbeddedUrl     string `json:"map_embedded_url"`
+	AttendeeTerm       string `json:"attendee_term"`
+	Venue              string `json:"venue"`
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
 }

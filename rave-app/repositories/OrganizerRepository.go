@@ -19,22 +19,24 @@ type organizerRepositoryImpl struct {
 
 func NewOrganizerRepository(db *gorm.DB) OrganizerRepository {
 	var organizerRepository OrganizerRepository = &organizerRepositoryImpl{
-		repositoryImpl[models.Organizer, uint64]{},
+		repositoryImpl[models.Organizer, uint64]{
+			db,
+		},
 	}
 	return organizerRepository
 }
 
 func (organizerRepository *organizerRepositoryImpl) FindByUsername(username string) (*models.Organizer, error) {
-	db = Connect()
+
 	var organization = new(models.Organizer)
-	err := db.Where("username=?", username).First(&organization).Error
+	err := organizerRepository.Db.Where("username=?", username).First(&organization).Error
 	return organization, err
 }
 
 func (organizerRepository *organizerRepositoryImpl) FindByOtp(otp string) (*models.Organizer, error) {
 	var organizer models.Organizer
-	db = Connect()
-	err := db.Where(&models.Organizer{Otp: &otp2.OneTimePassword{Code: otp}}).Find(&organizer).Error
+
+	err := organizerRepository.Db.Where(&models.Organizer{Otp: &otp2.OneTimePassword{Code: otp}}).Find(&organizer).Error
 	if err != nil {
 		log.Println("err: ", err)
 		return nil, err

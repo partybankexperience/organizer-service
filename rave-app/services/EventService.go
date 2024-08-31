@@ -133,6 +133,11 @@ func mapEventToEventResponse(event *models.Event, seriesService SeriesService) *
 		Description:        event.Description,
 		Status:             event.Status,
 		SeriesID:           series.ID,
+		Venue:              event.Venue,
+		MapUrl:             event.MapUrl,
+		MapEmbeddedUrl:     event.MapEmbeddedUrl,
+		AttendeeTerm:       event.AttendeeTerm,
+		EventTheme:         event.EventTheme,
 	}
 }
 
@@ -146,5 +151,10 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 		ContactInformation: createEventRequest.ContactInformation,
 		Description:        createEventRequest.Description,
 		Status:             models.NOT_STARTED,
+		MapUrl:             createEventRequest.MapUrl,
+		MapEmbeddedUrl:     createEventRequest.MapEmbeddedUrl,
+		EventTheme:         createEventRequest.EventTheme,
+		AttendeeTerm:       createEventRequest.AttendeeTerm,
+		Venue:              createEventRequest.Venue,
 	}
 }

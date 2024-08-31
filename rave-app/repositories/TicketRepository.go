@@ -15,7 +15,9 @@ type raveTicketRepository struct {
 }
 
 func NewTicketRepository(db *gorm.DB) TicketRepository {
-	return &raveTicketRepository{&repositoryImpl[models.Ticket, uint64]{}}
+	return &raveTicketRepository{&repositoryImpl[models.Ticket, uint64]{
+		db,
+	}}
 }
 
 func (raveTicketRepository *raveTicketRepository) FindAllByEventId(id uint64, pageNumber, pageSize int) ([]*models.Ticket, error) {
@@ -29,8 +31,8 @@ func (raveTicketRepository *raveTicketRepository) FindAllByEventId(id uint64, pa
 	}
 	offset := (pageNumber - 1) * pageSize
 	var tickets []*models.Ticket
-	db := Connect()
-	err := db.Where(&models.Ticket{EventId: id}).Offset(offset).Limit(pageSize).Find(&tickets).Error
+
+	err := raveTicketRepository.Db.Where(&models.Ticket{EventId: id}).Offset(offset).Limit(pageSize).Find(&tickets).Error
 	if err != nil {
 		return nil, err
 	}

@@ -18,14 +18,23 @@ type CreateDiscountRequest struct {
 type CreateEventRequest struct {
 	Name               string `json:"name" validate:"required"`
 	Location           string `json:"location"`
-	Date               string `json:"date" `
-	Time               string `json:"time"`
+	Date               string `json:"date" validate:"required"`
+	Time               string `json:"time" validate:"required"`
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
 	SeriesId           uint64 `json:"series_id" validate:"required"`
 	OrganizerId        uint64 `json:"organizer_id" validate:"required"`
+	EventTheme         string `json:"event_theme"`
+	MapUrl             string `json:"map_url"`
+	MapEmbeddedUrl     string `json:"map_embedded_url"`
+	AttendeeTerm       string `json:"attendee_term"`
+	Venue              string `json:"venue" validate:"required"`
 }
 
+type Location struct {
+	State   string
+	Country string
+}
 type UpdateEventRequest struct {
 	Name               string `json:"name"`
 	Location           string `json:"location"`
@@ -34,6 +43,11 @@ type UpdateEventRequest struct {
 	ContactInformation string `json:"contact_information"`
 	Description        string `json:"description"`
 	OrganizerId        uint64 `json:"organizer_id" validate:"required"`
+	EventTheme         string `json:"event_theme"`
+	MapUrl             string `json:"map_url"`
+	MapEmbeddedUrl     string `json:"map_embedded_url"`
+	AttendeeTerm       string `json:"attendee_term"`
+	Venue              string `json:"venue" validate:"required"`
 }
 
 type CreateTicketRequest struct {

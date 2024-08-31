@@ -27,18 +27,16 @@ type crudRepository[T, U any] interface {
 }
 
 type repositoryImpl[T, U any] struct {
+	Db *gorm.DB
 }
 
-var db *gorm.DB
-
 func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
-	db = Connect()
-	err := db.Save(t).Error
+	err := r.Db.Save(t).Error
 	if err != nil {
 		return nil, err
 	}
 	var id, _ = GetId(*t)
-	err = db.First(t, id).Error
+	err = r.Db.First(t, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -46,9 +44,8 @@ func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
-	db = Connect()
 	var t = new(T)
-	err := db.Preload(clause.Associations).First(t, id).Error
+	err := r.Db.Preload(clause.Associations).First(t, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -56,9 +53,8 @@ func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) FindAll() ([]*T, error) {
-	db = Connect()
 	var organizations []*T
-	err := db.Find(&organizations).Error
+	err := r.Db.Find(&organizations).Error
 	if err != nil {
 		return nil, err
 	}
@@ -66,8 +62,7 @@ func (r *repositoryImpl[T, U]) FindAll() ([]*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) ([]*T, error) {
-	db = Connect()
-	page := getPage[T](db, pageable)
+	page := getPage[T](r.Db, pageable)
 	if page == nil {
 		return nil, errors.New("failed to find page")
 	}
@@ -75,8 +70,7 @@ func (r *repositoryImpl[T, U]) FindAllBy(pageable Pageable) ([]*T, error) {
 }
 
 func (r *repositoryImpl[T, U]) DeleteById(id U) error {
-	db = Connect()
-	err := db.Delete(new(T), id).Error
+	err := r.Db.Delete(new(T), id).Error
 
 	if err != nil {
 		return err
@@ -96,7 +90,9 @@ func Connect() *gorm.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = addEntities(models.Entities, db)
+
+	err = db.AutoMigrate(&models.Organizer{}, &models.Event{}, &models.EventStaff{},
+		&models.Ticket{}, &models.Series{})
 	if err != nil {
 		log.Fatal("error migrating: ", err)
 	}

@@ -15,7 +15,7 @@ type RaveResponse[T any] struct {
 }
 
 type CreateDiscountResponse struct {
-	Id    uint64  `json:"id"`
+	Id    uint64  `json:"id,omitempty"`
 	Name  string  `json:"name,omitempty"`
 	Code  string  `json:"code,omitempty"`
 	Count uint64  `json:"count,omitempty"`
@@ -81,6 +81,11 @@ type EventResponse struct {
 	ContactInformation string `json:"contact_information,omitempty"`
 	Description        string `json:"description,omitempty"`
 	Status             string `json:"status,omitempty"`
+	EventTheme         string `json:"event_theme,omitempty"`
+	MapUrl             string `json:"map_url,omitempty"`
+	MapEmbeddedUrl     string `json:"map_embedded_url,omitempty"`
+	AttendeeTerm       string `json:"attendee_term,omitempty"`
+	Venue              string `json:"venue,omitempty"`
 }
 
 type TicketResponse struct {

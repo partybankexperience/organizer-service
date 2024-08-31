@@ -15,6 +15,8 @@ type raveEventStaffRepository struct {
 
 func NewEventStaffRepository(db *gorm.DB) EventStaffRepository {
 	return &raveEventStaffRepository{
-		&repositoryImpl[models.EventStaff, uint64]{},
+		&repositoryImpl[models.EventStaff, uint64]{
+			db,
+		},
 	}
 }
