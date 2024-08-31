@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "eerie-madel-thepartybank-2968818d.koyeb.app",
+    "host": "https://rave.onrender.com",
     "paths": {
         "/api/v1/event": {
             "post": {

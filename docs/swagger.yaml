@@ -198,7 +198,7 @@ definitions:
       type:
         type: string
     type: object
-host: eerie-madel-thepartybank-2968818d.koyeb.app
+host: https://rave.onrender.com
 info:
   contact:
     email: unavailable
