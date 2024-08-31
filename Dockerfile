@@ -1,5 +1,5 @@
 # Specifies a parent image
-FROM golang:1.19.2-bullseye
+FROM golang:1.23-bullseye
  
 # Creates an rave-app directory to hold your rave-app’s source code
 WORKDIR /rave
