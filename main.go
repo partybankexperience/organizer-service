@@ -84,6 +84,7 @@ func configureAppComponents() {
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService)
 	eventService = services.NewEventService(eventRepository, organizerService, seriesService)
 	ticketService = services.NewTicketService(ticketRepository, eventService)
+	authService = services2.NewAuthService(organizerService, services.NewMailService())
 	objectValidator = validator.New()
 
 	organizerController = handlers.NewOrganizerController(organizerService, objectValidator)
