@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8000",
+    "host": "rave.onrender.com",
     "paths": {
         "/api/v1/event": {
             "post": {
@@ -680,11 +680,17 @@
         "dtos.CreateEventRequest": {
             "type": "object",
             "required": [
+                "date",
                 "name",
                 "organizer_id",
-                "series_id"
+                "series_id",
+                "time",
+                "venue"
             ],
             "properties": {
+                "attendee_term": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -694,7 +700,16 @@
                 "description": {
                     "type": "string"
                 },
+                "event_theme": {
+                    "type": "string"
+                },
                 "location": {
+                    "type": "string"
+                },
+                "map_embedded_url": {
+                    "type": "string"
+                },
+                "map_url": {
                     "type": "string"
                 },
                 "name": {
@@ -707,6 +722,9 @@
                     "type": "integer"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "venue": {
                     "type": "string"
                 }
             }
@@ -787,6 +805,9 @@
         "dtos.EventResponse": {
             "type": "object",
             "properties": {
+                "attendee_term": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -796,10 +817,19 @@
                 "description": {
                     "type": "string"
                 },
+                "event_theme": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
                 "location": {
+                    "type": "string"
+                },
+                "map_embedded_url": {
+                    "type": "string"
+                },
+                "map_url": {
                     "type": "string"
                 },
                 "message": {
@@ -815,6 +845,9 @@
                     "type": "string"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "venue": {
                     "type": "string"
                 }
             }
@@ -872,9 +905,13 @@
         "dtos.UpdateEventRequest": {
             "type": "object",
             "required": [
-                "organizer_id"
+                "organizer_id",
+                "venue"
             ],
             "properties": {
+                "attendee_term": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -884,7 +921,16 @@
                 "description": {
                     "type": "string"
                 },
+                "event_theme": {
+                    "type": "string"
+                },
                 "location": {
+                    "type": "string"
+                },
+                "map_embedded_url": {
+                    "type": "string"
+                },
+                "map_url": {
                     "type": "string"
                 },
                 "name": {
@@ -894,6 +940,9 @@
                     "type": "integer"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "venue": {
                     "type": "string"
                 }
             }

@@ -19,13 +19,21 @@ definitions:
     type: object
   dtos.CreateEventRequest:
     properties:
+      attendee_term:
+        type: string
       contact_information:
         type: string
       date:
         type: string
       description:
         type: string
+      event_theme:
+        type: string
       location:
+        type: string
+      map_embedded_url:
+        type: string
+      map_url:
         type: string
       name:
         type: string
@@ -35,10 +43,15 @@ definitions:
         type: integer
       time:
         type: string
+      venue:
+        type: string
     required:
+    - date
     - name
     - organizer_id
     - series_id
+    - time
+    - venue
     type: object
   dtos.CreateSeriesRequest:
     properties:
@@ -90,15 +103,23 @@ definitions:
     type: object
   dtos.EventResponse:
     properties:
+      attendee_term:
+        type: string
       contact_information:
         type: string
       date:
         type: string
       description:
         type: string
+      event_theme:
+        type: string
       id:
         type: integer
       location:
+        type: string
+      map_embedded_url:
+        type: string
+      map_url:
         type: string
       message:
         type: string
@@ -109,6 +130,8 @@ definitions:
       status:
         type: string
       time:
+        type: string
+      venue:
         type: string
     type: object
   dtos.RaveResponse:
@@ -146,13 +169,21 @@ definitions:
     type: object
   dtos.UpdateEventRequest:
     properties:
+      attendee_term:
+        type: string
       contact_information:
         type: string
       date:
         type: string
       description:
         type: string
+      event_theme:
+        type: string
       location:
+        type: string
+      map_embedded_url:
+        type: string
+      map_url:
         type: string
       name:
         type: string
@@ -160,8 +191,11 @@ definitions:
         type: integer
       time:
         type: string
+      venue:
+        type: string
     required:
     - organizer_id
+    - venue
     type: object
   models.Ticket:
     properties:
@@ -198,7 +232,7 @@ definitions:
       type:
         type: string
     type: object
-host: localhost:8000
+host: rave.onrender.com
 info:
   contact:
     email: unavailable

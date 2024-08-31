@@ -684,11 +684,17 @@ const docTemplate = `{
         "dtos.CreateEventRequest": {
             "type": "object",
             "required": [
+                "date",
                 "name",
                 "organizer_id",
-                "series_id"
+                "series_id",
+                "time",
+                "venue"
             ],
             "properties": {
+                "attendee_term": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -698,7 +704,16 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "event_theme": {
+                    "type": "string"
+                },
                 "location": {
+                    "type": "string"
+                },
+                "map_embedded_url": {
+                    "type": "string"
+                },
+                "map_url": {
                     "type": "string"
                 },
                 "name": {
@@ -711,6 +726,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "venue": {
                     "type": "string"
                 }
             }
@@ -791,6 +809,9 @@ const docTemplate = `{
         "dtos.EventResponse": {
             "type": "object",
             "properties": {
+                "attendee_term": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -800,10 +821,19 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "event_theme": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
                 "location": {
+                    "type": "string"
+                },
+                "map_embedded_url": {
+                    "type": "string"
+                },
+                "map_url": {
                     "type": "string"
                 },
                 "message": {
@@ -819,6 +849,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "venue": {
                     "type": "string"
                 }
             }
@@ -876,9 +909,13 @@ const docTemplate = `{
         "dtos.UpdateEventRequest": {
             "type": "object",
             "required": [
-                "organizer_id"
+                "organizer_id",
+                "venue"
             ],
             "properties": {
+                "attendee_term": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -888,7 +925,16 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "event_theme": {
+                    "type": "string"
+                },
                 "location": {
+                    "type": "string"
+                },
+                "map_embedded_url": {
+                    "type": "string"
+                },
+                "map_url": {
                     "type": "string"
                 },
                 "name": {
@@ -898,6 +944,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "time": {
+                    "type": "string"
+                },
+                "venue": {
                     "type": "string"
                 }
             }
@@ -968,7 +1017,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8000",
+	Host:             "rave.onrender.com",
 	BasePath:         "",
 	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",
