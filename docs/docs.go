@@ -94,6 +94,20 @@ const docTemplate = `{
                         "name": "organizerId",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "size",
+                        "name": "size",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -295,6 +309,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/series/organizer/{organizerId}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get Series by organizerId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Series"
+                ],
+                "summary": "Get Series by organizerId",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "organizer id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "size",
+                        "name": "size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/series/{id}": {
             "get": {
                 "security": [
@@ -454,6 +525,20 @@ const docTemplate = `{
                         "description": "eventId",
                         "name": "eventId",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "size",
+                        "name": "size",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -706,9 +791,6 @@ const docTemplate = `{
         "dtos.EventResponse": {
             "type": "object",
             "properties": {
-                "calendar": {
-                    "type": "string"
-                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -729,6 +811,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "series_id": {
+                    "type": "integer"
                 },
                 "status": {
                     "type": "string"

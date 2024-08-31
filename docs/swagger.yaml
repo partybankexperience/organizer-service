@@ -90,8 +90,6 @@ definitions:
     type: object
   dtos.EventResponse:
     properties:
-      calendar:
-        type: string
       contact_information:
         type: string
       date:
@@ -106,6 +104,8 @@ definitions:
         type: string
       name:
         type: string
+      series_id:
+        type: integer
       status:
         type: string
       time:
@@ -310,6 +310,16 @@ paths:
         name: organizerId
         required: true
         type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -413,6 +423,43 @@ paths:
       summary: Get Series by id
       tags:
       - Series
+  /api/v1/series/organizer/{organizerId}:
+    get:
+      consumes:
+      - application/json
+      description: Get Series by organizerId
+      parameters:
+      - description: organizer id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get Series by organizerId
+      tags:
+      - Series
   /api/v1/ticket:
     get:
       consumes:
@@ -476,6 +523,16 @@ paths:
       - description: eventId
         in: path
         name: eventId
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
         required: true
         type: integer
       produces:
