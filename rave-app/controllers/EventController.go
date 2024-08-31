@@ -35,7 +35,7 @@ func NewEventController(eventService services.EventService, objectValidator *val
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /api/v1/event [post]
+// @Router       /api/v1/event  [post]
 func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 	createEventRequest := &request.CreateEventRequest{}
 	err := ctx.BindJSON(createEventRequest)
