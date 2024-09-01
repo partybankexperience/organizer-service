@@ -1080,7 +1080,7 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "rave.onrender.com",
 	BasePath:         "",
-	Schemes:          []string{"http"},
+	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",
 	InfoInstanceName: "swagger",

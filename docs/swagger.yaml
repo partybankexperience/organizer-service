@@ -688,7 +688,7 @@ paths:
       tags:
       - Auth
 schemes:
-- http
+- https
 securityDefinitions:
   Bearer:
     in: header
