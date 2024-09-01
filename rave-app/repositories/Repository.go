@@ -14,6 +14,8 @@ import (
 	"strings"
 )
 
+var db *gorm.DB
+
 type Repository[T, U any] interface {
 	crudRepository[T, U]
 }
@@ -79,12 +81,15 @@ func (r *repositoryImpl[T, U]) DeleteById(id U) error {
 }
 
 func Connect() *gorm.DB {
+	if db != nil {
+		return db
+	}
 	port, err := strconv.ParseUint(os.Getenv("DATABASE_PORT"), 10, 64)
 	if err != nil {
 		log.Fatal("error reading port: ", err)
 	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d TimeZone=Africa/Lagos", os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_NAME"), port)
-	db, err := gorm.Open(postgres.New(postgres.Config{
+	db, err = gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true}), &gorm.Config{})
 	if err != nil {

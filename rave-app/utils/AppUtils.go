@@ -17,3 +17,7 @@ func ConvertQueryStringToInt(query string) (int, error) {
 	}
 	return value, nil
 }
+
+func isDateValid(date string) bool {
+	return false
+}

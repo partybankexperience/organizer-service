@@ -3,6 +3,7 @@ package mappers
 import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
+	"log"
 )
 
 func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series) []*response.SeriesResponse {
@@ -22,6 +23,7 @@ func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series) []*r
 }
 
 func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse {
+	log.Println("events: ", events)
 	responses := make([]*response.EventResponse, 0)
 	for _, event := range events {
 		eventResponse := &response.EventResponse{

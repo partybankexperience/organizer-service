@@ -8,7 +8,6 @@ import (
 	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -157,7 +156,6 @@ func (eventController *EventController) GetEventById(ctx *gin.Context) {
 }
 
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
-	log.Println("req param: ", ctx)
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)
 	if err != nil {
 		return 0, errors.New("error extracting path variable from request")

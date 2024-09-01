@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/djfemz/rave/rave-app/models"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type SeriesRepository interface {
@@ -43,7 +44,7 @@ func (raveCalendarRepository *raveCalendarRepository) FindAllSeriesFor(organizer
 	}
 	offset := (pageNumber - 1) * pageSize
 	userSeries := make([]*models.Series, 0)
-	err := raveCalendarRepository.Db.Where(&models.Series{OrganizerID: organizer}).Offset(offset).Limit(pageSize).Find(&userSeries).Error
+	err := raveCalendarRepository.Db.Preload(clause.Associations).Where(&models.Series{OrganizerID: organizer}).Offset(offset).Limit(pageSize).Find(&userSeries).Error
 	if err != nil {
 		return nil, err
 	}

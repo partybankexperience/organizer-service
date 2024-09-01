@@ -65,7 +65,7 @@ type CreateTicketRequest struct {
 }
 
 type CreateUserRequest struct {
-	Username string `json:"username" validate:"required"`
+	Username string `json:"username" validate:"required,email"`
 }
 
 type AddEventStaffRequest struct {
