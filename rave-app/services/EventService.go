@@ -4,6 +4,7 @@ import (
 	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"github.com/djfemz/rave/rave-app/mappers"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
 	"gopkg.in/jeevatkm/go-model.v1"
@@ -14,6 +15,7 @@ type EventService interface {
 	Create(createEventRequest *request.CreateEventRequest) (*response.EventResponse, error)
 	GetById(id uint64) (*response.EventResponse, error)
 	GetEventBy(id uint64) (*models.Event, error)
+	DiscoverEvents(page int, size int) ([]*response.EventResponse, error)
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
 	UpdateEvent(event *models.Event) error
 	GetAllEventsFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.EventResponse, error)
@@ -115,6 +117,16 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pag
 		eventsResponses = append(eventsResponses, eventResponse)
 	}
 	return eventsResponses, nil
+}
+
+func (raveEventService *raveEventService) DiscoverEvents(page int, size int) ([]*response.EventResponse, error) {
+	events, err := raveEventService.FindAllByPage(page, size)
+	if err != nil {
+		return nil, err
+	}
+	log.Println("events: ", events)
+	allEvents := mappers.MapEventsToEventResponses(events)
+	return allEvents, nil
 }
 
 func mapEventToEventResponse(event *models.Event, seriesService SeriesService) *response.EventResponse {

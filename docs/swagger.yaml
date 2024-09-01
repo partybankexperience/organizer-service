@@ -243,7 +243,7 @@ definitions:
       type:
         type: string
     type: object
-host: rave.onrender.com
+host: localhost:8000
 info:
   contact:
     email: unavailable
@@ -342,6 +342,36 @@ paths:
       security:
       - Bearer: []
       summary: Edit Event
+      tags:
+      - Events
+  /api/v1/event/discover:
+    get:
+      consumes:
+      - application/json
+      description: Discover events on the system
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Discover events on the system
       tags:
       - Events
   /api/v1/event/organizer:

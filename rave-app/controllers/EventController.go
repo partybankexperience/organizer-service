@@ -8,6 +8,7 @@ import (
 	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -153,6 +154,40 @@ func (eventController *EventController) GetEventById(ctx *gin.Context) {
 		handleError(ctx, err)
 	}
 	ctx.JSON(http.StatusOK, event)
+}
+
+// DiscoverEvents godoc
+// @Summary      Discover events on the system
+// @Description  Discover events on the system
+// @Tags         Events
+// @Accept       json
+// @Produce      json
+// @Param        page   query   int  true  "page"
+// @Param        size   query   int  true  "size"
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Router       /api/v1/event/discover [get]
+func (eventController *EventController) DiscoverEvents(ctx *gin.Context) {
+	log.Println("In discover events")
+	page := ctx.Query("page")
+	pageNumber, err := utils.ConvertQueryStringToInt(page)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	size := ctx.Query("size")
+	pageSize, err := utils.ConvertQueryStringToInt(size)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	log.Println("page: ", pageNumber, "pageSize: ", pageSize)
+	events, err := eventController.EventService.DiscoverEvents(pageNumber, pageSize)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	ctx.JSON(http.StatusOK, events)
 }
 
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {

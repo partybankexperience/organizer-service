@@ -8,6 +8,7 @@ import (
 type EventRepository interface {
 	crudRepository[models.Event, uint64]
 	FindAllByCalendar(calendarId uint64, pageNumber, pageSize int) ([]*models.Event, error)
+	FindAllByPage(page int, size int) ([]*models.Event, error)
 }
 
 type raveEventRepository struct {
@@ -34,6 +35,23 @@ func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uin
 	offset := (pageNumber - 1) * pageSize
 	var events []*models.Event
 	err := raveEventRepository.Db.Where(&models.Event{SeriesID: calendarId}).Offset(offset).Limit(pageSize).Find(&events).Error
+	if err != nil {
+		return nil, err
+	}
+	return events, nil
+}
+
+func (raveEventRepository *raveEventRepository) FindAllByPage(page int, size int) ([]*models.Event, error) {
+	if page < 1 {
+		page = 1
+	}
+	if size < 1 {
+		size = 1
+	} else if size > 100 {
+		size = 100
+	}
+	pageAble := NewPageAble(page, size)
+	events, err := raveEventRepository.FindAllBy(pageAble)
 	if err != nil {
 		return nil, err
 	}
