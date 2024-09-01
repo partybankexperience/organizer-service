@@ -31,6 +31,7 @@ type CreateEventRequest struct {
 	MapEmbeddedUrl     string `json:"map_embedded_url"`
 	AttendeeTerm       string `json:"attendee_term"`
 	Venue              string `json:"venue" validate:"required"`
+	ImageUrl           string `json:"image_url"`
 }
 
 type UpdateEventRequest struct {

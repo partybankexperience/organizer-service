@@ -80,6 +80,7 @@ type Event struct {
 	StartTime          string    `json:"event_start"`
 	EndTime            string    `json:"event_end"`
 	ContactInformation string    `json:"contact_information"`
+	ImageUrl           string    `json:"image_url"`
 	Description        string    `json:"description"`
 	SeriesID           uint64    `json:"series_id"`
 	Status             string    `json:"status"`

@@ -86,6 +86,7 @@ type EventResponse struct {
 	MapEmbeddedUrl     string           `json:"map_embedded_url,omitempty"`
 	AttendeeTerm       string           `json:"attendee_term,omitempty"`
 	Venue              string           `json:"venue,omitempty"`
+	ImageUrl           string           `json:"image_url,omitempty"`
 }
 
 type TicketResponse struct {

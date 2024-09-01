@@ -738,6 +738,9 @@
                 "attendee_term": {
                     "type": "string"
                 },
+                "city": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -751,6 +754,9 @@
                     "type": "string"
                 },
                 "event_theme": {
+                    "type": "string"
+                },
+                "image_url": {
                     "type": "string"
                 },
                 "map_embedded_url": {
@@ -872,6 +878,9 @@
                 },
                 "id": {
                     "type": "integer"
+                },
+                "image_url": {
+                    "type": "string"
                 },
                 "location": {
                     "$ref": "#/definitions/models.Location"
@@ -1000,6 +1009,9 @@
         "models.Location": {
             "type": "object",
             "properties": {
+                "city": {
+                    "type": "string"
+                },
                 "country": {
                     "type": "string"
                 },

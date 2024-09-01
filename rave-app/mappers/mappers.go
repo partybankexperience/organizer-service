@@ -3,6 +3,7 @@ package mappers
 import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/services"
 	"log"
 )
 
@@ -37,6 +38,7 @@ func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse
 			ContactInformation: event.ContactInformation,
 			MapEmbeddedUrl:     event.MapEmbeddedUrl,
 			MapUrl:             event.MapUrl,
+			ImageUrl:           event.ImageUrl,
 		}
 		if event.Location != nil {
 			eventResponse.Location = event.Location
@@ -44,4 +46,38 @@ func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse
 		responses = append(responses, eventResponse)
 	}
 	return responses
+}
+
+func MapEventToEventResponse(event *models.Event, seriesService services.SeriesService) *response.EventResponse {
+	series, err := seriesService.GetById(event.SeriesID)
+	if err != nil {
+		return nil
+	}
+	eventResponse := &response.EventResponse{
+		ID:      event.ID,
+		Message: "event created successfully",
+		Name:    event.Name,
+
+		Date:               event.EventDate,
+		Time:               event.StartTime,
+		ContactInformation: event.ContactInformation,
+		Description:        event.Description,
+		Status:             event.Status,
+		SeriesID:           series.ID,
+		Venue:              event.Venue,
+		MapUrl:             event.MapUrl,
+		MapEmbeddedUrl:     event.MapEmbeddedUrl,
+		AttendeeTerm:       event.AttendeeTerm,
+		EventTheme:         event.EventTheme,
+		ImageUrl:           event.ImageUrl,
+	}
+
+	if event.Location != nil {
+		eventResponse.Location = &models.Location{
+			State:   event.Location.State,
+			Country: event.Location.Country,
+			City:    event.Location.City,
+		}
+	}
+	return eventResponse
 }

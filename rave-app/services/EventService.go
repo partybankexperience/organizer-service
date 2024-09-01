@@ -63,7 +63,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	if err != nil {
 		return nil, err
 	}
-	res := mapEventToEventResponse(savedEvent, raveEventService.SeriesService)
+	res := mappers.MapEventToEventResponse(savedEvent, raveEventService.SeriesService)
 	return res, nil
 }
 
@@ -73,7 +73,7 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 		return nil, err
 	}
 	log.Println("event: ", *foundEvent)
-	return mapEventToEventResponse(foundEvent, raveEventService.SeriesService), nil
+	return mappers.MapEventToEventResponse(foundEvent, raveEventService.SeriesService), nil
 }
 
 func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, error) {
@@ -114,7 +114,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pag
 		return nil, err
 	}
 	for _, event := range events {
-		eventResponse := mapEventToEventResponse(event, raveEventService.SeriesService)
+		eventResponse := mappers.MapEventToEventResponse(event, raveEventService.SeriesService)
 		eventsResponses = append(eventsResponses, eventResponse)
 	}
 	return eventsResponses, nil
@@ -128,39 +128,6 @@ func (raveEventService *raveEventService) DiscoverEvents(page int, size int) ([]
 	log.Println("events: ", events)
 	allEvents := mappers.MapEventsToEventResponses(events)
 	return allEvents, nil
-}
-
-func mapEventToEventResponse(event *models.Event, seriesService SeriesService) *response.EventResponse {
-	series, err := seriesService.GetById(event.SeriesID)
-	if err != nil {
-		return nil
-	}
-	eventResponse := &response.EventResponse{
-		ID:      event.ID,
-		Message: "event created successfully",
-		Name:    event.Name,
-
-		Date:               event.EventDate,
-		Time:               event.StartTime,
-		ContactInformation: event.ContactInformation,
-		Description:        event.Description,
-		Status:             event.Status,
-		SeriesID:           series.ID,
-		Venue:              event.Venue,
-		MapUrl:             event.MapUrl,
-		MapEmbeddedUrl:     event.MapEmbeddedUrl,
-		AttendeeTerm:       event.AttendeeTerm,
-		EventTheme:         event.EventTheme,
-	}
-
-	if event.Location != nil {
-		eventResponse.Location = &models.Location{
-			State:   event.Location.State,
-			Country: event.Location.Country,
-			City:    event.Location.City,
-		}
-	}
-	return eventResponse
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {
@@ -182,5 +149,6 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 		EventTheme:         createEventRequest.EventTheme,
 		AttendeeTerm:       createEventRequest.AttendeeTerm,
 		Venue:              createEventRequest.Venue,
+		ImageUrl:           createEventRequest.ImageUrl,
 	}
 }

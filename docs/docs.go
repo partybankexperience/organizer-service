@@ -742,6 +742,9 @@ const docTemplate = `{
                 "attendee_term": {
                     "type": "string"
                 },
+                "city": {
+                    "type": "string"
+                },
                 "contact_information": {
                     "type": "string"
                 },
@@ -755,6 +758,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "event_theme": {
+                    "type": "string"
+                },
+                "image_url": {
                     "type": "string"
                 },
                 "map_embedded_url": {
@@ -876,6 +882,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "image_url": {
+                    "type": "string"
                 },
                 "location": {
                     "$ref": "#/definitions/models.Location"
@@ -1004,6 +1013,9 @@ const docTemplate = `{
         "models.Location": {
             "type": "object",
             "properties": {
+                "city": {
+                    "type": "string"
+                },
                 "country": {
                     "type": "string"
                 },
