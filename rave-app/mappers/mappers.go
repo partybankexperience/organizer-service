@@ -3,7 +3,6 @@ package mappers
 import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
-	"github.com/djfemz/rave/rave-app/services"
 	"log"
 )
 
@@ -48,11 +47,8 @@ func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse
 	return responses
 }
 
-func MapEventToEventResponse(event *models.Event, seriesService services.SeriesService) *response.EventResponse {
-	series, err := seriesService.GetById(event.SeriesID)
-	if err != nil {
-		return nil
-	}
+func MapEventToEventResponse(event *models.Event) *response.EventResponse {
+
 	eventResponse := &response.EventResponse{
 		ID:      event.ID,
 		Message: "event created successfully",
@@ -63,7 +59,7 @@ func MapEventToEventResponse(event *models.Event, seriesService services.SeriesS
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
-		SeriesID:           series.ID,
+		SeriesID:           event.SeriesID,
 		Venue:              event.Venue,
 		MapUrl:             event.MapUrl,
 		MapEmbeddedUrl:     event.MapEmbeddedUrl,

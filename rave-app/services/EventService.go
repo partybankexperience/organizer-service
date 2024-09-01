@@ -63,7 +63,10 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	if err != nil {
 		return nil, err
 	}
-	res := mappers.MapEventToEventResponse(savedEvent, raveEventService.SeriesService)
+	if err != nil {
+		return nil, err
+	}
+	res := mappers.MapEventToEventResponse(savedEvent)
 	return res, nil
 }
 
@@ -73,7 +76,7 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 		return nil, err
 	}
 	log.Println("event: ", *foundEvent)
-	return mappers.MapEventToEventResponse(foundEvent, raveEventService.SeriesService), nil
+	return mappers.MapEventToEventResponse(foundEvent), nil
 }
 
 func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, error) {
@@ -114,7 +117,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pag
 		return nil, err
 	}
 	for _, event := range events {
-		eventResponse := mappers.MapEventToEventResponse(event, raveEventService.SeriesService)
+		eventResponse := mappers.MapEventToEventResponse(event)
 		eventsResponses = append(eventsResponses, eventResponse)
 	}
 	return eventsResponses, nil
