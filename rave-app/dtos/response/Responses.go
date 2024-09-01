@@ -71,21 +71,21 @@ type CalendarResponse struct {
 }
 
 type EventResponse struct {
-	ID                 uint64 `json:"id"`
-	SeriesID           uint64 `json:"series_id,omitempty"`
-	Message            string `json:"message,omitempty"`
-	Name               string `json:"name,omitempty"`
-	Location           string `json:"location,omitempty"`
-	Date               string `json:"date,omitempty"`
-	Time               string `json:"time,omitempty"`
-	ContactInformation string `json:"contact_information,omitempty"`
-	Description        string `json:"description,omitempty"`
-	Status             string `json:"status,omitempty"`
-	EventTheme         string `json:"event_theme,omitempty"`
-	MapUrl             string `json:"map_url,omitempty"`
-	MapEmbeddedUrl     string `json:"map_embedded_url,omitempty"`
-	AttendeeTerm       string `json:"attendee_term,omitempty"`
-	Venue              string `json:"venue,omitempty"`
+	ID                 uint64           `json:"id"`
+	SeriesID           uint64           `json:"series_id,omitempty"`
+	Message            string           `json:"message,omitempty"`
+	Name               string           `json:"name,omitempty"`
+	Location           *models.Location `json:"location,omitempty"`
+	Date               string           `json:"date,omitempty"`
+	Time               string           `json:"time,omitempty"`
+	ContactInformation string           `json:"contact_information,omitempty"`
+	Description        string           `json:"description,omitempty"`
+	Status             string           `json:"status,omitempty"`
+	EventTheme         string           `json:"event_theme,omitempty"`
+	MapUrl             string           `json:"map_url,omitempty"`
+	MapEmbeddedUrl     string           `json:"map_embedded_url,omitempty"`
+	AttendeeTerm       string           `json:"attendee_term,omitempty"`
+	Venue              string           `json:"venue,omitempty"`
 }
 
 type TicketResponse struct {

@@ -49,8 +49,7 @@ type Organizer struct {
 
 type User struct {
 	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" gorm:"unique"`
 	Role     string `json:"role"`
 }
 
@@ -75,25 +74,30 @@ type Ticket struct {
 }
 
 type Event struct {
-	ID                 uint64 `id:"EventId" gorm:"primaryKey" json:"id"`
-	Name               string `json:"name"`
-	Location           string `json:"location"`
-	EventDate          string `json:"date"`
-	StartTime          string `json:"event_start"`
-	EndTime            string `json:"event_end"`
-	ContactInformation string `json:"contact_information"`
-	Description        string `json:"description"`
-	SeriesID           uint64 `json:"series_id"`
-	Status             string `json:"status"`
-	EventStaffID       uint64 `json:"event_staff_id"`
-	TicketID           uint64 `json:"ticket_id"`
-	EventTheme         string `json:"event_theme"`
-	MapUrl             string `json:"map_url"`
-	MapEmbeddedUrl     string `json:"map_embedded_url"`
-	AttendeeTerm       string `json:"attendee_term"`
-	Venue              string `json:"venue"`
+	ID                 uint64    `id:"EventId" gorm:"primaryKey" json:"id"`
+	Name               string    `json:"name"`
+	Location           *Location `json:"location" gorm:"embedded"`
+	EventDate          string    `json:"date"`
+	StartTime          string    `json:"event_start"`
+	EndTime            string    `json:"event_end"`
+	ContactInformation string    `json:"contact_information"`
+	Description        string    `json:"description"`
+	SeriesID           uint64    `json:"series_id"`
+	Status             string    `json:"status"`
+	EventStaffID       uint64    `json:"event_staff_id"`
+	TicketID           uint64    `json:"ticket_id"`
+	EventTheme         string    `json:"event_theme"`
+	MapUrl             string    `json:"map_url"`
+	MapEmbeddedUrl     string    `json:"map_embedded_url"`
+	AttendeeTerm       string    `json:"attendee_term"`
+	Venue              string    `json:"venue"`
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
+}
+
+type Location struct {
+	State   string `json:"state"`
+	Country string `json:"country"`
 }
 
 type Series struct {

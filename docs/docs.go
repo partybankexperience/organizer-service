@@ -684,10 +684,12 @@ const docTemplate = `{
         "dtos.CreateEventRequest": {
             "type": "object",
             "required": [
+                "country",
                 "date",
                 "name",
                 "organizer_id",
                 "series_id",
+                "state",
                 "time",
                 "venue"
             ],
@@ -698,6 +700,9 @@ const docTemplate = `{
                 "contact_information": {
                     "type": "string"
                 },
+                "country": {
+                    "type": "string"
+                },
                 "date": {
                     "type": "string"
                 },
@@ -705,9 +710,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "event_theme": {
-                    "type": "string"
-                },
-                "location": {
                     "type": "string"
                 },
                 "map_embedded_url": {
@@ -724,6 +726,9 @@ const docTemplate = `{
                 },
                 "series_id": {
                     "type": "integer"
+                },
+                "state": {
+                    "type": "string"
                 },
                 "time": {
                     "type": "string"
@@ -828,7 +833,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "location": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.Location"
                 },
                 "map_embedded_url": {
                     "type": "string"
@@ -951,6 +956,17 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Location": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Ticket": {
             "type": "object",
             "properties": {
@@ -1017,7 +1033,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "rave.onrender.com",
+	Host:             "localhost:8000",
 	BasePath:         "",
 	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",

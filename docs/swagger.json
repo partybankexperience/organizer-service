@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "rave.onrender.com",
+    "host": "localhost:8000",
     "paths": {
         "/api/v1/event": {
             "post": {
@@ -680,10 +680,12 @@
         "dtos.CreateEventRequest": {
             "type": "object",
             "required": [
+                "country",
                 "date",
                 "name",
                 "organizer_id",
                 "series_id",
+                "state",
                 "time",
                 "venue"
             ],
@@ -694,6 +696,9 @@
                 "contact_information": {
                     "type": "string"
                 },
+                "country": {
+                    "type": "string"
+                },
                 "date": {
                     "type": "string"
                 },
@@ -701,9 +706,6 @@
                     "type": "string"
                 },
                 "event_theme": {
-                    "type": "string"
-                },
-                "location": {
                     "type": "string"
                 },
                 "map_embedded_url": {
@@ -720,6 +722,9 @@
                 },
                 "series_id": {
                     "type": "integer"
+                },
+                "state": {
+                    "type": "string"
                 },
                 "time": {
                     "type": "string"
@@ -824,7 +829,7 @@
                     "type": "integer"
                 },
                 "location": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.Location"
                 },
                 "map_embedded_url": {
                     "type": "string"
@@ -943,6 +948,17 @@
                     "type": "string"
                 },
                 "venue": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Location": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string"
+                },
+                "state": {
                     "type": "string"
                 }
             }

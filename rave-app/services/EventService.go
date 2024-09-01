@@ -122,11 +122,11 @@ func mapEventToEventResponse(event *models.Event, seriesService SeriesService) *
 	if err != nil {
 		return nil
 	}
-	return &response.EventResponse{
-		ID:                 event.ID,
-		Message:            "event created successfully",
-		Name:               event.Name,
-		Location:           event.Location,
+	eventResponse := &response.EventResponse{
+		ID:      event.ID,
+		Message: "event created successfully",
+		Name:    event.Name,
+
 		Date:               event.EventDate,
 		Time:               event.StartTime,
 		ContactInformation: event.ContactInformation,
@@ -139,12 +139,23 @@ func mapEventToEventResponse(event *models.Event, seriesService SeriesService) *
 		AttendeeTerm:       event.AttendeeTerm,
 		EventTheme:         event.EventTheme,
 	}
+
+	if event.Location != nil {
+		eventResponse.Location = &models.Location{
+			State:   event.Location.State,
+			Country: event.Location.Country,
+		}
+	}
+	return eventResponse
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {
 	return &models.Event{
-		Name:               createEventRequest.Name,
-		Location:           createEventRequest.Location,
+		Name: createEventRequest.Name,
+		Location: &models.Location{
+			State:   createEventRequest.State,
+			Country: createEventRequest.Country,
+		},
 		EventDate:          createEventRequest.Date,
 		StartTime:          createEventRequest.Time,
 		SeriesID:           createEventRequest.SeriesId,

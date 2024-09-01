@@ -17,7 +17,8 @@ type CreateDiscountRequest struct {
 
 type CreateEventRequest struct {
 	Name               string `json:"name" validate:"required"`
-	Location           string `json:"location"`
+	State              string `json:"state" validate:"required"`
+	Country            string `json:"country" validate:"required"`
 	Date               string `json:"date" validate:"required"`
 	Time               string `json:"time" validate:"required"`
 	ContactInformation string `json:"contact_information"`
@@ -31,10 +32,6 @@ type CreateEventRequest struct {
 	Venue              string `json:"venue" validate:"required"`
 }
 
-type Location struct {
-	State   string
-	Country string
-}
 type UpdateEventRequest struct {
 	Name               string `json:"name"`
 	Location           string `json:"location"`
@@ -98,7 +95,7 @@ type NewTicketMessage struct {
 	Message                      string                             `json:"message,omitempty"`
 	EventName                    string                             `json:"event_name"`
 	Organizer                    string                             `json:"organizer"`
-	Location                     string                             `json:"location"`
+	Location                     *models.Location                   `json:"location"`
 	Date                         string                             `json:"date"`
 	Time                         string                             `json:"time"`
 	ContactInformation           string                             `json:"contact_information"`
