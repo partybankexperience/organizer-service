@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "https"
+        "http"
     ],
     "swagger": "2.0",
     "info": {
@@ -326,8 +326,8 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "organizer id",
-                        "name": "id",
+                        "description": "organizerId",
+                        "name": "organizerId",
                         "in": "path",
                         "required": true
                     },

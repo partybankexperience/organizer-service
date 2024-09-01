@@ -330,8 +330,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "organizer id",
-                        "name": "id",
+                        "description": "organizerId",
+                        "name": "organizerId",
                         "in": "path",
                         "required": true
                     },
@@ -1035,7 +1035,7 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8000",
 	BasePath:         "",
-	Schemes:          []string{"https"},
+	Schemes:          []string{"http"},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",
 	InfoInstanceName: "swagger",

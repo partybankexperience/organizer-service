@@ -474,9 +474,9 @@ paths:
       - application/json
       description: Get Series by organizerId
       parameters:
-      - description: organizer id
+      - description: organizerId
         in: path
-        name: id
+        name: organizerId
         required: true
         type: integer
       - description: page
@@ -658,7 +658,7 @@ paths:
       tags:
       - Auth
 schemes:
-- https
+- http
 securityDefinitions:
   Bearer:
     in: header

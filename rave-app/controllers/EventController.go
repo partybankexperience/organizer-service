@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
@@ -156,8 +157,11 @@ func (eventController *EventController) GetEventById(ctx *gin.Context) {
 }
 
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
+	log.Println("req param: ", ctx)
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)
-	log.Println("id: ", id)
+	if err != nil {
+		return 0, errors.New("error extracting path variable from request")
+	}
 	return id, err
 }
 

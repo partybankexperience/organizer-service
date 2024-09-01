@@ -27,7 +27,7 @@ type OrganizationResponse struct {
 	*UserResponse
 	Name      string            `json:"name,omitempty"`
 	CreatedAt time.Time         `json:"created_at,omitempty"`
-	Series    []*SeriesResponse `json:"series,omitempty"`
+	Series    []*SeriesResponse `json:"series"`
 }
 
 type UserResponse struct {
@@ -37,9 +37,9 @@ type UserResponse struct {
 }
 
 type SeriesResponse struct {
-	ID          uint64           `id:"seriesId" gorm:"primaryKey" json:"id,omitempty"`
+	ID          uint64           `id:"seriesId" gorm:"primaryKey" json:"series_id,omitempty"`
 	Name        string           `json:"name,omitempty"`
-	Events      []*EventResponse `json:"events,omitempty"`
+	Events      []*EventResponse `json:"events"`
 	OrganizerID uint64           `json:"organizer_id,omitempty"`
 	ImageUrl    string           `json:"image_url,omitempty"`
 	Description string           `json:"description,omitempty"`

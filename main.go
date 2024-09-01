@@ -41,6 +41,7 @@ func init() {
 	if err != nil {
 		log.Println("Error loading configuration: ", err)
 	}
+	log.Println("connnecting to db")
 	db = repositories.Connect()
 }
 
@@ -54,7 +55,7 @@ func init() {
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 // @host 		  localhost:8000
-// @schemes https
+// @schemes http
 // @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization

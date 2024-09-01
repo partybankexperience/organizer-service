@@ -89,7 +89,7 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 // @Tags         Series
 // @Accept       json
 // @Produce      json
-// @Param        id   path   int  true  "organizer id"
+// @Param        organizerId   path   int  true  "organizerId"
 // @Param        page   query   int  true  "page"
 // @Param        size   query   int  true  "size"
 // @Success      200  {object}  dtos.RaveResponse
@@ -99,9 +99,10 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context) {
 	organizerId, err := extractParamFromRequest("organizerId", ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
+	log.Println("org id", organizerId)
 	page := ctx.Query("page")
 	size := ctx.Query("size")
 	pageNumber, err := utils.ConvertQueryStringToInt(page)
