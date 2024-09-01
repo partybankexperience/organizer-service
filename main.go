@@ -54,14 +54,14 @@ func init() {
 // @contact.email  unavailable
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host 		  localhost:8000
+// @host 		  rave.onrender.com
 // @schemes http
 // @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization
 // @externalDocs.description  OpenAPI
 func main() {
-	router := gin.Default() //rave.onrender.com
+	router := gin.Default()
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
 		eventController, seriesController, ticketController,
