@@ -17,8 +17,8 @@ const (
 )
 
 const (
-	PAST     = "ON_GOING"
-	UPCOMING = "ENDED"
+	PAST     = "PAST"
+	UPCOMING = "UPCOMING"
 )
 
 const (
