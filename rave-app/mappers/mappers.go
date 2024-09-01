@@ -35,6 +35,11 @@ func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse
 			Description:        event.Description,
 			Location:           event.Location,
 			ContactInformation: event.ContactInformation,
+			MapEmbeddedUrl:     event.MapEmbeddedUrl,
+			MapUrl:             event.MapUrl,
+		}
+		if event.Location != nil {
+			eventResponse.Location = event.Location
 		}
 		responses = append(responses, eventResponse)
 	}

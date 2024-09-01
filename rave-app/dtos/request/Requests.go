@@ -17,6 +17,7 @@ type CreateDiscountRequest struct {
 
 type CreateEventRequest struct {
 	Name               string `json:"name" validate:"required"`
+	City               string `json:"city"`
 	State              string `json:"state" validate:"required"`
 	Country            string `json:"country" validate:"required"`
 	Date               string `json:"date" validate:"required"`

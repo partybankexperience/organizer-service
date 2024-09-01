@@ -72,6 +72,7 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 	if err != nil {
 		return nil, err
 	}
+	log.Println("event: ", *foundEvent)
 	return mapEventToEventResponse(foundEvent, raveEventService.SeriesService), nil
 }
 
@@ -156,6 +157,7 @@ func mapEventToEventResponse(event *models.Event, seriesService SeriesService) *
 		eventResponse.Location = &models.Location{
 			State:   event.Location.State,
 			Country: event.Location.Country,
+			City:    event.Location.City,
 		}
 	}
 	return eventResponse
@@ -167,13 +169,14 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 		Location: &models.Location{
 			State:   createEventRequest.State,
 			Country: createEventRequest.Country,
+			City:    createEventRequest.City,
 		},
 		EventDate:          createEventRequest.Date,
 		StartTime:          createEventRequest.Time,
 		SeriesID:           createEventRequest.SeriesId,
 		ContactInformation: createEventRequest.ContactInformation,
 		Description:        createEventRequest.Description,
-		Status:             models.NOT_STARTED,
+		Status:             models.UPCOMING,
 		MapUrl:             createEventRequest.MapUrl,
 		MapEmbeddedUrl:     createEventRequest.MapEmbeddedUrl,
 		EventTheme:         createEventRequest.EventTheme,

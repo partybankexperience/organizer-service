@@ -17,9 +17,8 @@ const (
 )
 
 const (
-	NOT_STARTED = "NOT_STARTED"
-	ONGOING     = "ON_GOING"
-	ENDED       = "ENDED"
+	PAST     = "ON_GOING"
+	UPCOMING = "ENDED"
 )
 
 const (
@@ -98,6 +97,7 @@ type Event struct {
 type Location struct {
 	State   string `json:"state"`
 	Country string `json:"country"`
+	City    string `json:"city"`
 }
 
 type Series struct {
