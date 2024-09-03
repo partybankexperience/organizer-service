@@ -89,6 +89,7 @@ type EventResponse struct {
 	AttendeeTerm       string           `json:"attendee_term,omitempty"`
 	Venue              string           `json:"venue,omitempty"`
 	ImageUrl           string           `json:"image_url,omitempty"`
+	Reference          string           `json:"event_reference"`
 }
 
 type TicketResponse struct {

@@ -91,6 +91,7 @@ type Event struct {
 	MapEmbeddedUrl     string    `json:"map_embedded_url"`
 	AttendeeTerm       string    `json:"attendee_term"`
 	Venue              string    `json:"venue"`
+	Reference          string    `json:"event_reference"`
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
 }

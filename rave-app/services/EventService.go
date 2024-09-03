@@ -7,6 +7,7 @@ import (
 	"github.com/djfemz/rave/rave-app/mappers"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
+	"github.com/djfemz/rave/rave-app/utils"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
 )
@@ -159,5 +160,6 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 		AttendeeTerm:       createEventRequest.AttendeeTerm,
 		Venue:              createEventRequest.Venue,
 		ImageUrl:           createEventRequest.ImageUrl,
+		Reference:          utils.GenerateEventReference(),
 	}
 }

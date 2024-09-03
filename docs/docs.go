@@ -883,6 +883,9 @@ const docTemplate = `{
                 "event_name": {
                     "type": "string"
                 },
+                "event_reference": {
+                    "type": "string"
+                },
                 "event_theme": {
                     "type": "string"
                 },
