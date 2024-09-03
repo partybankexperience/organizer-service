@@ -43,6 +43,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 	router.POST("/auth/login", authController.AuthHandler)
 	router.GET("/auth/otp/validate", authController.ValidateOtp)
 	router.GET("/api/v1/event/discover", eventController.DiscoverEvents)
+	router.GET("/api/v1/event/reference/:reference", eventController.GetEventByReference)
 }
 
 func AuthMiddleware() gin.HandlerFunc {

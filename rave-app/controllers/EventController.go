@@ -190,6 +190,26 @@ func (eventController *EventController) DiscoverEvents(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, events)
 }
 
+// GetEventByReference godoc
+// @Summary      Get Event By reference
+// @Description   Get Event By reference
+// @Tags         Events
+// @Accept       json
+// @Param        reference  path string  true  "reference"
+// @Produce      json
+// @Success      200  {object}  dtos.EventResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Router       /api/v1/event/reference/{reference} [get]
+func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
+	reference := ctx.Param("reference")
+	event, err := eventController.EventService.GetEventByReference(reference)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	ctx.JSON(http.StatusOK, event)
+}
+
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)
 	if err != nil {

@@ -16,6 +16,7 @@ type EventService interface {
 	Create(createEventRequest *request.CreateEventRequest) (*response.EventResponse, error)
 	GetById(id uint64) (*response.EventResponse, error)
 	GetEventBy(id uint64) (*models.Event, error)
+	GetEventByReference(reference string) (*response.EventResponse, error)
 	DiscoverEvents(page int, size int) ([]*response.EventResponse, error)
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
 	UpdateEvent(event *models.Event) error
@@ -138,6 +139,15 @@ func (raveEventService *raveEventService) DiscoverEvents(page int, size int) ([]
 	}
 	allEvents := mappers.MapEventsToEventResponses(events, series)
 	return allEvents, nil
+}
+
+func (raveEventService *raveEventService) GetEventByReference(reference string) (*response.EventResponse, error) {
+	event, err := raveEventService.EventRepository.FindByReference(reference)
+	if err != nil {
+		return nil, errors.New("failed to find requested event")
+	}
+	eventResponse := mappers.MapEventToEventResponse(event)
+	return eventResponse, nil
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {

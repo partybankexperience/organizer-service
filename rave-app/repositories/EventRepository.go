@@ -9,6 +9,7 @@ type EventRepository interface {
 	crudRepository[models.Event, uint64]
 	FindAllByCalendar(calendarId uint64, pageNumber, pageSize int) ([]*models.Event, error)
 	FindAllByPage(page int, size int) ([]*models.Event, error)
+	FindByReference(reference string) (*models.Event, error)
 }
 
 type raveEventRepository struct {
@@ -52,8 +53,18 @@ func (raveEventRepository *raveEventRepository) FindAllByPage(page int, size int
 	}
 	pageAble := NewPageAble(page, size)
 	events, err := raveEventRepository.FindAllBy(pageAble)
+
 	if err != nil {
 		return nil, err
 	}
 	return events, nil
+}
+
+func (raveEventRepository *raveEventRepository) FindByReference(reference string) (*models.Event, error) {
+	event := &models.Event{}
+	err := raveEventRepository.Db.Where(&models.Event{Reference: reference}).First(event).Error
+	if err != nil {
+		return nil, err
+	}
+	return event, nil
 }
