@@ -39,11 +39,14 @@ func MapEventsToEventResponses(events []*models.Event, series *models.Series) []
 			MapUrl:             event.MapUrl,
 			ImageUrl:           event.ImageUrl,
 			Venue:              event.Venue,
-			SeriesLogo:         series.Logo,
-			Reference:          event.Reference,
+
+			Reference: event.Reference,
 		}
 		if event.Location != nil {
 			eventResponse.Location = event.Location
+		}
+		if series != nil {
+			eventResponse.SeriesLogo = series.Logo
 		}
 		responses = append(responses, eventResponse)
 	}
