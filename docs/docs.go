@@ -806,6 +806,9 @@ const docTemplate = `{
                 },
                 "organizer_id": {
                     "type": "integer"
+                },
+                "series_logo": {
+                    "type": "string"
                 }
             }
         },
@@ -877,6 +880,9 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "event_name": {
+                    "type": "string"
+                },
                 "event_theme": {
                     "type": "string"
                 },
@@ -898,11 +904,11 @@ const docTemplate = `{
                 "message": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "series_id": {
                     "type": "integer"
+                },
+                "series_logo": {
+                    "type": "string"
                 },
                 "status": {
                     "type": "string"

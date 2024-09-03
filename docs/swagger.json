@@ -802,6 +802,9 @@
                 },
                 "organizer_id": {
                     "type": "integer"
+                },
+                "series_logo": {
+                    "type": "string"
                 }
             }
         },
@@ -873,6 +876,9 @@
                 "description": {
                     "type": "string"
                 },
+                "event_name": {
+                    "type": "string"
+                },
                 "event_theme": {
                     "type": "string"
                 },
@@ -894,11 +900,11 @@
                 "message": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "series_id": {
                     "type": "integer"
+                },
+                "series_logo": {
+                    "type": "string"
                 },
                 "status": {
                     "type": "string"

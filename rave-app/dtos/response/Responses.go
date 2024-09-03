@@ -43,6 +43,7 @@ type SeriesResponse struct {
 	OrganizerID uint64           `json:"organizer_id,omitempty"`
 	ImageUrl    string           `json:"image_url,omitempty"`
 	Description string           `json:"description,omitempty"`
+	Logo        string           `json:"series_logo"`
 }
 
 type LoginResponse struct {
@@ -73,8 +74,9 @@ type CalendarResponse struct {
 type EventResponse struct {
 	ID                 uint64           `json:"id"`
 	SeriesID           uint64           `json:"series_id,omitempty"`
+	SeriesLogo         string           `json:"series_logo,omitempty"`
 	Message            string           `json:"message,omitempty"`
-	Name               string           `json:"name,omitempty"`
+	Name               string           `json:"event_name,omitempty"`
 	Location           *models.Location `json:"location,omitempty"`
 	Date               string           `json:"date,omitempty"`
 	Time               string           `json:"time,omitempty"`

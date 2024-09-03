@@ -109,6 +109,7 @@ type Series struct {
 	OrganizerID uint64   `json:"organizer_id"`
 	ImageUrl    string   `json:"image_url"`
 	Description string   `json:"description"`
+	Logo        string   `json:"series_logo"`
 }
 
 type EventStaff struct {

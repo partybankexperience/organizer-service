@@ -127,6 +127,7 @@ type CreateSeriesRequest struct {
 	OrganizerID uint64 `json:"organizer_id" validate:"required"`
 	Description string `json:"description"`
 	ImageUrl    string `json:"image_url"`
+	SeriesLogo  string `json:"series_logo"`
 }
 
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {

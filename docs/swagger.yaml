@@ -71,6 +71,8 @@ definitions:
         type: string
       organizer_id:
         type: integer
+      series_logo:
+        type: string
     required:
     - organizer_id
     type: object
@@ -119,6 +121,8 @@ definitions:
         type: string
       description:
         type: string
+      event_name:
+        type: string
       event_theme:
         type: string
       id:
@@ -133,10 +137,10 @@ definitions:
         type: string
       message:
         type: string
-      name:
-        type: string
       series_id:
         type: integer
+      series_logo:
+        type: string
       status:
         type: string
       time:
