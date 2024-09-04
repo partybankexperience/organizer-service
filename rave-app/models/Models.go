@@ -72,7 +72,7 @@ type Ticket struct {
 	DiscountAmount               float64                     `json:"discount_price"`
 	DiscountCode                 string                      `json:"discount_code"`
 	AvailableDiscountedTickets   uint64                      `json:"available_discounted_tickets"`
-	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)" json:"additional_information_fields,omitempty"`
+	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255),embedded" json:"additional_information_fields,omitempty"`
 	IsTransferPaymentFeesToGuest bool
 	EventId                      uint64
 }
