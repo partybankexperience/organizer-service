@@ -912,6 +912,9 @@ const docTemplate = `{
                 "contact_information": {
                     "type": "string"
                 },
+                "created_by": {
+                    "type": "string"
+                },
                 "date": {
                     "type": "string"
                 },

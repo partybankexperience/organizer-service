@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series) []*response.SeriesResponse {
+func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, organizer *models.Organizer) []*response.SeriesResponse {
 	seriesResponses := make([]*response.SeriesResponse, 0)
 	for _, userSeries := range series {
 		seriesResponse := &response.SeriesResponse{
@@ -15,39 +15,18 @@ func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series) []*r
 			Name:        userSeries.Name,
 			Description: userSeries.Description,
 			ImageUrl:    userSeries.ImageUrl,
-			Events:      MapEventsToEventResponses(userSeries.Events, series[0]),
+			Events:      MapEventsToEventResponses(userSeries.Events),
 		}
 		seriesResponses = append(seriesResponses, seriesResponse)
 	}
 	return seriesResponses
 }
 
-func MapEventsToEventResponses(events []*models.Event, series *models.Series) []*response.EventResponse {
+func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse {
 	log.Println("events: ", events)
 	responses := make([]*response.EventResponse, 0)
 	for _, event := range events {
-		eventResponse := &response.EventResponse{
-			ID:                 event.ID,
-			Name:               event.Name,
-			Status:             event.Status,
-			Date:               event.EventDate,
-			Time:               event.StartTime,
-			Description:        event.Description,
-			Location:           event.Location,
-			ContactInformation: event.ContactInformation,
-			MapEmbeddedUrl:     event.MapEmbeddedUrl,
-			MapUrl:             event.MapUrl,
-			ImageUrl:           event.ImageUrl,
-			Venue:              event.Venue,
-			Reference:          event.Reference,
-			CreatedBy:          event.CreatedBy,
-		}
-		if event.Location != nil {
-			eventResponse.Location = event.Location
-		}
-		if series != nil {
-			eventResponse.SeriesLogo = series.Logo
-		}
+		eventResponse := MapEventToEventResponse(event)
 		responses = append(responses, eventResponse)
 	}
 	return responses

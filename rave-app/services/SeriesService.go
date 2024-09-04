@@ -117,6 +117,7 @@ func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64, pag
 		log.Println("Error: ", err)
 		return nil, errors.New("error finding requested resource")
 	}
-	seriesResponses := mappers.MapSeriesCollectionToSeriesResponseCollection(userSeries)
+
+	seriesResponses := mappers.MapSeriesCollectionToSeriesResponseCollection(userSeries, nil)
 	return seriesResponses, nil
 }

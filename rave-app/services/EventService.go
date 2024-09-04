@@ -136,17 +136,8 @@ func (raveEventService *raveEventService) DiscoverEvents(page int, size int) ([]
 		return nil, err
 	}
 	log.Println("events: ", events)
-	var event *models.Event
-	var series *models.Series
-	if len(events) > 0 {
-		event = events[0]
-		seriesId := event.SeriesID
-		series, err = raveEventService.SeriesService.GetById(seriesId)
-		if err != nil {
-			return nil, err
-		}
-	}
-	allEvents := mappers.MapEventsToEventResponses(events, series)
+
+	allEvents := mappers.MapEventsToEventResponses(events)
 	return allEvents, nil
 }
 
