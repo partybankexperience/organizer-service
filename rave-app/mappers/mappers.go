@@ -39,8 +39,8 @@ func MapEventsToEventResponses(events []*models.Event, series *models.Series) []
 			MapUrl:             event.MapUrl,
 			ImageUrl:           event.ImageUrl,
 			Venue:              event.Venue,
-
-			Reference: event.Reference,
+			Reference:          event.Reference,
+			CreatedBy:          event.CreatedBy,
 		}
 		if event.Location != nil {
 			eventResponse.Location = event.Location
@@ -72,6 +72,8 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 		AttendeeTerm:       event.AttendeeTerm,
 		EventTheme:         event.EventTheme,
 		ImageUrl:           event.ImageUrl,
+		Reference:          event.Reference,
+		CreatedBy:          event.CreatedBy,
 	}
 
 	if event.Location != nil {

@@ -41,7 +41,11 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	event := mapCreateEventRequestToEvent(createEventRequest)
 	var calendar *models.Series
 	var err error
-
+	org, err := raveEventService.OrganizerService.GetById(createEventRequest.OrganizerId)
+	if err != nil || org == nil {
+		log.Println("err finding organizer: ", err)
+		return nil, err
+	}
 	if createEventRequest.SeriesId == 0 {
 		calendar, err = raveEventService.GetPublicCalendarFor(createEventRequest.OrganizerId)
 		if err != nil {
@@ -56,6 +60,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 		}
 	}
 	event.SeriesID = calendar.ID
+	event.CreatedBy = org.Name
 	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)

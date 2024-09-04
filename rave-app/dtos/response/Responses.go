@@ -90,6 +90,7 @@ type EventResponse struct {
 	Venue              string           `json:"venue,omitempty"`
 	ImageUrl           string           `json:"image_url,omitempty"`
 	Reference          string           `json:"event_reference"`
+	CreatedBy          string           `json:"created_by"`
 }
 
 type TicketResponse struct {

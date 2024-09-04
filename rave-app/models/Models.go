@@ -94,6 +94,7 @@ type Event struct {
 	Reference          string    `json:"event_reference"`
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
+	CreatedBy          string
 }
 
 type Location struct {
