@@ -61,7 +61,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	}
 	log.Println("organizer: ", *org)
 	event.SeriesID = calendar.ID
-	event.CreatedBy = org.Name
+	event.CreatedBy = calendar.Name
 
 	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
