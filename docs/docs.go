@@ -957,6 +957,12 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 },
+                "tickets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.TicketResponse"
+                    }
+                },
                 "time": {
                     "type": "string"
                 },

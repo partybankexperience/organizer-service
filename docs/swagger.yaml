@@ -147,6 +147,10 @@ definitions:
         type: string
       status:
         type: string
+      tickets:
+        items:
+          $ref: '#/definitions/dtos.TicketResponse'
+        type: array
       time:
         type: string
       venue:

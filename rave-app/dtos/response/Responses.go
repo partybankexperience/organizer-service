@@ -72,25 +72,26 @@ type CalendarResponse struct {
 }
 
 type EventResponse struct {
-	ID                 uint64           `json:"id"`
-	SeriesID           uint64           `json:"series_id,omitempty"`
-	SeriesLogo         string           `json:"series_logo,omitempty"`
-	Message            string           `json:"message,omitempty"`
-	Name               string           `json:"event_name,omitempty"`
-	Location           *models.Location `json:"location,omitempty"`
-	Date               string           `json:"date,omitempty"`
-	Time               string           `json:"time,omitempty"`
-	ContactInformation string           `json:"contact_information,omitempty"`
-	Description        string           `json:"description,omitempty"`
-	Status             string           `json:"status,omitempty"`
-	EventTheme         string           `json:"event_theme,omitempty"`
-	MapUrl             string           `json:"map_url,omitempty"`
-	MapEmbeddedUrl     string           `json:"map_embedded_url,omitempty"`
-	AttendeeTerm       string           `json:"attendee_term,omitempty"`
-	Venue              string           `json:"venue,omitempty"`
-	ImageUrl           string           `json:"image_url,omitempty"`
-	Reference          string           `json:"event_reference"`
-	CreatedBy          string           `json:"created_by"`
+	ID                 uint64            `json:"id"`
+	SeriesID           uint64            `json:"series_id,omitempty"`
+	SeriesLogo         string            `json:"series_logo,omitempty"`
+	Message            string            `json:"message,omitempty"`
+	Name               string            `json:"event_name,omitempty"`
+	Location           *models.Location  `json:"location,omitempty"`
+	Date               string            `json:"date,omitempty"`
+	Time               string            `json:"time,omitempty"`
+	ContactInformation string            `json:"contact_information,omitempty"`
+	Description        string            `json:"description,omitempty"`
+	Status             string            `json:"status,omitempty"`
+	EventTheme         string            `json:"event_theme,omitempty"`
+	MapUrl             string            `json:"map_url,omitempty"`
+	MapEmbeddedUrl     string            `json:"map_embedded_url,omitempty"`
+	AttendeeTerm       string            `json:"attendee_term,omitempty"`
+	Venue              string            `json:"venue,omitempty"`
+	ImageUrl           string            `json:"image_url,omitempty"`
+	Reference          string            `json:"event_reference"`
+	CreatedBy          string            `json:"created_by"`
+	Tickets            []*TicketResponse `json:"tickets"`
 }
 
 type TicketResponse struct {
@@ -102,7 +103,7 @@ type TicketResponse struct {
 	PurchaseLimit                uint64                             `json:"purchase_limit,omitempty"`
 	DiscountType                 string                             `json:"discount_type,omitempty"`
 	Percentage                   float64                            `json:"percentage,omitempty"`
-	DiscountPrice                float64                            `json:"discount_price,omitempty"`
+	DiscountAmount               float64                            `json:"discount_price,omitempty"`
 	DiscountCode                 string                             `json:"discount_code,omitempty"`
 	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets,omitempty"`
 	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest,omitempty"`

@@ -22,6 +22,11 @@ const (
 )
 
 const (
+	PUBLISHED = "PUBLISHED"
+	DRAFT     = "DRAFT"
+)
+
+const (
 	ACTIVE    = "ACTIVE"
 	SUSPENDED = "SUSPENDED"
 	IN_ACTIVE = "IN_ACTIVE"
@@ -64,7 +69,7 @@ type Ticket struct {
 	PurchaseLimit                uint64                      `json:"purchase_limit"`
 	DiscountType                 string                      `json:"discount_type"`
 	Percentage                   float64                     `json:"percentage"`
-	DiscountPrice                float64                     `json:"discount_price"`
+	DiscountAmount               float64                     `json:"discount_price"`
 	DiscountCode                 string                      `json:"discount_code"`
 	AvailableDiscountedTickets   uint64                      `json:"available_discounted_tickets"`
 	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)" json:"additional_information_fields,omitempty"`
@@ -95,6 +100,7 @@ type Event struct {
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
 	CreatedBy          string
+	PublicationState   string
 }
 
 type Location struct {

@@ -62,7 +62,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	log.Println("organizer: ", *org)
 	event.SeriesID = calendar.ID
 	event.CreatedBy = calendar.Name
-
+	event.PublicationState = models.DRAFT
 	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)

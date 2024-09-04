@@ -47,13 +47,13 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 		return nil, errors.New("failed to save ticket")
 	}
 	event.Tickets = append(event.Tickets, ticket)
+	event.PublicationState = models.PUBLISHED
 	err = raveTicketService.UpdateEvent(event)
 	if err != nil {
 		return nil, errors.New("failed to save ticket")
 	}
 	createTicketResponse := &response.TicketResponse{}
 	errs = model.Copy(createTicketResponse, savedTicket)
-
 	log.Println("new ticket created: ", savedTicket)
 	go sendNewTicketEvent(event, createTicketResponse)
 	return createTicketResponse, nil
@@ -114,7 +114,7 @@ func buildTicketMessage(event *models.Event, ticketResponse *response.TicketResp
 		NumberAvailable:            ticketResponse.NumberAvailable,
 		Price:                      ticketResponse.Price,
 		DiscountCode:               ticketResponse.DiscountCode,
-		DiscountPrice:              ticketResponse.DiscountPrice,
+		DiscountPrice:              ticketResponse.DiscountAmount,
 		PurchaseLimit:              ticketResponse.PurchaseLimit,
 		Percentage:                 ticketResponse.Percentage,
 		AvailableDiscountedTickets: ticketResponse.AvailableDiscountedTickets,

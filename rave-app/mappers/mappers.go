@@ -3,7 +3,6 @@ package mappers
 import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
-	"log"
 )
 
 func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, organizer *models.Organizer) []*response.SeriesResponse {
@@ -23,13 +22,37 @@ func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, orga
 }
 
 func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse {
-	log.Println("events: ", events)
 	responses := make([]*response.EventResponse, 0)
 	for _, event := range events {
+		ticketResponses := GetTicketsFrom(event)
 		eventResponse := MapEventToEventResponse(event)
+		eventResponse.Tickets = ticketResponses
 		responses = append(responses, eventResponse)
 	}
 	return responses
+}
+
+func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
+	ticketResponses := make([]*response.TicketResponse, 0)
+	for _, ticket := range event.Tickets {
+		ticketResponse := &response.TicketResponse{
+			Type:                         ticket.Type,
+			Name:                         ticket.Name,
+			Stock:                        ticket.Stock,
+			NumberAvailable:              ticket.NumberAvailable,
+			Price:                        ticket.Price,
+			PurchaseLimit:                ticket.PurchaseLimit,
+			DiscountType:                 ticket.DiscountType,
+			Percentage:                   ticket.Percentage,
+			DiscountAmount:               ticket.DiscountAmount,
+			DiscountCode:                 ticket.DiscountCode,
+			AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
+			IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
+			AdditionalInformationFields:  ticket.AdditionalInformationFields,
+		}
+		ticketResponses = append(ticketResponses, ticketResponse)
+	}
+	return ticketResponses
 }
 
 func MapEventToEventResponse(event *models.Event) *response.EventResponse {
