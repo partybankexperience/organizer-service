@@ -3,12 +3,14 @@ package repositories
 import (
 	"github.com/djfemz/rave/rave-app/models"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+	"log"
 )
 
 type EventRepository interface {
 	crudRepository[models.Event, uint64]
 	FindAllByCalendar(calendarId uint64, pageNumber, pageSize int) ([]*models.Event, error)
-	FindAllByPage(page int, size int) ([]*models.Event, error)
+	FindAllPublishedByPage(page int, size int) ([]*models.Event, error)
 	FindByReference(reference string) (*models.Event, error)
 }
 
@@ -42,18 +44,21 @@ func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uin
 	return events, nil
 }
 
-func (raveEventRepository *raveEventRepository) FindAllByPage(page int, size int) ([]*models.Event, error) {
-	if page < 1 {
-		page = 1
-	}
+func (raveEventRepository *raveEventRepository) FindAllPublishedByPage(page int, size int) ([]*models.Event, error) {
 	if size < 1 {
 		size = 1
+	}
+	if page < 1 {
+		page = 1
 	} else if size > 100 {
 		size = 100
 	}
-	pageAble := NewPageAble(page, size)
-	events, err := raveEventRepository.FindAllBy(pageAble)
-
+	offset := (page - 1) * size
+	log.Println("offset: ", offset)
+	var events []*models.Event
+	err := raveEventRepository.Db.Preload(clause.Associations).
+		Where(&models.Event{PublicationState: models.PUBLISHED}).
+		Offset(offset).Limit(size).Find(&events).Error
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +67,7 @@ func (raveEventRepository *raveEventRepository) FindAllByPage(page int, size int
 
 func (raveEventRepository *raveEventRepository) FindByReference(reference string) (*models.Event, error) {
 	event := &models.Event{}
-	err := raveEventRepository.Db.Where(&models.Event{Reference: reference}).First(event).Error
+	err := raveEventRepository.Db.Preload(clause.Associations).Where(&models.Event{Reference: reference}).First(event).Error
 	if err != nil {
 		return nil, err
 	}

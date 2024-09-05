@@ -92,6 +92,7 @@ type EventResponse struct {
 	Reference          string            `json:"event_reference"`
 	CreatedBy          string            `json:"created_by"`
 	Tickets            []*TicketResponse `json:"tickets"`
+	PublicationState   string            `json:"publication_state"`
 }
 
 type TicketResponse struct {

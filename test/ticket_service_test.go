@@ -13,7 +13,7 @@ package test
 //	Name:            "early birds",
 //	NumberAvailable: 50,
 //	Price:           5000.00,
-//	EventId:         2,
+//	EventID:         2,
 //}
 //
 //var ticketService = services.NewTicketService()

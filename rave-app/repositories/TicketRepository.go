@@ -32,7 +32,7 @@ func (raveTicketRepository *raveTicketRepository) FindAllByEventId(id uint64, pa
 	offset := (pageNumber - 1) * pageSize
 	var tickets []*models.Ticket
 
-	err := raveTicketRepository.Db.Where(&models.Ticket{EventId: id}).Offset(offset).Limit(pageSize).Find(&tickets).Error
+	err := raveTicketRepository.Db.Where(&models.Ticket{EventID: id}).Offset(offset).Limit(pageSize).Find(&tickets).Error
 	if err != nil {
 		return nil, err
 	}

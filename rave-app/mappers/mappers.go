@@ -3,6 +3,7 @@ package mappers
 import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
+	"log"
 )
 
 func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, organizer *models.Organizer) []*response.SeriesResponse {
@@ -25,7 +26,9 @@ func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse
 	responses := make([]*response.EventResponse, 0)
 	for _, event := range events {
 		ticketResponses := GetTicketsFrom(event)
+		log.Println("tickets: ", ticketResponses)
 		eventResponse := MapEventToEventResponse(event)
+
 		eventResponse.Tickets = ticketResponses
 		responses = append(responses, eventResponse)
 	}
@@ -33,6 +36,7 @@ func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse
 }
 
 func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
+	log.Println("tickkets: ", event.Tickets)
 	ticketResponses := make([]*response.TicketResponse, 0)
 	for _, ticket := range event.Tickets {
 		ticketResponse := &response.TicketResponse{
@@ -76,6 +80,7 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 		ImageUrl:           event.ImageUrl,
 		Reference:          event.Reference,
 		CreatedBy:          event.CreatedBy,
+		PublicationState:   event.PublicationState,
 	}
 
 	if event.Location != nil {

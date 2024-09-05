@@ -211,6 +211,7 @@ func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 }
 
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
+	log.Println("param name: ", paramName, "val: ", ctx.Param(paramName))
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)
 	if err != nil {
 		return 0, errors.New("error extracting path variable from request")

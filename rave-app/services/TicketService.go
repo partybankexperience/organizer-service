@@ -42,11 +42,13 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 		log.Println(errs)
 		return nil, errors.New("failed to create ticket")
 	}
-	savedTicket, err := raveTicketService.Save(ticket)
+	ticket.EventID = event.ID
+	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
+		log.Println("error: ticket saving failed", err)
 		return nil, errors.New("failed to save ticket")
 	}
-	event.Tickets = append(event.Tickets, ticket)
+	event.Tickets = append(event.Tickets, savedTicket)
 	event.PublicationState = models.PUBLISHED
 	err = raveTicketService.UpdateEvent(event)
 	if err != nil {
