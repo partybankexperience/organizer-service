@@ -49,7 +49,6 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 		return nil, errors.New("failed to save ticket")
 	}
 	event.Tickets = append(event.Tickets, savedTicket)
-	event.PublicationState = models.PUBLISHED
 	err = raveTicketService.UpdateEvent(event)
 	if err != nil {
 		return nil, errors.New("failed to save ticket")

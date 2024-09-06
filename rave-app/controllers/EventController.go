@@ -210,6 +210,30 @@ func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, event)
 }
 
+// PublishEvent godoc
+// @Summary      Publish Event
+// @Description  Publish Event
+// @Tags         Events
+// @Accept       json
+// @Param        reference  path int  true  "id"
+// @Produce      json
+// @Success      200  {object}  dtos.EventResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Router       /api/v1/event/publish/{id} [get]
+func (eventController *EventController) PublishEvent(ctx *gin.Context) {
+	id, err := extractParamFromRequest("id", ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	event, err := eventController.EventService.PublishEvent(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	ctx.JSON(http.StatusOK, event)
+}
+
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
 	log.Println("param name: ", paramName, "val: ", ctx.Param(paramName))
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)

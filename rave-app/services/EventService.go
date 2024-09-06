@@ -21,6 +21,7 @@ type EventService interface {
 	UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error)
 	UpdateEvent(event *models.Event) error
 	GetAllEventsFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.EventResponse, error)
+	PublishEvent(eventId uint64) (*response.EventResponse, error)
 }
 
 type raveEventService struct {
@@ -150,6 +151,21 @@ func (raveEventService *raveEventService) GetEventByReference(reference string) 
 	}
 	eventResponse := mappers.MapEventToEventResponse(event)
 	return eventResponse, nil
+}
+
+func (raveEventService *raveEventService) PublishEvent(eventId uint64) (*response.EventResponse, error) {
+	event, err := raveEventService.GetEventBy(eventId)
+	if err != nil {
+		return nil, errors.New("event not found")
+	}
+	if event.Tickets != nil && len(event.Tickets) > 0 {
+		event.PublicationState = models.PUBLISHED
+	}
+	event, err = raveEventService.Save(event)
+	if err != nil {
+		return nil, errors.New("failed to save event")
+	}
+	return mappers.MapEventToEventResponse(event), nil
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {
