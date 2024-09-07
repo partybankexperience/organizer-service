@@ -899,41 +899,22 @@ const docTemplate = `{
                 "event_id"
             ],
             "properties": {
-                "additional_information_fields": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "available_discounted_tickets": {
-                    "type": "integer"
-                },
                 "capacity": {
                     "type": "integer"
                 },
                 "colour": {
                     "type": "string"
                 },
-                "discount_code": {
-                    "type": "string"
-                },
-                "discount_price": {
-                    "type": "number"
-                },
-                "discount_type": {
-                    "type": "string"
-                },
                 "event_id": {
+                    "description": "AdditionalInformationFields  models.AdditionalInformationFields ` + "`" + `json:\"additional_information_fields\"` + "`" + `",
                     "type": "integer"
                 },
                 "is_transfer_payment_fees_to_guest": {
+                    "description": "DiscountType                 string                             ` + "`" + `json:\"discount_type\"` + "`" + `\nPercentage float64 ` + "`" + `json:\"percentage\"` + "`" + `\nDiscountPrice                float64                            ` + "`" + `json:\"discount_price\"` + "`" + `\nDiscountCode                 string                             ` + "`" + `json:\"discount_code\"` + "`" + `\nAvailableDiscountedTickets   uint64                             ` + "`" + `json:\"available_discounted_tickets\"` + "`" + `",
                     "type": "boolean"
                 },
                 "name": {
                     "type": "string"
-                },
-                "percentage": {
-                    "type": "number"
                 },
                 "price": {
                     "type": "number"

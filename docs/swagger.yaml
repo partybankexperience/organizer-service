@@ -78,30 +78,24 @@ definitions:
     type: object
   dtos.CreateTicketRequest:
     properties:
-      additional_information_fields:
-        items:
-          type: string
-        type: array
-      available_discounted_tickets:
-        type: integer
       capacity:
         type: integer
       colour:
         type: string
-      discount_code:
-        type: string
-      discount_price:
-        type: number
-      discount_type:
-        type: string
       event_id:
+        description: AdditionalInformationFields  models.AdditionalInformationFields
+          `json:"additional_information_fields"`
         type: integer
       is_transfer_payment_fees_to_guest:
+        description: |-
+          DiscountType                 string                             `json:"discount_type"`
+          Percentage float64 `json:"percentage"`
+          DiscountPrice                float64                            `json:"discount_price"`
+          DiscountCode                 string                             `json:"discount_code"`
+          AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
         type: boolean
       name:
         type: string
-      percentage:
-        type: number
       price:
         type: number
       price_change_date:

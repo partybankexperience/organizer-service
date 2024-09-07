@@ -66,7 +66,7 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 }
 
 func MapEventToEventResponse(event *models.Event) *response.EventResponse {
-
+	tickets := GetTicketsFrom(event)
 	eventResponse := &response.EventResponse{
 		ID:                 event.ID,
 		Message:            "event created successfully",
@@ -86,6 +86,7 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 		Reference:          event.Reference,
 		CreatedBy:          event.CreatedBy,
 		PublicationState:   event.PublicationState,
+		Tickets:            tickets,
 	}
 
 	if event.Location != nil {

@@ -1,7 +1,5 @@
 package dtos
 
-import "github.com/djfemz/rave/rave-app/models"
-
 const (
 	LIMITED   = "LIMITED"
 	UNLIMITED = "UNLIMITED"
@@ -55,26 +53,26 @@ type UpdateEventRequest struct {
 }
 
 type CreateTicketRequest struct {
-	Type                         string                             `json:"ticket_type"`
-	Name                         string                             `json:"name"`
-	Capacity                     uint64                             `json:"capacity"`
-	Stock                        string                             `json:"stock"`
-	Price                        float64                            `json:"price"`
-	PurchaseLimit                uint64                             `json:"purchase_limit"`
-	DiscountType                 string                             `json:"discount_type"`
-	Percentage                   float64                            `json:"percentage"`
-	DiscountPrice                float64                            `json:"discount_price"`
-	DiscountCode                 string                             `json:"discount_code"`
-	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
-	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
-	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
-	EventId                      uint64                             `json:"event_id" validate:"required"`
-	Colour                       string                             `json:"colour"`
-	SaleEndDate                  string                             `json:"ticket_sale_end_date"`
-	SalesEndTime                 string                             `json:"ticket_sales_end_time"`
-	TicketPerks                  TicketPerks                        `json:"ticket_perks"`
-	PriceChangeDate              string                             `json:"price_change_date"`
-	PriceChangeTime              string                             `json:"price_change_time"`
+	Type          string  `json:"ticket_type"`
+	Name          string  `json:"name"`
+	Capacity      uint64  `json:"capacity"`
+	Stock         string  `json:"stock"`
+	Price         float64 `json:"price"`
+	PurchaseLimit uint64  `json:"purchase_limit"`
+	//DiscountType                 string                             `json:"discount_type"`
+	//Percentage float64 `json:"percentage"`
+	//DiscountPrice                float64                            `json:"discount_price"`
+	//DiscountCode                 string                             `json:"discount_code"`
+	//AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
+	IsTransferPaymentFeesToGuest bool `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
+	//AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
+	EventId         uint64      `json:"event_id" validate:"required"`
+	Colour          string      `json:"colour"`
+	SaleEndDate     string      `json:"ticket_sale_end_date"`
+	SalesEndTime    string      `json:"ticket_sales_end_time"`
+	TicketPerks     TicketPerks `json:"ticket_perks"`
+	PriceChangeDate string      `json:"price_change_date"`
+	PriceChangeTime string      `json:"price_change_time"`
 }
 
 type TicketPerks []string
