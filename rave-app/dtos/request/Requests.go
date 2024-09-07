@@ -2,6 +2,11 @@ package dtos
 
 import "github.com/djfemz/rave/rave-app/models"
 
+const (
+	LIMITED   = "LIMITED"
+	UNLIMITED = "UNLIMITED"
+)
+
 type AuthRequest struct {
 	CreateUserRequest
 }
@@ -52,8 +57,8 @@ type UpdateEventRequest struct {
 type CreateTicketRequest struct {
 	Type                         string                             `json:"ticket_type"`
 	Name                         string                             `json:"name"`
-	Stock                        uint64                             `json:"stock"`
-	NumberAvailable              uint64                             `json:"number_in_stock"`
+	Capacity                     uint64                             `json:"capacity"`
+	Stock                        string                             `json:"stock"`
 	Price                        float64                            `json:"price"`
 	PurchaseLimit                uint64                             `json:"purchase_limit"`
 	DiscountType                 string                             `json:"discount_type"`
@@ -65,7 +70,14 @@ type CreateTicketRequest struct {
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
 	EventId                      uint64                             `json:"event_id" validate:"required"`
 	Colour                       string                             `json:"colour"`
+	SaleEndDate                  string                             `json:"ticket_sale_end_date"`
+	SalesEndTime                 string                             `json:"ticket_sales_end_time"`
+	TicketPerks                  TicketPerks                        `json:"ticket_perks"`
+	PriceChangeDate              string                             `json:"price_change_date"`
+	PriceChangeTime              string                             `json:"price_change_time"`
 }
+
+type TicketPerks []string
 
 type CreateUserRequest struct {
 	Username string `json:"username" validate:"required,email"`
@@ -93,7 +105,7 @@ type TicketType struct {
 //Ticket Type [Free, Paid]
 //Ticket Name
 //Ticket Price
-//Ticket Stock [Limited, Unlimited]
+//Ticket Capacity [Limited, Unlimited]
 //Capacity/ Available Tickets [if limited]
 //Ticket Purchase Limit [How many tickets can be bought at a time?]
 //Ticket Perks [What are the benefits attached to ticket type?]

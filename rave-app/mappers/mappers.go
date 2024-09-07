@@ -3,6 +3,7 @@ package mappers
 import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/utils"
 	"log"
 )
 
@@ -42,7 +43,7 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 		ticketResponse := &response.TicketResponse{
 			Type:                         ticket.Type,
 			Name:                         ticket.Name,
-			Stock:                        ticket.Stock,
+			Capacity:                     ticket.Capacity,
 			NumberAvailable:              ticket.NumberAvailable,
 			Price:                        ticket.Price,
 			PurchaseLimit:                ticket.PurchaseLimit,
@@ -53,7 +54,12 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 			AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
 			IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
 			AdditionalInformationFields:  ticket.AdditionalInformationFields,
+			SaleEndDate:                  ticket.SaleEndDate,
+			SalesEndTime:                 ticket.SalesEndTime,
+			Stock:                        ticket.Stock,
 		}
+		isTicketSaleEnded := utils.IsTicketSaleEndedFor(ticket)
+		ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
 		ticketResponses = append(ticketResponses, ticketResponse)
 	}
 	return ticketResponses
@@ -62,10 +68,9 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 
 	eventResponse := &response.EventResponse{
-		ID:      event.ID,
-		Message: "event created successfully",
-		Name:    event.Name,
-
+		ID:                 event.ID,
+		Message:            "event created successfully",
+		Name:               event.Name,
 		Date:               event.EventDate,
 		Time:               event.StartTime,
 		ContactInformation: event.ContactInformation,

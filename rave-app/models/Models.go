@@ -63,7 +63,8 @@ type Ticket struct {
 	ID                           uint64 `gorm:"primaryKey"`
 	Type                         string
 	Name                         string                      `json:"name"`
-	Stock                        uint64                      `json:"stock"`
+	Capacity                     uint64                      `json:"capacity"`
+	Stock                        string                      `json:"stock"`
 	NumberAvailable              uint64                      `json:"number_available"`
 	Price                        float64                     `json:"price"`
 	PurchaseLimit                uint64                      `json:"purchase_limit"`
@@ -77,6 +78,8 @@ type Ticket struct {
 	EventID                      uint64
 	Reference                    string `json:"reference"`
 	Colour                       string `json:"colour"`
+	SaleEndDate                  string `json:"ticket_sale_end_date"`
+	SalesEndTime                 string `json:"ticket_sales_end_time"`
 }
 
 type Event struct {

@@ -908,6 +908,9 @@ const docTemplate = `{
                 "available_discounted_tickets": {
                     "type": "integer"
                 },
+                "capacity": {
+                    "type": "integer"
+                },
                 "colour": {
                     "type": "string"
                 },
@@ -929,20 +932,35 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "number_in_stock": {
-                    "type": "integer"
-                },
                 "percentage": {
                     "type": "number"
                 },
                 "price": {
                     "type": "number"
                 },
+                "price_change_date": {
+                    "type": "string"
+                },
+                "price_change_time": {
+                    "type": "string"
+                },
                 "purchase_limit": {
                     "type": "integer"
                 },
                 "stock": {
-                    "type": "integer"
+                    "type": "string"
+                },
+                "ticket_perks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ticket_sale_end_date": {
+                    "type": "string"
+                },
+                "ticket_sales_end_time": {
+                    "type": "string"
                 },
                 "ticket_type": {
                     "type": "string"
@@ -1035,6 +1053,9 @@ const docTemplate = `{
                 "available_discounted_tickets": {
                     "type": "integer"
                 },
+                "capacity": {
+                    "type": "integer"
+                },
                 "colour": {
                     "type": "string"
                 },
@@ -1046,6 +1067,9 @@ const docTemplate = `{
                 },
                 "discount_type": {
                     "type": "string"
+                },
+                "is_ticket_sale_done": {
+                    "type": "boolean"
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "type": "boolean"
@@ -1066,9 +1090,15 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "stock": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "ticket_reference": {
+                    "type": "string"
+                },
+                "ticket_sale_end_date": {
+                    "type": "string"
+                },
+                "ticket_sales_end_time": {
                     "type": "string"
                 },
                 "ticket_type": {
@@ -1147,6 +1177,9 @@ const docTemplate = `{
                 "available_discounted_tickets": {
                     "type": "integer"
                 },
+                "capacity": {
+                    "type": "integer"
+                },
                 "colour": {
                     "type": "string"
                 },
@@ -1187,7 +1220,13 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "stock": {
-                    "type": "integer"
+                    "type": "string"
+                },
+                "ticket_sale_end_date": {
+                    "type": "string"
+                },
+                "ticket_sales_end_time": {
+                    "type": "string"
                 },
                 "type": {
                     "type": "string"

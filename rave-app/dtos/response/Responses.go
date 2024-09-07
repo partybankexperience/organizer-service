@@ -98,7 +98,8 @@ type EventResponse struct {
 type TicketResponse struct {
 	Type                         string                             `json:"ticket_type,omitempty"`
 	Name                         string                             `json:"name,omitempty"`
-	Stock                        uint64                             `json:"stock,omitempty"`
+	Capacity                     uint64                             `json:"capacity,omitempty"`
+	Stock                        string                             `json:"stock"`
 	NumberAvailable              uint64                             `json:"number_in_stock,omitempty"`
 	Price                        float64                            `json:"price,omitempty"`
 	PurchaseLimit                uint64                             `json:"purchase_limit,omitempty"`
@@ -111,4 +112,7 @@ type TicketResponse struct {
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
 	Reference                    string                             `json:"ticket_reference"`
 	Colour                       string                             `json:"colour"`
+	IsTicketSaleEnded            bool                               `json:"is_ticket_sale_done"`
+	SaleEndDate                  string                             `json:"ticket_sale_end_date"`
+	SalesEndTime                 string                             `json:"ticket_sales_end_time"`
 }
