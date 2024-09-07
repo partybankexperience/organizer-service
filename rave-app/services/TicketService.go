@@ -8,6 +8,7 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
+	"github.com/djfemz/rave/rave-app/utils"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
 	"net/http"
@@ -35,13 +36,16 @@ func NewTicketService(ticketRepository repositories.TicketRepository, eventServi
 
 func (raveTicketService *raveTicketService) CreateTicketFor(request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error) {
 	event, err := raveTicketService.GetEventBy(request.EventId)
-
+	if err != nil {
+		return nil, errors.New("event not found")
+	}
 	ticket := &models.Ticket{}
 	errs := model.Copy(ticket, request)
 	if len(errs) != 0 {
 		log.Println(errs)
 		return nil, errors.New("failed to create ticket")
 	}
+	ticket.Reference = utils.GenerateTicketReference()
 	ticket.EventID = event.ID
 	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
@@ -108,8 +112,9 @@ func sendNewTicketMessageFor(event *models.Event) {
 }
 
 func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
+	ticketTypes := extractTicketTypesFrom(event.Tickets)
 	return &request.NewTicketMessage{
-		Types:        nil,
+		Types:        ticketTypes,
 		Name:         event.Name,
 		Reference:    event.Reference,
 		Venue:        event.Venue,
@@ -118,4 +123,21 @@ func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 		TimeFrame:    event.StartTime,
 	}
 
+}
+
+func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
+	ticketTypes := make([]*request.TicketType, 0)
+
+	for _, ticket := range tickets {
+		ticketType := &request.TicketType{
+			Reference: ticket.Reference,
+			Reserved:  ticket.NumberAvailable,
+			MaxSeats:  ticket.NumberAvailable,
+			Name:      ticket.Name,
+			Price:     ticket.Price,
+			Colour:    "",
+		}
+		ticketTypes = append(ticketTypes, ticketType)
+	}
+	return ticketTypes
 }

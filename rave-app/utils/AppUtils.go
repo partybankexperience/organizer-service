@@ -30,3 +30,9 @@ func GenerateEventReference() string {
 	v := base64.RawURLEncoding.EncodeToString([]byte(s.String()))
 	return "evt-" + v
 }
+
+func GenerateTicketReference() string {
+	s := uuid.New()
+	v := base64.RawURLEncoding.EncodeToString([]byte(s.String()))
+	return "tkt-" + v
+}

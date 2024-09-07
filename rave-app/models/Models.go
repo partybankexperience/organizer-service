@@ -75,6 +75,7 @@ type Ticket struct {
 	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)" json:"additional_information_fields,omitempty"`
 	IsTransferPaymentFeesToGuest bool
 	EventID                      uint64
+	Reference                    string `json:"reference"`
 }
 
 type Event struct {

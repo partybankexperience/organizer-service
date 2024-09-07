@@ -109,4 +109,5 @@ type TicketResponse struct {
 	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets,omitempty"`
 	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest,omitempty"`
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
+	Reference                    string                             `json:"ticket_reference"`
 }
