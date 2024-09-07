@@ -28,7 +28,6 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.POST("/event", eventController.CreateEvent)
 		protected.GET("/event/:id", eventController.GetEventById)
 		protected.PUT("/event/:id", eventController.EditEvent)
-		//protected.GET("/event", eventController.EditEvent)
 		protected.GET("/event/organizer", eventController.GetAllEventsForOrganizer)
 		protected.POST("/event/staff", organizerController.AddEventStaff)
 		protected.POST("/ticket", ticketController.AddTicketToEvent)
@@ -37,6 +36,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.POST("/series", seriesController.CreateSeries)
 		protected.GET("/series/:id", seriesController.GetSeriesById)
 		protected.GET("/series/organizer/:organizerId", seriesController.GetSeriesForOrganizer)
+		protected.GET("/api/v1/event/publish/:id", eventController.PublishEvent)
 	}
 	router.Use(cors.New(configureCors()))
 	authController := controllers.NewAuthController(authService)
@@ -44,7 +44,6 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 	router.GET("/auth/otp/validate", authController.ValidateOtp)
 	router.GET("/api/v1/event/discover", eventController.DiscoverEvents)
 	router.GET("/api/v1/event/reference/:reference", eventController.GetEventByReference)
-	router.GET("/api/v1/event/publish/:id", eventController.PublishEvent)
 }
 
 func AuthMiddleware() gin.HandlerFunc {
