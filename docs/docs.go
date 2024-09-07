@@ -171,6 +171,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/event/publish/{id}": {
+            "get": {
+                "description": "Publish Event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Publish Event",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "reference",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.EventResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/event/reference/{reference}": {
             "get": {
                 "description": "Get Event By reference",
@@ -865,6 +903,9 @@ const docTemplate = `{
                 "available_discounted_tickets": {
                     "type": "integer"
                 },
+                "colour": {
+                    "type": "string"
+                },
                 "discount_code": {
                     "type": "string"
                 },
@@ -948,6 +989,9 @@ const docTemplate = `{
                 "message": {
                     "type": "string"
                 },
+                "publication_state": {
+                    "type": "string"
+                },
                 "series_id": {
                     "type": "integer"
                 },
@@ -986,6 +1030,9 @@ const docTemplate = `{
                 "available_discounted_tickets": {
                     "type": "integer"
                 },
+                "colour": {
+                    "type": "string"
+                },
                 "discount_code": {
                     "type": "string"
                 },
@@ -1015,6 +1062,9 @@ const docTemplate = `{
                 },
                 "stock": {
                     "type": "integer"
+                },
+                "ticket_reference": {
+                    "type": "string"
                 },
                 "ticket_type": {
                     "type": "string"
@@ -1092,6 +1142,9 @@ const docTemplate = `{
                 "available_discounted_tickets": {
                     "type": "integer"
                 },
+                "colour": {
+                    "type": "string"
+                },
                 "discount_code": {
                     "type": "string"
                 },
@@ -1101,7 +1154,7 @@ const docTemplate = `{
                 "discount_type": {
                     "type": "string"
                 },
-                "eventId": {
+                "eventID": {
                     "type": "integer"
                 },
                 "id": {
@@ -1124,6 +1177,9 @@ const docTemplate = `{
                 },
                 "purchase_limit": {
                     "type": "integer"
+                },
+                "reference": {
+                    "type": "string"
                 },
                 "stock": {
                     "type": "integer"

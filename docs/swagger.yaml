@@ -84,6 +84,8 @@ definitions:
         type: array
       available_discounted_tickets:
         type: integer
+      colour:
+        type: string
       discount_code:
         type: string
       discount_price:
@@ -141,6 +143,8 @@ definitions:
         type: string
       message:
         type: string
+      publication_state:
+        type: string
       series_id:
         type: integer
       series_logo:
@@ -166,6 +170,8 @@ definitions:
         type: array
       available_discounted_tickets:
         type: integer
+      colour:
+        type: string
       discount_code:
         type: string
       discount_price:
@@ -186,6 +192,8 @@ definitions:
         type: integer
       stock:
         type: integer
+      ticket_reference:
+        type: string
       ticket_type:
         type: string
     type: object
@@ -236,13 +244,15 @@ definitions:
         type: array
       available_discounted_tickets:
         type: integer
+      colour:
+        type: string
       discount_code:
         type: string
       discount_price:
         type: number
       discount_type:
         type: string
-      eventId:
+      eventID:
         type: integer
       id:
         type: integer
@@ -258,6 +268,8 @@ definitions:
         type: number
       purchase_limit:
         type: integer
+      reference:
+        type: string
       stock:
         type: integer
       type:
@@ -429,6 +441,31 @@ paths:
       security:
       - Bearer: []
       summary: Get all Events for organizer
+      tags:
+      - Events
+  /api/v1/event/publish/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Publish Event
+      parameters:
+      - description: id
+        in: path
+        name: reference
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Publish Event
       tags:
       - Events
   /api/v1/event/reference/{reference}:

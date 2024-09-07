@@ -64,6 +64,7 @@ type CreateTicketRequest struct {
 	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
 	EventId                      uint64                             `json:"event_id" validate:"required"`
+	Colour                       string                             `json:"colour"`
 }
 
 type CreateUserRequest struct {

@@ -76,6 +76,7 @@ type Ticket struct {
 	IsTransferPaymentFeesToGuest bool
 	EventID                      uint64
 	Reference                    string `json:"reference"`
+	Colour                       string `json:"colour"`
 }
 
 type Event struct {
