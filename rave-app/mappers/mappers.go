@@ -16,14 +16,14 @@ func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, orga
 			Name:        userSeries.Name,
 			Description: userSeries.Description,
 			ImageUrl:    userSeries.ImageUrl,
-			Events:      MapEventsToEventResponses(userSeries.Events),
+			Events:      MapEventsToEventResponses(userSeries.Events, series[0]),
 		}
 		seriesResponses = append(seriesResponses, seriesResponse)
 	}
 	return seriesResponses
 }
 
-func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse {
+func MapEventsToEventResponses(events []*models.Event, series *models.Series) []*response.EventResponse {
 	responses := make([]*response.EventResponse, 0)
 	for _, event := range events {
 		ticketResponses := GetTicketsFrom(event)
@@ -31,6 +31,7 @@ func MapEventsToEventResponses(events []*models.Event) []*response.EventResponse
 		eventResponse := MapEventToEventResponse(event)
 
 		eventResponse.Tickets = ticketResponses
+		eventResponse.SeriesLogo = series.Logo
 		responses = append(responses, eventResponse)
 	}
 	return responses
