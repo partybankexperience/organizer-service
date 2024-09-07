@@ -1203,6 +1203,12 @@ const docTemplate = `{
                 "stock": {
                     "type": "string"
                 },
+                "ticketPerks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "ticket_sale_end_date": {
                     "type": "string"
                 },
@@ -1227,9 +1233,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "rave.onrender.com",
+	Host:             "localhost:8000",
 	BasePath:         "",
-	Schemes:          []string{"https"},
+	Schemes:          []string{"http"},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",
 	InfoInstanceName: "swagger",

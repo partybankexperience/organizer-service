@@ -38,7 +38,7 @@ func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
 		return nil, err
 	}
 	var id, _ = GetId(*t)
-	err = r.Db.First(t, id).Error
+	err = r.Db.Preload(clause.Associations).First(t, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -47,8 +47,9 @@ func (r *repositoryImpl[T, U]) Save(t *T) (*T, error) {
 
 func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
 	var t = new(T)
-	err := r.Db.Preload(clause.Associations).First(t, id).Error
+	err := r.Db.Preload(clause.Associations).Where("ID=?", id).First(t).Error
 	if err != nil {
+		log.Println("err: ", err.Error())
 		return nil, err
 	}
 	return t, nil

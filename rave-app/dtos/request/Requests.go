@@ -1,5 +1,11 @@
 package dtos
 
+import (
+	"database/sql/driver"
+	"errors"
+	"strings"
+)
+
 const (
 	LIMITED   = "LIMITED"
 	UNLIMITED = "UNLIMITED"
@@ -77,6 +83,21 @@ type CreateTicketRequest struct {
 
 type TicketPerks []string
 
+func (o *TicketPerks) Scan(src any) error {
+	bytes, ok := src.(string)
+	if !ok {
+		return errors.New("src value cannot cast to []byte")
+	}
+	*o = strings.Split(bytes, ",")
+	return nil
+}
+func (o TicketPerks) Value() (driver.Value, error) {
+	if len(o) == 0 {
+		return nil, nil
+	}
+	return strings.Join(o, ","), nil
+}
+
 type CreateUserRequest struct {
 	Username string `json:"username" validate:"required,email"`
 }
@@ -97,7 +118,9 @@ type TicketType struct {
 	MaxSeats  uint64  `json:"maxSeats"`
 	Name      string  `json:"name"`
 	Price     float64 `json:"price"`
-	Colour    string  `json:"colour"`
+	Colour    string  `json:"color"`
+	Category  uint64  `json:"category"`
+	Stock     string
 }
 
 //Ticket Type [Free, Paid]
@@ -107,6 +130,21 @@ type TicketType struct {
 //Capacity/ Available Tickets [if limited]
 //Ticket Purchase Limit [How many tickets can be bought at a time?]
 //Ticket Perks [What are the benefits attached to ticket type?]
+
+//"reference": "TCKT002",
+//"category": "Single Ticket",
+//"type": "Paid",
+//"name": "Standard",
+//"price": "5000",
+//"color": "Yellow",
+//"stock": "Limited",
+//"capacity": 1000,
+//"purchaseLimit": 5,
+//"perks": "Free food",
+//"salesEndDate": "2024-08-28",
+//"salesEndTime": "17:00",
+//"priceChangeDate": "2024-08-20",
+//"priceChangeTime": "12:00"
 
 type NewTicketMessage struct {
 	Reference    string        `json:"eventReference"`

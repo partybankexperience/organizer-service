@@ -1,6 +1,7 @@
 package dtos
 
 import (
+	dtos "github.com/djfemz/rave/rave-app/dtos/request"
 	"github.com/djfemz/rave/rave-app/models"
 	"time"
 )
@@ -115,4 +116,5 @@ type TicketResponse struct {
 	IsTicketSaleEnded            bool                               `json:"is_ticket_sale_done"`
 	SaleEndDate                  string                             `json:"ticket_sale_end_date"`
 	SalesEndTime                 string                             `json:"ticket_sales_end_time"`
+	TicketPerks                  dtos.TicketPerks                   `json:"ticket_perks"`
 }

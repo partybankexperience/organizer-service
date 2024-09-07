@@ -37,6 +37,7 @@ func NewTicketService(ticketRepository repositories.TicketRepository, eventServi
 func (raveTicketService *raveTicketService) CreateTicketFor(request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error) {
 	event, err := raveTicketService.GetEventBy(request.EventId)
 	if err != nil {
+		log.Println("event: ", event)
 		return nil, errors.New("event not found")
 	}
 	ticket := &models.Ticket{}
@@ -47,6 +48,8 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 	}
 	ticket.Reference = utils.GenerateTicketReference()
 	ticket.EventID = event.ID
+	ticket.TicketPerks = request.TicketPerks
+	log.Println("perks: ", ticket.TicketPerks)
 	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
 		log.Println("error: ticket saving failed", err)
@@ -59,8 +62,9 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 	}
 	createTicketResponse := &response.TicketResponse{}
 	errs = model.Copy(createTicketResponse, savedTicket)
-	log.Println("new ticket created: ", savedTicket)
+	log.Println("new ticket created: ", savedTicket.TicketPerks)
 	go sendNewTicketMessageFor(event)
+	createTicketResponse.TicketPerks = savedTicket.TicketPerks
 	return createTicketResponse, nil
 }
 
@@ -74,6 +78,7 @@ func (raveTicketService *raveTicketService) GetById(id uint64) (*response.Ticket
 	if len(errs) > 0 {
 		return nil, errs[0]
 	}
+	res.TicketPerks = ticket.TicketPerks
 	return res, nil
 }
 
@@ -106,7 +111,7 @@ func sendNewTicketMessageFor(event *models.Event) {
 	client := &http.Client{}
 	_, err = client.Do(req)
 	if err != nil {
-		log.Fatal("Error: ", err)
+		log.Println("Error: ", err)
 	}
 
 }

@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "https"
+        "http"
     ],
     "swagger": "2.0",
     "info": {
@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "rave.onrender.com",
+    "host": "localhost:8000",
     "paths": {
         "/api/v1/event": {
             "post": {
@@ -1198,6 +1198,12 @@
                 },
                 "stock": {
                     "type": "string"
+                },
+                "ticketPerks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "ticket_sale_end_date": {
                     "type": "string"

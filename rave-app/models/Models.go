@@ -1,8 +1,12 @@
 package models
 
 import (
+	"database/sql/driver"
+	"errors"
+	dtos "github.com/djfemz/rave/rave-app/dtos/request"
 	"gorm.io/gorm"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/djfemz/rave/rave-app/security/otp"
@@ -59,6 +63,21 @@ type User struct {
 
 type AdditionalInformationFields []string
 
+func (o *AdditionalInformationFields) Scan(src any) error {
+	bytes, ok := src.(string)
+	if !ok {
+		return errors.New("src value cannot cast to []byte")
+	}
+	*o = strings.Split(bytes, ",")
+	return nil
+}
+func (o AdditionalInformationFields) Value() (driver.Value, error) {
+	if len(o) == 0 {
+		return nil, nil
+	}
+	return strings.Join(o, ","), nil
+}
+
 type Ticket struct {
 	ID                           uint64 `gorm:"primaryKey"`
 	Type                         string
@@ -74,12 +93,16 @@ type Ticket struct {
 	DiscountCode                 string                      `json:"discount_code"`
 	AvailableDiscountedTickets   uint64                      `json:"available_discounted_tickets"`
 	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)" json:"additional_information_fields,omitempty"`
+	TicketPerks                  dtos.TicketPerks            `gorm:"type:VARCHAR(255),embedded"`
 	IsTransferPaymentFeesToGuest bool
 	EventID                      uint64
 	Reference                    string `json:"reference"`
 	Colour                       string `json:"colour"`
 	SaleEndDate                  string `json:"ticket_sale_end_date"`
 	SalesEndTime                 string `json:"ticket_sales_end_time"`
+}
+
+type ActivePeriod struct {
 }
 
 type Event struct {

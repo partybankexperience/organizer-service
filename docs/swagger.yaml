@@ -292,10 +292,14 @@ definitions:
         type: string
       ticket_sales_end_time:
         type: string
+      ticketPerks:
+        items:
+          type: string
+        type: array
       type:
         type: string
     type: object
-host: rave.onrender.com
+host: localhost:8000
 info:
   contact:
     email: unavailable
@@ -792,7 +796,7 @@ paths:
       tags:
       - Auth
 schemes:
-- https
+- http
 securityDefinitions:
   Bearer:
     in: header
