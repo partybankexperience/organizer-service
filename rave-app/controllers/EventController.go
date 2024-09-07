@@ -219,6 +219,7 @@ func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
 // @Router       /api/v1/event/publish/{id} [get]
 func (eventController *EventController) PublishEvent(ctx *gin.Context) {
 	id, err := extractParamFromRequest("id", ctx)

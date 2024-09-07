@@ -465,6 +465,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
       summary: Publish Event
       tags:
       - Events

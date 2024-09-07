@@ -173,6 +173,11 @@ const docTemplate = `{
         },
         "/api/v1/event/publish/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Publish Event",
                 "consumes": [
                     "application/json"
