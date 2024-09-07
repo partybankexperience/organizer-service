@@ -89,10 +89,10 @@ type EventResponse struct {
 	AttendeeTerm       string            `json:"attendee_term,omitempty"`
 	Venue              string            `json:"venue,omitempty"`
 	ImageUrl           string            `json:"image_url,omitempty"`
-	Reference          string            `json:"event_reference"`
-	CreatedBy          string            `json:"created_by"`
-	Tickets            []*TicketResponse `json:"tickets"`
-	PublicationState   string            `json:"publication_state"`
+	Reference          string            `json:"event_reference,omitempty"`
+	CreatedBy          string            `json:"created_by,omitempty"`
+	Tickets            []*TicketResponse `json:"tickets,omitempty"`
+	PublicationState   string            `json:"publication_state,omitempty"`
 }
 
 type TicketResponse struct {
