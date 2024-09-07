@@ -6,6 +6,7 @@ import (
 	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"github.com/djfemz/rave/rave-app/mappers"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
 	"github.com/djfemz/rave/rave-app/utils"
@@ -20,6 +21,7 @@ type TicketService interface {
 	GetById(id uint64) (*response.TicketResponse, error)
 	GetTicketById(id uint64) (*models.Ticket, error)
 	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
+	UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error)
 }
 
 type raveTicketService struct {
@@ -90,6 +92,20 @@ func (raveTicketService *raveTicketService) GetTicketById(id uint64) (*models.Ti
 	return ticket, nil
 }
 
+func (raveTicketService *raveTicketService) UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error) {
+	ticket, err := raveTicketService.TicketRepository.FindTicketByReference(reference)
+	if err != nil {
+		return nil, errors.New("ticket update failed")
+	}
+	ticket.IsSoldOutTicket = true
+	ticket, err = raveTicketService.TicketRepository.Save(ticket)
+	if err != nil {
+		log.Println("Error: saving failed", err)
+		return nil, errors.New("ticket update failed")
+	}
+	return mappers.MapTicketToTicketResponse(ticket), nil
+}
+
 func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error) {
 	tickets, err := raveTicketService.FindAllByEventId(eventId, pageNumber, pageSize)
 	if err != nil {
@@ -135,12 +151,18 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 
 	for _, ticket := range tickets {
 		ticketType := &request.TicketType{
-			Reference: ticket.Reference,
-			Reserved:  ticket.NumberAvailable,
-			MaxSeats:  ticket.NumberAvailable,
-			Name:      ticket.Name,
-			Price:     ticket.Price,
-			Colour:    "",
+			Reference:    ticket.Reference,
+			Reserved:     ticket.PurchaseLimit,
+			MaxSeats:     ticket.NumberAvailable,
+			Name:         ticket.Name,
+			Price:        ticket.Price,
+			Colour:       ticket.Colour,
+			Category:     ticket.Category,
+			Stock:        ticket.Stock,
+			SalesEndDate: ticket.SaleEndDate,
+			SalesEndTime: ticket.SalesEndTime,
+			Capacity:     ticket.Capacity,
+			Perks:        ticket.TicketPerks,
 		}
 		ticketTypes = append(ticketTypes, ticketType)
 	}

@@ -202,6 +202,10 @@ definitions:
         type: integer
       stock:
         type: string
+      ticket_perks:
+        items:
+          type: string
+        type: array
       ticket_reference:
         type: string
       ticket_sale_end_date:
@@ -260,6 +264,8 @@ definitions:
         type: integer
       capacity:
         type: integer
+      category:
+        type: integer
       colour:
         type: string
       discount_code:
@@ -272,6 +278,8 @@ definitions:
         type: integer
       id:
         type: integer
+      is_sold_out_ticket:
+        type: boolean
       isTransferPaymentFeesToGuest:
         type: boolean
       name:
@@ -299,7 +307,7 @@ definitions:
       type:
         type: string
     type: object
-host: localhost:8000
+host: rave.onrender.com
 info:
   contact:
     email: unavailable
@@ -736,6 +744,33 @@ paths:
       summary: Get all Tickets for Event
       tags:
       - Tickets
+  /api/v1/ticket/update:
+    get:
+      consumes:
+      - application/json
+      description: Update Ticket By reference
+      parameters:
+      - description: reference
+        in: query
+        name: reference
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.TicketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Update Ticket By reference
+      tags:
+      - Tickets
   /auth/login:
     post:
       consumes:
@@ -796,7 +831,7 @@ paths:
       tags:
       - Auth
 schemes:
-- http
+- https
 securityDefinitions:
   Bearer:
     in: header

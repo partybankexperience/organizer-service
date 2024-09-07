@@ -627,6 +627,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/ticket/update": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update Ticket By reference",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Update Ticket By reference",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "reference",
+                        "name": "reference",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.TicketResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/ticket/{eventId}": {
             "get": {
                 "security": [
@@ -1073,6 +1116,12 @@ const docTemplate = `{
                 "stock": {
                     "type": "string"
                 },
+                "ticket_perks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "ticket_reference": {
                     "type": "string"
                 },
@@ -1161,6 +1210,9 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "integer"
+                },
                 "colour": {
                     "type": "string"
                 },
@@ -1180,6 +1232,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "isTransferPaymentFeesToGuest": {
+                    "type": "boolean"
+                },
+                "is_sold_out_ticket": {
                     "type": "boolean"
                 },
                 "name": {
@@ -1233,9 +1288,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8000",
+	Host:             "rave.onrender.com",
 	BasePath:         "",
-	Schemes:          []string{"http"},
+	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",
 	InfoInstanceName: "swagger",

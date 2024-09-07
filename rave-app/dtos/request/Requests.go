@@ -112,40 +112,46 @@ type CreateEventStaffRequest struct {
 	EventId     uint64   `json:"event_id" validate:"required"`
 }
 
+// "reference": "TCKT002",
+// "category": "Single Ticket",
+// "type": "Paid",
+// "name": "Standard",
+// "price": "5000",
+// "color": "Yellow",
+// "stock": "Limited",
+// "capacity": 1000,
+// "purchaseLimit": 5,
+// "perks": "Free food",
+// "salesEndDate": "2024-08-28",
+// "salesEndTime": "17:00",
+// "priceChangeDate": "2024-08-20",
+// "priceChangeTime": "12:00"
 type TicketType struct {
-	Reference string  `json:"ticketTypeReference"`
-	Reserved  uint64  `json:"reservedSeats"`
-	MaxSeats  uint64  `json:"maxSeats"`
-	Name      string  `json:"name"`
-	Price     float64 `json:"price"`
-	Colour    string  `json:"color"`
-	Category  uint64  `json:"category"`
-	Stock     string
+	Reference       string      `json:"ticketTypeReference"`
+	Reserved        uint64      `json:"reservedSeats"`
+	MaxSeats        uint64      `json:"maxSeats"`
+	Type            string      `json:"type"`
+	PurchaseLimit   uint64      `json:"purchase_limit"`
+	Name            string      `json:"name"`
+	Price           float64     `json:"price"`
+	Colour          string      `json:"color"`
+	Category        uint64      `json:"category"`
+	Stock           string      `json:"stock"`
+	SalesEndDate    string      `json:"sales_end_date"`
+	SalesEndTime    string      `json:"sales_end_time"`
+	PriceChangeDate string      `json:"price_change_date"`
+	PriceChangeTime string      `json:"price_change_time"`
+	Capacity        uint64      `json:"capacity"`
+	Perks           TicketPerks `json:"perks"`
 }
 
-//Ticket Type [Free, Paid]
-//Ticket Name
-//Ticket Price
-//Ticket Capacity [Limited, Unlimited]
-//Capacity/ Available Tickets [if limited]
-//Ticket Purchase Limit [How many tickets can be bought at a time?]
-//Ticket Perks [What are the benefits attached to ticket type?]
-
-//"reference": "TCKT002",
-//"category": "Single Ticket",
-//"type": "Paid",
-//"name": "Standard",
-//"price": "5000",
-//"color": "Yellow",
-//"stock": "Limited",
-//"capacity": 1000,
-//"purchaseLimit": 5,
-//"perks": "Free food",
-//"salesEndDate": "2024-08-28",
-//"salesEndTime": "17:00",
-//"priceChangeDate": "2024-08-20",
-//"priceChangeTime": "12:00"
-
+// Ticket Type [Free, Paid]
+// Ticket Name
+// Ticket Price
+// Ticket Capacity [Limited, Unlimited]
+// Capacity/ Available Tickets [if limited]
+// Ticket Purchase Limit [How many tickets can be bought at a time?]
+// Ticket Perks [What are the benefits attached to ticket type?]
 type NewTicketMessage struct {
 	Reference    string        `json:"eventReference"`
 	Types        []*TicketType `json:"ticketTypes"`
@@ -154,6 +160,7 @@ type NewTicketMessage struct {
 	TimeFrame    string        `json:"timeFrame"`
 	AttendeeTerm string        `json:"attendeeTerm"`
 	Date         string        `json:"eventDate"`
+	Capacity     uint64        `json:"capacity"`
 }
 
 type Sender struct {

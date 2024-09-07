@@ -3,11 +3,13 @@ package repositories
 import (
 	"github.com/djfemz/rave/rave-app/models"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type TicketRepository interface {
 	crudRepository[models.Ticket, uint64]
 	FindAllByEventId(id uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
+	FindTicketByReference(reference string) (*models.Ticket, error)
 }
 
 type raveTicketRepository struct {
@@ -37,4 +39,14 @@ func (raveTicketRepository *raveTicketRepository) FindAllByEventId(id uint64, pa
 		return nil, err
 	}
 	return tickets, nil
+}
+
+func (raveTicketRepository *raveTicketRepository) FindTicketByReference(reference string) (*models.Ticket, error) {
+	var ticket = &models.Ticket{}
+	err := raveTicketRepository.Db.Preload(clause.Associations).Where(&models.Ticket{Reference: reference}).First(ticket).Error
+	if err != nil {
+		return nil, err
+	}
+	return ticket, nil
+
 }

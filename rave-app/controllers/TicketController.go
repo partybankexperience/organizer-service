@@ -117,3 +117,24 @@ func (ticketController *TicketController) GetTicketById(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, ticket)
 }
+
+// UpdateTicketByReference godoc
+// @Summary      Update Ticket By reference
+// @Description  Update Ticket By reference
+// @Tags         Tickets
+// @Accept       json
+// @Param        reference query string  true  "reference"
+// @Produce      json
+// @Success      200  {object}  dtos.TicketResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/ticket/update [get]
+func (ticketController *TicketController) UpdateTicketByReference(ctx *gin.Context) {
+	reference := ctx.Query("reference")
+	ticket, err := ticketController.TicketService.UpdateTicketSoldOutBy(reference)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, ticket)
+}

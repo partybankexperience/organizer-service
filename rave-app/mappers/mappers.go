@@ -99,3 +99,24 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 	}
 	return eventResponse
 }
+
+func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
+	return &response.TicketResponse{
+		Type:                         ticket.Type,
+		Name:                         ticket.Name,
+		Capacity:                     ticket.Capacity,
+		Stock:                        ticket.Stock,
+		Reference:                    ticket.Reference,
+		NumberAvailable:              ticket.NumberAvailable,
+		Price:                        ticket.Price,
+		PurchaseLimit:                ticket.PurchaseLimit,
+		DiscountType:                 ticket.DiscountType,
+		AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
+		IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
+		AdditionalInformationFields:  ticket.AdditionalInformationFields,
+		Colour:                       ticket.Colour,
+		SaleEndDate:                  ticket.SaleEndDate,
+		SalesEndTime:                 ticket.SalesEndTime,
+		TicketPerks:                  ticket.TicketPerks,
+	}
+}

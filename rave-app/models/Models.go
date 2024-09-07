@@ -83,6 +83,7 @@ type Ticket struct {
 	Type                         string
 	Name                         string                      `json:"name"`
 	Capacity                     uint64                      `json:"capacity"`
+	Category                     uint64                      `json:"category"`
 	Stock                        string                      `json:"stock"`
 	NumberAvailable              uint64                      `json:"number_available"`
 	Price                        float64                     `json:"price"`
@@ -100,6 +101,7 @@ type Ticket struct {
 	Colour                       string `json:"colour"`
 	SaleEndDate                  string `json:"ticket_sale_end_date"`
 	SalesEndTime                 string `json:"ticket_sales_end_time"`
+	IsSoldOutTicket              bool   `json:"is_sold_out_ticket"`
 }
 
 type ActivePeriod struct {
