@@ -56,7 +56,7 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 	createTicketResponse := &response.TicketResponse{}
 	errs = model.Copy(createTicketResponse, savedTicket)
 	log.Println("new ticket created: ", savedTicket)
-	go sendNewTicketEvent(event, createTicketResponse)
+	go sendNewTicketMessageFor(event)
 	return createTicketResponse, nil
 }
 
@@ -90,8 +90,8 @@ func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pag
 	return tickets, nil
 }
 
-func sendNewTicketEvent(event *models.Event, ticketResponse *response.TicketResponse) {
-	ticketMessage := buildTicketMessage(event, ticketResponse)
+func sendNewTicketMessageFor(event *models.Event) {
+	ticketMessage := buildTicketMessage(event)
 	body, err := json.Marshal(ticketMessage)
 	if err != nil {
 		log.Println("Error: ", err)
@@ -107,21 +107,15 @@ func sendNewTicketEvent(event *models.Event, ticketResponse *response.TicketResp
 
 }
 
-func buildTicketMessage(event *models.Event, ticketResponse *response.TicketResponse) *request.NewTicketMessage {
+func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 	return &request.NewTicketMessage{
-		Type:                       ticketResponse.Type,
-		Name:                       ticketResponse.Name,
-		Stock:                      ticketResponse.Stock,
-		NumberAvailable:            ticketResponse.NumberAvailable,
-		Price:                      ticketResponse.Price,
-		DiscountCode:               ticketResponse.DiscountCode,
-		DiscountPrice:              ticketResponse.DiscountAmount,
-		PurchaseLimit:              ticketResponse.PurchaseLimit,
-		Percentage:                 ticketResponse.Percentage,
-		AvailableDiscountedTickets: ticketResponse.AvailableDiscountedTickets,
-		EventName:                  event.Name,
-		Description:                event.Description,
-		Location:                   event.Location,
+		Types:        nil,
+		Name:         event.Name,
+		Reference:    event.Reference,
+		Venue:        event.Venue,
+		AttendeeTerm: event.AttendeeTerm,
+		Date:         event.EventDate,
+		TimeFrame:    event.StartTime,
 	}
 
 }

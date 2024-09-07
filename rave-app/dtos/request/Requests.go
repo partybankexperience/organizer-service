@@ -80,29 +80,23 @@ type CreateEventStaffRequest struct {
 	EventId     uint64   `json:"event_id" validate:"required"`
 }
 
+type TicketType struct {
+	Reference string  `json:"ticketTypeReference"`
+	Reserved  uint64  `json:"reservedSeats"`
+	MaxSeats  uint64  `json:"maxSeats"`
+	Name      string  `json:"name"`
+	Price     float64 `json:"price"`
+	Colour    string
+}
+
 type NewTicketMessage struct {
-	Type                         string                             `json:"ticket_type"`
-	Name                         string                             `json:"name"`
-	Stock                        uint64                             `json:"stock"`
-	NumberAvailable              uint64                             `json:"number_in_stock"`
-	Price                        float64                            `json:"price"`
-	PurchaseLimit                uint64                             `json:"purchase_limit"`
-	DiscountType                 string                             `json:"discount_type"`
-	Percentage                   float64                            `json:"percentage"`
-	DiscountPrice                float64                            `json:"discount_price"`
-	DiscountCode                 string                             `json:"discount_code"`
-	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
-	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest"`
-	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
-	Message                      string                             `json:"message,omitempty"`
-	EventName                    string                             `json:"event_name"`
-	Organizer                    string                             `json:"organizer"`
-	Location                     *models.Location                   `json:"location"`
-	Date                         string                             `json:"date"`
-	Time                         string                             `json:"time"`
-	ContactInformation           string                             `json:"contact_information"`
-	Description                  string                             `json:"description"`
-	Status                       string                             `json:"status"`
+	Reference    string        `json:"eventReference"`
+	Types        []*TicketType `json:"ticketTypes"`
+	Name         string        `json:"eventName"`
+	Venue        string        `json:"venue"`
+	TimeFrame    string        `json:"timeFrame"`
+	AttendeeTerm string        `json:"attendeeTerm"`
+	Date         string        `json:"eventDate"`
 }
 
 type Sender struct {
