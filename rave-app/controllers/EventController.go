@@ -229,7 +229,7 @@ func (eventController *EventController) PublishEvent(ctx *gin.Context) {
 	}
 	event, err := eventController.EventService.PublishEvent(id)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusOK, event)
