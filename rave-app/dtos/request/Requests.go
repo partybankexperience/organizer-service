@@ -87,8 +87,16 @@ type TicketType struct {
 	MaxSeats  uint64  `json:"maxSeats"`
 	Name      string  `json:"name"`
 	Price     float64 `json:"price"`
-	Colour    string
+	Colour    string  `json:"colour"`
 }
+
+//Ticket Type [Free, Paid]
+//Ticket Name
+//Ticket Price
+//Ticket Stock [Limited, Unlimited]
+//Capacity/ Available Tickets [if limited]
+//Ticket Purchase Limit [How many tickets can be bought at a time?]
+//Ticket Perks [What are the benefits attached to ticket type?]
 
 type NewTicketMessage struct {
 	Reference    string        `json:"eventReference"`

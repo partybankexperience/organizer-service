@@ -188,7 +188,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "id",
-                        "name": "reference",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }

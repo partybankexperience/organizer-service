@@ -215,7 +215,7 @@ func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 // @Description  Publish Event
 // @Tags         Events
 // @Accept       json
-// @Param        reference  path int  true  "id"
+// @Param        id  path int  true  "id"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse

@@ -451,7 +451,7 @@ paths:
       parameters:
       - description: id
         in: path
-        name: reference
+        name: id
         required: true
         type: integer
       produces:
