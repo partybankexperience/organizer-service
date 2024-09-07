@@ -160,6 +160,8 @@ func (raveEventService *raveEventService) PublishEvent(eventId uint64) (*respons
 	}
 	if event.Tickets != nil && len(event.Tickets) > 0 {
 		event.PublicationState = models.PUBLISHED
+	} else if event.Tickets == nil || len(event.Tickets) <= 0 {
+		return nil, errors.New("failed to publish event without tickets, add ticket to event first")
 	}
 	event, err = raveEventService.Save(event)
 	if err != nil {
