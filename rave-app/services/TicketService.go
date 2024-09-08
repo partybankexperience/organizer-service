@@ -51,6 +51,12 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 	ticket.Reference = utils.GenerateTicketReference()
 	ticket.EventID = event.ID
 	ticket.TicketPerks = request.TicketPerks
+	ticket.ActivePeriod = &models.ActivePeriod{
+		StartDate: request.SalesStartDate,
+		EndDate:   request.SaleEndDate,
+		StartTime: request.SalesStartTime,
+		EndTime:   request.SalesEndTime,
+	}
 	log.Println("perks: ", ticket.TicketPerks)
 	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
@@ -67,6 +73,12 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 	log.Println("new ticket created: ", savedTicket.TicketPerks)
 	go sendNewTicketMessageFor(event)
 	createTicketResponse.TicketPerks = savedTicket.TicketPerks
+	if savedTicket.ActivePeriod != nil {
+		createTicketResponse.SalesStartDate = savedTicket.ActivePeriod.StartDate
+		createTicketResponse.SalesStartTime = savedTicket.ActivePeriod.StartTime
+		createTicketResponse.SalesEndTime = savedTicket.ActivePeriod.EndTime
+		createTicketResponse.SaleEndDate = savedTicket.ActivePeriod.EndDate
+	}
 	return createTicketResponse, nil
 }
 

@@ -79,6 +79,8 @@ type CreateTicketRequest struct {
 	TicketPerks     TicketPerks `json:"ticket_perks"`
 	PriceChangeDate string      `json:"price_change_date"`
 	PriceChangeTime string      `json:"price_change_time"`
+	SalesStartDate  string      `json:"ticket_sale_start_date"`
+	SalesStartTime  string      `json:"ticket_sale_start_time"`
 }
 
 type TicketPerks []string
