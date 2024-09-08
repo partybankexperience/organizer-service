@@ -51,3 +51,12 @@ func IsTicketSaleEndedFor(ticket *models.Ticket) bool {
 	log.Println("true: ", endTime)
 	return time.Now().After(endTime)
 }
+
+func ExistsWithTicketName(event *models.Event, name string) bool {
+	for _, ticket := range event.Tickets {
+		if ticket.Name == name {
+			return true
+		}
+	}
+	return false
+}

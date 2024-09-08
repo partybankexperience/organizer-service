@@ -129,20 +129,20 @@ type CreateEventStaffRequest struct {
 // "priceChangeDate": "2024-08-20",
 // "priceChangeTime": "12:00"
 type TicketType struct {
-	Reference       string      `json:"ticketTypeReference"`
+	Reference       string      `json:"reference"`
 	Reserved        uint64      `json:"reservedSeats"`
 	MaxSeats        uint64      `json:"maxSeats"`
 	Type            string      `json:"type"`
-	PurchaseLimit   uint64      `json:"purchase_limit"`
+	PurchaseLimit   uint64      `json:"purchaseLimit"`
 	Name            string      `json:"name"`
 	Price           float64     `json:"price"`
 	Colour          string      `json:"color"`
 	Category        uint64      `json:"category"`
 	Stock           string      `json:"stock"`
-	SalesEndDate    string      `json:"sales_end_date"`
-	SalesEndTime    string      `json:"sales_end_time"`
-	PriceChangeDate string      `json:"price_change_date"`
-	PriceChangeTime string      `json:"price_change_time"`
+	SalesEndDate    string      `json:"salesEndDate"`
+	SalesEndTime    string      `json:"salesEndTime"`
+	PriceChangeDate string      `json:"priceChangeDate"`
+	PriceChangeTime string      `json:"priceChangeTime"`
 	Capacity        uint64      `json:"capacity"`
 	Perks           TicketPerks `json:"perks"`
 }

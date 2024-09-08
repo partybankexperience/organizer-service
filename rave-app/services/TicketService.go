@@ -42,6 +42,9 @@ func (raveTicketService *raveTicketService) CreateTicketFor(request *request.Cre
 		log.Println("event: ", event)
 		return nil, errors.New("event not found")
 	}
+	if utils.ExistsWithTicketName(event, request.Name) {
+		return nil, errors.New("ticket already exists")
+	}
 	ticket := &models.Ticket{}
 	errs := model.Copy(ticket, request)
 	if len(errs) != 0 {
@@ -145,6 +148,11 @@ func sendNewTicketMessageFor(event *models.Event) {
 
 func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 	ticketTypes := extractTicketTypesFrom(event.Tickets)
+	ticket := event.Tickets[0]
+	var timeFrame string
+	if ticket.ActivePeriod != nil {
+		timeFrame = event.StartTime + " " + ticket.ActivePeriod.EndTime
+	}
 	return &request.NewTicketMessage{
 		Types:        ticketTypes,
 		Name:         event.Name,
@@ -152,7 +160,7 @@ func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 		Venue:        event.Venue,
 		AttendeeTerm: event.AttendeeTerm,
 		Date:         event.EventDate,
-		TimeFrame:    event.StartTime,
+		TimeFrame:    timeFrame,
 	}
 }
 
