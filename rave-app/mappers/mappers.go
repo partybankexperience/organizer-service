@@ -59,6 +59,8 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 			SalesEndTime:                 ticket.SalesEndTime,
 			Stock:                        ticket.Stock,
 			TicketPerks:                  ticket.TicketPerks,
+			Reference:                    ticket.Reference,
+			Colour:                       ticket.Colour,
 		}
 		isTicketSaleEnded := utils.IsTicketSaleEndedFor(ticket)
 		ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
