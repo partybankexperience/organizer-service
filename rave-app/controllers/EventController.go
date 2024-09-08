@@ -172,18 +172,18 @@ func (eventController *EventController) DiscoverEvents(ctx *gin.Context) {
 	page := ctx.Query("page")
 	pageNumber, err := utils.ConvertQueryStringToInt(page)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
 	size := ctx.Query("size")
 	pageSize, err := utils.ConvertQueryStringToInt(size)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
 	events, err := eventController.EventService.DiscoverEvents(pageNumber, pageSize)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusOK, events)

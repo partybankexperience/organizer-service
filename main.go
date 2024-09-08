@@ -54,8 +54,8 @@ func init() {
 // @contact.email  unavailable
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host rave.onrender.com
-// @schemes https
+// @host localhost:8000
+// @schemes http
 // @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization

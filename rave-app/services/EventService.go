@@ -136,6 +136,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pag
 func (raveEventService *raveEventService) DiscoverEvents(page int, size int) ([]*response.EventResponse, error) {
 	events, err := raveEventService.FindAllPublishedByPage(page, size)
 	if err != nil {
+		log.Println("error: ", err.Error())
 		return make([]*response.EventResponse, 0), err
 	}
 	log.Println("events: ", events)
