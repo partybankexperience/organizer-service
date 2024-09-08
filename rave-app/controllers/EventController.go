@@ -182,10 +182,6 @@ func (eventController *EventController) DiscoverEvents(ctx *gin.Context) {
 		return
 	}
 	events, err := eventController.EventService.DiscoverEvents(pageNumber, pageSize)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
-		return
-	}
 	ctx.JSON(http.StatusOK, events)
 }
 
