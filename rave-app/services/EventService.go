@@ -136,18 +136,19 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pag
 func (raveEventService *raveEventService) DiscoverEvents(page int, size int) ([]*response.EventResponse, error) {
 	events, err := raveEventService.FindAllPublishedByPage(page, size)
 	if err != nil {
-		return nil, err
+		return make([]*response.EventResponse, 0), err
 	}
 	log.Println("events: ", events)
 	if events != nil && len(events) > 0 {
 		series, err := raveEventService.SeriesService.GetById(events[0].SeriesID)
 		if err != nil {
-			return nil, err
+			return make([]*response.EventResponse, 0), err
 		}
 		allEvents := mappers.MapEventsToEventResponses(events, series)
 		return allEvents, nil
 	}
-	return nil, errors.New("no events found")
+
+	return make([]*response.EventResponse, 0), errors.New("no events found")
 }
 
 func (raveEventService *raveEventService) GetEventByReference(reference string) (*response.EventResponse, error) {
