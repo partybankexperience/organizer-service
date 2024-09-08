@@ -88,20 +88,20 @@ type Ticket struct {
 	NumberAvailable              uint64                      `json:"number_available"`
 	Price                        float64                     `json:"price"`
 	PurchaseLimit                uint64                      `json:"purchase_limit"`
-	DiscountType                 string                      `json:"discount_type"`
-	Percentage                   float64                     `json:"percentage"`
-	DiscountAmount               float64                     `json:"discount_price"`
-	DiscountCode                 string                      `json:"discount_code"`
-	AvailableDiscountedTickets   uint64                      `json:"available_discounted_tickets"`
+	DiscountType                 string                      `json:"discount_type,-"`
+	Percentage                   float64                     `json:"percentage,-"`
+	DiscountAmount               float64                     `json:"discount_price,-"`
+	DiscountCode                 string                      `json:"discount_code,-"`
+	AvailableDiscountedTickets   uint64                      `json:"available_discounted_tickets,-"`
 	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)" json:"additional_information_fields,omitempty"`
 	TicketPerks                  dtos.TicketPerks            `gorm:"type:VARCHAR(255)" json:"ticket_perks"`
-	IsTransferPaymentFeesToGuest bool
-	EventID                      uint64
-	Reference                    string `json:"reference"`
-	Colour                       string `json:"colour"`
-	SaleEndDate                  string `json:"ticket_sale_end_date"`
-	SalesEndTime                 string `json:"ticket_sales_end_time"`
-	IsSoldOutTicket              bool   `json:"is_sold_out_ticket"`
+	IsTransferPaymentFeesToGuest bool                        `json:"is_transfer_payment_fees_to_guest"`
+	EventID                      uint64                      `json:"event_id"`
+	Reference                    string                      `json:"reference"`
+	Colour                       string                      `json:"colour"`
+	SaleEndDate                  string                      `json:"ticket_sale_end_date"`
+	SalesEndTime                 string                      `json:"ticket_sales_end_time"`
+	IsSoldOutTicket              bool                        `json:"is_sold_out_ticket"`
 }
 
 type ActivePeriod struct {

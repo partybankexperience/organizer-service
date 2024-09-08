@@ -121,5 +121,6 @@ func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 		SaleEndDate:                  ticket.SaleEndDate,
 		SalesEndTime:                 ticket.SalesEndTime,
 		TicketPerks:                  ticket.TicketPerks,
+		IsTicketSaleEnded:            ticket.IsSoldOutTicket,
 	}
 }
