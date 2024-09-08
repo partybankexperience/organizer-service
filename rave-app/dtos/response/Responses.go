@@ -111,10 +111,10 @@ type TicketResponse struct {
 	AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets,omitempty"`
 	IsTransferPaymentFeesToGuest bool                               `json:"is_transfer_payment_fees_to_guest,omitempty"`
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
-	Reference                    string                             `json:"ticket_reference"`
-	Colour                       string                             `json:"colour"`
-	IsTicketSaleEnded            bool                               `json:"is_ticket_sale_done"`
-	SaleEndDate                  string                             `json:"ticket_sale_end_date"`
-	SalesEndTime                 string                             `json:"ticket_sales_end_time"`
-	TicketPerks                  dtos.TicketPerks                   `json:"ticket_perks"`
+	Reference                    string                             `json:"ticket_reference,omitempty"`
+	Colour                       string                             `json:"colour,omitempty"`
+	IsTicketSaleEnded            bool                               `json:"is_ticket_sale_done,omitempty"`
+	SaleEndDate                  string                             `json:"ticket_sale_end_date,omitempty"`
+	SalesEndTime                 string                             `json:"ticket_sales_end_time,omitempty"`
+	TicketPerks                  dtos.TicketPerks                   `json:"ticket_perks,omitempty"`
 }
