@@ -296,14 +296,14 @@ definitions:
         type: string
       stock:
         type: string
+      ticket_perks:
+        items:
+          type: string
+        type: array
       ticket_sale_end_date:
         type: string
       ticket_sales_end_time:
         type: string
-      ticketPerks:
-        items:
-          type: string
-        type: array
       type:
         type: string
     type: object

@@ -1258,7 +1258,7 @@ const docTemplate = `{
                 "stock": {
                     "type": "string"
                 },
-                "ticketPerks": {
+                "ticket_perks": {
                     "type": "array",
                     "items": {
                         "type": "string"
