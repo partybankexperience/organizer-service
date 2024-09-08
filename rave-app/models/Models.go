@@ -111,7 +111,7 @@ type ActivePeriod struct {
 }
 
 type Event struct {
-	ID                 uint64    `id:"EventID" gorm:"primaryKey" json:"id"`
+	ID                 uint64    `id:"id" gorm:"primaryKey" json:"id"`
 	Name               string    `json:"name"`
 	Location           *Location `json:"location" gorm:"embedded"`
 	EventDate          string    `json:"date"`
@@ -143,7 +143,7 @@ type Location struct {
 }
 
 type Series struct {
-	ID   uint64 `id:"seriesId" gorm:"primaryKey" json:"id"`
+	ID   uint64 `id:"id" gorm:"primaryKey" json:"id"`
 	Name string `json:"name"`
 	gorm.Model
 	Events      []*Event `json:"events"`
@@ -154,13 +154,13 @@ type Series struct {
 }
 
 type EventStaff struct {
-	ID      uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	ID      uint64 `id:"id" gorm:"primaryKey" json:"id"`
 	*User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"user,omitempty"`
 	EventID uint64
 }
 
 type Discount struct {
-	ID uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	ID uint64 `id:"id" gorm:"primaryKey" json:"id"`
 	*Ticket
 	Name  string
 	Code  string
