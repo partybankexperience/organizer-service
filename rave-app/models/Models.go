@@ -79,7 +79,7 @@ func (o AdditionalInformationFields) Value() (driver.Value, error) {
 }
 
 type Ticket struct {
-	ID                           uint64 `gorm:"primaryKey"`
+	ID                           uint64 `id:"id" gorm:"primaryKey"`
 	Type                         string
 	Name                         string                      `json:"name"`
 	Capacity                     uint64                      `json:"capacity"`
