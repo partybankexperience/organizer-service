@@ -92,7 +92,7 @@ type EventResponse struct {
 	ImageUrl           string            `json:"image_url,omitempty"`
 	Reference          string            `json:"event_reference,omitempty"`
 	CreatedBy          string            `json:"created_by,omitempty"`
-	Tickets            []*TicketResponse `json:"tickets,omitempty"`
+	Tickets            []*TicketResponse `json:"tickets"`
 	PublicationState   string            `json:"publication_state,omitempty"`
 }
 
