@@ -139,6 +139,7 @@ func sendNewTicketMessageFor(event *models.Event) {
 	}
 	req, err := http.NewRequest(http.MethodPost, os.Getenv("TICKET_SERVICE_URL"), bytes.NewReader(body))
 	req.Header.Add("Content-Type", APPLICATION_JSON_VALUE)
+	log.Println("request data: ", req.Body)
 	client := &http.Client{}
 	_, err = client.Do(req)
 	if err != nil {
