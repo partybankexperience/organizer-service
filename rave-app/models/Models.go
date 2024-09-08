@@ -94,7 +94,7 @@ type Ticket struct {
 	DiscountCode                 string                      `json:"discount_code"`
 	AvailableDiscountedTickets   uint64                      `json:"available_discounted_tickets"`
 	AdditionalInformationFields  AdditionalInformationFields `gorm:"type:VARCHAR(255)" json:"additional_information_fields,omitempty"`
-	TicketPerks                  dtos.TicketPerks            `gorm:"type:VARCHAR(255),embedded"`
+	TicketPerks                  dtos.TicketPerks            `gorm:"type:VARCHAR(255)"`
 	IsTransferPaymentFeesToGuest bool
 	EventID                      uint64
 	Reference                    string `json:"reference"`
