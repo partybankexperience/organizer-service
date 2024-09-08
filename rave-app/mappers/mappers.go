@@ -41,27 +41,7 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 	log.Println("tickkets: ", event.Tickets)
 	ticketResponses := make([]*response.TicketResponse, 0)
 	for _, ticket := range event.Tickets {
-		ticketResponse := &response.TicketResponse{
-			Type:                         ticket.Type,
-			Name:                         ticket.Name,
-			Capacity:                     ticket.Capacity,
-			NumberAvailable:              ticket.NumberAvailable,
-			Price:                        ticket.Price,
-			PurchaseLimit:                ticket.PurchaseLimit,
-			DiscountType:                 ticket.DiscountType,
-			Percentage:                   ticket.Percentage,
-			DiscountAmount:               ticket.DiscountAmount,
-			DiscountCode:                 ticket.DiscountCode,
-			AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
-			IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
-			AdditionalInformationFields:  ticket.AdditionalInformationFields,
-			SaleEndDate:                  ticket.SaleEndDate,
-			SalesEndTime:                 ticket.SalesEndTime,
-			Stock:                        ticket.Stock,
-			TicketPerks:                  ticket.TicketPerks,
-			Reference:                    ticket.Reference,
-			Colour:                       ticket.Colour,
-		}
+		ticketResponse := MapTicketToTicketResponse(ticket)
 		isTicketSaleEnded := utils.IsTicketSaleEndedFor(ticket)
 		ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
 		ticketResponses = append(ticketResponses, ticketResponse)
@@ -104,7 +84,7 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 }
 
 func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
-	return &response.TicketResponse{
+	ticketResponse := &response.TicketResponse{
 		Type:                         ticket.Type,
 		Name:                         ticket.Name,
 		Capacity:                     ticket.Capacity,
@@ -118,9 +98,14 @@ func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 		IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
 		AdditionalInformationFields:  ticket.AdditionalInformationFields,
 		Colour:                       ticket.Colour,
-		SaleEndDate:                  ticket.SaleEndDate,
-		SalesEndTime:                 ticket.SalesEndTime,
 		TicketPerks:                  ticket.TicketPerks,
 		IsTicketSaleEnded:            ticket.IsSoldOutTicket,
 	}
+	if ticket.ActivePeriod != nil {
+		ticketResponse.SaleEndDate = ticket.ActivePeriod.EndDate
+		ticketResponse.SalesEndTime = ticket.ActivePeriod.EndTime
+		ticketResponse.SalesStartTime = ticket.ActivePeriod.StartTime
+		ticketResponse.SalesStartDate = ticket.ActivePeriod.StartDate
+	}
+	return ticketResponse
 }

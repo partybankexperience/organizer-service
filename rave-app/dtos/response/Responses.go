@@ -113,8 +113,11 @@ type TicketResponse struct {
 	AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields,omitempty"`
 	Reference                    string                             `json:"ticket_reference,omitempty"`
 	Colour                       string                             `json:"colour,omitempty"`
-	IsTicketSaleEnded            bool                               `json:"is_ticket_sale_done,omitempty"`
+	IsTicketSaleEnded            bool                               `json:"is_ticket_sale_date_expired,omitempty"`
 	SaleEndDate                  string                             `json:"ticket_sale_end_date,omitempty"`
 	SalesEndTime                 string                             `json:"ticket_sales_end_time,omitempty"`
-	TicketPerks                  dtos.TicketPerks                   `json:"ticket_perks,omitempty"`
+	SalesStartDate               string                             `json:"ticket_sale_start_date"`
+	SalesStartTime               string                             `json:"ticket_sale_start_time"`
+
+	TicketPerks dtos.TicketPerks `json:"ticket_perks,omitempty"`
 }

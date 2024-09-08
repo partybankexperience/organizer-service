@@ -99,12 +99,15 @@ type Ticket struct {
 	EventID                      uint64                      `json:"event_id"`
 	Reference                    string                      `json:"reference"`
 	Colour                       string                      `json:"colour"`
-	SaleEndDate                  string                      `json:"ticket_sale_end_date"`
-	SalesEndTime                 string                      `json:"ticket_sales_end_time"`
+	ActivePeriod                 *ActivePeriod               `gorm:"embedded" json:"active_period"`
 	IsSoldOutTicket              bool                        `json:"is_sold_out_ticket"`
 }
 
 type ActivePeriod struct {
+	StartDate string `json:"ticket_sale_start_date"`
+	StartTime string `json:"ticket_sale_start_time"`
+	EndDate   string `json:"ticket_sale_end_date"`
+	EndTime   string `json:"ticket_sale_end_time"`
 }
 
 type Event struct {

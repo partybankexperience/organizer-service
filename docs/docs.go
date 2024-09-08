@@ -1092,7 +1092,7 @@ const docTemplate = `{
                 "discount_type": {
                     "type": "string"
                 },
-                "is_ticket_sale_done": {
+                "is_ticket_sale_date_expired": {
                     "type": "boolean"
                 },
                 "is_transfer_payment_fees_to_guest": {
@@ -1126,6 +1126,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ticket_sale_end_date": {
+                    "type": "string"
+                },
+                "ticket_sale_start_date": {
+                    "type": "string"
+                },
+                "ticket_sale_start_time": {
                     "type": "string"
                 },
                 "ticket_sales_end_time": {
@@ -1181,6 +1187,23 @@ const docTemplate = `{
                 }
             }
         },
+        "models.ActivePeriod": {
+            "type": "object",
+            "properties": {
+                "ticket_sale_end_date": {
+                    "type": "string"
+                },
+                "ticket_sale_end_time": {
+                    "type": "string"
+                },
+                "ticket_sale_start_date": {
+                    "type": "string"
+                },
+                "ticket_sale_start_time": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Location": {
             "type": "object",
             "properties": {
@@ -1198,6 +1221,9 @@ const docTemplate = `{
         "models.Ticket": {
             "type": "object",
             "properties": {
+                "active_period": {
+                    "$ref": "#/definitions/models.ActivePeriod"
+                },
                 "additional_information_fields": {
                     "type": "array",
                     "items": {
@@ -1225,16 +1251,16 @@ const docTemplate = `{
                 "discount_type": {
                     "type": "string"
                 },
-                "eventID": {
+                "event_id": {
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "isTransferPaymentFeesToGuest": {
+                "is_sold_out_ticket": {
                     "type": "boolean"
                 },
-                "is_sold_out_ticket": {
+                "is_transfer_payment_fees_to_guest": {
                     "type": "boolean"
                 },
                 "name": {
@@ -1263,12 +1289,6 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
-                },
-                "ticket_sale_end_date": {
-                    "type": "string"
-                },
-                "ticket_sales_end_time": {
-                    "type": "string"
                 },
                 "type": {
                     "type": "string"

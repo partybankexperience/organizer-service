@@ -26,7 +26,6 @@ func isDateValid(date string) bool {
 	return false
 }
 
-// TODO: implement me
 func GenerateEventReference() string {
 	s := uuid.New()
 	v := base64.RawURLEncoding.EncodeToString([]byte(s.String()))
@@ -40,7 +39,10 @@ func GenerateTicketReference() string {
 }
 
 func IsTicketSaleEndedFor(ticket *models.Ticket) bool {
-	ticketEndTime := ticket.SaleEndDate + " " + ticket.SalesEndTime
+	if ticket.ActivePeriod == nil {
+		return false
+	}
+	ticketEndTime := ticket.ActivePeriod.EndDate + " " + ticket.ActivePeriod.EndTime
 	endTime, err := time.Parse("2006-01-02 15:04:05", ticketEndTime)
 	if err != nil {
 		log.Println("err: ", err)

@@ -95,13 +95,13 @@ func (raveTicketService *raveTicketService) GetTicketById(id uint64) (*models.Ti
 func (raveTicketService *raveTicketService) UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error) {
 	ticket, err := raveTicketService.TicketRepository.FindTicketByReference(reference)
 	if err != nil {
-		return nil, errors.New("ticket update failed")
+		return nil, errors.New(err.Error())
 	}
 	ticket.IsSoldOutTicket = true
 	ticket, err = raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
-		log.Println("Error: saving failed", err)
-		return nil, errors.New("ticket update failed")
+		log.Println("Error: saving failed: ", err)
+		return nil, errors.New(err.Error())
 	}
 	return mappers.MapTicketToTicketResponse(ticket), nil
 }
@@ -109,7 +109,7 @@ func (raveTicketService *raveTicketService) UpdateTicketSoldOutBy(reference stri
 func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error) {
 	tickets, err := raveTicketService.FindAllByEventId(eventId, pageNumber, pageSize)
 	if err != nil {
-		return nil, err
+		return nil, errors.New(err.Error())
 	}
 
 	return tickets, nil
@@ -129,7 +129,6 @@ func sendNewTicketMessageFor(event *models.Event) {
 	if err != nil {
 		log.Println("Error: ", err)
 	}
-
 }
 
 func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
@@ -143,26 +142,26 @@ func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 		Date:         event.EventDate,
 		TimeFrame:    event.StartTime,
 	}
-
 }
 
 func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 	ticketTypes := make([]*request.TicketType, 0)
-
 	for _, ticket := range tickets {
 		ticketType := &request.TicketType{
-			Reference:    ticket.Reference,
-			Reserved:     ticket.PurchaseLimit,
-			MaxSeats:     ticket.NumberAvailable,
-			Name:         ticket.Name,
-			Price:        ticket.Price,
-			Colour:       ticket.Colour,
-			Category:     ticket.Category,
-			Stock:        ticket.Stock,
-			SalesEndDate: ticket.SaleEndDate,
-			SalesEndTime: ticket.SalesEndTime,
-			Capacity:     ticket.Capacity,
-			Perks:        ticket.TicketPerks,
+			Reference: ticket.Reference,
+			Reserved:  ticket.PurchaseLimit,
+			MaxSeats:  ticket.NumberAvailable,
+			Name:      ticket.Name,
+			Price:     ticket.Price,
+			Colour:    ticket.Colour,
+			Category:  ticket.Category,
+			Stock:     ticket.Stock,
+			Capacity:  ticket.Capacity,
+			Perks:     ticket.TicketPerks,
+		}
+		if ticket.ActivePeriod != nil {
+			ticketType.SalesEndDate = ticket.ActivePeriod.EndDate
+			ticketType.SalesEndTime = ticket.ActivePeriod.EndTime
 		}
 		ticketTypes = append(ticketTypes, ticketType)
 	}
