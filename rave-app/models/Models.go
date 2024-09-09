@@ -4,10 +4,11 @@ import (
 	"database/sql/driver"
 	"errors"
 	dtos "github.com/djfemz/rave/rave-app/dtos/request"
-	"gorm.io/gorm"
 	"reflect"
 	"strings"
 	"time"
+
+	"gorm.io/gorm"
 
 	"github.com/djfemz/rave/rave-app/security/otp"
 )
@@ -15,7 +16,7 @@ import (
 var Entities = make(map[string]any, 100)
 
 const (
-	ADMIN       = "ADMIN"
+	ATTENDEE    = "ATTENDEE"
 	ORGANIZER   = "ORGANIZER"
 	EVENT_STAFF = "EVENT_STAFF"
 )
@@ -59,6 +60,14 @@ type User struct {
 	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
 	Username string `json:"username" gorm:"unique"`
 	Role     string `json:"role"`
+}
+
+type Attendee struct {
+	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	FullName string
+	*User
+	PhoneNumber string
+	Password    string
 }
 
 type AdditionalInformationFields []string

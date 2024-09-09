@@ -1,10 +1,13 @@
 package mappers
 
 import (
+	"golang.org/x/crypto/bcrypt"
+	"log"
+
+	dtos "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/utils"
-	"log"
 )
 
 func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, organizer *models.Organizer) []*response.SeriesResponse {
@@ -108,4 +111,27 @@ func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 		ticketResponse.SalesStartDate = ticket.ActivePeriod.StartDate
 	}
 	return ticketResponse
+}
+
+func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttendeeRequest) *models.Attendee {
+	password, err := bcrypt.GenerateFromPassword([]byte(createAttendeeRequest.Password), 16)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &models.Attendee{
+		FullName:    createAttendeeRequest.Fullname,
+		PhoneNumber: createAttendeeRequest.PhoneNumber,
+		Password:    string(password),
+		User: &models.User{
+			Username: createAttendeeRequest.Username,
+			Role:     models.ATTENDEE,
+		},
+	}
+}
+
+func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.AttendeeResponse {
+	return &response.AttendeeResponse{
+		Username: attendee.Username,
+		Message:  "User registered successfully",
+	}
 }

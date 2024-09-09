@@ -31,6 +31,11 @@ type OrganizationResponse struct {
 	Series    []*SeriesResponse `json:"series"`
 }
 
+type AttendeeResponse struct {
+	Username string `json:"email"`
+	Message  string `json:"message"`
+}
+
 type UserResponse struct {
 	ID       uint64 `id:"ID" json:"id"`
 	Username string `json:"username,omitempty"`

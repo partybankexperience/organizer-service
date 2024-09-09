@@ -2,15 +2,18 @@ package utils
 
 import (
 	"encoding/base64"
-	"github.com/djfemz/rave/rave-app/models"
-	"github.com/google/uuid"
 	"log"
 	"strconv"
 	"time"
+
+	"github.com/djfemz/rave/rave-app/models"
+	"github.com/google/uuid"
 )
 
 const (
 	AUTHORIZATION = "Authorization"
+	APP_NAME      = "Partybank"
+	APP_EMAIL     = "partybankexperience@gmail.com"
 )
 
 func ConvertQueryStringToInt(query string) (int, error) {
