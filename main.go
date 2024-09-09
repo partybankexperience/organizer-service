@@ -21,6 +21,7 @@ var organizerRepository repositories.OrganizerRepository
 var seriesRepository repositories.SeriesRepository
 var ticketRepository repositories.TicketRepository
 var eventStaffRepository repositories.EventStaffRepository
+var attendeeRepository repositories.AttendeeRepository
 
 var eventService services.EventService
 var organizerService services.OrganizerService
@@ -28,11 +29,13 @@ var seriesService services.SeriesService
 var ticketService services.TicketService
 var eventStaffService services.EventStaffService
 var authService *services2.AuthService
+var attendeeService services.AttendeeService
 
 var organizerController *handlers.OrganizerController
 var eventController *handlers.EventController
 var seriesController *handlers.SeriesController
 var ticketController *handlers.TicketController
+var attendeeController *handlers.AttendeeController
 
 var objectValidator *validator.Validate
 
@@ -65,6 +68,7 @@ func main() {
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
 		eventController, seriesController, ticketController,
+		attendeeController,
 		authService)
 
 	err = router.Run(":8000")
@@ -74,22 +78,36 @@ func main() {
 }
 
 func configureAppComponents() {
-	eventRepository = repositories.NewEventRepository(db)
-	organizerRepository = repositories.NewOrganizerRepository(db)
-	seriesRepository = repositories.NewSeriesRepository(db)
-	ticketRepository = repositories.NewTicketRepository(db)
-	eventStaffRepository = repositories.NewEventStaffRepository(db)
+	objectValidator = validator.New()
+	configureRepositoryComponents()
+	configureServiceComponents()
+	configureControllers()
+}
 
+func configureControllers() {
+	organizerController = handlers.NewOrganizerController(organizerService, objectValidator)
+	eventController = handlers.NewEventController(eventService, objectValidator)
+	seriesController = handlers.NewSeriesController(seriesService, objectValidator)
+	ticketController = handlers.NewTicketController(ticketService, objectValidator)
+	attendeeController = handlers.NewAttendeeController(attendeeService, objectValidator)
+}
+
+func configureServiceComponents() {
+	mailService := services.NewMailService()
 	seriesService = services.NewSeriesService(seriesRepository)
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService)
 	eventService = services.NewEventService(eventRepository, organizerService, seriesService)
 	ticketService = services.NewTicketService(ticketRepository, eventService)
-	authService = services2.NewAuthService(organizerService, services.NewMailService())
-	objectValidator = validator.New()
+	attendeeService = services.NewAttendeeService(attendeeRepository, mailService)
+	authService = services2.NewAuthService(organizerService, attendeeService, mailService)
+}
 
-	organizerController = handlers.NewOrganizerController(organizerService, objectValidator)
-	eventController = handlers.NewEventController(eventService, objectValidator)
-	seriesController = handlers.NewSeriesController(seriesService, objectValidator)
-	ticketController = handlers.NewTicketController(ticketService, objectValidator)
+func configureRepositoryComponents() {
+	eventRepository = repositories.NewEventRepository(db)
+	organizerRepository = repositories.NewOrganizerRepository(db)
+	seriesRepository = repositories.NewSeriesRepository(db)
+	ticketRepository = repositories.NewTicketRepository(db)
+	eventStaffRepository = repositories.NewEventStaffRepository(db)
+	attendeeRepository = repositories.NewAttendeeRepository(db)
 }

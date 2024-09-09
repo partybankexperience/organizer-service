@@ -10,12 +10,30 @@ definitions:
     required:
     - event_id
     type: object
+  dtos.AttendeeAuthRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   dtos.AuthRequest:
     properties:
       username:
         type: string
     required:
     - username
+    type: object
+  dtos.CreateAttendeeRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        type: string
+      phone_number:
+        type: string
     type: object
   dtos.CreateEventRequest:
     properties:
@@ -788,6 +806,32 @@ paths:
       summary: Update Ticket By reference
       tags:
       - Tickets
+  /auth/attendee:
+    post:
+      consumes:
+      - application/json
+      description: Onboard Attendee
+      parameters:
+      - description: Auth tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateAttendeeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Onboard Attendee
+      tags:
+      - Auth
   /auth/login:
     post:
       consumes:
@@ -816,6 +860,36 @@ paths:
           schema:
             $ref: '#/definitions/dtos.RaveResponse'
       summary: Authenticate user
+      tags:
+      - Auth
+  /auth/login/attendee:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate attendee
+      parameters:
+      - description: Auth tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AttendeeAuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Authenticate attendee
       tags:
       - Auth
   /auth/otp/validate:

@@ -2,25 +2,30 @@ package services
 
 import (
 	"bytes"
+	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/otp"
 	"github.com/djfemz/rave/rave-app/services"
+	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"log"
 )
 
 type AuthService struct {
 	organizerService services.OrganizerService
+	attendeeService  services.AttendeeService
 	mailService      services.MailService
 }
 
 func NewAuthService(organizerService services.OrganizerService,
+	attendeeService services.AttendeeService,
 	mailService services.MailService) *AuthService {
 	return &AuthService{
 		organizerService: organizerService,
+		attendeeService:  attendeeService,
 		mailService:      mailService,
 	}
 }
@@ -67,6 +72,21 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 		"user":  orgResponse,
 	}
 	return &response.RaveResponse[map[string]any]{Data: res}, nil
+}
+
+func (authenticationService *AuthService) AuthenticateAttendee(authRequest request.AttendeeAuthRequest) (*response.LoginResponse, error) {
+	attendee, err := authenticationService.attendeeService.GetAttendeeByUsername(authRequest.Username)
+	if err != nil {
+		return nil, errors.New(err.Error())
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(attendee.Password), []byte(authRequest.Password))
+	if err != nil {
+		return nil, errors.New("authentication failed for attendee")
+	}
+	return &response.LoginResponse{
+		Message:  "user authenticated successfully",
+		Username: attendee.Username,
+	}, nil
 }
 
 func addUser(authRequest *request.AuthRequest, err error, organizerService services.OrganizerService, org *models.Organizer) (*response.LoginResponse, error) {

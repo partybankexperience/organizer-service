@@ -4,8 +4,6 @@ import (
 	"database/sql/driver"
 	"errors"
 	"strings"
-
-	"github.com/djfemz/rave/rave-app/utils"
 )
 
 const (
@@ -18,7 +16,7 @@ type AuthRequest struct {
 }
 
 type CreateAttendeeRequest struct {
-	Fullname    string `json:"fullname"`
+	FullName    string `json:"full_name"`
 	Username    string `json:"email"`
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
@@ -199,11 +197,16 @@ type CreateSeriesRequest struct {
 	SeriesLogo  string `json:"series_logo"`
 }
 
+type AttendeeAuthRequest struct {
+	Username string `json:"email"`
+	Password string `json:"password"`
+}
+
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {
 	return &EmailNotificationRequest{
 		Sender: Sender{
-			Email: utils.APP_EMAIL,
-			Name:  utils.APP_NAME,
+			Email: "partybankexperience@gmail.com",
+			Name:  "Partybank",
 		},
 		Recipients: []Recipient{
 			{Email: recipient, Name: "Friend"},

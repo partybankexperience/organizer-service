@@ -3,11 +3,11 @@ package mappers
 import (
 	"golang.org/x/crypto/bcrypt"
 	"log"
+	"time"
 
 	dtos "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
-	"github.com/djfemz/rave/rave-app/utils"
 )
 
 func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, organizer *models.Organizer) []*response.SeriesResponse {
@@ -45,7 +45,7 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 	ticketResponses := make([]*response.TicketResponse, 0)
 	for _, ticket := range event.Tickets {
 		ticketResponse := MapTicketToTicketResponse(ticket)
-		isTicketSaleEnded := utils.IsTicketSaleEndedFor(ticket)
+		isTicketSaleEnded := IsTicketSaleEndedFor(ticket)
 		ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
 		ticketResponses = append(ticketResponses, ticketResponse)
 	}
@@ -119,7 +119,7 @@ func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttend
 		log.Fatal(err)
 	}
 	return &models.Attendee{
-		FullName:    createAttendeeRequest.Fullname,
+		FullName:    createAttendeeRequest.FullName,
 		PhoneNumber: createAttendeeRequest.PhoneNumber,
 		Password:    string(password),
 		User: &models.User{
@@ -132,6 +132,21 @@ func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttend
 func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.AttendeeResponse {
 	return &response.AttendeeResponse{
 		Username: attendee.Username,
+		Password: attendee.Password,
 		Message:  "User registered successfully",
 	}
+}
+
+func IsTicketSaleEndedFor(ticket *models.Ticket) bool {
+	if ticket.ActivePeriod == nil {
+		return false
+	}
+	ticketEndTime := ticket.ActivePeriod.EndDate + " " + ticket.ActivePeriod.EndTime
+	endTime, err := time.Parse("2006-01-02 15:04:05", ticketEndTime)
+	if err != nil {
+		log.Println("err: ", err)
+		return false
+	}
+	log.Println("true: ", endTime)
+	return time.Now().After(endTime)
 }

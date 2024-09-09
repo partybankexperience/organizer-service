@@ -17,7 +17,7 @@
     </tr>
     <tr>
         <td style="background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-            <p style="color: #333; text-align: left; font-weight: bold; font-size: 16px;">Hello %s,</p>
+            <p style="color: #333; text-align: left; font-weight: bold; font-size: 16px;">Hello {{.FullName}},</p>
             <p style="color: #5f7165; text-align: left;">You're almost there! To complete your sign-up, please use the OTP code below to verify your email address.</p>
 
             <div style="margin: 40px 0; text-align: center;">
@@ -25,7 +25,7 @@
             </div>
 
             <div style="text-align: center; margin-bottom: 40px;">
-                <a href="#verifyLink" style="background-color: #e91b41; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold;">Verify Email</a>
+                <a href={{.Link}} style="background-color: #e91b41; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold;">Verify Email</a>
             </div>
 
             <p style="color: #5f7165; text-align: left;">If you did not sign up for this account, you can safely ignore this email.</p>

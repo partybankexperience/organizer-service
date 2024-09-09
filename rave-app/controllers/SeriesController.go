@@ -99,7 +99,7 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context) {
 	organizerId, err := extractParamFromRequest("organizerId", ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		handleError(ctx, err)
 		return
 	}
 	log.Println("org id", organizerId)
@@ -107,17 +107,17 @@ func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context
 	size := ctx.Query("size")
 	pageNumber, err := utils.ConvertQueryStringToInt(page)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		handleError(ctx, err)
 		return
 	}
 	pageSize, err := utils.ConvertQueryStringToInt(size)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		handleError(ctx, err)
 		return
 	}
 	orgSeries, err := seriesController.SeriesService.GetSeriesFor(organizerId, pageNumber, pageSize)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		handleError(ctx, err)
 		return
 	}
 	log.Println("series for org: ", orgSeries)

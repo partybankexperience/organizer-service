@@ -1,22 +1,21 @@
 package services
 
 import (
+	"bytes"
 	"errors"
-	"fmt"
-
-	"log"
-	"os"
+	"html/template"
 
 	dtos "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/mappers"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
-	"github.com/djfemz/rave/rave-app/utils"
+	"log"
 )
 
 type AttendeeService interface {
 	Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error)
+	GetAttendeeByUsername(username string) (*response.AttendeeResponse, error)
 }
 
 type raveAttendeeService struct {
@@ -31,25 +30,33 @@ func NewAttendeeService(attendeeRepository repositories.AttendeeRepository, mail
 	}
 }
 
-func (attendService *raveAttendeeService) Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error) {
+func (attendeeService *raveAttendeeService) Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error) {
 	attendee := mappers.MapCreateAttendeeRequestToAttendee(createAttendeeRequest)
-	attendee, err := attendService.Save(attendee)
+	attendee, err := attendeeService.Save(attendee)
 	if err != nil {
 		log.Println("Error: ", err.Error())
 		return nil, errors.New("failed to create attendee service")
 	}
 	attendeeWelcomeMailRequest := buildNewAttendeeMessageFor(attendee)
-	go attendService.MailService.Send(attendeeWelcomeMailRequest)
+	go attendeeService.MailService.Send(attendeeWelcomeMailRequest)
 
 	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
 
 }
 
+func (attendeeService *raveAttendeeService) GetAttendeeByUsername(username string) (*response.AttendeeResponse, error) {
+	attendee, err := attendeeService.FindByUsername(username)
+	if err != nil {
+		return nil, errors.New("failed to find attendee")
+	}
+	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
+}
+
 func buildNewAttendeeMessageFor(attendee *models.Attendee) *dtos.EmailNotificationRequest {
 	return &dtos.EmailNotificationRequest{
 		Sender: dtos.Sender{
-			Name:  utils.APP_NAME,
-			Email: utils.APP_EMAIL,
+			Name:  "Partybank",
+			Email: "partybankexperience@gmail.com",
 		},
 		Recipients: []dtos.Recipient{
 			{
@@ -62,11 +69,26 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) *dtos.EmailNotificati
 	}
 }
 
+type attendeeMessage struct {
+	FullName string
+	Link     string
+}
+
 func getAttendeeEmailTemplate(attendee *models.Attendee) string {
-	mail, err := os.ReadFile("rave-mail-template-new.html")
+	message := &attendeeMessage{
+		FullName: attendee.FullName,
+		Link:     "https://www.google.com",
+	}
+	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {
-		log.Fatal("Error: ", err)
+		log.Println("Error: ", err)
 		return ""
 	}
-	return fmt.Sprintf(string(mail), attendee.FullName)
+	var body bytes.Buffer
+	err = mailTemplate.Execute(&body, message)
+	if err != nil {
+		log.Println("Error: ", err)
+		return ""
+	}
+	return body.String()
 }

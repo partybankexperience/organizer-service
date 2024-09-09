@@ -66,6 +66,31 @@ func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// AuthenticateAttendee godoc
+// @Summary      Authenticate attendee
+// @Description  Authenticate attendee
+// @Tags         Auth
+// @Accept       json
+// @Param 		 tags body dtos.AttendeeAuthRequest true "Auth tags"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      500  {object}  dtos.RaveResponse
+// @Router       /auth/login/attendee [post]
+func (authController *AuthController) AuthenticateAttendee(ctx *gin.Context) {
+	var signInRequest = request.AttendeeAuthRequest{}
+	if err = ctx.BindJSON(&signInRequest); err != nil {
+		handleError(ctx, err)
+		return
+	}
+	authResponse, err := authController.AuthService.AuthenticateAttendee(signInRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, response.RaveResponse[*response.LoginResponse]{Data: authResponse})
+}
+
 func handleError(ctx *gin.Context, err error) {
 	ctx.IndentedJSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 }

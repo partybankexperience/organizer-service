@@ -7,6 +7,7 @@ import (
 
 type AttendeeRepository interface {
 	crudRepository[models.Attendee, uint64]
+	FindByUsername(username string) (*models.Attendee, error)
 }
 
 type raveAttendeeRepository struct {
@@ -19,4 +20,13 @@ func NewAttendeeRepository(db *gorm.DB) AttendeeRepository {
 			db,
 		},
 	}
+}
+
+func (attendeeRepository *raveAttendeeRepository) FindByUsername(username string) (*models.Attendee, error) {
+	attendee := &models.Attendee{}
+	err := attendeeRepository.Db.Where("username=?", username).First(attendee).Error
+	if err != nil {
+		return nil, err
+	}
+	return attendee, err
 }

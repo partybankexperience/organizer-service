@@ -219,12 +219,12 @@ func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 func (eventController *EventController) PublishEvent(ctx *gin.Context) {
 	id, err := extractParamFromRequest("id", ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		handleError(ctx, err)
 		return
 	}
 	event, err := eventController.EventService.PublishEvent(id)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		handleError(ctx, err)
 		return
 	}
 	ctx.JSON(http.StatusOK, event)

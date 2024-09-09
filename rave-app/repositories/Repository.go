@@ -98,7 +98,7 @@ func Connect() *gorm.DB {
 	}
 
 	err = db.AutoMigrate(&models.Organizer{}, &models.Event{}, &models.EventStaff{},
-		&models.Ticket{}, &models.Series{})
+		&models.Ticket{}, &models.Series{}, &models.Attendee{})
 	if err != nil {
 		log.Fatal("error migrating: ", err)
 	}

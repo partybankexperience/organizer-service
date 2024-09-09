@@ -33,6 +33,7 @@ type OrganizationResponse struct {
 
 type AttendeeResponse struct {
 	Username string `json:"email"`
+	Password string `json:"-"`
 	Message  string `json:"message"`
 }
 
