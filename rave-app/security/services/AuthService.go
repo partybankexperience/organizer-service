@@ -85,6 +85,17 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 			log.Println("Error: ", err.Error())
 			return nil, errors.New("user authentication failed")
 		}
+		emailRequest, err := buildNewAttendeeMessageFor(&models.Attendee{FullName: authRequest.FullName, User: &models.User{Username: authRequest.Username}})
+		if err != nil {
+			log.Println("Error: ", err.Error())
+			return nil, errors.New("user authentication failed")
+		}
+		go func() {
+			_, err := authenticationService.mailService.Send(emailRequest)
+			if err != nil {
+				log.Println("Error: ", err.Error())
+			}
+		}()
 		return &response.LoginResponse{
 			Username: res.Username,
 			Message:  "please, check your email for verification link",
@@ -151,4 +162,53 @@ func mapOrgToOrgResponse(organizer *models.Organizer) (orgResponse *response.Org
 	}
 	orgResponse.Series = series
 	return orgResponse
+}
+
+func buildNewAttendeeMessageFor(attendee *models.Attendee) (*request.EmailNotificationRequest, error) {
+	templ, err := getAttendeeEmailTemplate(attendee)
+	if err != nil {
+		return nil, errors.New("could not get mail template")
+	}
+	return &request.EmailNotificationRequest{
+		Sender: request.Sender{
+			Name:  "Partybank",
+			Email: "partybankexperience@gmail.com",
+		},
+		Recipients: []request.Recipient{
+			{
+				Name:  attendee.FullName,
+				Email: attendee.Username,
+			},
+		},
+		Subject: "Welcome mail",
+		Content: templ,
+	}, nil
+}
+
+type attendeeMessage struct {
+	FullName string
+	Link     string
+}
+
+func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
+	token, err := security.GenerateAccessTokenForAttendee(attendee)
+	if err != nil {
+		return "", err
+	}
+	message := &attendeeMessage{
+		FullName: attendee.FullName,
+		Link:     "https://www.thepartybank.com?" + "token=" + token,
+	}
+	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
+	if err != nil {
+		log.Println("Error: ", err)
+		return "", err
+	}
+	var body bytes.Buffer
+	err = mailTemplate.Execute(&body, message)
+	if err != nil {
+		log.Println("Error: ", err)
+		return "", err
+	}
+	return body.String(), nil
 }
