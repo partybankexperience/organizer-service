@@ -68,7 +68,6 @@ func main() {
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
 		eventController, seriesController, ticketController,
-		attendeeController,
 		authService)
 
 	err = router.Run(":8000")
@@ -89,7 +88,6 @@ func configureControllers() {
 	eventController = handlers.NewEventController(eventService, objectValidator)
 	seriesController = handlers.NewSeriesController(seriesService, objectValidator)
 	ticketController = handlers.NewTicketController(ticketService, objectValidator)
-	attendeeController = handlers.NewAttendeeController(attendeeService, objectValidator)
 }
 
 func configureServiceComponents() {

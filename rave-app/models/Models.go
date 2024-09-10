@@ -67,7 +67,6 @@ type Attendee struct {
 	FullName string
 	*User
 	PhoneNumber string
-	Password    string
 }
 
 type AdditionalInformationFields []string

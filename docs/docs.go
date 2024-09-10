@@ -730,46 +730,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/attendee": {
-            "post": {
-                "description": "Onboard Attendee",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Onboard Attendee",
-                "parameters": [
-                    {
-                        "description": "Auth tags",
-                        "name": "tags",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.CreateAttendeeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/auth/login": {
             "post": {
                 "description": "Authenticate user",
@@ -931,7 +891,7 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "password": {
+                "full_name": {
                     "type": "string"
                 }
             }
@@ -943,23 +903,6 @@ const docTemplate = `{
             ],
             "properties": {
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.CreateAttendeeRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "phone_number": {
                     "type": "string"
                 }
             }

@@ -14,7 +14,7 @@ definitions:
     properties:
       email:
         type: string
-      password:
+      full_name:
         type: string
     type: object
   dtos.AuthRequest:
@@ -23,17 +23,6 @@ definitions:
         type: string
     required:
     - username
-    type: object
-  dtos.CreateAttendeeRequest:
-    properties:
-      email:
-        type: string
-      full_name:
-        type: string
-      password:
-        type: string
-      phone_number:
-        type: string
     type: object
   dtos.CreateEventRequest:
     properties:
@@ -806,32 +795,6 @@ paths:
       summary: Update Ticket By reference
       tags:
       - Tickets
-  /auth/attendee:
-    post:
-      consumes:
-      - application/json
-      description: Onboard Attendee
-      parameters:
-      - description: Auth tags
-        in: body
-        name: tags
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.CreateAttendeeRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.RaveResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/dtos.RaveResponse'
-      summary: Onboard Attendee
-      tags:
-      - Auth
   /auth/login:
     post:
       consumes:

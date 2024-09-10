@@ -1,7 +1,6 @@
 package mappers
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"time"
 
@@ -114,14 +113,9 @@ func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 }
 
 func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttendeeRequest) *models.Attendee {
-	password, err := bcrypt.GenerateFromPassword([]byte(createAttendeeRequest.Password), 16)
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	return &models.Attendee{
-		FullName:    createAttendeeRequest.FullName,
-		PhoneNumber: createAttendeeRequest.PhoneNumber,
-		Password:    string(password),
+		FullName: createAttendeeRequest.FullName,
 		User: &models.User{
 			Username: createAttendeeRequest.Username,
 			Role:     models.ATTENDEE,
@@ -132,7 +126,6 @@ func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttend
 func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.AttendeeResponse {
 	return &response.AttendeeResponse{
 		Username: attendee.Username,
-		Password: attendee.Password,
 		Message:  "User registered successfully",
 	}
 }

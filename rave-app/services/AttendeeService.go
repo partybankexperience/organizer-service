@@ -3,6 +3,7 @@ package services
 import (
 	"bytes"
 	"errors"
+	"github.com/djfemz/rave/rave-app/security"
 	"html/template"
 
 	dtos "github.com/djfemz/rave/rave-app/dtos/request"
@@ -37,7 +38,10 @@ func (attendeeService *raveAttendeeService) Register(createAttendeeRequest *dtos
 		log.Println("Error: ", err.Error())
 		return nil, errors.New("failed to create attendee service")
 	}
-	attendeeWelcomeMailRequest := buildNewAttendeeMessageFor(attendee)
+	attendeeWelcomeMailRequest, err := buildNewAttendeeMessageFor(attendee)
+	if err != nil {
+		return nil, err
+	}
 	go attendeeService.MailService.Send(attendeeWelcomeMailRequest)
 
 	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
@@ -52,7 +56,11 @@ func (attendeeService *raveAttendeeService) GetAttendeeByUsername(username strin
 	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
 }
 
-func buildNewAttendeeMessageFor(attendee *models.Attendee) *dtos.EmailNotificationRequest {
+func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificationRequest, error) {
+	templ, err := getAttendeeEmailTemplate(attendee)
+	if err != nil {
+		return nil, errors.New("could not get mail template")
+	}
 	return &dtos.EmailNotificationRequest{
 		Sender: dtos.Sender{
 			Name:  "Partybank",
@@ -65,8 +73,8 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) *dtos.EmailNotificati
 			},
 		},
 		Subject: "Welcome mail",
-		Content: getAttendeeEmailTemplate(attendee),
-	}
+		Content: templ,
+	}, nil
 }
 
 type attendeeMessage struct {
@@ -74,21 +82,25 @@ type attendeeMessage struct {
 	Link     string
 }
 
-func getAttendeeEmailTemplate(attendee *models.Attendee) string {
+func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
+	token, err := security.GenerateAccessTokenForAttendee(attendee)
+	if err != nil {
+		return "", err
+	}
 	message := &attendeeMessage{
 		FullName: attendee.FullName,
-		Link:     "https://www.google.com",
+		Link:     "https://www.thepartybank.com?" + "token=" + token,
 	}
 	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {
 		log.Println("Error: ", err)
-		return ""
+		return "", err
 	}
 	var body bytes.Buffer
 	err = mailTemplate.Execute(&body, message)
 	if err != nil {
 		log.Println("Error: ", err)
-		return ""
+		return "", err
 	}
-	return body.String()
+	return body.String(), nil
 }

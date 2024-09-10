@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/repositories"
-	"github.com/djfemz/rave/rave-app/services"
+
 	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"os"
@@ -31,10 +31,20 @@ func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
 	return accessToken, nil
 }
 
+func GenerateAccessTokenForAttendee(user *models.Attendee) (string, error) {
+	log.Println("user: ", user)
+	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsForAttendee(user))
+
+	accessToken, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
+	if err != nil {
+		return "", err
+	}
+	return accessToken, nil
+}
+
 func ExtractUserFrom(token string) (*models.Organizer, error) {
 	db := repositories.Connect()
 	organizerRepository := repositories.NewOrganizerRepository(db)
-	var organizerService = services.NewOrganizerService(organizerRepository, nil, nil)
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SIGNING_KEY")), nil
 	}, jwt.WithIssuer(APP_NAME), jwt.WithExpirationRequired())
@@ -49,7 +59,7 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	if err != nil {
 		return nil, err
 	}
-	org, err := organizerService.GetByUsername(subject)
+	org, err := organizerRepository.FindByUsername(subject)
 	if err != nil {
 		return nil, err
 	}
@@ -67,5 +77,15 @@ func buildJwtClaimsFor(user *models.Organizer) *jwt.RegisteredClaims {
 		Audience:  []string{user.Role, strconv.FormatUint(user.ID, 10)},
 		IssuedAt:  jwt.NewNumericDate(time.Now()),
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
+	}
+}
+
+func buildJwtClaimsForAttendee(user *models.Attendee) *jwt.RegisteredClaims {
+	return &jwt.RegisteredClaims{
+		Issuer:    APP_NAME,
+		Subject:   user.Username,
+		Audience:  []string{user.Role, strconv.FormatUint(user.ID, 10)},
+		IssuedAt:  jwt.NewNumericDate(time.Now()),
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 365)),
 	}
 }

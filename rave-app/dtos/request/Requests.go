@@ -199,7 +199,7 @@ type CreateSeriesRequest struct {
 
 type AttendeeAuthRequest struct {
 	Username string `json:"email"`
-	Password string `json:"password"`
+	FullName string `json:"full_name"`
 }
 
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {

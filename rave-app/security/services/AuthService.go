@@ -9,7 +9,6 @@ import (
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/otp"
 	"github.com/djfemz/rave/rave-app/services"
-	"golang.org/x/crypto/bcrypt"
 	"html/template"
 	"log"
 )
@@ -77,14 +76,23 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 func (authenticationService *AuthService) AuthenticateAttendee(authRequest request.AttendeeAuthRequest) (*response.LoginResponse, error) {
 	attendee, err := authenticationService.attendeeService.GetAttendeeByUsername(authRequest.Username)
 	if err != nil {
-		return nil, errors.New(err.Error())
+		createAttendeeRequest := &request.CreateAttendeeRequest{
+			FullName: authRequest.FullName,
+			Username: authRequest.Username,
+		}
+		res, err := authenticationService.attendeeService.Register(createAttendeeRequest)
+		if err != nil {
+			log.Println("Error: ", err.Error())
+			return nil, errors.New("user authentication failed")
+		}
+		return &response.LoginResponse{
+			Username: res.Username,
+			Message:  "please, check your email for verification link",
+		}, nil
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(attendee.Password), []byte(authRequest.Password))
-	if err != nil {
-		return nil, errors.New("authentication failed for attendee")
-	}
+
 	return &response.LoginResponse{
-		Message:  "user authenticated successfully",
+		Message:  "please, check your email for verification link",
 		Username: attendee.Username,
 	}, nil
 }
