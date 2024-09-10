@@ -86,6 +86,7 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 			log.Println("Error: ", err.Error())
 			return nil, errors.New("user authentication failed")
 		}
+		log.Println("res: ", res)
 		emailRequest, err := buildNewAttendeeMessageFor(&models.Attendee{FullName: authRequest.FullName, User: &models.User{Username: authRequest.Username}})
 		if err != nil {
 			log.Println("Error: ", err.Error())
