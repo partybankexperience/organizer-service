@@ -78,7 +78,6 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 	if err != nil {
 		log.Println("Error: ", err.Error())
 		createAttendeeRequest := &request.CreateAttendeeRequest{
-			FullName: authRequest.FullName,
 			Username: authRequest.Username,
 		}
 		res, err := authenticationService.attendeeService.Register(createAttendeeRequest)
@@ -87,19 +86,13 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 			return nil, errors.New("user authentication failed")
 		}
 		log.Println("res: ", res)
-		emailRequest, err := buildNewAttendeeMessageFor(&models.Attendee{FullName: authRequest.FullName, User: &models.User{Username: authRequest.Username}})
-		if err != nil {
-			log.Println("Error: ", err.Error())
-			return nil, errors.New("user authentication failed")
-		}
-
-		go authenticationService.mailService.Send(emailRequest)
-
-		return &response.LoginResponse{
-			Username: res.Username,
-			Message:  "please, check your email for verification link",
-		}, nil
 	}
+	emailRequest, err := buildNewAttendeeMessageFor(&models.Attendee{User: &models.User{Username: authRequest.Username}})
+	if err != nil {
+		log.Println("Error: ", err.Error())
+		return nil, errors.New("user authentication failed")
+	}
+	go authenticationService.mailService.Send(emailRequest)
 
 	return &response.LoginResponse{
 		Message:  "please, check your email for verification link",

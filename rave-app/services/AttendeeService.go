@@ -78,8 +78,7 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificat
 }
 
 type attendeeMessage struct {
-	FullName string
-	Link     string
+	Link string
 }
 
 func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
@@ -88,8 +87,7 @@ func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
 		return "", err
 	}
 	message := &attendeeMessage{
-		FullName: attendee.FullName,
-		Link:     "https://www.thepartybank.com?" + "token=" + token,
+		Link: "https://thepartybank.com/validate?" + "token=" + token,
 	}
 	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {
