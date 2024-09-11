@@ -92,6 +92,7 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 		log.Println("Error: ", err.Error())
 		return nil, errors.New("user authentication failed")
 	}
+	log.Println("email: ", emailRequest)
 	go authenticationService.mailService.Send(emailRequest)
 
 	return &response.LoginResponse{

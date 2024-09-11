@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"log"
 	"net/http"
 	"os"
 )
@@ -35,8 +36,9 @@ func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotifica
 	addHeadersTo(req)
 
 	client := &http.Client{}
+	log.Println("Sending mail: ", jsonData)
 	if _, err = client.Do(req); err != nil {
-		return "", err
+		return "Mail Sending failed", err
 	}
 	return response.MAIL_SENDING_SUCCESS_MESSAGE, nil
 }
