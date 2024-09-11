@@ -890,9 +890,6 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
                 }
             }
         },
