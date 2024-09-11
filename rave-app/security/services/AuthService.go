@@ -169,7 +169,7 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) (*request.EmailNotifi
 		},
 		Recipients: []request.Recipient{
 			{
-				Name:  attendee.FullName,
+				Name:  "John Doe",
 				Email: attendee.Username,
 			},
 		},
