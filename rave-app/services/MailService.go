@@ -36,7 +36,7 @@ func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotifica
 	addHeadersTo(req)
 
 	client := &http.Client{}
-	log.Println("Sending mail: ", jsonData)
+	log.Println("Sending mail: ", req)
 	if _, err = client.Do(req); err != nil {
 		return "Mail Sending failed", err
 	}
