@@ -5,34 +5,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partybank - Sign In Mail</title>
+    <title>Partybank - Confirm Your Sign In</title>
 </head>
 
-<body style="background-color: #ffffff; font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0;">
-<table width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: auto;">
+<body style="background-color: #f7f7f7; font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+<table width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);">
     <tr>
-        <td style="padding: 20px; text-align: center;">
-            <img src="https://res.cloudinary.com/twinkles/image/upload/v1707554082/LOGO_SVG_Party_Bank_phd70o.png" alt="Partybank Logo" style="width: 80px; height: 50px;">
+        <td style="background-color: #ffffff; padding: 20px; text-align: center;">
+            <img src="https://res.cloudinary.com/twinkles/image/upload/v1707554082/LOGO_SVG_Party_Bank_phd70o.png" alt="Partybank Logo" style="width: 120px;">
         </td>
     </tr>
+
     <tr>
-        <td style="background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-            <p style="color: #333; text-align: left; font-weight: bold; font-size: 16px;">Hello</p>
-            <p style="color: #5f7165; text-align: left;">You're almost there! To complete your sign-in, please click the button below to proceed.</p>
+        <td style="background-color: #ffffff; padding: 0;">
+            <hr style="border: 0; border-top: 1px solid #e0e0e0; margin: 0; width: 100%;">
+        </td>
+    </tr>
 
-<!--            <div style="margin: 40px 0; text-align: center;">-->
-<!--                <p style="font-size: 24px; font-weight: bold; color: #333; letter-spacing: 5px;">%s</p>-->
-<!--            </div>-->
+    <tr>
+        <td style="background-color: #ffffff; padding: 20px;">
+            <p style="color: #333; font-weight: bold; font-size: 18px; margin-bottom: 20px;">Hello,</p>
+            <p style="color: #5f7165; font-size: 16px; line-height: 1.5; margin-bottom: 30px;">
+                You're almost signed in! To continue, please click the button below to confirm your sign-in.
+            </p>
 
-            <div style="text-align: center; margin-bottom: 40px;">
-                <a href={{.Link}} style="background-color: #e91b41; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold;">Proceed</a>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <a href="{{.Link}}" style="background-color: #e91b41; color: #ffffff; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-size: 16px; font-weight: bold;">
+                    Confirm Sign In
+                </a>
             </div>
 
-            <p style="color: #5f7165; text-align: left;">If you did not sign in to this account, you can safely ignore this email.</p>
+            <p style="color: #5f7165; font-size: 16px; line-height: 1.5; margin-bottom: 30px;">
+                If you didn't request this sign-in, please ignore this email or contact us for support.
+            </p>
 
-            <div style="color: #5a5a5a; margin-top: 30px;">
-                <p style="margin-bottom: 45px;">For more questions and info, contact us at <a style="color: #3a5cd4; text-decoration: none;" href="mailto:partybankexperience@gmail.com"> partybankexperience@gmail.com </a></p>
-                <p style="color: #555; text-align: center;">Celebration Secured,<br>Partybank Team</p>
+            <div style="text-align: center; color: #999; font-size: 14px;">
+                <p style="margin-bottom: 10px;">For any questions, feel free to contact us at <a href="mailto:partybankexperience@gmail.com" style="color: #3a5cd4; text-decoration: none;">partybankexperience@gmail.com</a></p>
+                <p>Celebration Secured,<br>Partybank Team</p>
             </div>
         </td>
     </tr>
