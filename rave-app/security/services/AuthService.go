@@ -74,7 +74,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 }
 
 func (authenticationService *AuthService) AuthenticateAttendee(authRequest request.AttendeeAuthRequest) (*response.LoginResponse, error) {
-	attendee, err := authenticationService.attendeeService.GetAttendeeByUsername(authRequest.Username)
+	_, err := authenticationService.attendeeService.GetAttendeeByUsername(authRequest.Username)
 	if err != nil {
 		log.Println("Error: ", err.Error())
 		createAttendeeRequest := &request.CreateAttendeeRequest{
@@ -96,7 +96,7 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 
 	return &response.LoginResponse{
 		Message:  "please, check your email for verification link",
-		Username: attendee.Username,
+		Username: authRequest.Username,
 	}, nil
 }
 
