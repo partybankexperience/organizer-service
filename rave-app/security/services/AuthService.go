@@ -173,7 +173,7 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) (*request.EmailNotifi
 				Email: attendee.Username,
 			},
 		},
-		Subject: "Welcome mail",
+		Subject: "Confirm Your Sign-In to Partybank",
 		Content: templ,
 	}, nil
 }
