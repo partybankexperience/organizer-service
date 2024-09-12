@@ -18,7 +18,7 @@ type payload struct {
 	ExpiredAt time.Time `json:"expired_at"`
 }
 
-const APP_NAME = "rave"
+const APP_NAME = "Partybank"
 
 func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
 	log.Println("user: ", user)
