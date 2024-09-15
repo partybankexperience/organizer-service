@@ -329,7 +329,7 @@ definitions:
       type:
         type: string
     type: object
-host: localhost:8000
+host: rave.onrender.com
 info:
   contact:
     email: unavailable
@@ -902,7 +902,7 @@ paths:
       tags:
       - Auth
 schemes:
-- http
+- https
 securityDefinitions:
   Bearer:
     in: header
