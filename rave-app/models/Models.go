@@ -19,6 +19,7 @@ const (
 	ATTENDEE    = "ATTENDEE"
 	ORGANIZER   = "ORGANIZER"
 	EVENT_STAFF = "EVENT_STAFF"
+	USER        = "USER"
 )
 
 const (

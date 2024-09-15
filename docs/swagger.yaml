@@ -329,7 +329,7 @@ definitions:
       type:
         type: string
     type: object
-host: rave.onrender.com
+host: localhost:8000
 info:
   contact:
     email: unavailable
@@ -793,6 +793,25 @@ paths:
       summary: Update Ticket By reference
       tags:
       - Tickets
+  /auth/google/login:
+    get:
+      consumes:
+      - application/json
+      description: Sign in with Google
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Authenticate with Google
+      tags:
+      - Google
   /auth/login:
     post:
       consumes:
@@ -883,7 +902,7 @@ paths:
       tags:
       - Auth
 schemes:
-- https
+- http
 securityDefinitions:
   Bearer:
     in: header

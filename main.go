@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "github.com/djfemz/rave/docs"
+	"github.com/djfemz/rave/rave-app/config"
 	handlers "github.com/djfemz/rave/rave-app/controllers"
 	"github.com/djfemz/rave/rave-app/repositories"
 	"github.com/djfemz/rave/rave-app/security/middlewares"
@@ -57,13 +58,14 @@ func init() {
 // @contact.email  unavailable
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host rave.onrender.com
-// @schemes https
+// @host localhost:8000
+// @schemes http
 // @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization
 // @externalDocs.description  OpenAPI
 func main() {
+	config.GoogleConfig()
 	router := gin.Default()
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,

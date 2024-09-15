@@ -62,7 +62,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 	}
 	orgResponse := mapOrgToOrgResponse(org)
 	log.Println("orgResponse: ", orgResponse)
-	token, err := security.GenerateAccessTokenFor(org)
+	token, err := security.GenerateAccessTokenFor(org.User)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +184,7 @@ type attendeeMessage struct {
 }
 
 func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
-	token, err := security.GenerateAccessTokenForAttendee(attendee)
+	token, err := security.GenerateAccessTokenFor(attendee.User)
 	if err != nil {
 		return "", err
 	}

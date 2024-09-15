@@ -730,6 +730,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/google/login": {
+            "get": {
+                "description": "Sign in with Google",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Google"
+                ],
+                "summary": "Authenticate with Google",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Authenticate user",
@@ -1368,9 +1397,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "rave.onrender.com",
+	Host:             "localhost:8000",
 	BasePath:         "",
-	Schemes:          []string{"https"},
+	Schemes:          []string{"http"},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",
 	InfoInstanceName: "swagger",

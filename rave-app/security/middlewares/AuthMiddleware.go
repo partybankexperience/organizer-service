@@ -40,8 +40,11 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 	}
 	router.Use(cors.New(configureCors()))
 	authController := controllers.NewAuthController(authService)
+	oauthController := &controllers.OauthController{}
 	router.POST("/auth/login", authController.AuthHandler)
 	router.POST("/auth/login/attendee", authController.AuthenticateAttendee)
+	router.GET("/auth/google/login", oauthController.GoogleLogin)
+	router.GET("/auth/google/redirect", oauthController.GoogleCallback)
 	router.GET("/auth/otp/validate", authController.ValidateOtp)
 	router.GET("/api/v1/event/discover", eventController.DiscoverEvents)
 	router.GET("/api/v1/event/reference/:reference", eventController.GetEventByReference)

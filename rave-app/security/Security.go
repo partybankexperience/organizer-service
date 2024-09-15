@@ -20,7 +20,7 @@ type payload struct {
 
 const APP_NAME = "Partybank"
 
-func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
+func GenerateAccessTokenFor(user *models.User) (string, error) {
 	log.Println("user: ", user)
 	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsFor(user))
 
@@ -31,16 +31,16 @@ func GenerateAccessTokenFor(user *models.Organizer) (string, error) {
 	return accessToken, nil
 }
 
-func GenerateAccessTokenForAttendee(user *models.Attendee) (string, error) {
-	log.Println("user: ", user)
-	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsForAttendee(user))
-
-	accessToken, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
-	if err != nil {
-		return "", err
-	}
-	return accessToken, nil
-}
+//func GenerateAccessTokenForAttendee(user *models.Attendee) (string, error) {
+//	log.Println("user: ", user)
+//	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsFor(user.User))
+//
+//	accessToken, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
+//	if err != nil {
+//		return "", err
+//	}
+//	return accessToken, nil
+//}
 
 func ExtractUserFrom(token string) (*models.Organizer, error) {
 	db := repositories.Connect()
@@ -70,7 +70,7 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	return org, nil
 }
 
-func buildJwtClaimsFor(user *models.Organizer) *jwt.RegisteredClaims {
+func buildJwtClaimsFor(user *models.User) *jwt.RegisteredClaims {
 	return &jwt.RegisteredClaims{
 		Issuer:    APP_NAME,
 		Subject:   user.Username,

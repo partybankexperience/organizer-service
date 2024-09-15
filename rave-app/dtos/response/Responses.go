@@ -15,6 +15,13 @@ type RaveResponse[T any] struct {
 	Data T `json:"data" swaggerignore:"true"`
 }
 
+type GoogleUserResponse struct {
+	Id              string `json:"id"`
+	Email           string `json:"email"`
+	IsEmailVerified bool   `json:"verified_email"`
+	Name            string `json:"name"`
+}
+
 type CreateDiscountResponse struct {
 	Id    uint64  `json:"id,omitempty"`
 	Name  string  `json:"name,omitempty"`

@@ -18,7 +18,7 @@ var organization = &models.Organizer{
 }
 
 func TestGenerateToken(t *testing.T) {
-	accessToken, err := security.GenerateAccessTokenFor(organization)
+	accessToken, err := security.GenerateAccessTokenFor(organization.User)
 	assert.NotNil(t, accessToken)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, accessToken)
@@ -27,7 +27,7 @@ func TestGenerateToken(t *testing.T) {
 func TestExtractUserFromToken(t *testing.T) {
 	username := "sikiwa1055@glaslack.com"
 	organizer := &models.Organizer{User: &models.User{Username: username}}
-	token, _ := security.GenerateAccessTokenFor(organizer)
+	token, _ := security.GenerateAccessTokenFor(organizer.User)
 	user, _ := security.ExtractUserFrom(token)
 	log.Println(user)
 	assert.NotNil(t, user)

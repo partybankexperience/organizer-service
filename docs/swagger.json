@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "https"
+        "http"
     ],
     "swagger": "2.0",
     "info": {
@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "rave.onrender.com",
+    "host": "localhost:8000",
     "paths": {
         "/api/v1/event": {
             "post": {
@@ -715,6 +715,35 @@
                             "items": {
                                 "$ref": "#/definitions/models.Ticket"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/google/login": {
+            "get": {
+                "description": "Sign in with Google",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Google"
+                ],
+                "summary": "Authenticate with Google",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
                         }
                     },
                     "400": {
