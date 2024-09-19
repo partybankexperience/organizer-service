@@ -14,6 +14,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type TicketService interface {
@@ -180,7 +181,7 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 			Category:  ticket.Category,
 			Stock:     ticket.Stock,
 			Capacity:  ticket.Capacity,
-			Perks:     ticket.TicketPerks,
+			Perks:     strings.Join(ticket.TicketPerks, ","),
 		}
 		if ticket.ActivePeriod != nil {
 			ticketType.SalesEndDate = ticket.ActivePeriod.EndDate

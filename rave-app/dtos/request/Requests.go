@@ -135,32 +135,27 @@ type CreateEventStaffRequest struct {
 // "salesEndTime": "17:00",
 // "priceChangeDate": "2024-08-20",
 // "priceChangeTime": "12:00"
+type Perks TicketPerks
+
 type TicketType struct {
-	Reference       string      `json:"reference"`
-	Reserved        uint64      `json:"reservedSeats"`
-	MaxSeats        uint64      `json:"maxSeats"`
-	Type            string      `json:"type"`
-	PurchaseLimit   uint64      `json:"purchaseLimit"`
-	Name            string      `json:"name"`
-	Price           float64     `json:"price"`
-	Colour          string      `json:"color"`
-	Category        uint64      `json:"category"`
-	Stock           string      `json:"stock"`
-	SalesEndDate    string      `json:"salesEndDate"`
-	SalesEndTime    string      `json:"salesEndTime"`
-	PriceChangeDate string      `json:"priceChangeDate"`
-	PriceChangeTime string      `json:"priceChangeTime"`
-	Capacity        uint64      `json:"capacity"`
-	Perks           TicketPerks `json:"perks"`
+	Reference       string  `json:"reference"`
+	Reserved        uint64  `json:"reservedSeats"`
+	MaxSeats        uint64  `json:"maxSeats"`
+	Type            string  `json:"type" example:"[FREE/PAID]"`
+	PurchaseLimit   uint64  `json:"purchaseLimit"`
+	Name            string  `json:"name"`
+	Price           float64 `json:"price"`
+	Colour          string  `json:"color"`
+	Category        uint64  `json:"category"`
+	Stock           string  `json:"stock" example:"[LIMITED/UNLIMITED]"`
+	SalesEndDate    string  `json:"salesEndDate"`
+	SalesEndTime    string  `json:"salesEndTime"`
+	PriceChangeDate string  `json:"priceChangeDate"`
+	PriceChangeTime string  `json:"priceChangeTime"`
+	Capacity        uint64  `json:"capacity"`
+	Perks           string  `json:"perks"`
 }
 
-// Ticket Type [Free, Paid]
-// Ticket Name
-// Ticket Price
-// Ticket Capacity [Limited, Unlimited]
-// Capacity/ Available Tickets [if limited]
-// Ticket Purchase Limit [How many tickets can be bought at a time?]
-// Ticket Perks [What are the benefits attached to ticket type?]
 type NewTicketMessage struct {
 	Reference    string        `json:"eventReference"`
 	Types        []*TicketType `json:"ticketTypes"`
