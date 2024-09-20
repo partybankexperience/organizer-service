@@ -36,7 +36,8 @@ func init() {
 // @Router       /auth/google/login [get]
 func (oauthController *OauthController) GoogleLogin(ctx *gin.Context) {
 	url := config.AppConfig.GoogleLoginConfig.AuthCodeURL(clientState)
-	ctx.Redirect(http.StatusTemporaryRedirect, url)
+	log.Println("url: ", url)
+	ctx.JSON(http.StatusOK, response.RaveResponse[string]{Data: url})
 }
 
 func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
