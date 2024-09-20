@@ -78,6 +78,6 @@ func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 	log.Println("token: ", accessToken)
-	data := os.Getenv("GOOGLE_CLIENT_CALLBACK_URL") + accessToken
+	data := "http://localhost:5173/validate-token?" + accessToken
 	ctx.JSON(200, &response.RaveResponse[string]{Data: data})
 }
