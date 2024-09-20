@@ -78,5 +78,6 @@ func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 	log.Println("token: ", accessToken)
-	ctx.JSON(200, &response.RaveResponse[string]{Data: accessToken})
+	data := os.Getenv("GOOGLE_CLIENT_CALLBACK_URL") + accessToken
+	ctx.JSON(200, &response.RaveResponse[string]{Data: data})
 }
