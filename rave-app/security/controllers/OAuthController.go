@@ -78,7 +78,7 @@ func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 	log.Println("token: ", accessToken)
-	data := "http://localhost:5173/validate-token?" + accessToken
-	googlecon.RedirectURL = data
-	ctx.JSON(200, &response.RaveResponse[string]{Data: data})
+	data := "http://localhost:5173/validate-token?token=" + accessToken
+	log.Println("uri: ", data)
+	ctx.Redirect(307, data)
 }
