@@ -174,14 +174,12 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 	for _, ticket := range tickets {
 		ticketType := &request.TicketType{
 			Reference: ticket.Reference,
-			Reserved:  ticket.PurchaseLimit,
-			MaxSeats:  ticket.NumberAvailable,
 			Name:      ticket.Name,
 			Price:     strconv.FormatFloat(ticket.Price, 64, 10, 64),
-			Colour:    ticket.Colour,
-			Category:  ticket.Category,
+			Color:     ticket.Colour,
+			Category:  strconv.FormatUint(ticket.Category, 10),
 			Stock:     ticket.Stock,
-			Capacity:  ticket.Capacity,
+			Capacity:  int(ticket.Capacity),
 			Perks:     strings.Join(ticket.TicketPerks, ","),
 		}
 		if ticket.ActivePeriod != nil {

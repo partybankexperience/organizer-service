@@ -137,25 +137,41 @@ type CreateEventStaffRequest struct {
 // "priceChangeTime": "12:00"
 type Perks TicketPerks
 
+//type TicketType struct {
+//	Reference       string `json:"reference"`
+//	Reserved        uint64 `json:"reservedSeats"`
+//	MaxSeats        uint64 `json:"maxSeats"`
+//	Type            string `json:"type" example:"[FREE/PAID]"`
+//	PurchaseLimit   uint64 `json:"purchaseLimit"`
+//	Name            string `json:"name"`
+//	Price           string `json:"price"`
+//	Colour          string `json:"color"`
+//	Category        uint64 `json:"category"`
+//	Stock           string `json:"stock" example:"[LIMITED/UNLIMITED]"`
+//	SalesEndDate    string `json:"salesEndDate"`
+//	SalesEndTime    string `json:"salesEndTime"`
+//	PriceChangeDate string `json:"priceChangeDate"`
+//	PriceChangeTime string `json:"priceChangeTime"`
+//	Capacity        uint64 `json:"capacity"`
+//	Perks           string `json:"perks"`
+//}
+
 type TicketType struct {
 	Reference       string `json:"reference"`
-	Reserved        uint64 `json:"reservedSeats"`
-	MaxSeats        uint64 `json:"maxSeats"`
-	Type            string `json:"type" example:"[FREE/PAID]"`
-	PurchaseLimit   uint64 `json:"purchaseLimit"`
+	Type            string `json:"type"`
 	Name            string `json:"name"`
 	Price           string `json:"price"`
-	Colour          string `json:"color"`
-	Category        uint64 `json:"category"`
-	Stock           string `json:"stock" example:"[LIMITED/UNLIMITED]"`
+	Color           string `json:"color"`
+	Category        string `json:"category"`
+	Stock           string `json:"stock"`
+	PurchaseLimit   int    `json:"purchaseLimit"`
 	SalesEndDate    string `json:"salesEndDate"`
 	SalesEndTime    string `json:"salesEndTime"`
 	PriceChangeDate string `json:"priceChangeDate"`
 	PriceChangeTime string `json:"priceChangeTime"`
-	Capacity        uint64 `json:"capacity"`
+	Capacity        int    `json:"capacity"`
 	Perks           string `json:"perks"`
 }
-
 type NewTicketMessage struct {
 	Reference    string        `json:"eventReference"`
 	Types        []*TicketType `json:"ticketTypes"`
