@@ -14,6 +14,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -176,7 +177,7 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 			Reserved:  ticket.PurchaseLimit,
 			MaxSeats:  ticket.NumberAvailable,
 			Name:      ticket.Name,
-			Price:     ticket.Price,
+			Price:     strconv.FormatFloat(ticket.Price, 64, 10, 64),
 			Colour:    ticket.Colour,
 			Category:  ticket.Category,
 			Stock:     ticket.Stock,
