@@ -175,7 +175,7 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 		ticketType := &request.TicketType{
 			Reference: ticket.Reference,
 			Name:      ticket.Name,
-			Price:     strconv.FormatFloat(ticket.Price, 64, 10, 64),
+			Price:     strconv.FormatFloat(ticket.Price, 'f', -1, 64),
 			Color:     ticket.Colour,
 			Category:  strconv.FormatUint(ticket.Category, 10),
 			Stock:     ticket.Stock,
