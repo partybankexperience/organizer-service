@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"log"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -41,7 +42,7 @@ func GenerateTicketReference() string {
 
 func ExistsWithTicketName(event *models.Event, name string) bool {
 	for _, ticket := range event.Tickets {
-		if ticket.Name == name {
+		if strings.EqualFold(ticket.Name, name) {
 			return true
 		}
 	}
