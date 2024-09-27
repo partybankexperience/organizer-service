@@ -190,7 +190,7 @@ func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
 	}
 	message := &attendeeMessage{
 		FullName: attendee.FullName,
-		Link:     "http://localhost:5173/validate-token?" + "token=" + token,
+		Link:     "https://partybank-dev.vercel.app/validate-token?" + "token=" + token,
 	}
 	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {
