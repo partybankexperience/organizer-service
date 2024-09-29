@@ -17,6 +17,7 @@ import (
 type AttendeeService interface {
 	Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error)
 	GetAttendeeByUsername(username string) (*response.AttendeeResponse, error)
+	UpdateAttendee(username string) (*response.AttendeeResponse, error)
 }
 
 type raveAttendeeService struct {
@@ -54,6 +55,10 @@ func (attendeeService *raveAttendeeService) GetAttendeeByUsername(username strin
 		return nil, errors.New("failed to find attendee")
 	}
 	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
+}
+
+func (attendeeService *raveAttendeeService) UpdateAttendee(username string) (*response.AttendeeResponse, error) {
+	return nil, nil
 }
 
 func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificationRequest, error) {
