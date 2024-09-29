@@ -6,6 +6,7 @@ import (
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
 	"github.com/djfemz/rave/rave-app/security"
+	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -78,7 +79,7 @@ func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 	log.Println("token: ", accessToken)
-	data := "https://partybank-dev.vercel.app/validate-token?token=" + accessToken + "&type=google"
+	data := utils.FRONT_END_DEV_BASE_URL + "/validate-token?token=" + accessToken + "&type=google"
 	log.Println("uri: ", data)
 	ctx.Redirect(307, data)
 }

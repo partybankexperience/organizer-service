@@ -10,9 +10,11 @@ import (
 )
 
 const (
-	AUTHORIZATION = "Authorization"
-	APP_NAME      = "Partybank"
-	APP_EMAIL     = "partybankexperience@gmail.com"
+	AUTHORIZATION           = "Authorization"
+	APP_NAME                = "Partybank"
+	APP_EMAIL               = "partybankexperience@gmail.com"
+	FRONT_END_TEST_BASE_URL = "https://partybank-dev.vercel.app"
+	FRONT_END_DEV_BASE_URL  = "localhost:5173"
 )
 
 func ConvertQueryStringToInt(query string) (int, error) {

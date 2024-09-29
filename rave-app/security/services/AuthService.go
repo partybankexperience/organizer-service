@@ -9,6 +9,7 @@ import (
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/otp"
 	"github.com/djfemz/rave/rave-app/services"
+	"github.com/djfemz/rave/rave-app/utils"
 	"html/template"
 	"log"
 )
@@ -190,7 +191,7 @@ func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
 	}
 	message := &attendeeMessage{
 		FullName: attendee.FullName,
-		Link:     "https://partybank-dev.vercel.app/validate-token?" + "token=" + token,
+		Link:     utils.FRONT_END_DEV_BASE_URL + "/validate-token?token=" + token,
 	}
 	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {
