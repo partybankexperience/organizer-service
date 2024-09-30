@@ -62,7 +62,7 @@ func (attendeeService *raveAttendeeService) UpdateAttendee(username string) (*re
 }
 
 func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificationRequest, error) {
-	templ, err := getAttendeeEmailTemplate(attendee)
+	tmpl, err := getAttendeeEmailTemplate(attendee)
 	if err != nil {
 		return nil, errors.New("could not get mail template")
 	}
@@ -78,7 +78,7 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificat
 			},
 		},
 		Subject: "Welcome mail",
-		Content: templ,
+		Content: tmpl,
 	}, nil
 }
 
