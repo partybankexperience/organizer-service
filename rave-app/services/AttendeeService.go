@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"github.com/djfemz/rave/rave-app/security"
+	"github.com/djfemz/rave/rave-app/utils"
 	"html/template"
 
 	dtos "github.com/djfemz/rave/rave-app/dtos/request"
@@ -68,8 +69,8 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificat
 	}
 	return &dtos.EmailNotificationRequest{
 		Sender: dtos.Sender{
-			Name:  "Partybank",
-			Email: "partybankexperience@gmail.com",
+			Name:  utils.APP_NAME,
+			Email: utils.APP_EMAIL,
 		},
 		Recipients: []dtos.Recipient{
 			{
