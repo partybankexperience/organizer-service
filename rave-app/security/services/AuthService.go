@@ -191,7 +191,7 @@ func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
 	}
 	message := &attendeeMessage{
 		FullName: attendee.FullName,
-		Link:     utils.FRONT_END_DEV_BASE_URL + "/validate-token?token=" + token,
+		Link:     utils.FRONT_END_TEST_BASE_URL + "/validate-token?token=" + token,
 	}
 	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {
