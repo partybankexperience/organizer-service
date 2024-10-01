@@ -22,6 +22,12 @@ type CreateAttendeeRequest struct {
 	Password    string `json:"password"`
 }
 
+type UpdateAttendeeRequest struct {
+	FullName    string `json:"full_name"`
+	Username    string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
+}
+
 type CreateDiscountRequest struct {
 	TicketId uint64  `json:"ticket_id" validate:"required"`
 	Name     string  `json:"name"`

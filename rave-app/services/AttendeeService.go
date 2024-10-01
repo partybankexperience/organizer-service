@@ -17,7 +17,7 @@ import (
 
 type AttendeeService interface {
 	Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error)
-	GetAttendeeByUsername(username string) (*response.AttendeeResponse, error)
+	GetAttendeeByUsername(id uint64, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error)
 	UpdateAttendee(username string) (*response.AttendeeResponse, error)
 }
 
@@ -58,8 +58,23 @@ func (attendeeService *raveAttendeeService) GetAttendeeByUsername(username strin
 	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
 }
 
-func (attendeeService *raveAttendeeService) UpdateAttendee(username string) (*response.AttendeeResponse, error) {
-	return nil, nil
+func (attendeeService *raveAttendeeService) UpdateAttendee(id uint64, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error) {
+	attendee, err := attendeeService.FindById(id)
+	if err != nil {
+		return nil, errors.New("user with id not found")
+	}
+	attendee.FullName = updateAttendeeRequest.FullName
+	attendee.Username = updateAttendeeRequest.FullName
+	attendee.PhoneNumber = updateAttendeeRequest.PhoneNumber
+	attendee, err = attendeeService.Save(attendee)
+	if err != nil {
+		return nil, errors.New("could not update user account")
+	}
+	res := &response.AttendeeResponse{
+		Username: attendee.Username,
+		Message:  "account updated successfully",
+	}
+	return res, nil
 }
 
 func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificationRequest, error) {
