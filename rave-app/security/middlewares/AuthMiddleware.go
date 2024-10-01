@@ -88,7 +88,7 @@ func configureCors() cors.Config {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowCredentials = true
-	config.AllowHeaders = []string{utils.AUTHORIZATION}
+	config.AllowHeaders = []string{utils.AUTHORIZATION, "Content-Type"}
 	config.AllowMethods = []string{http.MethodOptions,
 		http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodGet}
 	return config
