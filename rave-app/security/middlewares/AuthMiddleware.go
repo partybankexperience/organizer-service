@@ -38,7 +38,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.GET("/series/:id", seriesController.GetSeriesById)
 		protected.GET("/series/organizer/:organizerId", seriesController.GetSeriesForOrganizer)
 		protected.GET("/event/publish/:id", eventController.PublishEvent)
-		protected.GET("/attendee/update", attendeeController.UpdateAttendee)
+		protected.PUT("/attendee/update", attendeeController.UpdateAttendee)
 	}
 	router.Use(cors.New(configureCors()))
 	authController := controllers.NewAuthController(authService)
