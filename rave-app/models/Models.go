@@ -68,6 +68,15 @@ type Attendee struct {
 	FullName string
 	*User
 	PhoneNumber string
+	IsActive    bool
+}
+
+type IssuedTicket struct {
+	ID     uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	Issuer *Organizer
+	*gorm.Model
+	Attendee *Attendee
+	Ticket   *Ticket
 }
 
 type AdditionalInformationFields []string

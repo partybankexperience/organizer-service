@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	request "github.com/djfemz/rave/rave-app/dtos/request"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
@@ -17,19 +18,28 @@ type OrganizerService interface {
 	GetById(id uint64) (*models.Organizer, error)
 	AddEventStaff(staff *request.AddEventStaffRequest) (*response.RaveResponse[string], error)
 	GetByOtp(otp string) (*models.Organizer, error)
+	IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.RaveResponse[string], error)
 }
 
 type appOrganizerService struct {
 	repository        repositories.OrganizerRepository
 	eventStaffService EventStaffService
 	seriesService     SeriesService
+	ticketService     TicketService
+	attendeeService   AttendeeService
 }
 
-func NewOrganizerService(organizerRepository repositories.OrganizerRepository, eventStaffService EventStaffService, seriesService SeriesService) OrganizerService {
+func NewOrganizerService(organizerRepository repositories.OrganizerRepository,
+	eventStaffService EventStaffService,
+	seriesService SeriesService,
+	ticketService TicketService,
+	attendeeService AttendeeService) OrganizerService {
 	return &appOrganizerService{
 		repository:        organizerRepository,
 		eventStaffService: eventStaffService,
 		seriesService:     seriesService,
+		ticketService:     ticketService,
+		attendeeService:   attendeeService,
 	}
 }
 
@@ -112,6 +122,32 @@ func (organizerService *appOrganizerService) GetByOtp(otp string) (*models.Organ
 	organizerRepository := organizerService.repository
 	log.Println("repo:", organizerRepository)
 	return organizerRepository.FindByOtp(otp)
+}
+
+func (organizerService *appOrganizerService) IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.RaveResponse[string], error) {
+	organizer, err := organizerService.repository.FindById(organizerId)
+	if err != nil {
+		return nil, errors.New("organizer not found")
+	}
+	ticket, err := organizerService.ticketService.GetTicketById(issueTicketRequest.TicketId)
+	if err != nil {
+		return nil, errors.New("ticket not found")
+	}
+	attendee, err := organizerService.attendeeService.FindByUsername(issueTicketRequest.AttendeeUsername)
+	if err != nil {
+		return nil, errors.New("attendee not found")
+	}
+	issuedTicket := &models.IssuedTicket{
+		Issuer:   organizer,
+		Attendee: attendee,
+		Ticket:   ticket,
+	}
+	issuedTicketRepo := repositories.NewIssuedTicketRepository()
+	issuedTicket, err = issuedTicketRepo.Save(issuedTicket)
+	if err != nil {
+		return nil, errors.New("failed to save issued ticket")
+	}
+	return &response.RaveResponse[string]{Data: "ticket has been issued to attendee"}, nil
 }
 
 func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *models.Organizer {
