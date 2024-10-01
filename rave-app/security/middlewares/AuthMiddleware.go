@@ -87,6 +87,7 @@ func extractTokenFrom(authHeader string) string {
 func configureCors() cors.Config {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
+	config.AllowOrigins = []string{"http://localhost:5173/*"}
 	config.AllowCredentials = true
 	config.AllowHeaders = []string{utils.AUTHORIZATION, "Content-Type"}
 	config.AllowMethods = []string{http.MethodOptions,
