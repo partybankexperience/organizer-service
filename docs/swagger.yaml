@@ -812,7 +812,7 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/dtos.UpdateAttendeeRequest'
-      - description: organizerId
+      - description: attendeeId
         in: path
         name: id
         required: true

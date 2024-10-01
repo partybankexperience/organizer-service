@@ -760,7 +760,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "organizerId",
+                        "description": "attendeeId",
                         "name": "id",
                         "in": "path",
                         "required": true
