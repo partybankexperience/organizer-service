@@ -57,19 +57,17 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 // @Tags         Attendee
 // @Accept       json
 // @Param 		 tags body dtos.UpdateAttendeeRequest true "Attendee tags"
-// @Param 		 attendeeId  path int  true  "attendeeId"
+// @Param 		 username  path string  true  "username"
 // @Produce      json
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
 // @Router       /attendee/update  [put]
 func (attendeeController AttendeeController) UpdateAttendee(ctx *gin.Context) {
-	attendeeId, err := extractParamFromRequest("attendeeId", ctx)
-	if err != nil {
-		handleError(ctx, err)
-	}
+	username := ctx.Param("username")
+
 	attendeeAuthRequest := &dtos.UpdateAttendeeRequest{}
-	err = ctx.BindJSON(attendeeAuthRequest)
+	err := ctx.BindJSON(attendeeAuthRequest)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -79,7 +77,7 @@ func (attendeeController AttendeeController) UpdateAttendee(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	res, err := attendeeController.attendeeService.UpdateAttendee(attendeeId, attendeeAuthRequest)
+	res, err := attendeeController.attendeeService.UpdateAttendee(username, attendeeAuthRequest)
 	if err != nil {
 		handleError(ctx, err)
 		return

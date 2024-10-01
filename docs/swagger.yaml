@@ -812,11 +812,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/dtos.UpdateAttendeeRequest'
-      - description: attendeeId
+      - description: username
         in: path
-        name: id
+        name: username
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:

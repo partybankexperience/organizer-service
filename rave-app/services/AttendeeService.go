@@ -18,7 +18,7 @@ import (
 type AttendeeService interface {
 	Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error)
 	GetAttendeeByUsername(username string) (*response.AttendeeResponse, error)
-	UpdateAttendee(id uint64, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error)
+	UpdateAttendee(id string, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error)
 	FindByUsername(username string) (*models.Attendee, error)
 }
 
@@ -67,8 +67,8 @@ func (raveAttendeeService *raveAttendeeService) FindByUsername(username string) 
 	return attendee, nil
 }
 
-func (attendeeService *raveAttendeeService) UpdateAttendee(id uint64, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error) {
-	attendee, err := attendeeService.FindById(id)
+func (attendeeService *raveAttendeeService) UpdateAttendee(username string, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error) {
+	attendee, err := attendeeService.FindByUsername(username)
 	if err != nil {
 		return nil, errors.New("user with id not found")
 	}

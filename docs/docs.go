@@ -759,9 +759,9 @@ const docTemplate = `{
                         }
                     },
                     {
-                        "type": "integer",
-                        "description": "attendeeId",
-                        "name": "id",
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
                         "in": "path",
                         "required": true
                     }
