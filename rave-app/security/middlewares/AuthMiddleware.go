@@ -88,6 +88,6 @@ func configureCors() cors.Config {
 	config.AllowAllOrigins = true
 	config.AllowCredentials = true
 	config.AllowMethods = []string{http.MethodOptions,
-		http.MethodPost, http.MethodOptions, http.MethodPost, http.MethodGet}
+		http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodGet}
 	return config
 }
