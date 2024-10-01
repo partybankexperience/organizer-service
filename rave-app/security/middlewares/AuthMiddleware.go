@@ -24,6 +24,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 	attendeeController *handlers.AttendeeController) {
 
 	protected := router.Group("/api/v1", AuthMiddleware())
+	router.Use(cors.New(configureCors()))
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	{
 		protected.POST("/event", eventController.CreateEvent)
@@ -40,7 +41,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.GET("/event/publish/:id", eventController.PublishEvent)
 		protected.PUT("/attendee/update/:username", attendeeController.UpdateAttendee)
 	}
-	router.Use(cors.New(configureCors()))
+
 	authController := controllers.NewAuthController(authService)
 	oauthController := &controllers.OauthController{}
 	router.POST("/auth/login", authController.AuthHandler)
