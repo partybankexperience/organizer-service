@@ -57,7 +57,7 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 // @Tags         Attendee
 // @Accept       json
 // @Param 		 tags body dtos.UpdateAttendeeRequest true "Attendee tags"
-// @Param 		 id  path int  true  "attendeeId"
+// @Param 		 attendeeId  path int  true  "attendeeId"
 // @Produce      json
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
