@@ -20,7 +20,18 @@ type payload struct {
 
 const APP_NAME = "Partybank"
 
-func GenerateAccessTokenFor(user *models.User) (string, error) {
+func GenerateAccessTokenFor(user *models.Attendee) (string, error) {
+	log.Println("user: ", user)
+	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsForAttendee(user))
+
+	accessToken, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
+	if err != nil {
+		return "", err
+	}
+	return accessToken, nil
+}
+
+func GenerateAccessTokenForOrganizer(user *models.User) (string, error) {
 	log.Println("user: ", user)
 	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsFor(user))
 
@@ -80,12 +91,21 @@ func buildJwtClaimsFor(user *models.User) *jwt.RegisteredClaims {
 	}
 }
 
-func buildJwtClaimsForAttendee(user *models.Attendee) *jwt.RegisteredClaims {
-	return &jwt.RegisteredClaims{
-		Issuer:    APP_NAME,
-		Subject:   user.Username,
-		Audience:  []string{user.Role, strconv.FormatUint(user.ID, 10)},
-		IssuedAt:  jwt.NewNumericDate(time.Now()),
-		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 365)),
-	}
+func buildJwtClaimsForAttendee(user *models.Attendee) jwt.Claims {
+	var claims jwt.MapClaims
+	claims["fullName"] = user.FullName
+	claims["phoneNumber"] = user.PhoneNumber
+	claims["username"] = user.Username
+	claims["role"] = user.Role
+	claims["issuer"] = APP_NAME
+	claims["issuedAt"] = jwt.NewNumericDate(time.Now())
+	claims["ExpiresAt"] = jwt.NewNumericDate(time.Now().Add(time.Hour * 24))
+	return claims
+	//return &jwt.RegisteredClaims{
+	//	Issuer:    APP_NAME,
+	//	Subject:   user.Username,
+	//	Audience:  []string{user.Role, strconv.FormatUint(user.ID, 10)},
+	//	IssuedAt:  jwt.NewNumericDate(time.Now()),
+	//	ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 365)),
+	//}
 }

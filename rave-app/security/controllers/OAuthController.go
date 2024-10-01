@@ -72,14 +72,15 @@ func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 	user := &models.User{Username: googleUser.Email, Role: models.USER}
-	accessToken, err := security.GenerateAccessTokenFor(user)
+	attendee := &models.Attendee{User: user}
+	accessToken, err := security.GenerateAccessTokenFor(attendee)
 	if err != nil {
 		log.Println("error: ", err)
 		ctx.JSON(http.StatusBadRequest, "failed to generate access token")
 		return
 	}
 	log.Println("token: ", accessToken)
-	data := utils.FRONT_END_TEST_BASE_URL + "/validate-token?token=" + accessToken + "&type=google"
+	data := utils.FRONT_END_DEV_BASE_URL + "/validate-token?token=" + accessToken + "&type=google"
 	log.Println("uri: ", data)
 	ctx.Redirect(307, data)
 }

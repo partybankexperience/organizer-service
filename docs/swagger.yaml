@@ -350,6 +350,39 @@ info:
   title: Partybank Organizer Service
   version: "1.0"
 paths:
+  /api/v1/attendee/update:
+    put:
+      consumes:
+      - application/json
+      description: Update Attendee Details
+      parameters:
+      - description: Attendee tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateAttendeeRequest'
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Update Attendee
+      tags:
+      - Attendee
   /api/v1/event:
     post:
       consumes:
@@ -800,39 +833,6 @@ paths:
       summary: Update Ticket By reference
       tags:
       - Tickets
-  /attendee/update:
-    put:
-      consumes:
-      - application/json
-      description: Update Attendee Details
-      parameters:
-      - description: Attendee tags
-        in: body
-        name: tags
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.UpdateAttendeeRequest'
-      - description: username
-        in: path
-        name: username
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.RaveResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/dtos.RaveResponse'
-      security:
-      - Bearer: []
-      summary: Update Attendee
-      tags:
-      - Attendee
   /auth/google/login:
     get:
       consumes:

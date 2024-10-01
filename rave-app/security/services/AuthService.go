@@ -63,7 +63,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 	}
 	orgResponse := mapOrgToOrgResponse(org)
 	log.Println("orgResponse: ", orgResponse)
-	token, err := security.GenerateAccessTokenFor(org.User)
+	token, err := security.GenerateAccessTokenForOrganizer(org.User)
 	if err != nil {
 		return nil, err
 	}
@@ -185,13 +185,13 @@ type attendeeMessage struct {
 }
 
 func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
-	token, err := security.GenerateAccessTokenFor(attendee.User)
+	token, err := security.GenerateAccessTokenFor(attendee)
 	if err != nil {
 		return "", err
 	}
 	message := &attendeeMessage{
 		FullName: attendee.FullName,
-		Link:     utils.FRONT_END_TEST_BASE_URL + "/validate-token?token=" + token,
+		Link:     utils.FRONT_END_DEV_BASE_URL + "/validate-token?token=" + token,
 	}
 	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
 	if err != nil {

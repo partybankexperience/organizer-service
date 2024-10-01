@@ -111,7 +111,7 @@ type attendeeMessage struct {
 }
 
 func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
-	token, err := security.GenerateAccessTokenFor(attendee.User)
+	token, err := security.GenerateAccessTokenFor(attendee)
 	if err != nil {
 		return "", err
 	}

@@ -24,6 +24,58 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/attendee/update": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update Attendee Details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendee"
+                ],
+                "summary": "Update Attendee",
+                "parameters": [
+                    {
+                        "description": "Attendee tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UpdateAttendeeRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/event": {
             "post": {
                 "security": [
@@ -719,58 +771,6 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Ticket"
                             }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/attendee/update": {
-            "put": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Update Attendee Details",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Attendee"
-                ],
-                "summary": "Update Attendee",
-                "parameters": [
-                    {
-                        "description": "Attendee tags",
-                        "name": "tags",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.UpdateAttendeeRequest"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "username",
-                        "name": "username",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
                         }
                     },
                     "400": {
