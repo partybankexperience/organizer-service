@@ -24,7 +24,6 @@ type CreateAttendeeRequest struct {
 
 type UpdateAttendeeRequest struct {
 	FullName    string `json:"full_name"`
-	Username    string `json:"email"`
 	PhoneNumber string `json:"phone_number"`
 }
 

@@ -64,7 +64,6 @@ func (attendeeService *raveAttendeeService) UpdateAttendee(id uint64, updateAtte
 		return nil, errors.New("user with id not found")
 	}
 	attendee.FullName = updateAttendeeRequest.FullName
-	attendee.Username = updateAttendeeRequest.FullName
 	attendee.PhoneNumber = updateAttendeeRequest.PhoneNumber
 	attendee, err = attendeeService.Save(attendee)
 	if err != nil {
