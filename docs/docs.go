@@ -730,6 +730,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/attendee/update": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update Attendee Details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendee"
+                ],
+                "summary": "Update Attendee",
+                "parameters": [
+                    {
+                        "description": "Attendee tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UpdateAttendeeRequest"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "organizerId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/google/login": {
             "get": {
                 "description": "Sign in with Google",
@@ -1227,6 +1279,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ticket_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UpdateAttendeeRequest": {
+            "type": "object",
+            "properties": {
+                "full_name": {
+                    "type": "string"
+                },
+                "phone_number": {
                     "type": "string"
                 }
             }

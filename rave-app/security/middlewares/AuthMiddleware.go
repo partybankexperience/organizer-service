@@ -20,7 +20,8 @@ var routesAuthorities map[string][]string
 
 func Routers(router *gin.Engine, organizerController *handlers.OrganizerController,
 	eventController *handlers.EventController, seriesController *handlers.SeriesController,
-	ticketController *handlers.TicketController, authService *services.AuthService) {
+	ticketController *handlers.TicketController, authService *services.AuthService,
+	attendeeController *handlers.AttendeeController) {
 
 	protected := router.Group("/api/v1", AuthMiddleware())
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -37,6 +38,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.GET("/series/:id", seriesController.GetSeriesById)
 		protected.GET("/series/organizer/:organizerId", seriesController.GetSeriesForOrganizer)
 		protected.GET("/event/publish/:id", eventController.PublishEvent)
+		protected.GET("/attendee/update", attendeeController.UpdateAttendee)
 	}
 	router.Use(cors.New(configureCors()))
 	authController := controllers.NewAuthController(authService)

@@ -70,7 +70,7 @@ func main() {
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
 		eventController, seriesController, ticketController,
-		authService)
+		authService, attendeeController)
 
 	err = router.Run(":8000")
 	if err != nil {
@@ -90,13 +90,14 @@ func configureControllers() {
 	eventController = handlers.NewEventController(eventService, objectValidator)
 	seriesController = handlers.NewSeriesController(seriesService, objectValidator)
 	ticketController = handlers.NewTicketController(ticketService, objectValidator)
+	attendeeController = handlers.NewAttendeeController(attendeeService, objectValidator)
 }
 
 func configureServiceComponents() {
 	mailService := services.NewMailService()
 	seriesService = services.NewSeriesService(seriesRepository)
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
-	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService)
+	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService, ticketService, attendeeService)
 	eventService = services.NewEventService(eventRepository, organizerService, seriesService)
 	ticketService = services.NewTicketService(ticketRepository, eventService)
 	attendeeService = services.NewAttendeeService(attendeeRepository, mailService)

@@ -1,8 +1,12 @@
 package controllers
 
 import (
+	dtos "github.com/djfemz/rave/rave-app/dtos/request"
+	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/services"
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"net/http"
 )
 
 type AttendeeController struct {
@@ -46,3 +50,39 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 //	}
 //	ctx.JSON(http.StatusCreated, response.RaveResponse[*response.AttendeeResponse]{Data: res})
 //}
+
+// UpdateAttendee godoc
+// @Summary      Update Attendee
+// @Description  Update Attendee Details
+// @Tags         Attendee
+// @Accept       json
+// @Param 		 tags body dtos.UpdateAttendeeRequest true "Attendee tags"
+// @Param 		 id  path int  true  "organizerId"
+// @Produce      json
+// @Success      201  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /attendee/update  [put]
+func (attendeeController AttendeeController) UpdateAttendee(ctx *gin.Context) {
+	organizerId, err := extractParamFromRequest("organizerId", ctx)
+	if err != nil {
+		handleError(ctx, err)
+	}
+	attendeeAuthRequest := &dtos.UpdateAttendeeRequest{}
+	err = ctx.BindJSON(attendeeAuthRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	err = attendeeController.objectValidator.Struct(attendeeAuthRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	res, err := attendeeController.attendeeService.UpdateAttendee(organizerId, attendeeAuthRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, response.RaveResponse[*response.AttendeeResponse]{Data: res})
+}

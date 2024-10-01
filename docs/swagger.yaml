@@ -228,6 +228,13 @@ definitions:
       ticket_type:
         type: string
     type: object
+  dtos.UpdateAttendeeRequest:
+    properties:
+      full_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
   dtos.UpdateEventRequest:
     properties:
       attendee_term:
@@ -793,6 +800,39 @@ paths:
       summary: Update Ticket By reference
       tags:
       - Tickets
+  /attendee/update:
+    put:
+      consumes:
+      - application/json
+      description: Update Attendee Details
+      parameters:
+      - description: Attendee tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateAttendeeRequest'
+      - description: organizerId
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Update Attendee
+      tags:
+      - Attendee
   /auth/google/login:
     get:
       consumes:
