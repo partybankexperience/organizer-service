@@ -17,8 +17,8 @@ import (
 
 type AttendeeService interface {
 	Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error)
-	GetAttendeeByUsername(id uint64, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error)
-	UpdateAttendee(username string) (*response.AttendeeResponse, error)
+	GetAttendeeByUsername(username string) (*response.AttendeeResponse, error)
+	UpdateAttendee(id uint64, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error)
 }
 
 type raveAttendeeService struct {
