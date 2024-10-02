@@ -15,6 +15,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 var routesAuthorities map[string][]string
@@ -90,8 +91,11 @@ func configureCors() cors.Config {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
 	config.AllowCredentials = true
-	config.AllowHeaders = []string{utils.AUTHORIZATION, "Content-Type", "Origin", "access-control-allow-origin", "Accept", "access-control-allow-headers"}
-	config.AllowMethods = []string{http.MethodOptions,
-		http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodGet}
+	config.AllowCredentials = true
+	config.MaxAge = 12 * time.Hour
+	config.AddExposeHeaders("Content-Length")
+	config.AddAllowHeaders(utils.AUTHORIZATION, "Content-Type", "Origin", "Accept")
+	config.AddAllowMethods(http.MethodOptions,
+		http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodGet)
 	return config
 }
