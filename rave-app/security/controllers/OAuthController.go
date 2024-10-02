@@ -5,6 +5,7 @@ import (
 	"github.com/djfemz/rave/rave-app/config"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
 	"github.com/djfemz/rave/rave-app/models"
+	"github.com/djfemz/rave/rave-app/repositories"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/utils"
 	"github.com/gin-gonic/gin"
@@ -20,6 +21,7 @@ var (
 const tokenEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 
 type OauthController struct {
+	repositories.AttendeeRepository
 }
 
 func init() {
@@ -72,8 +74,13 @@ func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 	user := &models.User{Username: googleUser.Email, Role: models.USER}
-	attendee := &models.Attendee{User: user}
-	accessToken, err := security.GenerateAccessTokenFor(attendee)
+	attendee, err := oauthController.AttendeeRepository.FindByUsername(googleUser.Email)
+	var accessToken string
+	if err != nil || attendee == nil {
+		log.Println("error: ", err)
+		attendee = &models.Attendee{User: user}
+	}
+	accessToken, err = security.GenerateAccessTokenFor(attendee)
 	if err != nil {
 		log.Println("error: ", err)
 		ctx.JSON(http.StatusBadRequest, "failed to generate access token")

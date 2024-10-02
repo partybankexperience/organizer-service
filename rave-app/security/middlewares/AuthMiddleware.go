@@ -3,6 +3,7 @@ package middlewares
 import (
 	handlers "github.com/djfemz/rave/rave-app/controllers"
 	response "github.com/djfemz/rave/rave-app/dtos/response"
+	"github.com/djfemz/rave/rave-app/repositories"
 	"github.com/djfemz/rave/rave-app/security"
 	"github.com/djfemz/rave/rave-app/security/controllers"
 	"github.com/djfemz/rave/rave-app/security/services"
@@ -21,7 +22,7 @@ var routesAuthorities map[string][]string
 func Routers(router *gin.Engine, organizerController *handlers.OrganizerController,
 	eventController *handlers.EventController, seriesController *handlers.SeriesController,
 	ticketController *handlers.TicketController, authService *services.AuthService,
-	attendeeController *handlers.AttendeeController, authController *controllers.AuthController) {
+	attendeeController *handlers.AttendeeController, authController *controllers.AuthController, attendeeRepo repositories.AttendeeRepository) {
 
 	protected := router.Group("/api/v1", AuthMiddleware())
 	router.Use(cors.New(configureCors()))
@@ -42,7 +43,9 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.PUT("/attendee/update/:username", attendeeController.UpdateAttendee)
 	}
 
-	oauthController := &controllers.OauthController{}
+	oauthController := &controllers.OauthController{
+		AttendeeRepository: attendeeRepo,
+	}
 	router.POST("/auth/login", authController.AuthHandler)
 	router.POST("/auth/login/attendee", authController.AuthenticateAttendee)
 	router.GET("/auth/google/login", oauthController.GoogleLogin)

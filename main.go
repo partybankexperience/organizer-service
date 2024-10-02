@@ -72,7 +72,7 @@ func main() {
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
 		eventController, seriesController, ticketController,
-		authService, attendeeController, authController)
+		authService, attendeeController, authController, attendeeRepository)
 
 	err = router.Run(":8000")
 	if err != nil {
