@@ -53,12 +53,13 @@ func GenerateAccessTokenForOrganizer(user *models.User) (string, error) {
 //	return accessToken, nil
 //}
 
-func ExtractUserFrom(token string) (*models.Organizer, error) {
+func ExtractUserFrom(token string) (*models.User, error) {
 	db := repositories.Connect()
 	organizerRepository := repositories.NewOrganizerRepository(db)
+	attendeeRepository := repositories.NewAttendeeRepository(db)
 	tok, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SIGNING_KEY")), nil
-	}, jwt.WithIssuer(APP_NAME), jwt.WithExpirationRequired())
+	}, jwt.WithoutClaimsValidation())
 	if err != nil {
 		return nil, err
 	}
@@ -70,15 +71,17 @@ func ExtractUserFrom(token string) (*models.Organizer, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	org, err := organizerRepository.FindByUsername(subject)
 	if err != nil {
-		return nil, err
+		att, err := attendeeRepository.FindByUsername(subject)
+		if err != nil {
+			return nil, err
+		}
+		return att.User, nil
 	}
-	//claims, err := tok.Claims.GetAudience()
-	//if slices.Contains(claims, org.Role) {
-	//	return nil, errors.New("user is not authorized to access this resource")
-	//}
-	return org, nil
+
+	return org.User, nil
 }
 
 func buildJwtClaimsFor(user *models.User) *jwt.RegisteredClaims {
