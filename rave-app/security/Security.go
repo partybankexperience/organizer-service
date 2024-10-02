@@ -22,7 +22,7 @@ const APP_NAME = "Partybank"
 
 func GenerateAccessTokenFor(user *models.Attendee) (string, error) {
 	log.Println("user: ", user)
-	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsFor(user.User))
+	token := *jwt.NewWithClaims(jwt.SigningMethodHS256, buildJwtClaimsForAttendee(user))
 
 	accessToken, err := token.SignedString([]byte(os.Getenv("JWT_SIGNING_KEY")))
 	if err != nil {
