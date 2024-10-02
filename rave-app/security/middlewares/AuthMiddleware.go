@@ -25,8 +25,8 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 	ticketController *handlers.TicketController, authService *services.AuthService,
 	attendeeController *handlers.AttendeeController, authController *controllers.AuthController, attendeeRepo repositories.AttendeeRepository) {
 
-	protected := router.Group("/api/v1", AuthMiddleware())
 	router.Use(cors.New(configureCors()))
+	protected := router.Group("/api/v1", AuthMiddleware())
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	{
 		protected.POST("/event", eventController.CreateEvent)
