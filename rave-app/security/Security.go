@@ -97,9 +97,9 @@ func buildJwtClaimsForAttendee(user *models.Attendee) jwt.Claims {
 	claims["phoneNumber"] = user.PhoneNumber
 	claims["username"] = user.Username
 	claims["role"] = user.Role
-	claims["issuer"] = APP_NAME
+	claims["iss"] = APP_NAME
 	claims["issuedAt"] = jwt.NewNumericDate(time.Now())
-	claims["ExpiresAt"] = jwt.NewNumericDate(time.Now().Add(time.Hour * 24))
+	claims["exp"] = jwt.NewNumericDate(time.Now().Add(time.Hour * 24))
 	claims["sub"] = user.Username
 	return claims
 	//return &jwt.RegisteredClaims{
