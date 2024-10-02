@@ -88,14 +88,13 @@ func extractTokenFrom(authHeader string) string {
 }
 
 func configureCors() cors.Config {
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowCredentials = true
-	config.AllowCredentials = true
-	config.MaxAge = 12 * time.Hour
-	config.AddExposeHeaders("Content-Length")
-	config.AddAllowHeaders(utils.AUTHORIZATION, "Content-Type", "Origin", "Accept")
-	config.AddAllowMethods(http.MethodOptions,
-		http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodGet)
+	config := cors.Config{
+		AllowAllOrigins:  true,
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowHeaders:     []string{utils.AUTHORIZATION, "Content-Type", "Origin", "Accept"},
+		AllowMethods:     []string{http.MethodOptions, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodGet},
+	}
 	return config
 }
