@@ -92,21 +92,21 @@ func buildJwtClaimsFor(user *models.User) *jwt.RegisteredClaims {
 }
 
 func buildJwtClaimsForAttendee(user *models.Attendee) jwt.Claims {
-	//var claims jwt.MapClaims = make(map[string]interface{})
-	//claims["fullName"] = user.FullName
-	//claims["phoneNumber"] = user.PhoneNumber
-	//claims["username"] = user.Username
-	//claims["role"] = user.Role
-	//claims["issuer"] = APP_NAME
-	//claims["issuedAt"] = jwt.NewNumericDate(time.Now())
-	//claims["ExpiresAt"] = jwt.NewNumericDate(time.Now().Add(time.Hour * 24))
-	//claims["sub"] = user.Username
-	//return claims
-	return &jwt.RegisteredClaims{
-		Issuer:    APP_NAME,
-		Subject:   user.Username,
-		Audience:  []string{user.Role, strconv.FormatUint(user.ID, 10)},
-		IssuedAt:  jwt.NewNumericDate(time.Now()),
-		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 365)),
-	}
+	var claims jwt.MapClaims = make(map[string]interface{})
+	claims["fullName"] = user.FullName
+	claims["phoneNumber"] = user.PhoneNumber
+	claims["username"] = user.Username
+	claims["role"] = user.Role
+	claims["issuer"] = APP_NAME
+	claims["issuedAt"] = jwt.NewNumericDate(time.Now())
+	claims["ExpiresAt"] = jwt.NewNumericDate(time.Now().Add(time.Hour * 24))
+	claims["sub"] = user.Username
+	return claims
+	//return &jwt.RegisteredClaims{
+	//	Issuer:    APP_NAME,
+	//	Subject:   user.Username,
+	//	Audience:  []string{user.Role, strconv.FormatUint(user.ID, 10)},
+	//	IssuedAt:  jwt.NewNumericDate(time.Now()),
+	//	ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 365)),
+	//}
 }
