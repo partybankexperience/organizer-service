@@ -133,7 +133,7 @@ func (organizerService *appOrganizerService) IssueTicketTo(organizerId uint64, i
 	if err != nil {
 		return nil, errors.New("ticket not found")
 	}
-	attendee, err := organizerService.attendeeService.FindByUsername(issueTicketRequest.AttendeeUsername)
+	attendee, err := organizerService.attendeeService.FindAttendeeByUsername(issueTicketRequest.AttendeeUsername)
 	if err != nil {
 		return nil, errors.New("attendee not found")
 	}

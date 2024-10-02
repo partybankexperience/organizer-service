@@ -21,7 +21,7 @@ var routesAuthorities map[string][]string
 func Routers(router *gin.Engine, organizerController *handlers.OrganizerController,
 	eventController *handlers.EventController, seriesController *handlers.SeriesController,
 	ticketController *handlers.TicketController, authService *services.AuthService,
-	attendeeController *handlers.AttendeeController) {
+	attendeeController *handlers.AttendeeController, authController *controllers.AuthController) {
 
 	protected := router.Group("/api/v1", AuthMiddleware())
 	router.Use(cors.New(configureCors()))
@@ -42,7 +42,6 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.PUT("/attendee/update/:username", attendeeController.UpdateAttendee)
 	}
 
-	authController := controllers.NewAuthController(authService)
 	oauthController := &controllers.OauthController{}
 	router.POST("/auth/login", authController.AuthHandler)
 	router.POST("/auth/login/attendee", authController.AuthenticateAttendee)

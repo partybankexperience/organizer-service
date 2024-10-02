@@ -18,8 +18,8 @@ import (
 type AttendeeService interface {
 	Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error)
 	GetAttendeeByUsername(username string) (*response.AttendeeResponse, error)
+	FindAttendeeByUsername(username string) (*models.Attendee, error)
 	UpdateAttendee(id string, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error)
-	FindByUsername(username string) (*models.Attendee, error)
 }
 
 type raveAttendeeService struct {
@@ -29,14 +29,14 @@ type raveAttendeeService struct {
 
 func NewAttendeeService(attendeeRepository repositories.AttendeeRepository, mailService MailService) AttendeeService {
 	return &raveAttendeeService{
-		AttendeeRepository: attendeeRepository,
-		MailService:        mailService,
+		attendeeRepository,
+		mailService,
 	}
 }
 
-func (attendeeService *raveAttendeeService) Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error) {
+func (raveAttendeeService *raveAttendeeService) Register(createAttendeeRequest *dtos.CreateAttendeeRequest) (*response.AttendeeResponse, error) {
 	attendee := mappers.MapCreateAttendeeRequestToAttendee(createAttendeeRequest)
-	attendee, err := attendeeService.Save(attendee)
+	attendee, err := raveAttendeeService.Save(attendee)
 	if err != nil {
 		log.Println("Error: ", err.Error())
 		return nil, errors.New("failed to create attendee service")
@@ -45,21 +45,21 @@ func (attendeeService *raveAttendeeService) Register(createAttendeeRequest *dtos
 	if err != nil {
 		return nil, err
 	}
-	go attendeeService.MailService.Send(attendeeWelcomeMailRequest)
+	go raveAttendeeService.MailService.Send(attendeeWelcomeMailRequest)
 
 	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
 
 }
 
-func (attendeeService *raveAttendeeService) GetAttendeeByUsername(username string) (*response.AttendeeResponse, error) {
-	attendee, err := attendeeService.FindByUsername(username)
+func (raveAttendeeService *raveAttendeeService) GetAttendeeByUsername(username string) (*response.AttendeeResponse, error) {
+	attendee, err := raveAttendeeService.FindByUsername(username)
 	if err != nil {
 		return nil, errors.New("failed to find attendee")
 	}
 	return mappers.MapAttendeeToAttendeeResponse(attendee), nil
 }
 
-func (raveAttendeeService *raveAttendeeService) FindByUsername(username string) (*models.Attendee, error) {
+func (raveAttendeeService *raveAttendeeService) FindAttendeeByUsername(username string) (*models.Attendee, error) {
 	attendee, err := raveAttendeeService.FindByUsername(username)
 	if err != nil {
 		return nil, errors.New("attendee not found")
@@ -67,14 +67,14 @@ func (raveAttendeeService *raveAttendeeService) FindByUsername(username string) 
 	return attendee, nil
 }
 
-func (attendeeService *raveAttendeeService) UpdateAttendee(username string, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error) {
-	attendee, err := attendeeService.FindByUsername(username)
+func (raveAttendeeService *raveAttendeeService) UpdateAttendee(username string, updateAttendeeRequest *dtos.UpdateAttendeeRequest) (*response.AttendeeResponse, error) {
+	attendee, err := raveAttendeeService.FindByUsername(username)
 	if err != nil {
 		return nil, errors.New("user with id not found")
 	}
 	attendee.FullName = updateAttendeeRequest.FullName
 	attendee.PhoneNumber = updateAttendeeRequest.PhoneNumber
-	attendee, err = attendeeService.Save(attendee)
+	attendee, err = raveAttendeeService.Save(attendee)
 	if err != nil {
 		return nil, errors.New("could not update user account")
 	}

@@ -28,7 +28,7 @@ package test
 //}
 //
 //func TestFindByUsername(t *testing.T) {
-//	found, _ := repository.FindByUsername("johnny@email.com")
+//	found, _ := repository.FindAttendeeByUsername("johnny@email.com")
 //	log.Println(found)
 //	assert.NotNil(t, found)
 //}

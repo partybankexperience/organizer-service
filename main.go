@@ -5,6 +5,7 @@ import (
 	"github.com/djfemz/rave/rave-app/config"
 	handlers "github.com/djfemz/rave/rave-app/controllers"
 	"github.com/djfemz/rave/rave-app/repositories"
+	"github.com/djfemz/rave/rave-app/security/controllers"
 	"github.com/djfemz/rave/rave-app/security/middlewares"
 	services2 "github.com/djfemz/rave/rave-app/security/services"
 	"github.com/djfemz/rave/rave-app/services"
@@ -37,6 +38,7 @@ var eventController *handlers.EventController
 var seriesController *handlers.SeriesController
 var ticketController *handlers.TicketController
 var attendeeController *handlers.AttendeeController
+var authController *controllers.AuthController
 
 var objectValidator *validator.Validate
 
@@ -70,7 +72,7 @@ func main() {
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
 		eventController, seriesController, ticketController,
-		authService, attendeeController)
+		authService, attendeeController, authController)
 
 	err = router.Run(":8000")
 	if err != nil {
@@ -91,6 +93,7 @@ func configureControllers() {
 	seriesController = handlers.NewSeriesController(seriesService, objectValidator)
 	ticketController = handlers.NewTicketController(ticketService, objectValidator)
 	attendeeController = handlers.NewAttendeeController(attendeeService, objectValidator)
+	authController = controllers.NewAuthController(authService)
 }
 
 func configureServiceComponents() {
