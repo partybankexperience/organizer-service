@@ -2,9 +2,9 @@ package test
 
 //
 //import (
-//	request "github.com/djfemz/rave/rave-app/dtos/request"
-//	"github.com/djfemz/rave/rave-app/models"
-//	"github.com/djfemz/rave/rave-app/services"
+//	request "github.com/djfemz/rave/partybank-app/dtos/request"
+//	"github.com/djfemz/rave/partybank-app/models"
+//	"github.com/djfemz/rave/partybank-app/services"
 //	"github.com/stretchr/testify/assert"
 //	"gopkg.in/jeevatkm/go-model.v1"
 //	"log"

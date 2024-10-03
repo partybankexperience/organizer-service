@@ -1,11 +1,11 @@
 package test
 
 import (
-	dtos "github.com/djfemz/rave/rave-app/dtos/request"
-	"github.com/djfemz/rave/rave-app/models"
-	"github.com/djfemz/rave/rave-app/repositories"
-	"github.com/djfemz/rave/rave-app/services"
-	"github.com/djfemz/rave/rave-app/utils"
+	dtos "github.com/djfemz/rave/partybank-app/dtos/request"
+	"github.com/djfemz/rave/partybank-app/models"
+	"github.com/djfemz/rave/partybank-app/repositories"
+	"github.com/djfemz/rave/partybank-app/services"
+	"github.com/djfemz/rave/partybank-app/utils"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
@@ -30,7 +30,7 @@ func TestUpdateAttendee(t *testing.T) {
 		PhoneNumber: "09087654356",
 	}
 
-	res, err := attendeeService.UpdateAttendee(attendee.ID, updateAttendeeRequest)
+	res, err := attendeeService.UpdateAttendee(username, updateAttendeeRequest)
 	assert.Nil(t, err)
 	assert.NotNil(t, res)
 	attendee, err = attendeeRepository.FindById(attendee.ID)

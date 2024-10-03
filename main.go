@@ -1,14 +1,13 @@
 package main
 
 import (
-	_ "github.com/djfemz/rave/docs"
-	"github.com/djfemz/rave/rave-app/config"
-	handlers "github.com/djfemz/rave/rave-app/controllers"
-	"github.com/djfemz/rave/rave-app/repositories"
-	"github.com/djfemz/rave/rave-app/security/controllers"
-	"github.com/djfemz/rave/rave-app/security/middlewares"
-	services2 "github.com/djfemz/rave/rave-app/security/services"
-	"github.com/djfemz/rave/rave-app/services"
+	"github.com/djfemz/organizer-service/partybank-app/config"
+	handlers "github.com/djfemz/organizer-service/partybank-app/controllers"
+	"github.com/djfemz/organizer-service/partybank-app/repositories"
+	"github.com/djfemz/organizer-service/partybank-app/security/controllers"
+	"github.com/djfemz/organizer-service/partybank-app/security/middlewares"
+	services2 "github.com/djfemz/organizer-service/partybank-app/security/services"
+	"github.com/djfemz/organizer-service/partybank-app/services"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
