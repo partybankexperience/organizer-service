@@ -1,11 +1,11 @@
 package test
 
 import (
-	dtos "github.com/djfemz/rave/partybank-app/dtos/request"
-	"github.com/djfemz/rave/partybank-app/models"
-	"github.com/djfemz/rave/partybank-app/repositories"
-	"github.com/djfemz/rave/partybank-app/services"
-	"github.com/djfemz/rave/partybank-app/utils"
+	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
+	"github.com/djfemz/organizer-service/partybank-app/models"
+	"github.com/djfemz/organizer-service/partybank-app/repositories"
+	"github.com/djfemz/organizer-service/partybank-app/services"
+	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"

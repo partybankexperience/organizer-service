@@ -1,10 +1,11 @@
 package test
 
 //
+//
 //import (
-//	request "github.com/djfemz/rave/partybank-app/dtos/request"
-//	"github.com/djfemz/rave/partybank-app/models"
-//	"github.com/djfemz/rave/partybank-app/services"
+//	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
+//	"github.com/djfemz/organizer-service/partybank-app/models"
+//	"github.com/djfemz/organizer-service/partybank-app/services"
 //	"github.com/stretchr/testify/assert"
 //	"gopkg.in/jeevatkm/go-model.v1"
 //	"log"
@@ -41,10 +42,11 @@ package test
 //	req := &request.CreateEventRequest{
 //		SeriesId: 1,
 //		Name:     "rave",
-//		Location: "Abuja",
+//		City: "Abuja",
+//
 //		Time:     time.Now().String(),
 //	}
-//	eventService = services.NewEventService()
+//	eventService := services.NewEventService()
 //	event, err := eventService.Create(req)
 //	createdEvent := &models.Event{}
 //	model.Copy(createdEvent, event)
