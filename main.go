@@ -13,6 +13,7 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 	"log"
+	"os"
 )
 
 var err error
@@ -72,8 +73,11 @@ func main() {
 	middlewares.Routers(router, organizerController,
 		eventController, seriesController, ticketController,
 		authService, attendeeController, authController, attendeeRepository)
-
-	err = router.Run(":8000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+	err = router.Run(":" + port)
 	if err != nil {
 		log.Println("Error starting server: ", err)
 	}
