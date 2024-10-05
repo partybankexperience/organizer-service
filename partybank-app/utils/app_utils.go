@@ -15,6 +15,8 @@ const (
 	APP_EMAIL               = "partybankexperience@gmail.com"
 	FRONT_END_TEST_BASE_URL = "https://partybank-dev.vercel.app"
 	FRONT_END_DEV_BASE_URL  = "http://localhost:5173"
+	EVENT_REFERENCE_PREFIX  = "evt-"
+	TICKET_REFERENCE_PREFIX = "tkt-"
 )
 
 func ConvertQueryStringToInt(query string) (int, error) {
@@ -31,15 +33,15 @@ func isDateValid(date string) bool {
 }
 
 func GenerateEventReference() string {
-	s := uuid.New()
-	v := base64.RawURLEncoding.EncodeToString([]byte(s.String()))
-	return "evt-" + v
+	uniqueId := uuid.New()
+	uniqueHash := base64.RawURLEncoding.EncodeToString([]byte(uniqueId.String()))
+	return EVENT_REFERENCE_PREFIX + uniqueHash
 }
 
 func GenerateTicketReference() string {
-	s := uuid.New()
-	v := base64.RawURLEncoding.EncodeToString([]byte(s.String()))
-	return "tkt-" + v
+	uniqueId := uuid.New()
+	uniqueHash := base64.RawURLEncoding.EncodeToString([]byte(uniqueId.String()))
+	return TICKET_REFERENCE_PREFIX + uniqueHash
 }
 
 func ExistsWithTicketName(event *models.Event, name string) bool {
