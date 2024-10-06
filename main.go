@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/djfemz/organizer-service/docs"
 	"github.com/djfemz/organizer-service/partybank-app/config"
 	handlers "github.com/djfemz/organizer-service/partybank-app/controllers"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
@@ -60,7 +61,7 @@ func init() {
 // @contact.email  unavailable
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host rave.onrender.com
+// @host partybank-organizer-269c8057a65f.herokuapp.com
 // @schemes https
 // @securityDefinitions.apikey Bearer
 // @in header
