@@ -1,0 +1,951 @@
+definitions:
+  dtos.AddEventStaffRequest:
+    properties:
+      event_id:
+        type: integer
+      staff_emails:
+        items:
+          type: string
+        type: array
+    required:
+    - event_id
+    type: object
+  dtos.AttendeeAuthRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  dtos.AuthRequest:
+    properties:
+      username:
+        type: string
+    required:
+    - username
+    type: object
+  dtos.CreateEventRequest:
+    properties:
+      attendee_term:
+        type: string
+      city:
+        type: string
+      contact_information:
+        type: string
+      country:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      event_theme:
+        type: string
+      image_url:
+        type: string
+      map_embedded_url:
+        type: string
+      map_url:
+        type: string
+      name:
+        type: string
+      organizer_id:
+        type: integer
+      series_id:
+        type: integer
+      state:
+        type: string
+      time:
+        type: string
+      venue:
+        type: string
+    required:
+    - country
+    - date
+    - name
+    - organizer_id
+    - series_id
+    - state
+    - time
+    - venue
+    type: object
+  dtos.CreateSeriesRequest:
+    properties:
+      description:
+        type: string
+      image_url:
+        type: string
+      name:
+        type: string
+      organizer_id:
+        type: integer
+      series_logo:
+        type: string
+    required:
+    - organizer_id
+    type: object
+  dtos.CreateTicketRequest:
+    properties:
+      capacity:
+        type: integer
+      colour:
+        type: string
+      event_id:
+        description: AdditionalInformationFields  models.AdditionalInformationFields
+          `json:"additional_information_fields"`
+        type: integer
+      is_transfer_payment_fees_to_guest:
+        description: |-
+          DiscountType                 string                             `json:"discount_type"`
+          Percentage float64 `json:"percentage"`
+          DiscountPrice                float64                            `json:"discount_price"`
+          DiscountCode                 string                             `json:"discount_code"`
+          AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
+        type: boolean
+      name:
+        type: string
+      price:
+        type: number
+      price_change_date:
+        type: string
+      price_change_time:
+        type: string
+      purchase_limit:
+        type: integer
+      stock:
+        type: string
+      ticket_perks:
+        items:
+          type: string
+        type: array
+      ticket_sale_end_date:
+        type: string
+      ticket_sale_start_date:
+        type: string
+      ticket_sale_start_time:
+        type: string
+      ticket_sales_end_time:
+        type: string
+      ticket_type:
+        type: string
+    required:
+    - event_id
+    type: object
+  dtos.EventResponse:
+    properties:
+      attendee_term:
+        type: string
+      contact_information:
+        type: string
+      created_by:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      event_name:
+        type: string
+      event_reference:
+        type: string
+      event_theme:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      location:
+        $ref: '#/definitions/models.Location'
+      map_embedded_url:
+        type: string
+      map_url:
+        type: string
+      message:
+        type: string
+      publication_state:
+        type: string
+      series_id:
+        type: integer
+      series_logo:
+        type: string
+      status:
+        type: string
+      tickets:
+        items:
+          $ref: '#/definitions/dtos.TicketResponse'
+        type: array
+      time:
+        type: string
+      venue:
+        type: string
+    type: object
+  dtos.RaveResponse:
+    type: object
+  dtos.TicketResponse:
+    properties:
+      additional_information_fields:
+        items:
+          type: string
+        type: array
+      available_discounted_tickets:
+        type: integer
+      capacity:
+        type: integer
+      colour:
+        type: string
+      discount_code:
+        type: string
+      discount_price:
+        type: number
+      discount_type:
+        type: string
+      is_ticket_sale_date_expired:
+        type: boolean
+      is_transfer_payment_fees_to_guest:
+        type: boolean
+      name:
+        type: string
+      number_in_stock:
+        type: integer
+      percentage:
+        type: number
+      price:
+        type: number
+      purchase_limit:
+        type: integer
+      stock:
+        type: string
+      ticket_perks:
+        items:
+          type: string
+        type: array
+      ticket_reference:
+        type: string
+      ticket_sale_end_date:
+        type: string
+      ticket_sale_start_date:
+        type: string
+      ticket_sale_start_time:
+        type: string
+      ticket_sales_end_time:
+        type: string
+      ticket_type:
+        type: string
+    type: object
+  dtos.UpdateAttendeeRequest:
+    properties:
+      full_name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  dtos.UpdateEventRequest:
+    properties:
+      attendee_term:
+        type: string
+      contact_information:
+        type: string
+      date:
+        type: string
+      description:
+        type: string
+      event_theme:
+        type: string
+      location:
+        type: string
+      map_embedded_url:
+        type: string
+      map_url:
+        type: string
+      name:
+        type: string
+      organizer_id:
+        type: integer
+      time:
+        type: string
+      venue:
+        type: string
+    required:
+    - organizer_id
+    - venue
+    type: object
+  models.ActivePeriod:
+    properties:
+      ticket_sale_end_date:
+        type: string
+      ticket_sale_end_time:
+        type: string
+      ticket_sale_start_date:
+        type: string
+      ticket_sale_start_time:
+        type: string
+    type: object
+  models.Location:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      state:
+        type: string
+    type: object
+  models.Ticket:
+    properties:
+      active_period:
+        $ref: '#/definitions/models.ActivePeriod'
+      additional_information_fields:
+        items:
+          type: string
+        type: array
+      available_discounted_tickets:
+        type: integer
+      capacity:
+        type: integer
+      category:
+        type: integer
+      colour:
+        type: string
+      discount_code:
+        type: string
+      discount_price:
+        type: number
+      discount_type:
+        type: string
+      event_id:
+        type: integer
+      id:
+        type: integer
+      is_sold_out_ticket:
+        type: boolean
+      is_transfer_payment_fees_to_guest:
+        type: boolean
+      name:
+        type: string
+      number_available:
+        type: integer
+      percentage:
+        type: number
+      price:
+        type: number
+      purchase_limit:
+        type: integer
+      reference:
+        type: string
+      stock:
+        type: string
+      ticket_perks:
+        items:
+          type: string
+        type: array
+      type:
+        type: string
+    type: object
+host: partybank-organizer-269c8057a65f.herokuapp.com
+info:
+  contact:
+    email: unavailable
+    name: API Support
+    url: https://www.thepartybank.com
+  description: Partybank Organizer Service.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Partybank Organizer Service
+  version: "1.0"
+paths:
+  /api/v1/attendee/update:
+    put:
+      consumes:
+      - application/json
+      description: Update Attendee Details
+      parameters:
+      - description: Attendee tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateAttendeeRequest'
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Update Attendee
+      tags:
+      - Attendee
+  /api/v1/event:
+    post:
+      consumes:
+      - application/json
+      description: Adds Event
+      parameters:
+      - description: Event tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateEventRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add Event
+      tags:
+      - Events
+  /api/v1/event/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Event By id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get Event By id
+      tags:
+      - Events
+    put:
+      consumes:
+      - application/json
+      description: Edits Event
+      parameters:
+      - description: Event tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateEventRequest'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Edit Event
+      tags:
+      - Events
+  /api/v1/event/discover:
+    get:
+      consumes:
+      - application/json
+      description: Discover events on the system
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Discover events on the system
+      tags:
+      - Events
+  /api/v1/event/organizer:
+    get:
+      consumes:
+      - application/json
+      description: Get all Events for organizer
+      parameters:
+      - description: organizerId
+        in: query
+        name: organizerId
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get all Events for organizer
+      tags:
+      - Events
+  /api/v1/event/publish/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Publish Event
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Publish Event
+      tags:
+      - Events
+  /api/v1/event/reference/{reference}:
+    get:
+      consumes:
+      - application/json
+      description: Get Event By reference
+      parameters:
+      - description: reference
+        in: path
+        name: reference
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Get Event By reference
+      tags:
+      - Events
+  /api/v1/event/staff:
+    post:
+      consumes:
+      - application/json
+      description: Adds Event Staff
+      parameters:
+      - description: Organizer tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AddEventStaffRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add Event Staff
+      tags:
+      - Organizer
+  /api/v1/series:
+    post:
+      consumes:
+      - application/json
+      description: Adds New Series
+      parameters:
+      - description: Series tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateSeriesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add New Series
+      tags:
+      - Series
+  /api/v1/series/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Series by id
+      parameters:
+      - description: series id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get Series by id
+      tags:
+      - Series
+  /api/v1/series/organizer/{organizerId}:
+    get:
+      consumes:
+      - application/json
+      description: Get Series by organizerId
+      parameters:
+      - description: organizerId
+        in: path
+        name: organizerId
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get Series by organizerId
+      tags:
+      - Series
+  /api/v1/ticket:
+    get:
+      consumes:
+      - application/json
+      description: Get Ticket By id
+      parameters:
+      - description: ticketId
+        in: query
+        name: ticketId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.TicketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get Ticket By id
+      tags:
+      - Tickets
+    post:
+      consumes:
+      - application/json
+      description: Add Ticket to Event
+      parameters:
+      - description: Ticket tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateTicketRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.TicketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add Ticket to Event
+      tags:
+      - Tickets
+  /api/v1/ticket/{eventId}:
+    get:
+      consumes:
+      - application/json
+      description: Get all Tickets for Event
+      parameters:
+      - description: eventId
+        in: path
+        name: eventId
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Ticket'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get all Tickets for Event
+      tags:
+      - Tickets
+  /api/v1/ticket/update:
+    get:
+      consumes:
+      - application/json
+      description: Update Ticket By reference
+      parameters:
+      - description: reference
+        in: query
+        name: reference
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.TicketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Update Ticket By reference
+      tags:
+      - Tickets
+  /auth/google/login:
+    get:
+      consumes:
+      - application/json
+      description: Sign in with Google
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Authenticate with Google
+      tags:
+      - Google
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user
+      parameters:
+      - description: Auth tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Authenticate user
+      tags:
+      - Auth
+  /auth/login/attendee:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate attendee
+      parameters:
+      - description: Auth tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AttendeeAuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Authenticate attendee
+      tags:
+      - Auth
+  /auth/otp/validate:
+    get:
+      consumes:
+      - application/json
+      description: Validate Otp
+      parameters:
+      - description: otp code
+        in: query
+        name: code
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      summary: Validate Otp
+      tags:
+      - Auth
+schemes:
+- https
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
