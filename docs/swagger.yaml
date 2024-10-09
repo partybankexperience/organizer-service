@@ -342,7 +342,7 @@ definitions:
       type:
         type: string
     type: object
-host: localhost:8000
+host: partybank-organizer-269c8057a65f.herokuapp.com
 info:
   contact:
     email: unavailable
@@ -948,7 +948,7 @@ paths:
       tags:
       - Auth
 schemes:
-- http
+- https
 securityDefinitions:
   Bearer:
     in: header

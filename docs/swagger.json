@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "http"
+        "https"
     ],
     "swagger": "2.0",
     "info": {
@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8000",
+    "host": "partybank-organizer-269c8057a65f.herokuapp.com",
     "paths": {
         "/api/v1/attendee/update": {
             "put": {

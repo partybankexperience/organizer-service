@@ -1469,9 +1469,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8000",
+	Host:             "partybank-organizer-269c8057a65f.herokuapp.com",
 	BasePath:         "",
-	Schemes:          []string{"http"},
+	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",
 	InfoInstanceName: "swagger",
