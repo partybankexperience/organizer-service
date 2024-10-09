@@ -1406,6 +1406,9 @@ const docTemplate = `{
                 "event_id": {
                     "type": "integer"
                 },
+                "event_reference": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1414,6 +1417,9 @@ const docTemplate = `{
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "type": "boolean"
+                },
+                "max_seats": {
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
@@ -1432,6 +1438,9 @@ const docTemplate = `{
                 },
                 "reference": {
                     "type": "string"
+                },
+                "reserved": {
+                    "type": "integer"
                 },
                 "stock": {
                     "type": "string"
@@ -1460,9 +1469,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "partybank-organizer-269c8057a65f.herokuapp.com",
+	Host:             "localhost:8000",
 	BasePath:         "",
-	Schemes:          []string{"https"},
+	Schemes:          []string{"http"},
 	Title:            "Partybank Organizer Service",
 	Description:      "Partybank Organizer Service.",
 	InfoInstanceName: "swagger",

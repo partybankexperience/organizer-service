@@ -119,6 +119,9 @@ type Ticket struct {
 	Colour                       string                      `json:"colour"`
 	ActivePeriod                 *ActivePeriod               `gorm:"embedded" json:"active_period"`
 	IsSoldOutTicket              bool                        `json:"is_sold_out_ticket"`
+	MaxSeats                     uint64                      `json:"max_seats"`
+	EventReference               string                      `json:"event_reference"`
+	Reserved                     uint64                      `json:"reserved"`
 }
 
 type ActivePeriod struct {
@@ -152,6 +155,7 @@ type Event struct {
 	EventStaff         []*EventStaff
 	CreatedBy          string
 	PublicationState   string
+	DateCreated        string `json:"created_at"`
 }
 
 type Location struct {

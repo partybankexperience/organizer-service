@@ -309,12 +309,16 @@ definitions:
         type: string
       event_id:
         type: integer
+      event_reference:
+        type: string
       id:
         type: integer
       is_sold_out_ticket:
         type: boolean
       is_transfer_payment_fees_to_guest:
         type: boolean
+      max_seats:
+        type: integer
       name:
         type: string
       number_available:
@@ -327,6 +331,8 @@ definitions:
         type: integer
       reference:
         type: string
+      reserved:
+        type: integer
       stock:
         type: string
       ticket_perks:
@@ -336,7 +342,7 @@ definitions:
       type:
         type: string
     type: object
-host: partybank-organizer-269c8057a65f.herokuapp.com
+host: localhost:8000
 info:
   contact:
     email: unavailable
@@ -942,7 +948,7 @@ paths:
       tags:
       - Auth
 schemes:
-- https
+- http
 securityDefinitions:
   Bearer:
     in: header

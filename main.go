@@ -52,6 +52,8 @@ func init() {
 	db = repositories.Connect()
 }
 
+//partybank-organizer-269c8057a65f.herokuapp.com
+
 // @title           Partybank Organizer Service
 // @version         1.0
 // @description     Partybank Organizer Service.

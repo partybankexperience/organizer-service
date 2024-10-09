@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "https"
+        "http"
     ],
     "swagger": "2.0",
     "info": {
@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "partybank-organizer-269c8057a65f.herokuapp.com",
+    "host": "localhost:8000",
     "paths": {
         "/api/v1/attendee/update": {
             "put": {
@@ -1402,6 +1402,9 @@
                 "event_id": {
                     "type": "integer"
                 },
+                "event_reference": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1410,6 +1413,9 @@
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "type": "boolean"
+                },
+                "max_seats": {
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
@@ -1428,6 +1434,9 @@
                 },
                 "reference": {
                     "type": "string"
+                },
+                "reserved": {
+                    "type": "integer"
                 },
                 "stock": {
                     "type": "string"
