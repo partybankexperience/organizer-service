@@ -15,6 +15,7 @@ const (
 	APP_EMAIL               = "partybankexperience@gmail.com"
 	FRONT_END_TEST_BASE_URL = "https://partybank-dev.vercel.app"
 	FRONT_END_DEV_BASE_URL  = "http://localhost:5173"
+	FRONT_END_PROD_URL      = "https://thepartybank.com"
 	EVENT_REFERENCE_PREFIX  = "evt-"
 	TICKET_REFERENCE_PREFIX = "tkt-"
 )
