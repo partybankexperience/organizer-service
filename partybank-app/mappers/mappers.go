@@ -115,7 +115,7 @@ func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttendeeRequest) *models.Attendee {
 
 	return &models.Attendee{
-		FullName: createAttendeeRequest.FullName,
+		FirstName: createAttendeeRequest.FullName,
 		User: &models.User{
 			Username: createAttendeeRequest.Username,
 			Role:     models.ATTENDEE,
@@ -125,8 +125,11 @@ func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttend
 
 func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.AttendeeResponse {
 	return &response.AttendeeResponse{
-		Username: attendee.Username,
-		Message:  "User registered successfully",
+		Username:    attendee.Username,
+		Message:     "User registered successfully",
+		FirstName:   attendee.FirstName,
+		LastName:    attendee.LastName,
+		PhoneNumber: attendee.PhoneNumber,
 	}
 }
 

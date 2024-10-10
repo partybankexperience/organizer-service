@@ -39,8 +39,11 @@ type OrganizationResponse struct {
 }
 
 type AttendeeResponse struct {
-	Username string `json:"email"`
-	Message  string `json:"message"`
+	Username    string `json:"email"`
+	Message     string `json:"message"`
+	FirstName   string `json:"first_name,omitempty"`
+	LastName    string `json:"last_name,omitempty"`
+	PhoneNumber string `json:"phone_number,omitempty"`
 }
 
 type UserResponse struct {

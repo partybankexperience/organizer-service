@@ -64,8 +64,9 @@ type User struct {
 }
 
 type Attendee struct {
-	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
-	FullName string
+	ID        uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	FirstName string
+	LastName  string
 	*User
 	PhoneNumber string
 	IsActive    bool

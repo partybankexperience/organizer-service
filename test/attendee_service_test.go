@@ -14,7 +14,7 @@ import (
 func TestUpdateAttendee(t *testing.T) {
 	username := utils.GenerateTicketReference()
 	attendee := &models.Attendee{
-		FullName: "John Doe",
+		FirstName: "John Doe",
 		User: &models.User{
 			Username: username,
 			Role:     models.ATTENDEE,
@@ -38,5 +38,5 @@ func TestUpdateAttendee(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, attendee)
 	assert.Equal(t, username, attendee.Username)
-	assert.Equal(t, "James Doe", attendee.FullName)
+	assert.Equal(t, "James Doe", attendee.FirstName)
 }

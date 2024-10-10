@@ -76,6 +76,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 
 func (authenticationService *AuthService) AuthenticateAttendee(authRequest request.AttendeeAuthRequest) (*response.LoginResponse, error) {
 	_, err := authenticationService.attendeeService.GetAttendeeByUsername(authRequest.Username)
+	var res *response.AttendeeResponse
 	if err != nil {
 		log.Println("Error: ", err.Error())
 		createAttendeeRequest := &request.CreateAttendeeRequest{
@@ -88,7 +89,16 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 		}
 		log.Println("res: ", res)
 	}
-	emailRequest, err := buildNewAttendeeMessageFor(&models.Attendee{User: &models.User{Username: authRequest.Username}})
+
+	attendee := &models.Attendee{
+		User: &models.User{Username: authRequest.Username},
+	}
+	if res != nil {
+		attendee.FirstName = res.FirstName
+		attendee.LastName = res.LastName
+		attendee.PhoneNumber = res.PhoneNumber
+	}
+	emailRequest, err := buildNewAttendeeMessageFor(attendee)
 	if err != nil {
 		log.Println("Error: ", err.Error())
 		return nil, errors.New("user authentication failed")
@@ -190,7 +200,7 @@ func getAttendeeEmailTemplate(attendee *models.Attendee) (string, error) {
 		return "", err
 	}
 	message := &attendeeMessage{
-		FullName: attendee.FullName,
+		FullName: attendee.FirstName,
 		Link:     utils.FRONT_END_DEV_BASE_URL + "/validate-token?token=" + token,
 	}
 	mailTemplate, err := template.ParseFiles("rave-mail-template-new.html")
