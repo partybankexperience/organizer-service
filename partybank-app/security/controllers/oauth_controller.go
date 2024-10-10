@@ -87,7 +87,7 @@ func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {
 		return
 	}
 	log.Println("token: ", accessToken)
-	data := utils.FRONT_END_PROD_URL + "/validate-token?token=" + accessToken + "&type=google"
+	data := utils.FRONT_END_DEV_BASE_URL + "/validate-token?token=" + accessToken + "&type=google"
 	log.Println("uri: ", data)
 	ctx.Redirect(307, data)
 }
