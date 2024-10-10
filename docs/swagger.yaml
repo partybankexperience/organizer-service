@@ -230,7 +230,9 @@ definitions:
     type: object
   dtos.UpdateAttendeeRequest:
     properties:
-      full_name:
+      first_name:
+        type: string
+      last_name:
         type: string
       phone_number:
         type: string

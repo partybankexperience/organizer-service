@@ -1286,7 +1286,10 @@ const docTemplate = `{
         "dtos.UpdateAttendeeRequest": {
             "type": "object",
             "properties": {
-                "full_name": {
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
                     "type": "string"
                 },
                 "phone_number": {
