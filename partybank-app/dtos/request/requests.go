@@ -16,7 +16,7 @@ type AuthRequest struct {
 }
 
 type CreateAttendeeRequest struct {
-	FullName    string `json:"full_name"`
+	FullName    string `json:"full_name,omitempty"`
 	Username    string `json:"email"`
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
