@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/attendee/update": {
+        "/api/v1/attendee/update/{username}": {
             "put": {
                 "security": [
                     {

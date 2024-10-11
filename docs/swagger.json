@@ -20,7 +20,7 @@
     },
     "host": "partybank-organizer-269c8057a65f.herokuapp.com",
     "paths": {
-        "/api/v1/attendee/update": {
+        "/api/v1/attendee/update/{username}": {
             "put": {
                 "security": [
                     {

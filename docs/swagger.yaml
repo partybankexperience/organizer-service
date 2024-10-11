@@ -358,7 +358,7 @@ info:
   title: Partybank Organizer Service
   version: "1.0"
 paths:
-  /api/v1/attendee/update:
+  /api/v1/attendee/update/{username}:
     put:
       consumes:
       - application/json
