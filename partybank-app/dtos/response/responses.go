@@ -65,6 +65,7 @@ type SeriesResponse struct {
 type LoginResponse struct {
 	Message  string `json:"message,omitempty"`
 	Username string `json:"username,omitempty"`
+	UserID   uint64 `json:"user_id,omitempty"`
 }
 
 type CreateOrganizerResponse struct {

@@ -127,6 +127,7 @@ func createAuthResponse(org *models.Organizer) *response.LoginResponse {
 	return &response.LoginResponse{
 		Username: org.Username,
 		Message:  "check your email for one-time-password",
+		UserID:   org.ID,
 	}
 }
 
