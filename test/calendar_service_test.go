@@ -42,9 +42,9 @@ package test
 //	req := &request.CreateEventRequest{
 //		SeriesId: 1,
 //		Name:     "rave",
-//		City: "Abuja",
+//		Address: "Abuja",
 //
-//		Time:     time.Now().String(),
+//		StartTime:     time.Now().String(),
 //	}
 //	eventService := services.NewEventService()
 //	event, err := eventService.Create(req)

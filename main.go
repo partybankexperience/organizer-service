@@ -107,8 +107,9 @@ func configureServiceComponents() {
 	seriesService = services.NewSeriesService(seriesRepository)
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService, ticketService, attendeeService)
-	eventService = services.NewEventService(eventRepository, organizerService, seriesService)
+	eventService = services.NewEventService(eventRepository, organizerService, seriesService, ticketService)
 	ticketService = services.NewTicketService(ticketRepository, eventService)
+	eventService.SetTicketService(ticketService)
 	attendeeService = services.NewAttendeeService(attendeeRepository, mailService)
 	authService = services2.NewAuthService(organizerService, attendeeService, mailService)
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
+	"strconv"
 )
 
 type EventService interface {
@@ -22,26 +23,34 @@ type EventService interface {
 	UpdateEvent(event *models.Event) error
 	GetAllEventsFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.EventResponse, error)
 	PublishEvent(eventId uint64) (*response.EventResponse, error)
+	GetOrganizerFor(eventId uint64) (uint64, error)
+	SetTicketService(service TicketService)
 }
 
 type raveEventService struct {
 	repositories.EventRepository
 	OrganizerService
 	SeriesService
+	TicketService
 }
 
-func NewEventService(eventRepository repositories.EventRepository, organizerService OrganizerService, seriesService SeriesService) EventService {
+func NewEventService(eventRepository repositories.EventRepository,
+	organizerService OrganizerService,
+	seriesService SeriesService,
+	ticketService TicketService) EventService {
 	return &raveEventService{
 		eventRepository,
 		organizerService,
 		seriesService,
+		ticketService,
 	}
 }
 
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.EventResponse, error) {
 	event := mapCreateEventRequestToEvent(createEventRequest)
-	var calendar *models.Series
 	var err error
+
+	var calendar *models.Series
 	org, err := raveEventService.OrganizerService.GetById(createEventRequest.OrganizerId)
 	if err != nil || org == nil {
 		log.Println("err finding organizer: ", err)
@@ -64,10 +73,15 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	event.SeriesID = calendar.ID
 	event.CreatedBy = calendar.Name
 	event.PublicationState = models.DRAFT
+	event.CreatedBy = strconv.Itoa(int(createEventRequest.OrganizerId))
 	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)
 		return nil, err
+	}
+	_, err = raveEventService.TicketService.AddTickets(createEventRequest.Tickets)
+	if err != nil {
+		return nil, errors.New("error adding tickets")
 	}
 	_, err = raveEventService.AddEventToCalendar(calendar.ID, savedEvent)
 	if err != nil {
@@ -178,22 +192,33 @@ func (raveEventService *raveEventService) PublishEvent(eventId uint64) (*respons
 	return mappers.MapEventToEventResponse(event), nil
 }
 
+func (raveEventService *raveEventService) GetOrganizerFor(SeriesId uint64) (uint64, error) {
+	organizerId, err := raveEventService.SeriesService.GetSeriesOrganizer(SeriesId)
+	if err != nil {
+		return 0, errors.New("failed to find event organizer")
+	}
+	return organizerId, nil
+}
+
+func (raveEventService *raveEventService) SetTicketService(service TicketService) {
+	raveEventService.TicketService = service
+}
+
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {
 	return &models.Event{
 		Name: createEventRequest.Name,
 		Location: &models.Location{
-			State:   createEventRequest.State,
-			Country: createEventRequest.Country,
-			City:    createEventRequest.City,
+			Longitude: createEventRequest.Longitude,
+			Latitude:  createEventRequest.Latitude,
+			Address:   createEventRequest.Address,
 		},
 		EventDate:          createEventRequest.Date,
-		StartTime:          createEventRequest.Time,
+		StartTime:          createEventRequest.StartTime,
+		EndTime:            createEventRequest.EndTime,
 		SeriesID:           createEventRequest.SeriesId,
 		ContactInformation: createEventRequest.ContactInformation,
 		Description:        createEventRequest.Description,
 		Status:             models.UPCOMING,
-		MapUrl:             createEventRequest.MapUrl,
-		MapEmbeddedUrl:     createEventRequest.MapEmbeddedUrl,
 		EventTheme:         createEventRequest.EventTheme,
 		AttendeeTerm:       createEventRequest.AttendeeTerm,
 		Venue:              createEventRequest.Venue,

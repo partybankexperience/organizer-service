@@ -147,9 +147,7 @@ type Event struct {
 	EventStaffID       uint64    `json:"event_staff_id"`
 	TicketID           uint64    `json:"ticket_id"`
 	EventTheme         string    `json:"event_theme"`
-	MapUrl             string    `json:"map_url"`
-	MapEmbeddedUrl     string    `json:"map_embedded_url"`
-	AttendeeTerm       string    `json:"attendee_term"`
+	AttendeeTerm       string    `json:"-"`
 	Venue              string    `json:"venue"`
 	Reference          string    `json:"event_reference"`
 	Tickets            []*Ticket
@@ -160,9 +158,9 @@ type Event struct {
 }
 
 type Location struct {
-	State   string `json:"state"`
-	Country string `json:"country"`
-	City    string `json:"city"`
+	Longitude string `json:"state"`
+	Latitude  string `json:"country"`
+	Address   string `json:"city"`
 }
 
 type Series struct {

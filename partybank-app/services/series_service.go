@@ -18,6 +18,7 @@ type SeriesService interface {
 	GetCalendar(id uint64) (*response.SeriesResponse, error)
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
 	GetSeriesFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.SeriesResponse, error)
+	GetSeriesOrganizer(seriesId uint64) (uint64, error)
 }
 
 type raveSeriesService struct {
@@ -120,4 +121,12 @@ func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64, pag
 
 	seriesResponses := mappers.MapSeriesCollectionToSeriesResponseCollection(userSeries, nil)
 	return seriesResponses, nil
+}
+
+func (raveSeriesService *raveSeriesService) GetSeriesOrganizer(seriesId uint64) (uint64, error) {
+	series, err := raveSeriesService.GetById(seriesId)
+	if err != nil {
+		return 0, errors.New("failed to find series with given id")
+	}
+	return series.OrganizerID, nil
 }
