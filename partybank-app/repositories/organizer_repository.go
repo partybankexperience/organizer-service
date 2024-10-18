@@ -4,6 +4,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	otp2 "github.com/djfemz/organizer-service/partybank-app/security/otp"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"log"
 )
 
@@ -29,14 +30,14 @@ func NewOrganizerRepository(db *gorm.DB) OrganizerRepository {
 func (organizerRepository *organizerRepositoryImpl) FindByUsername(username string) (*models.Organizer, error) {
 
 	var organization = new(models.Organizer)
-	err := organizerRepository.Db.Where("username=?", username).First(&organization).Error
+	err := organizerRepository.Db.Preload(clause.Associations).Where("username=?", username).First(&organization).Error
 	return organization, err
 }
 
 func (organizerRepository *organizerRepositoryImpl) FindByOtp(otp string) (*models.Organizer, error) {
 	var organizer models.Organizer
 
-	err := organizerRepository.Db.Where(&models.Organizer{Otp: &otp2.OneTimePassword{Code: otp}}).Find(&organizer).Error
+	err := organizerRepository.Db.Preload(clause.Associations).Where(&models.Organizer{Otp: &otp2.OneTimePassword{Code: otp}}).Find(&organizer).Error
 	if err != nil {
 		log.Println("err: ", err)
 		return nil, err
