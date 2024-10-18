@@ -101,8 +101,8 @@ type EventResponse struct {
 	Description        string            `json:"description,omitempty"`
 	Status             string            `json:"status,omitempty"`
 	EventTheme         string            `json:"event_theme,omitempty"`
-	MapUrl             string            `json:"map_url,omitempty"`
-	MapEmbeddedUrl     string            `json:"map_embedded_url,omitempty"`
+	Longitude          string            `json:"lng,omitempty"`
+	Latitude           string            `json:"lat,omitempty"`
 	AttendeeTerm       string            `json:"attendee_term,omitempty"`
 	Venue              string            `json:"venue,omitempty"`
 	ImageUrl           string            `json:"image_url,omitempty"`
