@@ -1038,6 +1038,12 @@ const docTemplate = `{
                 "start_time": {
                     "type": "string"
                 },
+                "tickets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CreateTicketRequest"
+                    }
+                },
                 "venue": {
                     "type": "string"
                 },
