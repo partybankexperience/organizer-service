@@ -825,6 +825,12 @@ paths:
         name: eventId
         required: true
         type: integer
+      - description: Ticket tags
+        in: body
+        name: '{array}'
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateTicketRequest'
       produces:
       - application/json
       responses:

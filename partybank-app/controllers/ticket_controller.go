@@ -146,7 +146,7 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 // @Tags         Tickets
 // @Accept       json
 // @Param        eventId path int  true  "eventId"
-// @Param 		 tags body []*dtos.CreateTicketRequest true "Ticket tags"
+// @Param 		 tags {array} body dtos.CreateTicketRequest true "Ticket tags"
 // @Produce      json
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse

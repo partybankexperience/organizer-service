@@ -704,6 +704,15 @@ const docTemplate = `{
                         "name": "eventId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Ticket tags",
+                        "name": "{array}",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CreateTicketRequest"
+                        }
                     }
                 ],
                 "responses": {
