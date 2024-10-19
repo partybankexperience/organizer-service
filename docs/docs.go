@@ -1061,7 +1061,13 @@ const docTemplate = `{
                 "address": {
                     "type": "string"
                 },
+                "city": {
+                    "type": "string"
+                },
                 "contact_information": {
+                    "type": "string"
+                },
+                "country": {
                     "type": "string"
                 },
                 "date": {
@@ -1095,6 +1101,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "start_time": {
+                    "type": "string"
+                },
+                "state": {
                     "type": "string"
                 },
                 "tickets": {
