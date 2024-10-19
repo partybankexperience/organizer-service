@@ -160,7 +160,7 @@ func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	var ticketsDto *request.CreateTicketsDto
+	ticketsDto := &request.CreateTicketsDto{}
 	err = ctx.BindJSON(ticketsDto)
 	if err != nil {
 		handleError(ctx, err)
