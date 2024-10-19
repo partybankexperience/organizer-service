@@ -85,7 +85,7 @@ type CreateTicketRequest struct {
 	Price                        float64     `json:"price"`
 	PurchaseLimit                uint64      `json:"purchase_limit"`
 	IsTransferPaymentFeesToGuest bool        `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
-	EventId                      uint64      `json:"event_id" validate:"required"`
+	EventId                      uint64      `json:"event_id"`
 	Colour                       string      `json:"colour"`
 	SaleEndDate                  string      `json:"ticket_sale_end_date"`
 	SalesEndTime                 string      `json:"ticket_sales_end_time"`
