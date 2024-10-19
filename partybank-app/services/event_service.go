@@ -85,7 +85,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 		return nil, err
 	}
 	if len(createEventRequest.Tickets) > 0 {
-		_, err = raveEventService.TicketService.AddTickets(createEventRequest.Tickets)
+		_, err = raveEventService.TicketService.AddTickets(savedEvent.ID, createEventRequest.Tickets)
 		if err != nil {
 			log.Println("error adding tickets to event")
 		}

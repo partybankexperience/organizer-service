@@ -103,6 +103,7 @@ type EventResponse struct {
 	EventTheme         string            `json:"event_theme,omitempty"`
 	Longitude          string            `json:"lng,omitempty"`
 	Latitude           string            `json:"lat,omitempty"`
+	
 	AttendeeTerm       string            `json:"attendee_term,omitempty"`
 	Venue              string            `json:"venue,omitempty"`
 	ImageUrl           string            `json:"image_url,omitempty"`
