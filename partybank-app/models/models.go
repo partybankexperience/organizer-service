@@ -162,9 +162,9 @@ type Location struct {
 	Longitude string `json:"lng"`
 	Latitude  string `json:"lat"`
 	Address   string `json:"address"`
-	City      string `json:"city"`
-	State     string `json:"state"`
-	Country   string `json:"country"`
+	City      string `json:"city,omitempty"`
+	State     string `json:"state,omitempty"`
+	Country   string `json:"country,omitempty"`
 }
 
 type Series struct {
