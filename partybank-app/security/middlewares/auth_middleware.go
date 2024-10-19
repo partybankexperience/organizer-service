@@ -37,6 +37,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.POST("/ticket", ticketController.AddTicketToEvent)
 		protected.GET("/ticket/:eventId", ticketController.GetAllTicketsForEvent)
 		protected.GET("/ticket", ticketController.GetTicketById)
+		protected.POST("/ticket/add/:eventId", ticketController.AddTicketToEvent)
 		protected.POST("/series", seriesController.CreateSeries)
 		protected.GET("/series/:id", seriesController.GetSeriesById)
 		protected.GET("/series/organizer/:organizerId", seriesController.GetSeriesForOrganizer)
