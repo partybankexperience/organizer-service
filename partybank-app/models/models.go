@@ -163,8 +163,8 @@ type Location struct {
 	Latitude  string `json:"lat"`
 	Address   string `json:"address"`
 	City      string `json:"city"`
-	Country   string `json:"country"`
 	State     string `json:"state"`
+	Country   string `json:"country"`
 }
 
 type Series struct {
