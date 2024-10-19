@@ -3,10 +3,11 @@ package models
 import (
 	"database/sql/driver"
 	"errors"
-	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	"reflect"
 	"strings"
 	"time"
+
+	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 
 	"gorm.io/gorm"
 
@@ -160,7 +161,10 @@ type Event struct {
 type Location struct {
 	Longitude string `json:"lng"`
 	Latitude  string `json:"lat"`
-	Address   string `json:"city"`
+	Address   string `json:"address"`
+	City      string `json:"city"`
+	Country   string `json:"country"`
+	State     string `json:"state"`
 }
 
 type Series struct {
