@@ -634,49 +634,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Add Ticket to Event",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tickets"
-                ],
-                "summary": "Add Ticket to Event",
-                "parameters": [
-                    {
-                        "description": "Ticket tags",
-                        "name": "tags",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.CreateTicketRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.TicketResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    }
-                }
             }
         },
         "/api/v1/ticket/add": {
@@ -1148,12 +1105,6 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
-                },
-                "price_change_date": {
-                    "type": "string"
-                },
-                "price_change_time": {
-                    "type": "string"
                 },
                 "purchase_limit": {
                     "type": "integer"

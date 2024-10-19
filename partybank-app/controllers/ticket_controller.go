@@ -24,17 +24,18 @@ func NewTicketController(ticketService services.TicketService, objectValidator *
 	}
 }
 
-// AddTicketToEvent godoc
-// @Summary      Add Ticket to Event
-// @Description  Add Ticket to Event
-// @Tags         Tickets
-// @Accept       json
-// @Param 		 tags body dtos.CreateTicketRequest true "Ticket tags"
-// @Produce      json
-// @Success      200  {object}  dtos.TicketResponse
-// @Failure      400  {object}  dtos.RaveResponse
-// @Security Bearer
-// @Router       /api/v1/ticket [post]
+/*
+//AddTicketToEvent godoc
+//@Summary      Add Ticket to Event
+//@Description  Add Ticket to Event
+//@Tags         Tickets
+//@Accept       json
+//@Param 		 tags body dtos.CreateTicketRequest true "Ticket tags"
+//@Produce      json
+//@Success      200  {object}  dtos.TicketResponse
+//@Failure      400  {object}  dtos.RaveResponse
+//@Security Bearer
+//@Router       /api/v1/ticket [post]
 func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	addTicketRequest := &request.CreateTicketRequest{}
 	err := ctx.BindJSON(addTicketRequest)
@@ -54,6 +55,7 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusCreated, ticketResponse)
 }
+ **/
 
 // GetAllTicketsForEvent godoc
 // @Summary      Get all Tickets for Event
@@ -159,7 +161,7 @@ func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 		return
 	}
 	var ticketsDto *request.CreateTicketsDto
-	err=ctx.BindJSON(ticketsDto)
+	err = ctx.BindJSON(ticketsDto)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -169,5 +171,5 @@ func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.TicketResponse]{Data:res})
+	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.TicketResponse]{Data: res})
 }

@@ -77,7 +77,7 @@ type UpdateEventRequest struct {
 	Venue              string `json:"venue" validate:"required"`
 }
 
-type CreateTicketsDto struct{
+type CreateTicketsDto struct {
 	TicketRequests []*CreateTicketRequest
 }
 
@@ -94,8 +94,8 @@ type CreateTicketRequest struct {
 	SaleEndDate                  string      `json:"ticket_sale_end_date"`
 	SalesEndTime                 string      `json:"ticket_sales_end_time"`
 	TicketPerks                  TicketPerks `json:"ticket_perks"`
-	PriceChangeDate              string      `json:"price_change_date"`
-	PriceChangeTime              string      `json:"price_change_time"`
+	PriceChangeDate              string      `json:"-"`
+	PriceChangeTime              string      `json:"-"`
 	SalesStartDate               string      `json:"ticket_sale_start_date"`
 	SalesStartTime               string      `json:"ticket_sale_start_time"`
 }
