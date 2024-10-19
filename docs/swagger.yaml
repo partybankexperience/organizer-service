@@ -617,6 +617,43 @@ paths:
       summary: Get Event By reference
       tags:
       - Events
+  /api/v1/event/series:
+    get:
+      consumes:
+      - application/json
+      description: Get all Events in series
+      parameters:
+      - description: seriesId
+        in: query
+        name: seriesId
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: size
+        in: query
+        name: size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.EventResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Get all Events in series
+      tags:
+      - Events
   /api/v1/event/staff:
     post:
       consumes:

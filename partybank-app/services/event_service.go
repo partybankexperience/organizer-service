@@ -24,6 +24,7 @@ type EventService interface {
 	GetAllEventsFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.EventResponse, error)
 	PublishEvent(eventId uint64) (*response.EventResponse, error)
 	GetOrganizerFor(eventId uint64) (uint64, error)
+	GetAllEventsForOrganizer(organizerId uint64, page, size int) ([]*response.EventResponse, error)
 	SetTicketService(service TicketService)
 }
 
@@ -209,6 +210,19 @@ func (raveEventService *raveEventService) GetOrganizerFor(SeriesId uint64) (uint
 
 func (raveEventService *raveEventService) SetTicketService(service TicketService) {
 	raveEventService.TicketService = service
+}
+
+func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId uint64, page, size int) ([]*response.EventResponse, error) {
+	events, err := raveEventService.FindAllByOrganizer(organizerId, page, size)
+	if err != nil {
+		return nil, errors.New("organizer not found")
+	}
+	eventsResponses := make([]*response.EventResponse, 0)
+	for _, event := range events {
+		eventRes := mappers.MapEventToEventResponse(event)
+		eventsResponses = append(eventsResponses, eventRes)
+	}
+	return eventsResponses, err
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {
