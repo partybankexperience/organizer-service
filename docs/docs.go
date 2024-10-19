@@ -1168,14 +1168,14 @@ const docTemplate = `{
                 "image_url": {
                     "type": "string"
                 },
+                "lat": {
+                    "type": "string"
+                },
+                "lng": {
+                    "type": "string"
+                },
                 "location": {
                     "$ref": "#/definitions/models.Location"
-                },
-                "map_embedded_url": {
-                    "type": "string"
-                },
-                "map_url": {
-                    "type": "string"
                 },
                 "message": {
                     "type": "string"
@@ -1365,10 +1365,19 @@ const docTemplate = `{
         "models.Location": {
             "type": "object",
             "properties": {
+                "address": {
+                    "type": "string"
+                },
                 "city": {
                     "type": "string"
                 },
                 "country": {
+                    "type": "string"
+                },
+                "lat": {
+                    "type": "string"
+                },
+                "lng": {
                     "type": "string"
                 },
                 "state": {
