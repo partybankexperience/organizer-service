@@ -675,6 +675,49 @@
                 }
             }
         },
+        "/api/v1/ticket/add": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Add Tickets to event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Add Tickets to event",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "eventId",
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/ticket/update": {
             "get": {
                 "security": [
@@ -1073,9 +1116,6 @@
         },
         "dtos.CreateTicketRequest": {
             "type": "object",
-            "required": [
-                "event_id"
-            ],
             "properties": {
                 "capacity": {
                     "type": "integer"

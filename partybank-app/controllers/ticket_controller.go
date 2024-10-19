@@ -1,14 +1,15 @@
 package controllers
 
 import (
+	"net/http"
+	"strconv"
+
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
 	"github.com/djfemz/organizer-service/partybank-app/services"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"net/http"
-	"strconv"
 )
 
 type TicketController struct {
@@ -137,4 +138,35 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 		return
 	}
 	ctx.JSON(http.StatusOK, ticket)
+}
+
+// AddTicketsToEvent godoc
+// @Summary      Add Tickets to event
+// @Description  Add Tickets to event
+// @Tags         Tickets
+// @Accept       json
+// @Param        eventId path int  true  "eventId"
+// @Produce      json
+// @Success      201  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/ticket/add [post]
+func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
+	eventId, err := extractParamFromRequest("eventId", ctx)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	var tickets []*request.CreateTicketRequest
+	err=ctx.BindJSON(tickets)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	res, err := ticketController.TicketService.AddTickets(eventId, tickets)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.TicketResponse]{Data:res})
 }

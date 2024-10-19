@@ -121,8 +121,6 @@ definitions:
         type: string
       ticket_type:
         type: string
-    required:
-    - event_id
     type: object
   dtos.EventResponse:
     properties:
@@ -814,6 +812,33 @@ paths:
       security:
       - Bearer: []
       summary: Get all Tickets for Event
+      tags:
+      - Tickets
+  /api/v1/ticket/add:
+    post:
+      consumes:
+      - application/json
+      description: Add Tickets to event
+      parameters:
+      - description: eventId
+        in: path
+        name: eventId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Add Tickets to event
       tags:
       - Tickets
   /api/v1/ticket/update:
