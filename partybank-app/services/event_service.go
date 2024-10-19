@@ -10,6 +10,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
+	"sort"
 	"strconv"
 )
 
@@ -88,7 +89,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 		return nil, err
 	}
 
-	_, err = raveEventService.AddEventToCalendar(calendar.ID, savedEvent)
+	_, err = raveEventService.AddEventToSeries(calendar.ID, savedEvent)
 	if err != nil {
 		return nil, err
 	}
@@ -222,6 +223,9 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 		eventRes := mappers.MapEventToEventResponse(event)
 		eventsResponses = append(eventsResponses, eventRes)
 	}
+	sort.Slice(eventsResponses, func(currentIndex, nextIndex int) bool {
+		return eventsResponses[currentIndex].ID > eventsResponses[nextIndex].ID
+	})
 	return eventsResponses, err
 }
 

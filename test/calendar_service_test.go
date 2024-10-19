@@ -53,7 +53,7 @@ package test
 //	assert.Nil(t, err)
 //	calendarService = services.NewSeriesService()
 //	log.Println("eve: ", createdEvent)
-//	calendar, err := calendarService.AddEventToCalendar(1, createdEvent)
+//	calendar, err := calendarService.AddEventToSeries(1, createdEvent)
 //
 //	assert.Nil(t, err)
 //	assert.NotNil(t, calendar)

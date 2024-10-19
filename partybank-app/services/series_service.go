@@ -14,7 +14,8 @@ import (
 type SeriesService interface {
 	AddSeries(createCalendarRequest *dtos.CreateSeriesRequest) (*response.CreateCalendarResponse, error)
 	GetById(id uint64) (*models.Series, error)
-	AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error)
+	AddEventToSeries(id uint64, event *models.Event) (*models.Series, error)
+	AddToSeries(seriesId, eventId uint64) (*response.SeriesResponse, error)
 	GetCalendar(id uint64) (*response.SeriesResponse, error)
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
 	GetSeriesFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.SeriesResponse, error)
@@ -24,10 +25,11 @@ type SeriesService interface {
 
 type raveSeriesService struct {
 	repositories.SeriesRepository
+	EventService
 }
 
 func NewSeriesService(seriesRepository repositories.SeriesRepository) SeriesService {
-	return &raveSeriesService{seriesRepository}
+	return &raveSeriesService{seriesRepository, nil}
 }
 
 func (raveSeriesService *raveSeriesService) AddSeries(createSeriesRequest *dtos.CreateSeriesRequest) (*response.CreateCalendarResponse, error) {
@@ -90,7 +92,8 @@ func mapSeriesToSeriesResponse(series *models.Series) *response.SeriesResponse {
 	return res
 }
 
-func (raveSeriesService *raveSeriesService) AddEventToCalendar(id uint64, event *models.Event) (*models.Series, error) {
+func (raveSeriesService *raveSeriesService) AddEventToSeries(id uint64, event *models.Event) (*models.Series, error) {
+
 	calendar, err := raveSeriesService.GetById(id)
 	if err != nil {
 		return nil, err
@@ -155,4 +158,28 @@ func (raveSeriesService *raveSeriesService) UpdateSeries(seriesId uint64, series
 		Logo:        savedSeries.Logo,
 	}
 	return seriesResponse, nil
+}
+
+func (raveSeriesService *raveSeriesService) AddToSeries(seriesId, eventId uint64) (*response.SeriesResponse, error) {
+	series, err := raveSeriesService.GetById(seriesId)
+	if err != nil {
+		return nil, errors.New("failed to find series")
+	}
+	event, err := raveSeriesService.EventService.GetEventBy(eventId)
+	if err != nil {
+		return nil, errors.New("failed to find event")
+	}
+
+	event.SeriesID = series.ID
+	series.Events = append(series.Events, event)
+	err = raveSeriesService.UpdateEvent(event)
+	if err != nil {
+		return nil, errors.New("failed to add event to series")
+	}
+	series, err = raveSeriesService.Save(series)
+	if err != nil {
+		return nil, errors.New("failed to add event to series")
+	}
+
+	return mapSeriesToSeriesResponse(series), nil
 }
