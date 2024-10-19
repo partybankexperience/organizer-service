@@ -839,7 +839,7 @@ paths:
       summary: Get all Tickets for Event
       tags:
       - Tickets
-  /api/v1/ticket/add:
+  /api/v1/ticket/add/{eventId}:
     post:
       consumes:
       - application/json

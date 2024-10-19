@@ -686,7 +686,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/ticket/add": {
+        "/api/v1/ticket/add/{eventId}": {
             "post": {
                 "security": [
                     {

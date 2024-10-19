@@ -142,7 +142,7 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 	ctx.JSON(http.StatusOK, ticket)
 }
 
-// AddTicketsToEvent godoc
+// AddTickets godoc
 // @Summary      Add Tickets to event
 // @Description  Add Tickets to event
 // @Tags         Tickets
@@ -153,7 +153,7 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /api/v1/ticket/add [post]
+// @Router       /api/v1/ticket/add/{eventId} [post]
 func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 	eventId, err := extractParamFromRequest("eventId", ctx)
 	if err != nil {
