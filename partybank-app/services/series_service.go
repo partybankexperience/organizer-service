@@ -19,6 +19,7 @@ type SeriesService interface {
 	GetPublicCalendarFor(id uint64) (*models.Series, error)
 	GetSeriesFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.SeriesResponse, error)
 	GetSeriesOrganizer(seriesId uint64) (uint64, error)
+	UpdateSeries(seriesId uint64, series *dtos.UpdateSeriesRequest) (*response.SeriesResponse, error)
 }
 
 type raveSeriesService struct {
@@ -129,4 +130,29 @@ func (raveSeriesService *raveSeriesService) GetSeriesOrganizer(seriesId uint64) 
 		return 0, errors.New("failed to find series with given id")
 	}
 	return series.OrganizerID, nil
+}
+
+func (raveSeriesService *raveSeriesService) UpdateSeries(seriesId uint64, series *dtos.UpdateSeriesRequest) (*response.SeriesResponse, error) {
+	foundSeries, err := raveSeriesService.GetById(seriesId)
+	if err != nil {
+		return nil, errors.New("failed to find series")
+	}
+	foundSeries.Name = series.Name
+	foundSeries.ImageUrl = series.ImageUrl
+	foundSeries.Logo = series.SeriesLogo
+	foundSeries.Description = series.SeriesLogo
+	savedSeries, err := raveSeriesService.Save(foundSeries)
+	if err != nil {
+		return nil, errors.New("failed to update series")
+	}
+	seriesResponse := &response.SeriesResponse{
+		ID:          savedSeries.ID,
+		Name:        savedSeries.Name,
+		Events:      mappers.MapEventsToEventResponses(savedSeries.Events, savedSeries),
+		OrganizerID: savedSeries.OrganizerID,
+		ImageUrl:    savedSeries.ImageUrl,
+		Description: savedSeries.Description,
+		Logo:        savedSeries.Logo,
+	}
+	return seriesResponse, nil
 }

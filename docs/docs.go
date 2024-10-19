@@ -443,6 +443,56 @@ const docTemplate = `{
             }
         },
         "/api/v1/series": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update Existing Series",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Series"
+                ],
+                "summary": "Update Existing Series",
+                "parameters": [
+                    {
+                        "description": "Series tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UpdateSeriesRequest"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "seriesId",
+                        "name": "seriesId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -1352,6 +1402,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "venue": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UpdateSeriesRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "series_logo": {
                     "type": "string"
                 }
             }

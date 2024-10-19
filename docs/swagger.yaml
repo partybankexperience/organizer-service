@@ -264,6 +264,17 @@ definitions:
     - organizer_id
     - venue
     type: object
+  dtos.UpdateSeriesRequest:
+    properties:
+      description:
+        type: string
+      image_url:
+        type: string
+      name:
+        type: string
+      series_logo:
+        type: string
+    type: object
   models.ActivePeriod:
     properties:
       ticket_sale_end_date:
@@ -654,6 +665,38 @@ paths:
       security:
       - Bearer: []
       summary: Add New Series
+      tags:
+      - Series
+    put:
+      consumes:
+      - application/json
+      description: Update Existing Series
+      parameters:
+      - description: Series tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateSeriesRequest'
+      - description: seriesId
+        in: path
+        name: seriesId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Update Existing Series
       tags:
       - Series
   /api/v1/series/{id}:

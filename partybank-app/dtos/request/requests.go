@@ -223,6 +223,13 @@ type AttendeeAuthRequest struct {
 	Username string `json:"email"`
 }
 
+type UpdateSeriesRequest struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	ImageUrl    string `json:"image_url"`
+	SeriesLogo  string `json:"series_logo"`
+}
+
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {
 	return &EmailNotificationRequest{
 		Sender: Sender{

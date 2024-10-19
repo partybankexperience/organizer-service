@@ -123,3 +123,40 @@ func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context
 	log.Println("series for org: ", orgSeries)
 	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.SeriesResponse]{Data: orgSeries})
 }
+
+// UpdateSeries godoc
+// @Summary      Update Existing Series
+// @Description  Update Existing Series
+// @Tags         Series
+// @Accept       json
+// @Param 		 tags body dtos.UpdateSeriesRequest true "Series tags"
+// @Param        seriesId   path   int  true  "seriesId"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/series [put]
+func (seriesController *SeriesController) UpdateSeries(ctx *gin.Context) {
+	seriesId, err := extractParamFromRequest("seriesId", ctx)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	updateSeriesRequest := &request.UpdateSeriesRequest{}
+	err = ctx.BindJSON(updateSeriesRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	err = seriesController.Struct(updateSeriesRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	resp, err := seriesController.SeriesService.UpdateSeries(seriesId, updateSeriesRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	ctx.JSON(http.StatusOK, &response.RaveResponse[*response.SeriesResponse]{Data: resp})
+}
