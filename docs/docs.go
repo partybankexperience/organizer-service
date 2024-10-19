@@ -707,11 +707,11 @@ const docTemplate = `{
                     },
                     {
                         "description": "Ticket tags",
-                        "name": "{array}",
+                        "name": "tags",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.CreateTicketRequest"
+                            "$ref": "#/definitions/dtos.CreateTicketsDto"
                         }
                     }
                 ],
@@ -1181,6 +1181,17 @@ const docTemplate = `{
                 },
                 "ticket_type": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.CreateTicketsDto": {
+            "type": "object",
+            "properties": {
+                "ticketRequests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CreateTicketRequest"
+                    }
                 }
             }
         },

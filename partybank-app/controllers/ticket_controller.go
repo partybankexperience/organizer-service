@@ -146,7 +146,7 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 // @Tags         Tickets
 // @Accept       json
 // @Param        eventId path int  true  "eventId"
-// @Param 		 tags {array} body dtos.CreateTicketRequest true "Ticket tags"
+// @Param 		 tags body dtos.CreateTicketsDto true "Ticket tags"
 // @Produce      json
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
@@ -158,13 +158,13 @@ func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	var tickets []*request.CreateTicketRequest
-	err=ctx.BindJSON(tickets)
+	var ticketsDto *request.CreateTicketsDto
+	err=ctx.BindJSON(ticketsDto)
 	if err != nil {
 		handleError(ctx, err)
 		return
 	}
-	res, err := ticketController.TicketService.AddTickets(eventId, tickets)
+	res, err := ticketController.TicketService.AddTickets(eventId, ticketsDto.TicketRequests)
 	if err != nil {
 		handleError(ctx, err)
 		return

@@ -122,6 +122,13 @@ definitions:
       ticket_type:
         type: string
     type: object
+  dtos.CreateTicketsDto:
+    properties:
+      ticketRequests:
+        items:
+          $ref: '#/definitions/dtos.CreateTicketRequest'
+        type: array
+    type: object
   dtos.EventResponse:
     properties:
       attendee_term:
@@ -827,10 +834,10 @@ paths:
         type: integer
       - description: Ticket tags
         in: body
-        name: '{array}'
+        name: tags
         required: true
         schema:
-          $ref: '#/definitions/dtos.CreateTicketRequest'
+          $ref: '#/definitions/dtos.CreateTicketsDto'
       produces:
       - application/json
       responses:

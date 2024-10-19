@@ -77,6 +77,10 @@ type UpdateEventRequest struct {
 	Venue              string `json:"venue" validate:"required"`
 }
 
+type CreateTicketsDto struct{
+	TicketRequests []*CreateTicketRequest
+}
+
 type CreateTicketRequest struct {
 	Type                         string      `json:"ticket_type"`
 	Name                         string      `json:"name"`
