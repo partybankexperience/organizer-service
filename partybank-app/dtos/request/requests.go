@@ -56,6 +56,9 @@ type CreateEventRequest struct {
 	EventTheme         string                 `json:"event_theme"`
 	Latitude           string                 `json:"lat"`
 	Longitude          string                 `json:"lng"`
+	City               string                 `json:"city"`
+	State              string                 `json:"state"`
+	Country            string                 `json:"country"`
 	AttendeeTerm       string                 `json:"-"`
 	Venue              string                 `json:"venue" validate:"required"`
 	ImageUrl           string                 `json:"image_url"`
@@ -228,6 +231,25 @@ type UpdateSeriesRequest struct {
 	Description string `json:"description"`
 	ImageUrl    string `json:"image_url"`
 	SeriesLogo  string `json:"series_logo"`
+}
+
+type UpdateTicketRequest struct {
+	Type                         string      `json:"ticket_type"`
+	Name                         string      `json:"name"`
+	Capacity                     uint64      `json:"capacity"`
+	Category                     uint64      `json:"category"`
+	Stock                        string      `json:"stock"`
+	Price                        float64     `json:"price"`
+	PurchaseLimit                uint64      `json:"purchase_limit,omitempty"`
+	IsTransferPaymentFeesToGuest bool        `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
+	Colour                       string      `json:"colour"`
+	SaleEndDate                  string      `json:"ticket_sale_end_date"`
+	SalesEndTime                 string      `json:"ticket_sales_end_time"`
+	TicketPerks                  TicketPerks `json:"ticket_perks"`
+	PriceChangeDate              string      `json:"-"`
+	PriceChangeTime              string      `json:"-"`
+	SalesStartDate               string      `json:"ticket_sale_start_date"`
+	SalesStartTime               string      `json:"ticket_sale_start_time"`
 }
 
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {

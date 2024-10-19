@@ -74,12 +74,19 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	event.CreatedBy = calendar.Name
 	event.PublicationState = models.DRAFT
 	event.CreatedBy = strconv.Itoa(int(createEventRequest.OrganizerId))
+	event.Location = &models.Location{
+		Longitude: createEventRequest.Longitude,
+		Latitude:  createEventRequest.Latitude,
+		City:      createEventRequest.City,
+		State:     createEventRequest.State,
+		Country:   createEventRequest.Country,
+	}
 	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)
 		return nil, err
 	}
-	
+
 	_, err = raveEventService.AddEventToCalendar(calendar.ID, savedEvent)
 	if err != nil {
 		return nil, err
