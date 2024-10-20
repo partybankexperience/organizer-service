@@ -10,6 +10,8 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
 	"net/http"
@@ -225,10 +227,10 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 			Price:         strconv.FormatFloat(ticket.Price, 'f', -1, 64),
 			Color:         ticket.Colour,
 			Category:      strconv.FormatUint(ticket.Category, 10),
-			Stock:         ticket.Stock,
+			Stock:         ToTitleCase(ToTitleCase(ticket.Stock)),
 			Capacity:      int(ticket.Capacity),
 			Perks:         strings.Join(ticket.TicketPerks, ","),
-			Type:          ticket.Type,
+			Type:          ToTitleCase(ticket.Type),
 			PurchaseLimit: int(ticket.PurchaseLimit),
 		}
 		if ticket.ActivePeriod != nil {
@@ -238,4 +240,9 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 		ticketTypes = append(ticketTypes, ticketType)
 	}
 	return ticketTypes
+}
+
+func ToTitleCase(text string) string {
+	return cases.Title(language.English, nil).
+		String(text)
 }
