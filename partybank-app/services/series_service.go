@@ -21,6 +21,7 @@ type SeriesService interface {
 	GetSeriesFor(organizerId uint64, pageNumber int, pageSize int) ([]*response.SeriesResponse, error)
 	GetSeriesOrganizer(seriesId uint64) (uint64, error)
 	UpdateSeries(seriesId uint64, series *dtos.UpdateSeriesRequest) (*response.SeriesResponse, error)
+	SetEventService(eventService EventService)
 }
 
 type raveSeriesService struct {
@@ -160,7 +161,12 @@ func (raveSeriesService *raveSeriesService) UpdateSeries(seriesId uint64, series
 	return seriesResponse, nil
 }
 
+func (raveSeriesService *raveSeriesService) SetEventService(eventService EventService) {
+	raveSeriesService.EventService = eventService
+}
+
 func (raveSeriesService *raveSeriesService) AddToSeries(seriesId, eventId uint64) (*response.SeriesResponse, error) {
+
 	series, err := raveSeriesService.GetById(seriesId)
 	if err != nil {
 		return nil, errors.New("failed to find series")
@@ -169,7 +175,13 @@ func (raveSeriesService *raveSeriesService) AddToSeries(seriesId, eventId uint64
 	if err != nil {
 		return nil, errors.New("failed to find event")
 	}
-
+	eventSeries, err := raveSeriesService.GetById(event.SeriesID)
+	if err != nil {
+		return nil, errors.New("failed to find events series")
+	}
+	if series.OrganizerID != eventSeries.OrganizerID {
+		return nil, errors.New("user not allowed to add event to series")
+	}
 	event.SeriesID = series.ID
 	series.Events = append(series.Events, event)
 	err = raveSeriesService.UpdateEvent(event)

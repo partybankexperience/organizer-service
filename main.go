@@ -108,6 +108,7 @@ func configureServiceComponents() {
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService, ticketService, attendeeService)
 	eventService = services.NewEventService(eventRepository, organizerService, seriesService, ticketService)
+	seriesService.SetEventService(eventService)
 	ticketService = services.NewTicketService(ticketRepository, eventService)
 	eventService.SetTicketService(ticketService)
 	attendeeService = services.NewAttendeeService(attendeeRepository, mailService)

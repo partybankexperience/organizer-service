@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
 	"github.com/djfemz/organizer-service/partybank-app/services"
@@ -154,6 +155,37 @@ func (seriesController *SeriesController) UpdateSeries(ctx *gin.Context) {
 		return
 	}
 	resp, err := seriesController.SeriesService.UpdateSeries(seriesId, updateSeriesRequest)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	ctx.JSON(http.StatusOK, &response.RaveResponse[*response.SeriesResponse]{Data: resp})
+}
+
+// AddEventToSeries godoc
+// @Summary      Adds event to series
+// @Description  Changes the series an event belongs to
+// @Tags         Series
+// @Accept       json
+// @Produce      json
+// @Param        seriesId   path   int  true  "seriesId"
+// @Param        eventId   query   int  true  "eventId"
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/series/events/add [get]
+func (seriesController *SeriesController) AddEventToSeries(ctx *gin.Context) {
+	seriesId, err := extractParamFromRequest("seriesId", ctx)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	eventId, err := utils.ConvertQueryStringToInt(ctx.Query("eventId"))
+	if err != nil {
+		handleError(ctx, errors.New("failed to get eventId from request"))
+		return
+	}
+	resp, err := seriesController.SeriesService.AddToSeries(seriesId, uint64(eventId))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
