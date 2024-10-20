@@ -112,7 +112,13 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 		return nil, err
 	}
 	log.Println("event: ", *foundEvent)
-	return mappers.MapEventToEventResponse(foundEvent), nil
+	series, err := raveEventService.SeriesService.GetById(foundEvent.SeriesID)
+	if err != nil {
+		return nil, errors.New("failed to find series")
+	}
+	eventResponse := mappers.MapEventToEventResponse(foundEvent)
+	eventResponse.SeriesName = series.Name
+	return eventResponse, nil
 }
 
 func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, error) {
@@ -183,7 +189,12 @@ func (raveEventService *raveEventService) GetEventByReference(reference string) 
 	if err != nil {
 		return nil, errors.New("failed to find requested event")
 	}
+	series, err := raveEventService.SeriesService.GetById(event.SeriesID)
+	if err != nil {
+		return nil, errors.New("failed to find series")
+	}
 	eventResponse := mappers.MapEventToEventResponse(event)
+	eventResponse.SeriesName = series.Name
 	return eventResponse, nil
 }
 
@@ -201,7 +212,13 @@ func (raveEventService *raveEventService) PublishEvent(eventId uint64) (*respons
 	if err != nil {
 		return nil, errors.New("failed to save event")
 	}
-	return mappers.MapEventToEventResponse(event), nil
+	series, err := raveEventService.SeriesService.GetById(event.SeriesID)
+	if err != nil {
+		return nil, errors.New("failed to find series")
+	}
+	eventResponse := mappers.MapEventToEventResponse(event)
+	eventResponse.SeriesName = series.Name
+	return eventResponse, nil
 }
 
 func (raveEventService *raveEventService) GetOrganizerFor(SeriesId uint64) (uint64, error) {
@@ -224,6 +241,11 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 	eventsResponses := make([]*response.EventResponse, 0)
 	for _, event := range events {
 		eventRes := mappers.MapEventToEventResponse(event)
+		series, err := raveEventService.SeriesService.GetById(event.SeriesID)
+		if err != nil {
+			return nil, errors.New("series not found")
+		}
+		eventRes.SeriesName = series.Name
 		eventsResponses = append(eventsResponses, eventRes)
 	}
 	sort.Slice(eventsResponses, func(currentIndex, nextIndex int) bool {

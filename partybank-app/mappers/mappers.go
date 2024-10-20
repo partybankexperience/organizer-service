@@ -31,7 +31,7 @@ func MapEventsToEventResponses(events []*models.Event, series *models.Series) []
 		ticketResponses := GetTicketsFrom(event)
 		log.Println("tickets: ", ticketResponses)
 		eventResponse := MapEventToEventResponse(event)
-
+		eventResponse.SeriesName = series.Name
 		eventResponse.Tickets = ticketResponses
 		eventResponse.SeriesLogo = series.Logo
 		responses = append(responses, eventResponse)

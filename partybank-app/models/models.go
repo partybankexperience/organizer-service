@@ -24,8 +24,11 @@ const (
 )
 
 const (
-	PAST     = "PAST"
-	UPCOMING = "UPCOMING"
+	PAST      = "PAST"
+	UPCOMING  = "UPCOMING"
+	LIMITED   = "Limited"
+	UNLIMITED = "Unlimited"
+	PAID      = "Paid"
 )
 
 const (
