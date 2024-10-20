@@ -1366,6 +1366,9 @@ const docTemplate = `{
                 "series_logo": {
                     "type": "string"
                 },
+                "series_name": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "string"
                 },

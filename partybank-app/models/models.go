@@ -159,9 +159,9 @@ type Event struct {
 }
 
 type Location struct {
-	Longitude string `json:"lng"`
-	Latitude  string `json:"lat"`
-	Address   string `json:"address"`
+	Longitude string `json:"lng,omitempty"`
+	Latitude  string `json:"lat,omitempty"`
+	Address   string `json:"address,omitempty"`
 	City      string `json:"city,omitempty"`
 	State     string `json:"state,omitempty"`
 	Country   string `json:"country,omitempty"`

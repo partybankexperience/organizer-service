@@ -74,14 +74,7 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 	}
 
 	if event.Location != nil {
-		eventResponse.Location = &models.Location{
-			Longitude: event.Location.Longitude,
-			Latitude:  event.Location.Latitude,
-			Address:   event.Location.Address,
-			City: event.Location.City,
-			State: event.Location.State,
-			Country: event.Location.Country,
-		}
+		eventResponse.Location = event.Location
 	}
 	return eventResponse
 }

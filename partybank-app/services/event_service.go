@@ -71,14 +71,12 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 			return nil, err
 		}
 	}
-	log.Println("organizer: ", *org)
 	updateEventDetails(createEventRequest, event, calendar)
 	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)
 		return nil, err
 	}
-
 	_, err = raveEventService.AddEventToSeries(calendar.ID, savedEvent)
 	if err != nil {
 		return nil, err
@@ -90,6 +88,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 		}
 	}
 	res := mappers.MapEventToEventResponse(savedEvent)
+	res.SeriesName = calendar.Name
 	return res, nil
 }
 

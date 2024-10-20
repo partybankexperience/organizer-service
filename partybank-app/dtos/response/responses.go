@@ -89,28 +89,28 @@ type CalendarResponse struct {
 }
 
 type EventResponse struct {
-	ID                 uint64           `json:"id"`
-	SeriesID           uint64           `json:"series_id,omitempty"`
-	SeriesLogo         string           `json:"series_logo,omitempty"`
-	Message            string           `json:"message,omitempty"`
-	Name               string           `json:"event_name,omitempty"`
-	Location           *models.Location `json:"location,omitempty"`
-	Date               string           `json:"date,omitempty"`
-	Time               string           `json:"time,omitempty"`
-	ContactInformation string           `json:"contact_information,omitempty"`
-	Description        string           `json:"description,omitempty"`
-	Status             string           `json:"status,omitempty"`
-	EventTheme         string           `json:"event_theme,omitempty"`
-	Longitude          string           `json:"lng,omitempty"`
-	Latitude           string           `json:"lat,omitempty"`
-
-	AttendeeTerm     string            `json:"attendee_term,omitempty"`
-	Venue            string            `json:"venue,omitempty"`
-	ImageUrl         string            `json:"image_url,omitempty"`
-	Reference        string            `json:"event_reference,omitempty"`
-	CreatedBy        string            `json:"created_by,omitempty"`
-	Tickets          []*TicketResponse `json:"tickets"`
-	PublicationState string            `json:"publication_state,omitempty"`
+	ID                 uint64            `json:"id"`
+	SeriesID           uint64            `json:"series_id,omitempty"`
+	SeriesLogo         string            `json:"series_logo,omitempty"`
+	Message            string            `json:"message,omitempty"`
+	Name               string            `json:"event_name,omitempty"`
+	Location           *models.Location  `json:"location,omitempty"`
+	Date               string            `json:"date,omitempty"`
+	Time               string            `json:"time,omitempty"`
+	ContactInformation string            `json:"contact_information,omitempty"`
+	Description        string            `json:"description,omitempty"`
+	Status             string            `json:"status,omitempty"`
+	EventTheme         string            `json:"event_theme,omitempty"`
+	Longitude          string            `json:"lng,omitempty"`
+	Latitude           string            `json:"lat,omitempty"`
+	SeriesName         string            `json:"series_name,omitempty"`
+	AttendeeTerm       string            `json:"attendee_term,omitempty"`
+	Venue              string            `json:"venue,omitempty"`
+	ImageUrl           string            `json:"image_url,omitempty"`
+	Reference          string            `json:"event_reference,omitempty"`
+	CreatedBy          string            `json:"created_by,omitempty"`
+	Tickets            []*TicketResponse `json:"tickets"`
+	PublicationState   string            `json:"publication_state,omitempty"`
 }
 
 type TicketResponse struct {
