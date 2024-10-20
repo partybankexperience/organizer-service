@@ -594,6 +594,56 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/series/events/add": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Changes the series an event belongs to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Series"
+                ],
+                "summary": "Adds event to series",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "seriesId",
+                        "name": "seriesId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "eventId",
+                        "name": "eventId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/series/organizer/{organizerId}": {
             "get": {
                 "security": [

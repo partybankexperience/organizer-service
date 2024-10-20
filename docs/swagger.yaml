@@ -773,6 +773,38 @@ paths:
       summary: Get Series by id
       tags:
       - Series
+  /api/v1/series/events/add:
+    get:
+      consumes:
+      - application/json
+      description: Changes the series an event belongs to
+      parameters:
+      - description: seriesId
+        in: path
+        name: seriesId
+        required: true
+        type: integer
+      - description: eventId
+        in: query
+        name: eventId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Adds event to series
+      tags:
+      - Series
   /api/v1/series/organizer/{organizerId}:
     get:
       consumes:

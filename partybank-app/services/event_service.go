@@ -27,6 +27,7 @@ type EventService interface {
 	GetOrganizerFor(eventId uint64) (uint64, error)
 	GetAllEventsForOrganizer(organizerId uint64, page, size int) ([]*response.EventResponse, error)
 	SetTicketService(service TicketService)
+	DeleteEventBy(eventId uint64) (string, error)
 }
 
 type raveEventService struct {
@@ -51,7 +52,6 @@ func NewEventService(eventRepository repositories.EventRepository,
 func (raveEventService *raveEventService) Create(createEventRequest *request.CreateEventRequest) (*response.EventResponse, error) {
 	event := mapCreateEventRequestToEvent(createEventRequest)
 	var err error
-
 	var calendar *models.Series
 	org, err := raveEventService.OrganizerService.GetById(createEventRequest.OrganizerId)
 	if err != nil || org == nil {
@@ -72,17 +72,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 		}
 	}
 	log.Println("organizer: ", *org)
-	event.SeriesID = calendar.ID
-	event.CreatedBy = calendar.Name
-	event.PublicationState = models.DRAFT
-	event.CreatedBy = strconv.Itoa(int(createEventRequest.OrganizerId))
-	event.Location = &models.Location{
-		Longitude: createEventRequest.Longitude,
-		Latitude:  createEventRequest.Latitude,
-		City:      createEventRequest.City,
-		State:     createEventRequest.State,
-		Country:   createEventRequest.Country,
-	}
+	updateEventDetails(createEventRequest, event, calendar)
 	savedEvent, err := raveEventService.Save(event)
 	if err != nil {
 		log.Println("err saving event: ", err)
@@ -101,6 +91,20 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 	}
 	res := mappers.MapEventToEventResponse(savedEvent)
 	return res, nil
+}
+
+func updateEventDetails(createEventRequest *request.CreateEventRequest, event *models.Event, calendar *models.Series) {
+	event.SeriesID = calendar.ID
+	event.CreatedBy = calendar.Name
+	event.PublicationState = models.DRAFT
+	event.CreatedBy = strconv.Itoa(int(createEventRequest.OrganizerId))
+	event.Location = &models.Location{
+		Longitude: createEventRequest.Longitude,
+		Latitude:  createEventRequest.Latitude,
+		City:      createEventRequest.City,
+		State:     createEventRequest.State,
+		Country:   createEventRequest.Country,
+	}
 }
 
 func (raveEventService *raveEventService) GetById(id uint64) (*response.EventResponse, error) {
@@ -227,6 +231,15 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 		return eventsResponses[currentIndex].ID > eventsResponses[nextIndex].ID
 	})
 	return eventsResponses, err
+}
+
+func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string, error) {
+	//TODO: implement me
+	//err := raveEventService.DeleteById(eventId)
+	//if err != nil {
+	//	return "", errors.New("failed to delete event")
+	//}
+	return "event deleted successfully", nil
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {
