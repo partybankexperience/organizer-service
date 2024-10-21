@@ -28,6 +28,7 @@ type TicketService interface {
 	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
 	UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error)
 	UpdateTicket(ticketId uint64, updateTicketRequest *request.UpdateTicketRequest) (*response.TicketResponse, error)
+	EditTicket(ticketId uint64, editTicketRequest *request.EditTicketRequest) (editTicketResponse *response.TicketResponse, err error)
 }
 
 type raveTicketService struct {
@@ -177,6 +178,16 @@ func (raveTicketService *raveTicketService) UpdateTicket(ticketId uint64, update
 	event, err := raveTicketService.EventService.GetEventBy(foundTicket.EventID)
 	go sendNewTicketMessageFor(event)
 	return mappers.MapTicketToTicketResponse(foundTicket), nil
+}
+
+func (raveTicketService *raveTicketService) EditTicket(ticketId uint64, editTicketRequest *request.EditTicketRequest) (editTicketResponse *response.TicketResponse, err error) {
+	ticket, err := raveTicketService.GetTicketById(ticketId)
+	if err != nil {
+		return nil, errors.New("failed to find ticket")
+	}
+	ticket = mappers.MapEditTicketRequestToTicket(editTicketRequest, ticket)
+	ticketResponse := mappers.MapTicketToTicketResponse(ticket)
+	return ticketResponse, nil
 }
 
 func sendNewTicketMessageFor(event *models.Event) {

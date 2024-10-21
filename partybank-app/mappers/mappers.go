@@ -127,6 +127,23 @@ func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.Attendee
 	}
 }
 
+func MapEditTicketRequestToTicket(editTicketRequest *dtos.EditTicketRequest, ticket *models.Ticket) *models.Ticket {
+	ticket.Colour = editTicketRequest.Colour
+	ticket.Name = editTicketRequest.Name
+	ticket.Stock = editTicketRequest.Stock
+	ticket.Price = editTicketRequest.Price
+	ticket.TicketPerks = editTicketRequest.TicketPerks
+	ticket.IsTransferPaymentFeesToGuest = editTicketRequest.IsTransferPaymentFeesToGuest
+	if ticket.ActivePeriod != nil {
+		ticket.ActivePeriod.StartTime = editTicketRequest.SalesStartTime
+		ticket.ActivePeriod.EndTime = editTicketRequest.SalesEndTime
+		ticket.ActivePeriod.StartDate = editTicketRequest.SalesStartDate
+		ticket.ActivePeriod.EndDate = editTicketRequest.SaleEndDate
+	}
+	ticket.PurchaseLimit = editTicketRequest.PurchaseLimit
+	return ticket
+}
+
 func IsTicketSaleEndedFor(ticket *models.Ticket) bool {
 	if ticket.ActivePeriod == nil {
 		return false

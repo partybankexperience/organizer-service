@@ -942,6 +942,33 @@ paths:
       summary: Add Tickets to event
       tags:
       - Tickets
+  /api/v1/ticket/edit:
+    put:
+      consumes:
+      - application/json
+      description: Edit Ticket
+      parameters:
+      - description: ticketId
+        in: query
+        name: ticketId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.TicketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Edit Ticket
+      tags:
+      - Tickets
   /api/v1/ticket/update:
     get:
       consumes:
