@@ -42,9 +42,9 @@ package test
 //	req := &request.CreateEventRequest{
 //		SeriesId: 1,
 //		Name:     "rave",
-//		City: "Abuja",
+//		Address: "Abuja",
 //
-//		Time:     time.Now().String(),
+//		StartTime:     time.Now().String(),
 //	}
 //	eventService := services.NewEventService()
 //	event, err := eventService.Create(req)
@@ -53,7 +53,7 @@ package test
 //	assert.Nil(t, err)
 //	calendarService = services.NewSeriesService()
 //	log.Println("eve: ", createdEvent)
-//	calendar, err := calendarService.AddEventToCalendar(1, createdEvent)
+//	calendar, err := calendarService.AddEventToSeries(1, createdEvent)
 //
 //	assert.Nil(t, err)
 //	assert.NotNil(t, calendar)

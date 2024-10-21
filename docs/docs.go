@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/attendee/update": {
+        "/api/v1/attendee/update/{username}": {
             "put": {
                 "security": [
                     {
@@ -304,6 +304,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/event/series": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get all Events in series",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get all Events in series",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "seriesId",
+                        "name": "seriesId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "size",
+                        "name": "size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.EventResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/event/staff": {
             "post": {
                 "security": [
@@ -443,6 +500,56 @@ const docTemplate = `{
             }
         },
         "/api/v1/series": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Update Existing Series",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Series"
+                ],
+                "summary": "Update Existing Series",
+                "parameters": [
+                    {
+                        "description": "Series tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UpdateSeriesRequest"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "seriesId",
+                        "name": "seriesId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -469,6 +576,56 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.CreateSeriesRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/series/events/add": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Changes the series an event belongs to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Series"
+                ],
+                "summary": "Adds event to series",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "seriesId",
+                        "name": "seriesId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "eventId",
+                        "name": "eventId",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -634,14 +791,16 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/v1/ticket/add/{eventId}": {
             "post": {
                 "security": [
                     {
                         "Bearer": []
                     }
                 ],
-                "description": "Add Ticket to Event",
+                "description": "Add Tickets to event",
                 "consumes": [
                     "application/json"
                 ],
@@ -651,23 +810,30 @@ const docTemplate = `{
                 "tags": [
                     "Tickets"
                 ],
-                "summary": "Add Ticket to Event",
+                "summary": "Add Tickets to event",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "eventId",
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Ticket tags",
                         "name": "tags",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.CreateTicketRequest"
+                            "$ref": "#/definitions/dtos.CreateTicketsDto"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.TicketResponse"
+                            "$ref": "#/definitions/dtos.RaveResponse"
                         }
                     },
                     "400": {
@@ -988,17 +1154,18 @@ const docTemplate = `{
         "dtos.CreateEventRequest": {
             "type": "object",
             "required": [
-                "country",
+                "address",
                 "date",
+                "end_time",
                 "name",
                 "organizer_id",
                 "series_id",
-                "state",
-                "time",
-                "venue"
+                "start_time",
+                "venue",
+                "visibility"
             ],
             "properties": {
-                "attendee_term": {
+                "address": {
                     "type": "string"
                 },
                 "city": {
@@ -1016,16 +1183,19 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "end_time": {
+                    "type": "string"
+                },
                 "event_theme": {
                     "type": "string"
                 },
                 "image_url": {
                     "type": "string"
                 },
-                "map_embedded_url": {
+                "lat": {
                     "type": "string"
                 },
-                "map_url": {
+                "lng": {
                     "type": "string"
                 },
                 "name": {
@@ -1037,13 +1207,22 @@ const docTemplate = `{
                 "series_id": {
                     "type": "integer"
                 },
+                "start_time": {
+                    "type": "string"
+                },
                 "state": {
                     "type": "string"
                 },
-                "time": {
-                    "type": "string"
+                "tickets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CreateTicketRequest"
+                    }
                 },
                 "venue": {
+                    "type": "string"
+                },
+                "visibility": {
                     "type": "string"
                 }
             }
@@ -1073,22 +1252,16 @@ const docTemplate = `{
         },
         "dtos.CreateTicketRequest": {
             "type": "object",
-            "required": [
-                "event_id"
-            ],
             "properties": {
                 "capacity": {
                     "type": "integer"
                 },
                 "colour": {
+                    "description": "EventId                      uint64      ` + "`" + `json:\"event_id\"` + "`" + `",
                     "type": "string"
                 },
-                "event_id": {
-                    "description": "AdditionalInformationFields  models.AdditionalInformationFields ` + "`" + `json:\"additional_information_fields\"` + "`" + `",
-                    "type": "integer"
-                },
                 "is_transfer_payment_fees_to_guest": {
-                    "description": "DiscountType                 string                             ` + "`" + `json:\"discount_type\"` + "`" + `\nPercentage float64 ` + "`" + `json:\"percentage\"` + "`" + `\nDiscountPrice                float64                            ` + "`" + `json:\"discount_price\"` + "`" + `\nDiscountCode                 string                             ` + "`" + `json:\"discount_code\"` + "`" + `\nAvailableDiscountedTickets   uint64                             ` + "`" + `json:\"available_discounted_tickets\"` + "`" + `",
+                    "description": "TODO: Default: false",
                     "type": "boolean"
                 },
                 "name": {
@@ -1096,12 +1269,6 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "number"
-                },
-                "price_change_date": {
-                    "type": "string"
-                },
-                "price_change_time": {
-                    "type": "string"
                 },
                 "purchase_limit": {
                     "type": "integer"
@@ -1129,6 +1296,17 @@ const docTemplate = `{
                 },
                 "ticket_type": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.CreateTicketsDto": {
+            "type": "object",
+            "properties": {
+                "ticketRequests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CreateTicketRequest"
+                    }
                 }
             }
         },
@@ -1165,14 +1343,14 @@ const docTemplate = `{
                 "image_url": {
                     "type": "string"
                 },
+                "lat": {
+                    "type": "string"
+                },
+                "lng": {
+                    "type": "string"
+                },
                 "location": {
                     "$ref": "#/definitions/models.Location"
-                },
-                "map_embedded_url": {
-                    "type": "string"
-                },
-                "map_url": {
-                    "type": "string"
                 },
                 "message": {
                     "type": "string"
@@ -1184,6 +1362,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "series_logo": {
+                    "type": "string"
+                },
+                "series_name": {
                     "type": "string"
                 },
                 "status": {
@@ -1286,7 +1467,10 @@ const docTemplate = `{
         "dtos.UpdateAttendeeRequest": {
             "type": "object",
             "properties": {
-                "full_name": {
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
                     "type": "string"
                 },
                 "phone_number": {
@@ -1339,6 +1523,23 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.UpdateSeriesRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "series_logo": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ActivePeriod": {
             "type": "object",
             "properties": {
@@ -1359,10 +1560,19 @@ const docTemplate = `{
         "models.Location": {
             "type": "object",
             "properties": {
+                "address": {
+                    "type": "string"
+                },
                 "city": {
                     "type": "string"
                 },
                 "country": {
+                    "type": "string"
+                },
+                "lat": {
+                    "type": "string"
+                },
+                "lng": {
                     "type": "string"
                 },
                 "state": {
@@ -1406,6 +1616,9 @@ const docTemplate = `{
                 "event_id": {
                     "type": "integer"
                 },
+                "event_reference": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1414,6 +1627,9 @@ const docTemplate = `{
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "type": "boolean"
+                },
+                "max_seats": {
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
@@ -1432,6 +1648,9 @@ const docTemplate = `{
                 },
                 "reference": {
                     "type": "string"
+                },
+                "reserved": {
+                    "type": "integer"
                 },
                 "stock": {
                     "type": "string"
@@ -1460,7 +1679,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "rave.onrender.com",
+	Host:             "partybank-organizer-269c8057a65f.herokuapp.com",
 	BasePath:         "",
 	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",

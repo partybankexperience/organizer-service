@@ -32,16 +32,19 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.POST("/event", eventController.CreateEvent)
 		protected.GET("/event/:id", eventController.GetEventById)
 		protected.PUT("/event/:id", eventController.EditEvent)
+		protected.GET("/event/series", eventController.GetAllEventsForSeries)
 		protected.GET("/event/organizer", eventController.GetAllEventsForOrganizer)
 		protected.POST("/event/staff", organizerController.AddEventStaff)
-		protected.POST("/ticket", ticketController.AddTicketToEvent)
 		protected.GET("/ticket/:eventId", ticketController.GetAllTicketsForEvent)
 		protected.GET("/ticket", ticketController.GetTicketById)
+		protected.POST("/ticket/add/:eventId", ticketController.AddTickets)
 		protected.POST("/series", seriesController.CreateSeries)
 		protected.GET("/series/:id", seriesController.GetSeriesById)
 		protected.GET("/series/organizer/:organizerId", seriesController.GetSeriesForOrganizer)
+		protected.PUT("/series/:seriesId", seriesController.UpdateSeries)
 		protected.GET("/event/publish/:id", eventController.PublishEvent)
 		protected.PUT("/attendee/update/:username", attendeeController.UpdateAttendee)
+		protected.GET("/series/events/add/:seriesId", seriesController.AddEventToSeries)
 	}
 
 	oauthController := &controllers.OauthController{

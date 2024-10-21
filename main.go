@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/djfemz/organizer-service/docs"
 	"github.com/djfemz/organizer-service/partybank-app/config"
 	handlers "github.com/djfemz/organizer-service/partybank-app/controllers"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
@@ -51,6 +52,8 @@ func init() {
 	db = repositories.Connect()
 }
 
+//partybank-organizer-269c8057a65f.herokuapp.com
+
 // @title           Partybank Organizer Service
 // @version         1.0
 // @description     Partybank Organizer Service.
@@ -60,7 +63,7 @@ func init() {
 // @contact.email  unavailable
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host rave.onrender.com
+// @host partybank-organizer-269c8057a65f.herokuapp.com
 // @schemes https
 // @securityDefinitions.apikey Bearer
 // @in header
@@ -104,8 +107,10 @@ func configureServiceComponents() {
 	seriesService = services.NewSeriesService(seriesRepository)
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService, ticketService, attendeeService)
-	eventService = services.NewEventService(eventRepository, organizerService, seriesService)
+	eventService = services.NewEventService(eventRepository, organizerService, seriesService, ticketService)
+	seriesService.SetEventService(eventService)
 	ticketService = services.NewTicketService(ticketRepository, eventService)
+	eventService.SetTicketService(ticketService)
 	attendeeService = services.NewAttendeeService(attendeeRepository, mailService)
 	authService = services2.NewAuthService(organizerService, attendeeService, mailService)
 }

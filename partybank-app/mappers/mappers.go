@@ -31,7 +31,7 @@ func MapEventsToEventResponses(events []*models.Event, series *models.Series) []
 		ticketResponses := GetTicketsFrom(event)
 		log.Println("tickets: ", ticketResponses)
 		eventResponse := MapEventToEventResponse(event)
-
+		eventResponse.SeriesName = series.Name
 		eventResponse.Tickets = ticketResponses
 		eventResponse.SeriesLogo = series.Logo
 		responses = append(responses, eventResponse)
@@ -64,8 +64,6 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 		Status:             event.Status,
 		SeriesID:           event.SeriesID,
 		Venue:              event.Venue,
-		MapUrl:             event.MapUrl,
-		MapEmbeddedUrl:     event.MapEmbeddedUrl,
 		AttendeeTerm:       event.AttendeeTerm,
 		EventTheme:         event.EventTheme,
 		ImageUrl:           event.ImageUrl,
@@ -76,11 +74,7 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 	}
 
 	if event.Location != nil {
-		eventResponse.Location = &models.Location{
-			State:   event.Location.State,
-			Country: event.Location.Country,
-			City:    event.Location.City,
-		}
+		eventResponse.Location = event.Location
 	}
 	return eventResponse
 }
@@ -115,7 +109,7 @@ func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttendeeRequest) *models.Attendee {
 
 	return &models.Attendee{
-		FullName: createAttendeeRequest.FullName,
+		FirstName: createAttendeeRequest.FullName,
 		User: &models.User{
 			Username: createAttendeeRequest.Username,
 			Role:     models.ATTENDEE,
@@ -125,8 +119,11 @@ func MapCreateAttendeeRequestToAttendee(createAttendeeRequest *dtos.CreateAttend
 
 func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.AttendeeResponse {
 	return &response.AttendeeResponse{
-		Username: attendee.Username,
-		Message:  "User registered successfully",
+		Username:    attendee.Username,
+		Message:     "User registered successfully",
+		FirstName:   attendee.FirstName,
+		LastName:    attendee.LastName,
+		PhoneNumber: attendee.PhoneNumber,
 	}
 }
 

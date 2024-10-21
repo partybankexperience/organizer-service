@@ -62,7 +62,7 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 // @Success      201  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /api/v1/attendee/update  [put]
+// @Router       /api/v1/attendee/update/{username}  [put]
 func (attendeeController AttendeeController) UpdateAttendee(ctx *gin.Context) {
 	username := ctx.Param("username")
 

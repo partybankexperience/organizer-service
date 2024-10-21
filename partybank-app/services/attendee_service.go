@@ -72,7 +72,8 @@ func (raveAttendeeService *raveAttendeeService) UpdateAttendee(username string, 
 	if err != nil {
 		return nil, errors.New("user with id not found")
 	}
-	attendee.FullName = updateAttendeeRequest.FullName
+	attendee.FirstName = updateAttendeeRequest.FirstName
+	attendee.LastName = updateAttendeeRequest.LastName
 	attendee.PhoneNumber = updateAttendeeRequest.PhoneNumber
 	attendee, err = raveAttendeeService.Save(attendee)
 	if err != nil {
@@ -97,7 +98,7 @@ func buildNewAttendeeMessageFor(attendee *models.Attendee) (*dtos.EmailNotificat
 		},
 		Recipients: []dtos.Recipient{
 			{
-				Name:  attendee.FullName,
+				Name:  attendee.FirstName,
 				Email: attendee.Username,
 			},
 		},

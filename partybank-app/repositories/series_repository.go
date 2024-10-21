@@ -26,7 +26,7 @@ func NewSeriesRepository(db *gorm.DB) SeriesRepository {
 
 func (raveCalendarRepository *raveCalendarRepository) FindPublicSeriesFor(organizer uint64) (*models.Series, error) {
 	foundSeries := &models.Series{}
-	err := raveCalendarRepository.Db.Where(&models.Series{Name: "Public", OrganizerID: organizer}).Find(foundSeries).Error
+	err := raveCalendarRepository.Db.Where(&models.Series{Name: "default", OrganizerID: organizer}).Find(foundSeries).Error
 	if err != nil {
 		return nil, err
 	}

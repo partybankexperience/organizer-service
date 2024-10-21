@@ -12,6 +12,7 @@ type EventRepository interface {
 	FindAllByCalendar(calendarId uint64, pageNumber, pageSize int) ([]*models.Event, error)
 	FindAllPublishedByPage(page int, size int) ([]*models.Event, error)
 	FindByReference(reference string) (*models.Event, error)
+	FindAllByOrganizer(organizerId uint64, pageNumber, pageSize int) ([]*models.Event, error)
 }
 
 type raveEventRepository struct {
@@ -72,4 +73,29 @@ func (raveEventRepository *raveEventRepository) FindByReference(reference string
 		return nil, err
 	}
 	return event, nil
+}
+
+func (raveEventRepository *raveEventRepository) FindAllByOrganizer(organizerId uint64, page, size int) ([]*models.Event, error) {
+	if size < 1 {
+		size = 1
+	}
+	if page < 1 {
+		page = 1
+	} else if size > 100 {
+		size = 100
+	}
+	offset := (page - 1) * size
+	log.Println("offset: ", offset)
+	var events []*models.Event
+	series := models.Series{}
+	err := raveEventRepository.Db.Preload(clause.Associations).Where(&models.Series{OrganizerID: organizerId}).First(&series).Error
+	if err != nil {
+		return nil, err
+	}
+	err = raveEventRepository.Db.Preload(clause.Associations).Where(&models.Event{SeriesID: series.ID}).
+		Offset(offset).Limit(size).Find(&events).Error
+	if err != nil {
+		return nil, err
+	}
+	return events, nil
 }

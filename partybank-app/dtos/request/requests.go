@@ -16,14 +16,15 @@ type AuthRequest struct {
 }
 
 type CreateAttendeeRequest struct {
-	FullName    string `json:"full_name"`
+	FullName    string `json:"full_name,omitempty"`
 	Username    string `json:"email"`
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
 }
 
 type UpdateAttendeeRequest struct {
-	FullName    string `json:"full_name"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
 	PhoneNumber string `json:"phone_number"`
 }
 
@@ -42,22 +43,26 @@ type CreateDiscountRequest struct {
 }
 
 type CreateEventRequest struct {
-	Name               string `json:"name" validate:"required"`
-	City               string `json:"city"`
-	State              string `json:"state" validate:"required"`
-	Country            string `json:"country" validate:"required"`
-	Date               string `json:"date" validate:"required"`
-	Time               string `json:"time" validate:"required"`
-	ContactInformation string `json:"contact_information"`
-	Description        string `json:"description"`
-	SeriesId           uint64 `json:"series_id" validate:"required"`
-	OrganizerId        uint64 `json:"organizer_id" validate:"required"`
-	EventTheme         string `json:"event_theme"`
-	MapUrl             string `json:"map_url"`
-	MapEmbeddedUrl     string `json:"map_embedded_url"`
-	AttendeeTerm       string `json:"attendee_term"`
-	Venue              string `json:"venue" validate:"required"`
-	ImageUrl           string `json:"image_url"`
+	Name               string                 `json:"name" validate:"required"`
+	Visibility         string                 `json:"visibility" validate:"required"`
+	Address            string                 `json:"address" validate:"required"`
+	Date               string                 `json:"date" validate:"required"`
+	StartTime          string                 `json:"start_time" validate:"required"`
+	EndTime            string                 `json:"end_time" validate:"required"`
+	ContactInformation string                 `json:"contact_information"`
+	Description        string                 `json:"description"`
+	SeriesId           uint64                 `json:"series_id" validate:"required"`
+	OrganizerId        uint64                 `json:"organizer_id" validate:"required"`
+	EventTheme         string                 `json:"event_theme"`
+	Latitude           string                 `json:"lat"`
+	Longitude          string                 `json:"lng"`
+	City               string                 `json:"city"`
+	State              string                 `json:"state"`
+	Country            string                 `json:"country"`
+	AttendeeTerm       string                 `json:"-"`
+	Venue              string                 `json:"venue" validate:"required"`
+	ImageUrl           string                 `json:"image_url"`
+	Tickets            []*CreateTicketRequest `json:"tickets"`
 }
 
 type UpdateEventRequest struct {
@@ -75,27 +80,25 @@ type UpdateEventRequest struct {
 	Venue              string `json:"venue" validate:"required"`
 }
 
+type CreateTicketsDto struct {
+	TicketRequests []*CreateTicketRequest
+}
+
 type CreateTicketRequest struct {
-	Type          string  `json:"ticket_type"`
-	Name          string  `json:"name"`
-	Capacity      uint64  `json:"capacity"`
-	Stock         string  `json:"stock"`
-	Price         float64 `json:"price"`
-	PurchaseLimit uint64  `json:"purchase_limit"`
-	//DiscountType                 string                             `json:"discount_type"`
-	//Percentage float64 `json:"percentage"`
-	//DiscountPrice                float64                            `json:"discount_price"`
-	//DiscountCode                 string                             `json:"discount_code"`
-	//AvailableDiscountedTickets   uint64                             `json:"available_discounted_tickets"`
-	IsTransferPaymentFeesToGuest bool `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
-	//AdditionalInformationFields  models.AdditionalInformationFields `json:"additional_information_fields"`
-	EventId         uint64      `json:"event_id" validate:"required"`
+	Type                         string  `json:"ticket_type"`
+	Name                         string  `json:"name"`
+	Capacity                     uint64  `json:"capacity"`
+	Stock                        string  `json:"stock"`
+	Price                        float64 `json:"price"`
+	PurchaseLimit                uint64  `json:"purchase_limit"`
+	IsTransferPaymentFeesToGuest bool    `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
+	//EventId                      uint64      `json:"event_id"`
 	Colour          string      `json:"colour"`
 	SaleEndDate     string      `json:"ticket_sale_end_date"`
 	SalesEndTime    string      `json:"ticket_sales_end_time"`
 	TicketPerks     TicketPerks `json:"ticket_perks"`
-	PriceChangeDate string      `json:"price_change_date"`
-	PriceChangeTime string      `json:"price_change_time"`
+	PriceChangeDate string      `json:"-"`
+	PriceChangeTime string      `json:"-"`
 	SalesStartDate  string      `json:"ticket_sale_start_date"`
 	SalesStartTime  string      `json:"ticket_sale_start_time"`
 }
@@ -191,6 +194,7 @@ type NewTicketMessage struct {
 	AttendeeTerm string        `json:"attendeeTerm"`
 	Date         string        `json:"eventDate"`
 	Capacity     uint64        `json:"capacity"`
+	CreatedBy    string        `json:"createdBy"`
 }
 
 type Sender struct {
@@ -220,6 +224,32 @@ type CreateSeriesRequest struct {
 
 type AttendeeAuthRequest struct {
 	Username string `json:"email"`
+}
+
+type UpdateSeriesRequest struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	ImageUrl    string `json:"image_url"`
+	SeriesLogo  string `json:"series_logo"`
+}
+
+type UpdateTicketRequest struct {
+	Type                         string      `json:"ticket_type"`
+	Name                         string      `json:"name"`
+	Capacity                     uint64      `json:"capacity"`
+	Category                     uint64      `json:"category"`
+	Stock                        string      `json:"stock"`
+	Price                        float64     `json:"price"`
+	PurchaseLimit                uint64      `json:"purchase_limit,omitempty"`
+	IsTransferPaymentFeesToGuest bool        `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
+	Colour                       string      `json:"colour"`
+	SaleEndDate                  string      `json:"ticket_sale_end_date"`
+	SalesEndTime                 string      `json:"ticket_sales_end_time"`
+	TicketPerks                  TicketPerks `json:"ticket_perks"`
+	PriceChangeDate              string      `json:"-"`
+	PriceChangeTime              string      `json:"-"`
+	SalesStartDate               string      `json:"ticket_sale_start_date"`
+	SalesStartTime               string      `json:"ticket_sale_start_time"`
 }
 
 func NewEmailNotificationRequest(recipient, content string) *EmailNotificationRequest {

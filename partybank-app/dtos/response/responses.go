@@ -31,7 +31,7 @@ type CreateDiscountResponse struct {
 	Price float64 `json:"price,omitempty"`
 }
 
-type OrganizationResponse struct {
+type OrganizerResponse struct {
 	*UserResponse
 	Name      string            `json:"name,omitempty"`
 	CreatedAt time.Time         `json:"created_at,omitempty"`
@@ -39,8 +39,11 @@ type OrganizationResponse struct {
 }
 
 type AttendeeResponse struct {
-	Username string `json:"email"`
-	Message  string `json:"message"`
+	Username    string `json:"email"`
+	Message     string `json:"message"`
+	FirstName   string `json:"first_name,omitempty"`
+	LastName    string `json:"last_name,omitempty"`
+	PhoneNumber string `json:"phone_number,omitempty"`
 }
 
 type UserResponse struct {
@@ -56,12 +59,13 @@ type SeriesResponse struct {
 	OrganizerID uint64           `json:"organizer_id,omitempty"`
 	ImageUrl    string           `json:"image_url,omitempty"`
 	Description string           `json:"description,omitempty"`
-	Logo        string           `json:"series_logo"`
+	Logo        string           `json:"series_logo,omitempty"`
 }
 
 type LoginResponse struct {
 	Message  string `json:"message,omitempty"`
 	Username string `json:"username,omitempty"`
+	UserID   uint64 `json:"user_id,omitempty"`
 }
 
 type CreateOrganizerResponse struct {
@@ -97,8 +101,9 @@ type EventResponse struct {
 	Description        string            `json:"description,omitempty"`
 	Status             string            `json:"status,omitempty"`
 	EventTheme         string            `json:"event_theme,omitempty"`
-	MapUrl             string            `json:"map_url,omitempty"`
-	MapEmbeddedUrl     string            `json:"map_embedded_url,omitempty"`
+	Longitude          string            `json:"lng,omitempty"`
+	Latitude           string            `json:"lat,omitempty"`
+	SeriesName         string            `json:"series_name,omitempty"`
 	AttendeeTerm       string            `json:"attendee_term,omitempty"`
 	Venue              string            `json:"venue,omitempty"`
 	ImageUrl           string            `json:"image_url,omitempty"`

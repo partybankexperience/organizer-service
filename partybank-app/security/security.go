@@ -96,7 +96,8 @@ func buildJwtClaimsFor(user *models.User) *jwt.RegisteredClaims {
 
 func buildJwtClaimsForAttendee(user *models.Attendee) jwt.Claims {
 	var claims jwt.MapClaims = make(map[string]interface{})
-	claims["fullName"] = user.FullName
+	claims["firstName"] = user.FirstName
+	claims["lastName"] = user.LastName
 	claims["phoneNumber"] = user.PhoneNumber
 	claims["username"] = user.Username
 	claims["role"] = user.Role

@@ -3,10 +3,11 @@ package models
 import (
 	"database/sql/driver"
 	"errors"
-	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	"reflect"
 	"strings"
 	"time"
+
+	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 
 	"gorm.io/gorm"
 
@@ -23,8 +24,11 @@ const (
 )
 
 const (
-	PAST     = "PAST"
-	UPCOMING = "UPCOMING"
+	PAST      = "PAST"
+	UPCOMING  = "UPCOMING"
+	LIMITED   = "Limited"
+	UNLIMITED = "Unlimited"
+	PAID      = "Paid"
 )
 
 const (
@@ -64,8 +68,9 @@ type User struct {
 }
 
 type Attendee struct {
-	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
-	FullName string
+	ID        uint64 `id:"ID" gorm:"primaryKey" json:"id"`
+	FirstName string
+	LastName  string
 	*User
 	PhoneNumber string
 	IsActive    bool
@@ -119,6 +124,9 @@ type Ticket struct {
 	Colour                       string                      `json:"colour"`
 	ActivePeriod                 *ActivePeriod               `gorm:"embedded" json:"active_period"`
 	IsSoldOutTicket              bool                        `json:"is_sold_out_ticket"`
+	MaxSeats                     uint64                      `json:"max_seats"`
+	EventReference               string                      `json:"event_reference"`
+	Reserved                     uint64                      `json:"reserved"`
 }
 
 type ActivePeriod struct {
@@ -143,21 +151,23 @@ type Event struct {
 	EventStaffID       uint64    `json:"event_staff_id"`
 	TicketID           uint64    `json:"ticket_id"`
 	EventTheme         string    `json:"event_theme"`
-	MapUrl             string    `json:"map_url"`
-	MapEmbeddedUrl     string    `json:"map_embedded_url"`
-	AttendeeTerm       string    `json:"attendee_term"`
+	AttendeeTerm       string    `json:"-"`
 	Venue              string    `json:"venue"`
 	Reference          string    `json:"event_reference"`
 	Tickets            []*Ticket
 	EventStaff         []*EventStaff
 	CreatedBy          string
 	PublicationState   string
+	DateCreated        string `json:"created_at"`
 }
 
 type Location struct {
-	State   string `json:"state"`
-	Country string `json:"country"`
-	City    string `json:"city"`
+	Longitude string `json:"lng,omitempty"`
+	Latitude  string `json:"lat,omitempty"`
+	Address   string `json:"address,omitempty"`
+	City      string `json:"city,omitempty"`
+	State     string `json:"state,omitempty"`
+	Country   string `json:"country,omitempty"`
 }
 
 type Series struct {

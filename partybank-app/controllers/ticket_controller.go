@@ -1,14 +1,15 @@
 package controllers
 
 import (
+	"net/http"
+	"strconv"
+
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
 	"github.com/djfemz/organizer-service/partybank-app/services"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"net/http"
-	"strconv"
 )
 
 type TicketController struct {
@@ -23,17 +24,18 @@ func NewTicketController(ticketService services.TicketService, objectValidator *
 	}
 }
 
-// AddTicketToEvent godoc
-// @Summary      Add Ticket to Event
-// @Description  Add Ticket to Event
-// @Tags         Tickets
-// @Accept       json
-// @Param 		 tags body dtos.CreateTicketRequest true "Ticket tags"
-// @Produce      json
-// @Success      200  {object}  dtos.TicketResponse
-// @Failure      400  {object}  dtos.RaveResponse
-// @Security Bearer
-// @Router       /api/v1/ticket [post]
+/*
+//AddTicketToEvent godoc
+//@Summary      Add Ticket to Event
+//@Description  Add Ticket to Event
+//@Tags         Tickets
+//@Accept       json
+//@Param 		 tags body dtos.CreateTicketRequest true "Ticket tags"
+//@Produce      json
+//@Success      200  {object}  dtos.TicketResponse
+//@Failure      400  {object}  dtos.RaveResponse
+//@Security Bearer
+//@Router       /api/v1/ticket [post]
 func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	addTicketRequest := &request.CreateTicketRequest{}
 	err := ctx.BindJSON(addTicketRequest)
@@ -53,6 +55,7 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusCreated, ticketResponse)
 }
+ **/
 
 // GetAllTicketsForEvent godoc
 // @Summary      Get all Tickets for Event
@@ -137,4 +140,36 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 		return
 	}
 	ctx.JSON(http.StatusOK, ticket)
+}
+
+// AddTickets godoc
+// @Summary      Add Tickets to event
+// @Description  Add Tickets to event
+// @Tags         Tickets
+// @Accept       json
+// @Param        eventId path int  true  "eventId"
+// @Param 		 tags body dtos.CreateTicketsDto true "Ticket tags"
+// @Produce      json
+// @Success      201  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/ticket/add/{eventId} [post]
+func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
+	eventId, err := extractParamFromRequest("eventId", ctx)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ticketsDto := &request.CreateTicketsDto{}
+	err = ctx.BindJSON(ticketsDto)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	res, err := ticketController.TicketService.AddTickets(eventId, ticketsDto.TicketRequests)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.TicketResponse]{Data: res})
 }

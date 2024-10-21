@@ -94,21 +94,21 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, updateEventResponse)
 }
 
-// GetAllEventsForOrganizer godoc
-// @Summary      Get all Events for organizer
-// @Description   Get all Events for organizer
+// GetAllEventsForSeries godoc
+// @Summary      Get all Events in series
+// @Description   Get all Events in series
 // @Tags         Events
 // @Accept       json
-// @Param        organizerId  query   int  true  "organizerId"
+// @Param        seriesId  query   int  true  "seriesId"
 // @Param        page   query   int  true  "page"
 // @Param        size   query   int  true  "size"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
-// @Router       /api/v1/event/organizer [get]
-func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Context) {
-	organizerId, err := strconv.ParseUint(ctx.Query("organizerId"), 10, 64)
+// @Router       /api/v1/event/series [get]
+func (eventController *EventController) GetAllEventsForSeries(ctx *gin.Context) {
+	organizerId, err := strconv.ParseUint(ctx.Query("seriesId"), 10, 64)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -228,6 +228,45 @@ func (eventController *EventController) PublishEvent(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, event)
+}
+
+// GetAllEventsForOrganizer  godoc
+// @Summary      Get all Events for organizer
+// @Description   Get all Events for organizer
+// @Tags         Events
+// @Accept       json
+// @Param        organizerId  query   int  true  "organizerId"
+// @Param        page   query   int  true  "page"
+// @Param        size   query   int  true  "size"
+// @Produce      json
+// @Success      200  {object}  dtos.EventResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/event/organizer [get]
+func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Context) {
+	organizerId, err := strconv.ParseUint(ctx.Query("organizerId"), 10, 64)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	page := ctx.Query("page")
+	size := ctx.Query("size")
+	pageNumber, err := utils.ConvertQueryStringToInt(page)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	pageSize, err := utils.ConvertQueryStringToInt(size)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		return
+	}
+	events, err := eventController.EventService.GetAllEventsForOrganizer(organizerId, pageNumber, pageSize)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, events)
 }
 
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
