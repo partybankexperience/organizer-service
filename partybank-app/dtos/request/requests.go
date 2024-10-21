@@ -85,22 +85,22 @@ type CreateTicketsDto struct {
 }
 
 type CreateTicketRequest struct {
-	Type                         string      `json:"ticket_type"`
-	Name                         string      `json:"name"`
-	Capacity                     uint64      `json:"capacity"`
-	Stock                        string      `json:"stock"`
-	Price                        float64     `json:"price"`
-	PurchaseLimit                uint64      `json:"purchase_limit"`
-	IsTransferPaymentFeesToGuest bool        `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
-	EventId                      uint64      `json:"event_id"`
-	Colour                       string      `json:"colour"`
-	SaleEndDate                  string      `json:"ticket_sale_end_date"`
-	SalesEndTime                 string      `json:"ticket_sales_end_time"`
-	TicketPerks                  TicketPerks `json:"ticket_perks"`
-	PriceChangeDate              string      `json:"-"`
-	PriceChangeTime              string      `json:"-"`
-	SalesStartDate               string      `json:"ticket_sale_start_date"`
-	SalesStartTime               string      `json:"ticket_sale_start_time"`
+	Type                         string  `json:"ticket_type"`
+	Name                         string  `json:"name"`
+	Capacity                     uint64  `json:"capacity"`
+	Stock                        string  `json:"stock"`
+	Price                        float64 `json:"price"`
+	PurchaseLimit                uint64  `json:"purchase_limit"`
+	IsTransferPaymentFeesToGuest bool    `json:"is_transfer_payment_fees_to_guest"` //TODO: Default: false
+	//EventId                      uint64      `json:"event_id"`
+	Colour          string      `json:"colour"`
+	SaleEndDate     string      `json:"ticket_sale_end_date"`
+	SalesEndTime    string      `json:"ticket_sales_end_time"`
+	TicketPerks     TicketPerks `json:"ticket_perks"`
+	PriceChangeDate string      `json:"-"`
+	PriceChangeTime string      `json:"-"`
+	SalesStartDate  string      `json:"ticket_sale_start_date"`
+	SalesStartTime  string      `json:"ticket_sale_start_time"`
 }
 
 type TicketPerks []string

@@ -1257,10 +1257,8 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "colour": {
+                    "description": "EventId                      uint64      ` + "`" + `json:\"event_id\"` + "`" + `",
                     "type": "string"
-                },
-                "event_id": {
-                    "type": "integer"
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "description": "TODO: Default: false",

@@ -21,7 +21,7 @@ import (
 )
 
 type TicketService interface {
-	CreateTicketFor(request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error)
+	CreateTicketFor(eventId uint64, request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error)
 	AddTickets(eventId uint64, tickets []*request.CreateTicketRequest) ([]*response.TicketResponse, error)
 	GetById(id uint64) (*response.TicketResponse, error)
 	GetTicketById(id uint64) (*models.Ticket, error)
@@ -42,8 +42,8 @@ func NewTicketService(ticketRepository repositories.TicketRepository, eventServi
 	}
 }
 
-func (raveTicketService *raveTicketService) CreateTicketFor(request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error) {
-	event, err := raveTicketService.GetEventBy(request.EventId)
+func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error) {
+	event, err := raveTicketService.GetEventBy(eventId)
 	if err != nil {
 		log.Println("event: ", event)
 		return nil, errors.New("event not found")
@@ -139,8 +139,7 @@ func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pag
 func (raveTicketService *raveTicketService) AddTickets(eventId uint64, tickets []*request.CreateTicketRequest) ([]*response.TicketResponse, error) {
 	res := make([]*response.TicketResponse, 0)
 	for _, ticketRequest := range tickets {
-		ticketRequest.EventId = eventId
-		ticketResponse, _ := raveTicketService.CreateTicketFor(ticketRequest)
+		ticketResponse, _ := raveTicketService.CreateTicketFor(eventId, ticketRequest)
 		res = append(res, ticketResponse)
 	}
 	event, err := raveTicketService.EventService.GetEventBy(eventId)
