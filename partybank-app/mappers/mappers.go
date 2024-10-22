@@ -44,8 +44,8 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 	ticketResponses := make([]*response.TicketResponse, 0)
 	for _, ticket := range event.Tickets {
 		ticketResponse := MapTicketToTicketResponse(ticket)
-		isTicketSaleEnded := IsTicketSaleEndedFor(ticket)
-		ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
+		//isTicketSaleEnded := IsTicketSaleEndedFor(ticket)
+		//ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
 		ticketResponses = append(ticketResponses, ticketResponse)
 	}
 	return ticketResponses

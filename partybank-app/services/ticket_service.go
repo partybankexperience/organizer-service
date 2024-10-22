@@ -67,7 +67,6 @@ func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, requ
 		StartTime: request.SalesStartTime,
 		EndTime:   request.SalesEndTime,
 	}
-	log.Println("perks: ", ticket.TicketPerks)
 	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
 		log.Println("error: ticket saving failed", err)
