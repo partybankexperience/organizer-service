@@ -213,7 +213,7 @@ func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 	ticket := event.Tickets[0]
 	var timeFrame string
 	if ticket.ActivePeriod != nil {
-		timeFrame = event.StartTime + " " + ticket.ActivePeriod.EndTime
+		timeFrame = event.StartTime + " to " + ticket.ActivePeriod.EndTime
 	}
 	return &request.NewTicketMessage{
 		Types:        ticketTypes,
