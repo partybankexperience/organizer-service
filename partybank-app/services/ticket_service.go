@@ -252,6 +252,5 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 }
 
 func ToTitleCase(text string) string {
-	return cases.Title(language.English, nil).
-		String(text)
+	return cases.Title(language.English).String(text)
 }
