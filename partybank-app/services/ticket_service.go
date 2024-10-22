@@ -210,11 +210,8 @@ func sendNewTicketMessageFor(event *models.Event) {
 
 func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 	ticketTypes := extractTicketTypesFrom(event.Tickets)
-	ticket := event.Tickets[0]
-	var timeFrame string
-	if ticket.ActivePeriod != nil {
-		timeFrame = event.StartTime + " to " + ticket.ActivePeriod.EndTime
-	}
+	var timeFrame = event.StartTime + " to " + event.EndTime
+
 	return &request.NewTicketMessage{
 		Types:        ticketTypes,
 		Name:         event.Name,
