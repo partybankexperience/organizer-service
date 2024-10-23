@@ -58,7 +58,7 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 		Message:            "event created successfully",
 		Name:               event.Name,
 		Date:               event.EventDate,
-		Time:               event.StartTime,
+		Time:               event.StartTime + "-" + event.EndTime,
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
