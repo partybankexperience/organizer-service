@@ -269,6 +269,31 @@ func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Contex
 	ctx.JSON(http.StatusOK, events)
 }
 
+// DeleteEvent godoc
+// @Summary      Delete Event by id
+// @Description  Delete Event by id
+// @Tags         Events
+// @Accept       json
+// @Param        eventId  path int  true  "eventId"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/event/delete/{eventId} [delete]
+func (eventController *EventController) DeleteEvent(ctx *gin.Context) {
+	id, err := extractParamFromRequest("eventId", ctx)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	deleteEventResponse, err := eventController.EventService.DeleteEventBy(id)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, &response.RaveResponse[string]{Data: deleteEventResponse})
+}
+
 func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
 	log.Println("param name: ", paramName, "val: ", ctx.Param(paramName))
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)

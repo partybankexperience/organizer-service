@@ -255,11 +255,10 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 }
 
 func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string, error) {
-	//TODO: implement me
-	//err := raveEventService.DeleteById(eventId)
-	//if err != nil {
-	//	return "", errors.New("failed to delete event")
-	//}
+	err := raveEventService.EventRepository.DeleteById(eventId)
+	if err != nil {
+		return "", errors.New("failed to delete event")
+	}
 	return "event deleted successfully", nil
 }
 

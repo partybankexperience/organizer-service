@@ -499,6 +499,33 @@ paths:
       summary: Edit Event
       tags:
       - Events
+  /api/v1/event/delete/{eventId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Event by id
+      parameters:
+      - description: eventId
+        in: path
+        name: eventId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Delete Event by id
+      tags:
+      - Events
   /api/v1/event/discover:
     get:
       consumes:
@@ -940,6 +967,33 @@ paths:
       security:
       - Bearer: []
       summary: Add Tickets to event
+      tags:
+      - Tickets
+  /api/v1/ticket/edit:
+    put:
+      consumes:
+      - application/json
+      description: Edit Ticket
+      parameters:
+      - description: ticketId
+        in: query
+        name: ticketId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.TicketResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Edit Ticket
       tags:
       - Tickets
   /api/v1/ticket/update:

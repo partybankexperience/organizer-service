@@ -173,3 +173,34 @@ func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.TicketResponse]{Data: res})
 }
+
+// EditTicket godoc
+// @Summary      Edit Ticket
+// @Description   Edit Ticket
+// @Tags         Tickets
+// @Accept       json
+// @Param        ticketId  query int  true  "ticketId"
+// @Produce      json
+// @Success      200  {object}  dtos.TicketResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/ticket/edit [put]
+func (ticketController *TicketController) EditTicket(ctx *gin.Context) {
+	ticketId, err := strconv.ParseUint(ctx.Query("ticketId"), 10, 64)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	editTicketRequest := &request.EditTicketRequest{}
+	err = ctx.BindJSON(editTicketRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ticket, err := ticketController.TicketService.EditTicket(ticketId, editTicketRequest)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, ticket)
+}

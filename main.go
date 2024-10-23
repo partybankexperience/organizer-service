@@ -48,7 +48,7 @@ func init() {
 	if err != nil {
 		log.Println("Error loading configuration: ", err)
 	}
-	log.Println("connnecting to db")
+	log.Println("connecting to db")
 	db = repositories.Connect()
 }
 

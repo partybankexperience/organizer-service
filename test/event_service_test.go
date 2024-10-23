@@ -1,13 +1,13 @@
 package test
 
-//
-//import (
-//	request "github.com/djfemz/rave/partybank-app/dtos/request"
-//	"github.com/djfemz/rave/partybank-app/services"
-//	"github.com/stretchr/testify/assert"
-//	"log"
-//	"testing"
-//)
+import (
+	"github.com/djfemz/organizer-service/partybank-app/repositories"
+	"github.com/djfemz/organizer-service/partybank-app/services"
+	"github.com/stretchr/testify/assert"
+	"log"
+	"testing"
+)
+
 //
 //var eventService = services.NewEventService()
 //
@@ -55,3 +55,23 @@ package test
 //	assert.NotNil(t, events)
 //	assert.NotEmpty(t, events)
 //}
+
+func TestDeleteEvent(t *testing.T) {
+	eventService := services.NewEventService(repositories.NewEventRepository(repositories.Connect()), nil, nil, nil)
+	_, err := eventService.DeleteEventBy(9)
+	assert.Nil(t, err)
+
+	log.Println("Error: ", err)
+}
+
+func TestGetAllEvents(t *testing.T) {
+	db := repositories.Connect()
+	eventService := services.NewEventService(repositories.NewEventRepository(db), nil,
+		services.NewSeriesService(repositories.NewSeriesRepository(db)), nil)
+	events, _ := eventService.GetAllEventsForOrganizer(5, 1, 99)
+	log.Println(events)
+
+	for _, event := range events {
+		log.Println("event: ", *event)
+	}
+}

@@ -44,8 +44,8 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 	ticketResponses := make([]*response.TicketResponse, 0)
 	for _, ticket := range event.Tickets {
 		ticketResponse := MapTicketToTicketResponse(ticket)
-		isTicketSaleEnded := IsTicketSaleEndedFor(ticket)
-		ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
+		//isTicketSaleEnded := IsTicketSaleEndedFor(ticket)
+		//ticketResponse.IsTicketSaleEnded = isTicketSaleEnded
 		ticketResponses = append(ticketResponses, ticketResponse)
 	}
 	return ticketResponses
@@ -53,12 +53,13 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 
 func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 	tickets := GetTicketsFrom(event)
+	eventTime := buildEventTimeForEventResponse(event)
 	eventResponse := &response.EventResponse{
 		ID:                 event.ID,
 		Message:            "event created successfully",
 		Name:               event.Name,
 		Date:               event.EventDate,
-		Time:               event.StartTime,
+		Time:               eventTime,
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
@@ -77,6 +78,18 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 		eventResponse.Location = event.Location
 	}
 	return eventResponse
+}
+
+func buildEventTimeForEventResponse(event *models.Event) string {
+	var eventTime string
+	if event.StartTime == "" && event.EndTime != "" {
+		eventTime = event.EndTime
+	} else if event.StartTime != "" && event.EndTime == "" {
+		eventTime = event.StartTime
+	} else {
+		eventTime = event.StartTime + " - " + event.EndTime
+	}
+	return eventTime
 }
 
 func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
@@ -125,6 +138,23 @@ func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.Attendee
 		LastName:    attendee.LastName,
 		PhoneNumber: attendee.PhoneNumber,
 	}
+}
+
+func MapEditTicketRequestToTicket(editTicketRequest *dtos.EditTicketRequest, ticket *models.Ticket) *models.Ticket {
+	ticket.Colour = editTicketRequest.Colour
+	ticket.Name = editTicketRequest.Name
+	ticket.Stock = editTicketRequest.Stock
+	ticket.Price = editTicketRequest.Price
+	ticket.TicketPerks = editTicketRequest.TicketPerks
+	ticket.IsTransferPaymentFeesToGuest = editTicketRequest.IsTransferPaymentFeesToGuest
+	if ticket.ActivePeriod != nil {
+		ticket.ActivePeriod.StartTime = editTicketRequest.SalesStartTime
+		ticket.ActivePeriod.EndTime = editTicketRequest.SalesEndTime
+		ticket.ActivePeriod.StartDate = editTicketRequest.SalesStartDate
+		ticket.ActivePeriod.EndDate = editTicketRequest.SaleEndDate
+	}
+	ticket.PurchaseLimit = editTicketRequest.PurchaseLimit
+	return ticket
 }
 
 func IsTicketSaleEndedFor(ticket *models.Ticket) bool {

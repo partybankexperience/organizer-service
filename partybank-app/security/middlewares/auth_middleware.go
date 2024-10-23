@@ -43,8 +43,10 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.GET("/series/organizer/:organizerId", seriesController.GetSeriesForOrganizer)
 		protected.PUT("/series/:seriesId", seriesController.UpdateSeries)
 		protected.GET("/event/publish/:id", eventController.PublishEvent)
+		protected.DELETE("/event/delete/:eventId", eventController.DeleteEvent)
 		protected.PUT("/attendee/update/:username", attendeeController.UpdateAttendee)
 		protected.GET("/series/events/add/:seriesId", seriesController.AddEventToSeries)
+		protected.GET("/ticket/edit", ticketController.EditTicket)
 	}
 
 	oauthController := &controllers.OauthController{

@@ -28,6 +28,7 @@ type TicketService interface {
 	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
 	UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error)
 	UpdateTicket(ticketId uint64, updateTicketRequest *request.UpdateTicketRequest) (*response.TicketResponse, error)
+	EditTicket(ticketId uint64, editTicketRequest *request.EditTicketRequest) (editTicketResponse *response.TicketResponse, err error)
 }
 
 type raveTicketService struct {
@@ -66,7 +67,6 @@ func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, requ
 		StartTime: request.SalesStartTime,
 		EndTime:   request.SalesEndTime,
 	}
-	log.Println("perks: ", ticket.TicketPerks)
 	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
 		log.Println("error: ticket saving failed", err)
@@ -179,6 +179,16 @@ func (raveTicketService *raveTicketService) UpdateTicket(ticketId uint64, update
 	return mappers.MapTicketToTicketResponse(foundTicket), nil
 }
 
+func (raveTicketService *raveTicketService) EditTicket(ticketId uint64, editTicketRequest *request.EditTicketRequest) (editTicketResponse *response.TicketResponse, err error) {
+	ticket, err := raveTicketService.GetTicketById(ticketId)
+	if err != nil {
+		return nil, errors.New("failed to find ticket")
+	}
+	ticket = mappers.MapEditTicketRequestToTicket(editTicketRequest, ticket)
+	ticketResponse := mappers.MapTicketToTicketResponse(ticket)
+	return ticketResponse, nil
+}
+
 func sendNewTicketMessageFor(event *models.Event) {
 	ticketMessage := buildTicketMessage(event)
 	body, err := json.Marshal(ticketMessage)
@@ -200,11 +210,8 @@ func sendNewTicketMessageFor(event *models.Event) {
 
 func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 	ticketTypes := extractTicketTypesFrom(event.Tickets)
-	ticket := event.Tickets[0]
-	var timeFrame string
-	if ticket.ActivePeriod != nil {
-		timeFrame = event.StartTime + " " + ticket.ActivePeriod.EndTime
-	}
+	var timeFrame = event.StartTime + " to " + event.EndTime
+
 	return &request.NewTicketMessage{
 		Types:        ticketTypes,
 		Name:         event.Name,
@@ -242,6 +249,5 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 }
 
 func ToTitleCase(text string) string {
-	return cases.Title(language.English, nil).
-		String(text)
+	return cases.Title(language.English).String(text)
 }
