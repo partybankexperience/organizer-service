@@ -127,14 +127,17 @@ func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, 
 
 func (raveEventService *raveEventService) UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error) {
 	updateEventResponse := &response.EventResponse{}
-
 	foundEvent, err := raveEventService.FindById(id)
 	if err != nil {
 		return nil, err
 	}
 	copyErrors := model.Copy(foundEvent, updateRequest)
 	if len(copyErrors) != 0 {
-		return nil, errors.New("could not update event")
+		return nil, errors.New("failed to update event")
+	}
+	_, err = raveEventService.TicketService.AddTickets(id, updateRequest.Tickets)
+	if err != nil {
+		return nil, errors.New("failed to update event")
 	}
 	savedEvent, err := raveEventService.Save(foundEvent)
 	if err != nil {
@@ -142,7 +145,7 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	}
 	copyErrors = model.Copy(updateEventResponse, savedEvent)
 	if len(copyErrors) != 0 {
-		return nil, errors.New("could not update event")
+		return nil, errors.New("failed update event")
 	}
 	return updateEventResponse, nil
 }
