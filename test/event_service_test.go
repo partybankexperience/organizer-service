@@ -1,14 +1,6 @@
 package test
 
 //
-//import (
-//	request "github.com/djfemz/rave/partybank-app/dtos/request"
-//	"github.com/djfemz/rave/partybank-app/services"
-//	"github.com/stretchr/testify/assert"
-//	"log"
-//	"testing"
-//)
-//
 //var eventService = services.NewEventService()
 //
 //func TestCreateEvent(t *testing.T) {

@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"errors"
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -9,6 +10,7 @@ import (
 
 type EventRepository interface {
 	crudRepository[models.Event, uint64]
+	FindEventById(id uint64) (*models.Event, error)
 	FindAllByCalendar(calendarId uint64, pageNumber, pageSize int) ([]*models.Event, error)
 	FindAllPublishedByPage(page int, size int) ([]*models.Event, error)
 	FindByReference(reference string) (*models.Event, error)
@@ -38,11 +40,20 @@ func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uin
 	}
 	offset := (pageNumber - 1) * pageSize
 	var events []*models.Event
-	err := raveEventRepository.Db.Where(&models.Event{SeriesID: calendarId}).Offset(offset).Limit(pageSize).Find(&events).Error
+	err := raveEventRepository.Db.Where(&models.Event{SeriesID: calendarId, IsEventDeleted: false}).Offset(offset).Limit(pageSize).Find(&events).Error
 	if err != nil {
 		return nil, err
 	}
 	return events, nil
+}
+
+func (raveEventRepository *raveEventRepository) FindEventById(id uint64) (*models.Event, error) {
+	event := models.Event{ID: id, IsEventDeleted: false}
+	err := raveEventRepository.Db.Preload(clause.Associations).First(&event).Error
+	if err != nil {
+		return nil, errors.New("event with given id not found")
+	}
+	return &event, err
 }
 
 func (raveEventRepository *raveEventRepository) FindAllPublishedByPage(page int, size int) ([]*models.Event, error) {
@@ -58,7 +69,7 @@ func (raveEventRepository *raveEventRepository) FindAllPublishedByPage(page int,
 	log.Println("offset: ", offset)
 	var events []*models.Event
 	err := raveEventRepository.Db.Preload(clause.Associations).
-		Where(&models.Event{PublicationState: models.PUBLISHED}).
+		Where(&models.Event{PublicationState: models.PUBLISHED, IsEventDeleted: false}).
 		Offset(offset).Limit(size).Find(&events).Error
 	if err != nil {
 		return nil, err
@@ -68,7 +79,7 @@ func (raveEventRepository *raveEventRepository) FindAllPublishedByPage(page int,
 
 func (raveEventRepository *raveEventRepository) FindByReference(reference string) (*models.Event, error) {
 	event := &models.Event{}
-	err := raveEventRepository.Db.Preload(clause.Associations).Where(&models.Event{Reference: reference}).First(event).Error
+	err := raveEventRepository.Db.Preload(clause.Associations).Where(&models.Event{Reference: reference, IsEventDeleted: false}).First(event).Error
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +103,7 @@ func (raveEventRepository *raveEventRepository) FindAllByOrganizer(organizerId u
 	if err != nil {
 		return nil, err
 	}
-	err = raveEventRepository.Db.Preload(clause.Associations).Where(&models.Event{SeriesID: series.ID}).
+	err = raveEventRepository.Db.Preload(clause.Associations).Where(&models.Event{SeriesID: series.ID, IsEventDeleted: false}).
 		Offset(offset).Limit(size).Find(&events).Error
 	if err != nil {
 		return nil, err

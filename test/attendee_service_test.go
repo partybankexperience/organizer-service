@@ -26,7 +26,8 @@ func TestUpdateAttendee(t *testing.T) {
 	attendeeService := services.NewAttendeeService(attendeeRepository, nil)
 	attendee, _ = attendeeRepository.Save(attendee)
 	updateAttendeeRequest := &dtos.UpdateAttendeeRequest{
-		FullName:    "James Doe",
+		FirstName:   "John",
+		LastName:    "Doe",
 		PhoneNumber: "09087654356",
 	}
 

@@ -1,5 +1,11 @@
 package test
 
+import (
+	"github.com/djfemz/organizer-service/partybank-app/repositories"
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
+
 //
 //import (
 //	"github.com/djfemz/rave/partybank-app/models"
@@ -75,3 +81,11 @@ package test
 //	var id, _ = repositories.GetId(event)
 //	assert.Equal(t, uint64(24), id)
 //}
+
+func TestFindEventById(t *testing.T) {
+	db := repositories.Connect()
+	repo := repositories.NewEventRepository(db)
+	event, err := repo.FindEventById(1)
+	assert.NotNil(t, event)
+	assert.Nil(t, err)
+}
