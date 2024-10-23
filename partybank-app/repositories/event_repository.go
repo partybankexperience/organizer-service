@@ -15,6 +15,7 @@ type EventRepository interface {
 	FindAllPublishedByPage(page int, size int) ([]*models.Event, error)
 	FindByReference(reference string) (*models.Event, error)
 	FindAllByOrganizer(organizerId uint64, pageNumber, pageSize int) ([]*models.Event, error)
+	DeleteEventById(eventId uint64) error
 }
 
 type raveEventRepository struct {
@@ -111,4 +112,14 @@ func (raveEventRepository *raveEventRepository) FindAllByOrganizer(organizerId u
 		return nil, err
 	}
 	return events, nil
+}
+
+func (raveEventRepository *raveEventRepository) DeleteEventById(eventId uint64) error {
+	event := &models.Event{ID: eventId}
+	err := raveEventRepository.Db.Delete(event).Error
+	if err != nil {
+		log.Println("Error: ", err)
+		return err
+	}
+	return nil
 }

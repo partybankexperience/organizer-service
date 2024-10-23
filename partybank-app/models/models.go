@@ -137,10 +137,10 @@ type ActivePeriod struct {
 }
 
 type Event struct {
-	ID       uint64    `id:"id" gorm:"primaryKey" json:"id"`
-	Name     string    `json:"name"`
-	Location *Location `json:"location" gorm:"embedded"`
-	*gorm.Model
+	ID                 uint64    `id:"id" gorm:"primaryKey" json:"id"`
+	Name               string    `json:"name"`
+	Location           *Location `json:"location" gorm:"embedded"`
+	DeletedAt          gorm.DeletedAt
 	EventDate          string `json:"date"`
 	StartTime          string `json:"event_start"`
 	EndTime            string `json:"event_end"`
