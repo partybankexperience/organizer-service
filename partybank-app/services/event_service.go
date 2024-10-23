@@ -260,6 +260,11 @@ func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string,
 		return "", errors.New("failed to find event")
 	}
 	event.IsEventDeleted = true
+	event, err = raveEventService.Save(event)
+	if err != nil {
+		log.Println("Error: ", err)
+		return "", errors.New("failed to delete event")
+	}
 	if event.IsEventDeleted {
 		return "event deleted successfully", nil
 	}
