@@ -137,6 +137,7 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	}
 	_, err = raveEventService.TicketService.AddTickets(id, updateRequest.Tickets)
 	if err != nil {
+		log.Println("Error adding ticket: ", err.Error())
 		return nil, errors.New("failed to update event")
 	}
 	savedEvent, err := raveEventService.Save(foundEvent)
