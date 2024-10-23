@@ -53,12 +53,13 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 
 func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 	tickets := GetTicketsFrom(event)
+	eventTime := buildEventTimeForEventResponse(event)
 	eventResponse := &response.EventResponse{
 		ID:                 event.ID,
 		Message:            "event created successfully",
 		Name:               event.Name,
 		Date:               event.EventDate,
-		Time:               event.StartTime + "-" + event.EndTime,
+		Time:               eventTime,
 		ContactInformation: event.ContactInformation,
 		Description:        event.Description,
 		Status:             event.Status,
@@ -77,6 +78,18 @@ func MapEventToEventResponse(event *models.Event) *response.EventResponse {
 		eventResponse.Location = event.Location
 	}
 	return eventResponse
+}
+
+func buildEventTimeForEventResponse(event *models.Event) string {
+	var eventTime string
+	if event.StartTime == "" && event.EndTime != "" {
+		eventTime = event.EndTime
+	} else if event.StartTime != "" && event.EndTime == "" {
+		eventTime = event.StartTime
+	} else {
+		eventTime = event.StartTime + " - " + event.EndTime
+	}
+	return eventTime
 }
 
 func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
