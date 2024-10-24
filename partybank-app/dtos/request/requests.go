@@ -78,6 +78,7 @@ type UpdateEventRequest struct {
 	OrganizerId        uint64                 `json:"organizer_id" validate:"required"`
 	EventTheme         string                 `json:"event_theme"`
 	ImageUrl           string                 `json:"image_url"`
+	Status             string                 `json:"status"`
 	Latitude           string                 `json:"lat"`
 	Longitude          string                 `json:"lng"`
 	City               string                 `json:"city"`

@@ -39,6 +39,29 @@ func MapEventsToEventResponses(events []*models.Event, series *models.Series) []
 	return responses
 }
 
+func MapUpdateEventRequestToEvent(updateEventRequest *dtos.UpdateEventRequest, event *models.Event) *models.Event {
+	event.Name = updateEventRequest.Name
+	event.Location = &models.Location{
+		Longitude: updateEventRequest.Longitude,
+		Latitude:  updateEventRequest.Latitude,
+		Address:   updateEventRequest.Address,
+		City:      updateEventRequest.City,
+		State:     updateEventRequest.State,
+		Country:   updateEventRequest.Country,
+	}
+	event.EventDate = updateEventRequest.Date
+	event.StartTime = updateEventRequest.StartTime
+	event.EndTime = updateEventRequest.EndTime
+	event.ContactInformation = updateEventRequest.ContactInformation
+	event.Description = updateEventRequest.Description
+	event.Status = updateEventRequest.Status
+	event.EventTheme = updateEventRequest.EventTheme
+	event.AttendeeTerm = updateEventRequest.AttendeeTerm
+	event.Venue = updateEventRequest.Venue
+	event.ImageUrl = updateEventRequest.ImageUrl
+	return event
+}
+
 func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 	log.Println("tickkets: ", event.Tickets)
 	ticketResponses := make([]*response.TicketResponse, 0)
