@@ -1343,7 +1343,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "colour": {
-                    "description": "EventId                      uint64      ` + "`" + `json:\"event_id\"` + "`" + `",
                     "type": "string"
                 },
                 "is_transfer_payment_fees_to_guest": {
@@ -1524,6 +1523,9 @@ const docTemplate = `{
                 "stock": {
                     "type": "string"
                 },
+                "ticket_id": {
+                    "type": "integer"
+                },
                 "ticket_perks": {
                     "type": "array",
                     "items": {
@@ -1600,6 +1602,12 @@ const docTemplate = `{
                 },
                 "organizer_id": {
                     "type": "integer"
+                },
+                "tickets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CreateTicketRequest"
+                    }
                 },
                 "time": {
                     "type": "string"
