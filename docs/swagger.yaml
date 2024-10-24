@@ -95,7 +95,6 @@ definitions:
       capacity:
         type: integer
       colour:
-        description: EventId                      uint64      `json:"event_id"`
         type: string
       is_transfer_payment_fees_to_guest:
         description: 'TODO: Default: false'
@@ -215,6 +214,8 @@ definitions:
         type: integer
       stock:
         type: string
+      ticket_id:
+        type: integer
       ticket_perks:
         items:
           type: string
@@ -263,6 +264,10 @@ definitions:
         type: string
       organizer_id:
         type: integer
+      tickets:
+        items:
+          $ref: '#/definitions/dtos.CreateTicketRequest'
+        type: array
       time:
         type: string
       venue:

@@ -70,6 +70,7 @@ func init() {
 // @name Authorization
 // @externalDocs.description  OpenAPI
 func main() {
+	//partybank-organizer-269c8057a65f.herokuapp.com
 	config.GoogleConfig()
 	router := gin.Default()
 	configureAppComponents()

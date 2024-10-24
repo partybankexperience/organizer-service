@@ -114,6 +114,7 @@ type EventResponse struct {
 }
 
 type TicketResponse struct {
+	Id                           uint64                             `json:"ticket_id"`
 	Type                         string                             `json:"ticket_type,omitempty"`
 	Name                         string                             `json:"name,omitempty"`
 	Capacity                     uint64                             `json:"capacity,omitempty"`

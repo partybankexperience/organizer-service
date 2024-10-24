@@ -94,6 +94,7 @@ func buildEventTimeForEventResponse(event *models.Event) string {
 
 func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 	ticketResponse := &response.TicketResponse{
+		Id:                           ticket.ID,
 		Type:                         ticket.Type,
 		Name:                         ticket.Name,
 		Capacity:                     ticket.Capacity,

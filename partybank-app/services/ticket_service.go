@@ -82,6 +82,7 @@ func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, requ
 	log.Println("new ticket created: ", savedTicket.TicketPerks)
 	//go sendNewTicketMessageFor(event)
 	createTicketResponse.TicketPerks = savedTicket.TicketPerks
+	createTicketResponse.Id = savedTicket.ID
 	if savedTicket.ActivePeriod != nil {
 		createTicketResponse.SalesStartDate = savedTicket.ActivePeriod.StartDate
 		createTicketResponse.SalesStartTime = savedTicket.ActivePeriod.StartTime
@@ -137,6 +138,9 @@ func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pag
 }
 
 func (raveTicketService *raveTicketService) AddTickets(eventId uint64, tickets []*request.CreateTicketRequest) ([]*response.TicketResponse, error) {
+	if len(tickets) < 1 {
+		return nil, nil
+	}
 	res := make([]*response.TicketResponse, 0)
 	for _, ticketRequest := range tickets {
 		ticketResponse, _ := raveTicketService.CreateTicketFor(eventId, ticketRequest)
