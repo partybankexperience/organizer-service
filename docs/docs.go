@@ -1569,14 +1569,26 @@ const docTemplate = `{
         "dtos.UpdateEventRequest": {
             "type": "object",
             "required": [
+                "address",
+                "end_time",
                 "organizer_id",
+                "start_time",
                 "venue"
             ],
             "properties": {
+                "address": {
+                    "type": "string"
+                },
                 "attendee_term": {
                     "type": "string"
                 },
+                "city": {
+                    "type": "string"
+                },
                 "contact_information": {
+                    "type": "string"
+                },
+                "country": {
                     "type": "string"
                 },
                 "date": {
@@ -1585,16 +1597,22 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "end_time": {
+                    "type": "string"
+                },
                 "event_theme": {
                     "type": "string"
                 },
+                "image_url": {
+                    "type": "string"
+                },
+                "lat": {
+                    "type": "string"
+                },
+                "lng": {
+                    "type": "string"
+                },
                 "location": {
-                    "type": "string"
-                },
-                "map_embedded_url": {
-                    "type": "string"
-                },
-                "map_url": {
                     "type": "string"
                 },
                 "name": {
@@ -1602,6 +1620,12 @@ const docTemplate = `{
                 },
                 "organizer_id": {
                     "type": "integer"
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
                 },
                 "tickets": {
                     "type": "array",
@@ -1613,6 +1637,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "venue": {
+                    "type": "string"
+                },
+                "visibility": {
                     "type": "string"
                 }
             }
