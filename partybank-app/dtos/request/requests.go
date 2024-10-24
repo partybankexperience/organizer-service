@@ -94,6 +94,7 @@ type CreateTicketsDto struct {
 }
 
 type CreateTicketRequest struct {
+	ID                           uint64      `json:"ticket_id"`
 	Type                         string      `json:"ticket_type"`
 	Name                         string      `json:"name"`
 	Capacity                     uint64      `json:"capacity"`
