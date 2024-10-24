@@ -44,6 +44,9 @@ func NewTicketService(ticketRepository repositories.TicketRepository, eventServi
 }
 
 func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error) {
+	if request.ID > 0 {
+		return nil, nil
+	}
 	event, err := raveTicketService.GetEventBy(eventId)
 	if err != nil {
 		log.Println("event: ", event)
