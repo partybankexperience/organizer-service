@@ -8,7 +8,6 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
-	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
 	"sort"
 	"strconv"
@@ -126,15 +125,11 @@ func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, 
 }
 
 func (raveEventService *raveEventService) UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error) {
-	updateEventResponse := &response.EventResponse{}
 	foundEvent, err := raveEventService.FindById(id)
 	if err != nil {
 		return nil, err
 	}
-	copyErrors := model.Copy(foundEvent, updateRequest)
-	if len(copyErrors) != 0 {
-		return nil, errors.New("failed to update event")
-	}
+	foundEvent = mappers.MapUpdateEventRequestToEvent(updateRequest, foundEvent)
 	_, err = raveEventService.TicketService.AddTickets(id, updateRequest.Tickets)
 	if err != nil {
 		log.Println("Error adding ticket: ", err.Error())
@@ -144,10 +139,7 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	if err != nil {
 		return nil, err
 	}
-	copyErrors = model.Copy(updateEventResponse, savedEvent)
-	if len(copyErrors) != 0 {
-		return nil, errors.New("failed update event")
-	}
+	updateEventResponse := mappers.MapEventToEventResponse(savedEvent)
 	return updateEventResponse, nil
 }
 
@@ -259,7 +251,12 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 }
 
 func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string, error) {
-	err := raveEventService.EventRepository.DeleteById(eventId)
+	event, err := raveEventService.FindById(eventId)
+	if err != nil {
+		return "", errors.New("failed to find event")
+	}
+	event.PublicationState = "ARCHIVED"
+	err = raveEventService.EventRepository.DeleteById(eventId)
 	if err != nil {
 		return "", errors.New("failed to delete event")
 	}

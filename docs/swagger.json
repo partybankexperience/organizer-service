@@ -1357,6 +1357,9 @@
                 "stock": {
                     "type": "string"
                 },
+                "ticket_id": {
+                    "type": "integer"
+                },
                 "ticket_perks": {
                     "type": "array",
                     "items": {
@@ -1621,6 +1624,9 @@
                     "type": "string"
                 },
                 "state": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "tickets": {
