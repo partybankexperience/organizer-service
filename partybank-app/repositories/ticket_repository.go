@@ -10,6 +10,7 @@ type TicketRepository interface {
 	crudRepository[models.Ticket, uint64]
 	FindAllByEventId(id uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
 	FindTicketByReference(reference string) (*models.Ticket, error)
+	DeleteTicketsFor(eventId uint64) error
 }
 
 type raveTicketRepository struct {
@@ -49,4 +50,9 @@ func (raveTicketRepository *raveTicketRepository) FindTicketByReference(referenc
 	}
 	return ticket, nil
 
+}
+
+func (raveTicketRepository *raveTicketRepository) DeleteTicketsFor(eventId uint64) error {
+	err := raveTicketRepository.Db.Where("event_id=?", eventId).Delete(&models.Ticket{}).Error
+	return err
 }

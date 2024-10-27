@@ -25,7 +25,7 @@ type TicketService interface {
 	AddTickets(eventId uint64, tickets []*request.CreateTicketRequest) ([]*response.TicketResponse, error)
 	GetById(id uint64) (*response.TicketResponse, error)
 	GetTicketById(id uint64) (*models.Ticket, error)
-	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
+	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*response.TicketResponse, error)
 	UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error)
 	UpdateTicket(ticketId uint64, updateTicketRequest *request.UpdateTicketRequest) (*response.TicketResponse, error)
 	EditTicket(ticketId uint64, editTicketRequest *request.EditTicketRequest) (editTicketResponse *response.TicketResponse, err error)
@@ -131,27 +131,31 @@ func (raveTicketService *raveTicketService) UpdateTicketSoldOutBy(reference stri
 	return mappers.MapTicketToTicketResponse(ticket), nil
 }
 
-func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error) {
+func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*response.TicketResponse, error) {
 	tickets, err := raveTicketService.FindAllByEventId(eventId, pageNumber, pageSize)
 	if err != nil {
 		return nil, errors.New(err.Error())
 	}
 
-	return tickets, nil
+	return mappers.MapTicketsToTicketsResponse(tickets), nil
 }
 
 func (raveTicketService *raveTicketService) AddTickets(eventId uint64, tickets []*request.CreateTicketRequest) ([]*response.TicketResponse, error) {
-	if len(tickets) < 1 {
-		return nil, nil
-	}
 	res := make([]*response.TicketResponse, 0)
+	err := raveTicketService.DeleteTicketsFor(eventId)
+	if err != nil {
+		log.Println("error: ticket_service.go: 146 \t\tfailed to remove tickets from event")
+	}
+	if len(tickets) < 1 {
+		return res, nil
+	}
 	for _, ticketRequest := range tickets {
 		ticketResponse, _ := raveTicketService.CreateTicketFor(eventId, ticketRequest)
 		res = append(res, ticketResponse)
 	}
 	event, err := raveTicketService.EventService.GetEventBy(eventId)
 	if err != nil {
-		log.Println("error: ticket_service.go: 146 \t\tfailed to find event")
+		log.Println("error: ticket_service.go: 158 \t\tfailed to find event")
 	}
 	go sendNewTicketMessageFor(event)
 	return res, nil

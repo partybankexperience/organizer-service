@@ -127,6 +127,7 @@ type Ticket struct {
 	MaxSeats                     uint64                      `json:"max_seats"`
 	EventReference               string                      `json:"event_reference"`
 	Reserved                     uint64                      `json:"reserved"`
+	DeletedAt                    gorm.DeletedAt
 }
 
 type ActivePeriod struct {

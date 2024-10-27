@@ -1021,7 +1021,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Ticket"
+                                "$ref": "#/definitions/dtos.TicketResponse"
                             }
                         }
                     },
@@ -1667,23 +1667,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ActivePeriod": {
-            "type": "object",
-            "properties": {
-                "ticket_sale_end_date": {
-                    "type": "string"
-                },
-                "ticket_sale_end_time": {
-                    "type": "string"
-                },
-                "ticket_sale_start_date": {
-                    "type": "string"
-                },
-                "ticket_sale_start_time": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Location": {
             "type": "object",
             "properties": {
@@ -1706,92 +1689,6 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
-        },
-        "models.Ticket": {
-            "type": "object",
-            "properties": {
-                "active_period": {
-                    "$ref": "#/definitions/models.ActivePeriod"
-                },
-                "additional_information_fields": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "available_discounted_tickets": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "category": {
-                    "type": "integer"
-                },
-                "colour": {
-                    "type": "string"
-                },
-                "discount_code": {
-                    "type": "string"
-                },
-                "discount_price": {
-                    "type": "number"
-                },
-                "discount_type": {
-                    "type": "string"
-                },
-                "event_id": {
-                    "type": "integer"
-                },
-                "event_reference": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "is_sold_out_ticket": {
-                    "type": "boolean"
-                },
-                "is_transfer_payment_fees_to_guest": {
-                    "type": "boolean"
-                },
-                "max_seats": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "number_available": {
-                    "type": "integer"
-                },
-                "percentage": {
-                    "type": "number"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "purchase_limit": {
-                    "type": "integer"
-                },
-                "reference": {
-                    "type": "string"
-                },
-                "reserved": {
-                    "type": "integer"
-                },
-                "stock": {
-                    "type": "string"
-                },
-                "ticket_perks": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
         }
     },
     "securityDefinitions": {
@@ -1806,7 +1703,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "partybank-organizer-269c8057a65f.herokuapp.com",
+	Host:             "partybank-organizer-269c8057a65f.herokuapp.",
 	BasePath:         "",
 	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",
