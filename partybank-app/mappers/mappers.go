@@ -30,7 +30,7 @@ func MapEventsToEventResponses(events []*models.Event, series *models.Series) []
 	for _, event := range events {
 		ticketResponses := GetTicketsFrom(event)
 		log.Println("tickets: ", ticketResponses)
-		eventResponse := MapEventToEventResponse(event)
+		eventResponse := MapEventToEventResponse("", event)
 		eventResponse.SeriesName = series.Name
 		eventResponse.Tickets = ticketResponses
 		eventResponse.SeriesLogo = series.Logo
@@ -54,7 +54,6 @@ func MapUpdateEventRequestToEvent(updateEventRequest *dtos.UpdateEventRequest, e
 	event.EndTime = updateEventRequest.EndTime
 	event.ContactInformation = updateEventRequest.ContactInformation
 	event.Description = updateEventRequest.Description
-	event.Status = updateEventRequest.Status
 	event.EventTheme = updateEventRequest.EventTheme
 	event.AttendeeTerm = updateEventRequest.AttendeeTerm
 	event.Venue = updateEventRequest.Venue
@@ -74,12 +73,12 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 	return ticketResponses
 }
 
-func MapEventToEventResponse(event *models.Event) *response.EventResponse {
+func MapEventToEventResponse(message string, event *models.Event) *response.EventResponse {
 	tickets := GetTicketsFrom(event)
 	eventTime := buildEventTimeForEventResponse(event)
 	eventResponse := &response.EventResponse{
 		ID:                 event.ID,
-		Message:            "event created successfully",
+		Message:            message,
 		Name:               event.Name,
 		Date:               event.EventDate,
 		Time:               eventTime,
