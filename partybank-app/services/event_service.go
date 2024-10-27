@@ -86,7 +86,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 			log.Println("error adding tickets to event")
 		}
 	}
-	res := mappers.MapEventToEventResponse(savedEvent)
+	res := mappers.MapEventToEventResponse("event created successfully", savedEvent)
 	res.SeriesName = calendar.Name
 	return res, nil
 }
@@ -115,7 +115,7 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 	if err != nil {
 		return nil, errors.New("failed to find series")
 	}
-	eventResponse := mappers.MapEventToEventResponse(foundEvent)
+	eventResponse := mappers.MapEventToEventResponse("Success", foundEvent)
 	eventResponse.SeriesName = series.Name
 	return eventResponse, nil
 }
@@ -143,7 +143,7 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	if err != nil {
 		return nil, errors.New("failed to update event during update")
 	}
-	updateEventResponse := mappers.MapEventToEventResponse(savedEvent)
+	updateEventResponse := mappers.MapEventToEventResponse("event update successful", savedEvent)
 	return updateEventResponse, nil
 }
 
@@ -159,7 +159,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pag
 		return nil, err
 	}
 	for _, event := range events {
-		eventResponse := mappers.MapEventToEventResponse(event)
+		eventResponse := mappers.MapEventToEventResponse("success", event)
 		eventsResponses = append(eventsResponses, eventResponse)
 	}
 	return eventsResponses, nil
@@ -193,7 +193,7 @@ func (raveEventService *raveEventService) GetEventByReference(reference string) 
 	if err != nil {
 		return nil, errors.New("failed to find series")
 	}
-	eventResponse := mappers.MapEventToEventResponse(event)
+	eventResponse := mappers.MapEventToEventResponse("Success", event)
 	eventResponse.SeriesName = series.Name
 	return eventResponse, nil
 }
@@ -216,7 +216,7 @@ func (raveEventService *raveEventService) PublishEvent(eventId uint64) (*respons
 	if err != nil {
 		return nil, errors.New("failed to find series")
 	}
-	eventResponse := mappers.MapEventToEventResponse(event)
+	eventResponse := mappers.MapEventToEventResponse("Success", event)
 	eventResponse.SeriesName = series.Name
 	return eventResponse, nil
 }
@@ -240,7 +240,7 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 	}
 	eventsResponses := make([]*response.EventResponse, 0)
 	for _, event := range events {
-		eventRes := mappers.MapEventToEventResponse(event)
+		eventRes := mappers.MapEventToEventResponse("Success", event)
 		series, err := raveEventService.SeriesService.GetById(event.SeriesID)
 		if err != nil {
 			return nil, errors.New("series not found")
