@@ -1630,9 +1630,6 @@ const docTemplate = `{
                 "state": {
                     "type": "string"
                 },
-                "status": {
-                    "type": "string"
-                },
                 "tickets": {
                     "type": "array",
                     "items": {
