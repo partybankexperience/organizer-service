@@ -280,8 +280,6 @@ definitions:
         type: string
       state:
         type: string
-      status:
-        type: string
       tickets:
         items:
           $ref: '#/definitions/dtos.CreateTicketRequest'
