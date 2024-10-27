@@ -66,7 +66,7 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 // @Param        page   query   int  true  "page"
 // @Param        size   query   int  true  "size"
 // @Produce      json
-// @Success      200  {array}  models.Ticket
+// @Success      200  {array}  dtos.TicketResponse
 // @Failure      400  {object}  dtos.RaveResponse
 // @Security Bearer
 // @Router       /api/v1/ticket/{eventId} [get]

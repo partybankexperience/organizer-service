@@ -164,6 +164,15 @@ func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.Attendee
 	}
 }
 
+func MapTicketsToTicketsResponse(tickets []*models.Ticket) []*response.TicketResponse {
+	ticketsResponse := make([]*response.TicketResponse, 0)
+	for _, ticket := range tickets {
+		ticketResponse := MapTicketToTicketResponse(ticket)
+		ticketsResponse = append(ticketsResponse, ticketResponse)
+	}
+	return ticketsResponse
+}
+
 func MapEditTicketRequestToTicket(editTicketRequest *dtos.EditTicketRequest, ticket *models.Ticket) *models.Ticket {
 	ticket.Colour = editTicketRequest.Colour
 	ticket.Name = editTicketRequest.Name

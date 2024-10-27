@@ -130,7 +130,6 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 		return nil, err
 	}
 	foundEvent = mappers.MapUpdateEventRequestToEvent(updateRequest, foundEvent)
-	foundEvent.Tickets = make([]*models.Ticket, 0)
 	savedEvent, err := raveEventService.Save(foundEvent)
 	if err != nil {
 		return nil, errors.New("failed to save event")
