@@ -124,7 +124,7 @@ func (raveSeriesService *raveSeriesService) GetSeriesFor(organizerId uint64, pag
 		return nil, errors.New("error finding requested resource")
 	}
 
-	seriesResponses := mappers.MapSeriesCollectionToSeriesResponseCollection(userSeries, nil)
+	seriesResponses := mappers.MapSeriesCollectionToSeriesResponseCollection(userSeries)
 	return seriesResponses, nil
 }
 
@@ -144,7 +144,7 @@ func (raveSeriesService *raveSeriesService) UpdateSeries(seriesId uint64, series
 	foundSeries.Name = series.Name
 	foundSeries.ImageUrl = series.ImageUrl
 	foundSeries.Logo = series.SeriesLogo
-	foundSeries.Description = series.SeriesLogo
+	foundSeries.Description = series.Description
 	savedSeries, err := raveSeriesService.Save(foundSeries)
 	if err != nil {
 		return nil, errors.New("failed to update series")
@@ -166,7 +166,6 @@ func (raveSeriesService *raveSeriesService) SetEventService(eventService EventSe
 }
 
 func (raveSeriesService *raveSeriesService) AddToSeries(seriesId, eventId uint64) (*response.SeriesResponse, error) {
-
 	series, err := raveSeriesService.GetById(seriesId)
 	if err != nil {
 		return nil, errors.New("failed to find series")
@@ -192,6 +191,5 @@ func (raveSeriesService *raveSeriesService) AddToSeries(seriesId, eventId uint64
 	if err != nil {
 		return nil, errors.New("failed to add event to series")
 	}
-
 	return mapSeriesToSeriesResponse(series), nil
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 )
 
-func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, organizer *models.Organizer) []*response.SeriesResponse {
+func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series) []*response.SeriesResponse {
 	seriesResponses := make([]*response.SeriesResponse, 0)
 	for _, userSeries := range series {
 		seriesResponse := &response.SeriesResponse{
