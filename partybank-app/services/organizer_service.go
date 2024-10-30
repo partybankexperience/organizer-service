@@ -46,7 +46,7 @@ func NewOrganizerService(organizerRepository repositories.OrganizerRepository,
 func (organizerService *appOrganizerService) Create(createOrganizerRequest *request.CreateUserRequest) (*response.CreateOrganizerResponse, error) {
 	organizer := mapCreateOrganizerRequestTo(createOrganizerRequest)
 	password := otp.GenerateOtp()
-	mailService := NewMailService()
+	mailService := NewGoMailService()
 
 	organizer.Otp = password
 	savedOrganizer, err := organizerService.repository.Save(organizer)
