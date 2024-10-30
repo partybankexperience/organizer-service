@@ -7,6 +7,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/security/otp"
+	"strings"
 
 	"log"
 )
@@ -154,7 +155,7 @@ func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *m
 	log.Println("organizerRequest", organizerRequest)
 	return &models.Organizer{
 		User: &models.User{
-			Username: organizerRequest.Username,
+			Username: strings.ToLower(organizerRequest.Username),
 			Role:     models.ORGANIZER,
 		},
 	}
