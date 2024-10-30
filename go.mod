@@ -18,6 +18,7 @@ require (
 	github.com/swaggo/swag v1.16.3
 	golang.org/x/oauth2 v0.23.0
 	golang.org/x/text v0.19.0
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/jeevatkm/go-model.v1 v1.1.0
 	gorm.io/driver/postgres v1.5.6
 	gorm.io/gorm v1.25.12
@@ -63,5 +64,6 @@ require (
 	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
