@@ -46,7 +46,7 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 		if err != nil {
 			return nil, err
 		}
-		mailService := services.NewMailService()
+		mailService := services.NewGoMailService()
 		_, err = mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content.String())))
 		if err != nil {
 			return nil, err
