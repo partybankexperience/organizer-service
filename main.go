@@ -72,6 +72,7 @@ func init() {
 func main() {
 	//partybank-organizer-269c8057a65f.herokuapp.com
 	config.GoogleConfig()
+
 	router := gin.Default()
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
