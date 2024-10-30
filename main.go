@@ -104,7 +104,7 @@ func configureControllers() {
 }
 
 func configureServiceComponents() {
-	mailService := services.NewMailService()
+	mailService := services.NewGoMailService()
 	seriesService = services.NewSeriesService(seriesRepository)
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService, ticketService, attendeeService)
