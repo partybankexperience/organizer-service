@@ -101,13 +101,13 @@ func (raveEventRepository *raveEventRepository) FindAllByOrganizer(organizerId u
 	offset := (page - 1) * size
 	log.Println("offset: ", offset)
 	var events []*models.Event
-	series := models.Series{}
-	err := raveEventRepository.Db.Preload(clause.Associations).Where(&models.Series{OrganizerID: organizerId}).First(&series).Error
-	if err != nil {
-		return nil, err
-	}
-	err = raveEventRepository.Db.Preload(clause.Associations).Where(&models.Event{SeriesID: series.ID, IsEventDeleted: false}).
-		Offset(offset).Limit(size).Find(&events).Error
+
+	err := raveEventRepository.Db.Preload(clause.Associations).
+		Joins("JOIN series ON series.id = events.series_id").
+		Where("series.organizer_id = ?", organizerId).
+		Offset(offset).
+		Limit(size).
+		Find(&events).Error
 	if err != nil {
 		return nil, err
 	}
