@@ -24,15 +24,7 @@ func NewTicketRepository(db *gorm.DB) TicketRepository {
 }
 
 func (raveTicketRepository *raveTicketRepository) FindAllByEventId(id uint64, pageNumber, pageSize int) ([]*models.Ticket, error) {
-	if pageSize < 1 {
-		pageSize = 1
-	}
-	if pageNumber < 1 {
-		pageNumber = 1
-	} else if pageSize > 100 {
-		pageSize = 100
-	}
-	offset := (pageNumber - 1) * pageSize
+	offset, pageSize := getPageInfo(pageNumber, pageSize)
 	var tickets []*models.Ticket
 
 	err := raveTicketRepository.Db.Where(&models.Ticket{EventID: id}).Offset(offset).Limit(pageSize).Find(&tickets).Error
