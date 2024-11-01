@@ -145,3 +145,16 @@ func getPrimaryKey(obj reflect.Value, index int) (any, error, bool) {
 	}
 	return nil, nil, false
 }
+
+func getPageInfo(pageNumber, pageSize int) (page, size int) {
+	if pageSize < 1 {
+		pageSize = 1
+	}
+	if pageNumber < 1 {
+		pageNumber = 1
+	} else if pageSize > 100 {
+		pageSize = 100
+	}
+	offset := (pageNumber - 1) * pageSize
+	return offset, pageSize
+}

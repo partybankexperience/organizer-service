@@ -34,15 +34,7 @@ func (raveCalendarRepository *raveCalendarRepository) FindPublicSeriesFor(organi
 }
 
 func (raveCalendarRepository *raveCalendarRepository) FindAllSeriesFor(organizer uint64, pageNumber int, pageSize int) ([]*models.Series, error) {
-	if pageSize < 1 {
-		pageSize = 1
-	}
-	if pageNumber < 1 {
-		pageNumber = 1
-	} else if pageSize > 100 {
-		pageSize = 100
-	}
-	offset := (pageNumber - 1) * pageSize
+	offset, pageSize := getPageInfo(pageNumber, pageSize)
 	userSeries := make([]*models.Series, 0)
 	err := raveCalendarRepository.Db.Preload(clause.Associations).Where(&models.Series{OrganizerID: organizer}).Offset(offset).Limit(pageSize).Find(&userSeries).Error
 	if err != nil {
