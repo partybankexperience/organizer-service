@@ -31,15 +31,7 @@ func NewEventRepository(db *gorm.DB) EventRepository {
 }
 
 func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uint64, pageNumber, pageSize int) ([]*models.Event, error) {
-	if pageSize < 1 {
-		pageSize = 1
-	}
-	if pageNumber < 1 {
-		pageNumber = 1
-	} else if pageSize > 100 {
-		pageSize = 100
-	}
-	offset := (pageNumber - 1) * pageSize
+	offset, pageSize := getPageInfo(pageNumber, pageSize)
 	var events []*models.Event
 	err := raveEventRepository.Db.Where(&models.Event{SeriesID: calendarId, IsEventDeleted: false}).Offset(offset).Limit(pageSize).Find(&events).Error
 	if err != nil {
@@ -90,18 +82,8 @@ func (raveEventRepository *raveEventRepository) FindByReference(reference string
 }
 
 func (raveEventRepository *raveEventRepository) FindAllByOrganizer(organizerId uint64, page, size int) ([]*models.Event, error) {
-	if size < 1 {
-		size = 1
-	}
-	if page < 1 {
-		page = 1
-	} else if size > 100 {
-		size = 100
-	}
-	offset := (page - 1) * size
-	log.Println("offset: ", offset)
+	offset, size := getPageInfo(page, size)
 	var events []*models.Event
-
 	err := raveEventRepository.Db.Preload(clause.Associations).
 		Joins("JOIN series ON series.id = events.series_id").
 		Where("series.organizer_id = ?", organizerId).
