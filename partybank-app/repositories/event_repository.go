@@ -43,7 +43,7 @@ func (raveEventRepository *raveEventRepository) FindAllByCalendar(calendarId uin
 func (raveEventRepository *raveEventRepository) FindEventById(id uint64) (*models.Event, error) {
 	event := models.Event{}
 	err := raveEventRepository.Db.Preload(clause.Associations).
-		Where("id=? AND is_event_deleted=?", id, false).First(&event).Error
+		Where(&models.Event{ID: id}).First(&event).Error
 	if err != nil {
 		log.Println("error: ", err.Error())
 		return nil, errors.New("event with given id not found")
