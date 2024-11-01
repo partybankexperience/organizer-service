@@ -52,16 +52,7 @@ func (raveEventRepository *raveEventRepository) FindEventById(id uint64) (*model
 }
 
 func (raveEventRepository *raveEventRepository) FindAllPublishedByPage(page int, size int) ([]*models.Event, error) {
-	if size < 1 {
-		size = 1
-	}
-	if page < 1 {
-		page = 1
-	} else if size > 100 {
-		size = 100
-	}
-	offset := (page - 1) * size
-	log.Println("offset: ", offset)
+	offset, size := getPageInfo(page, size)
 	var events []*models.Event
 	err := raveEventRepository.Db.Preload(clause.Associations).
 		Where(&models.Event{PublicationState: models.PUBLISHED, IsEventDeleted: false}).
