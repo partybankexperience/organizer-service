@@ -12,6 +12,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"html/template"
 	"log"
+	"strings"
 )
 
 type AuthService struct {
@@ -32,10 +33,11 @@ func NewAuthService(organizerService services.OrganizerService,
 
 func (authenticationService *AuthService) Authenticate(authRequest *request.AuthRequest) (*response.LoginResponse, error) {
 	organizerService := authenticationService.organizerService
-	org, err := organizerService.GetByUsername(authRequest.Username)
+	org, err := organizerService.GetByUsername(strings.ToLower(authRequest.Username))
 	if err != nil {
 		res, err := addUser(authRequest, err, organizerService, org)
-		return res, err
+		log.Println("Error Authenticating user: ", err)
+		return res, errors.New("user authentication failed")
 	} else {
 		password := otp.GenerateOtp()
 		_, err = organizerService.UpdateOtpFor(org.ID, password)
