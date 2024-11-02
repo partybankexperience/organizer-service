@@ -1099,12 +1099,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.RaveResponse"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
                     }
                 }
             }
