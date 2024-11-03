@@ -114,15 +114,19 @@ func (organizerService *appOrganizerService) GetById(id uint64) (*models.Organiz
 func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *request.AddEventStaffRequest) (*response.RaveResponse[string], error) {
 	res, err := organizerService.eventStaffService.Create(&request.CreateEventStaffRequest{StaffEmails: addStaffRequest.StaffEmails, EventId: addStaffRequest.EventId})
 	if err != nil {
-		return nil, err
+		log.Println("Error creating event staff")
+		return nil, errors.New("failed to add event staff")
 	}
 	return res, nil
 }
 
 func (organizerService *appOrganizerService) GetByOtp(otp string) (*models.Organizer, error) {
 	organizerRepository := organizerService.repository
-	log.Println("repo:", organizerRepository)
-	return organizerRepository.FindByOtp(otp)
+	org, err := organizerRepository.FindByOtp(otp)
+	if org.ID < 1 || err != nil {
+		return nil, errors.New("failed to find user")
+	}
+	return org, nil
 }
 
 func (organizerService *appOrganizerService) IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.RaveResponse[string], error) {

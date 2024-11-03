@@ -62,7 +62,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 	org, err := organizerService.GetByOtp(otp)
 	if err != nil {
 		log.Println("Error: ", err)
-		return nil, errors.New("failed to find user")
+		return nil, errors.New("failed to validate otp")
 	}
 	orgResponse := mapOrgToOrgResponse(org)
 	log.Println("orgResponse: ", orgResponse)
