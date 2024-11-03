@@ -64,7 +64,7 @@ func (raveSeriesService *raveSeriesService) GetById(id uint64) (*models.Series, 
 func (raveSeriesService *raveSeriesService) GetCalendar(id uint64) (*response.SeriesResponse, error) {
 	calendar, err := raveSeriesService.GetById(id)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("failed to find user")
 	}
 	resp := mapSeriesToSeriesResponse(calendar)
 	return resp, nil
