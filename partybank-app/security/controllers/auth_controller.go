@@ -54,7 +54,6 @@ func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 // @Param        code   query   int  true  "otp code"
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
-// @Failure      500  {object}  dtos.RaveResponse
 // @Router       /auth/otp/validate [get]
 func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
 	code := ctx.Query("code")

@@ -64,7 +64,6 @@ func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 // @Param        id   path   int  true  "series id"
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
-// @Failure      500  {object}  dtos.RaveResponse
 // @Security Bearer
 // @Router       /api/v1/series/{id} [get]
 func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
