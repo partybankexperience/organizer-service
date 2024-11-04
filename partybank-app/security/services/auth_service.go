@@ -42,16 +42,16 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 		password := otp.GenerateOtp()
 		_, err = organizerService.UpdateOtpFor(org.ID, password)
 		if err != nil {
-			return nil, err
+			return nil, errors.New("error sending otp")
 		}
 		content, err := getMailTemplate(password.Code)
 		if err != nil {
-			return nil, err
+			return nil, errors.New("error sending otp to user")
 		}
 		mailService := services.NewGoMailService()
 		_, err = mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content.String())))
 		if err != nil {
-			return nil, err
+			return nil, errors.New("error sending otp to user")
 		}
 		return createAuthResponse(org), nil
 	}
@@ -119,6 +119,7 @@ func addUser(authRequest *request.AuthRequest, err error, organizerService servi
 	organizer, err := organizerService.Create(&authRequest.CreateUserRequest)
 	if err != nil {
 		log.Println("Error: ", err)
+		return nil, errors.New("failed to add user")
 	}
 	org, err = organizerService.GetByUsername(organizer.Username)
 	if err != nil {
