@@ -1,10 +1,17 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/base64"
+	"encoding/json"
+	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/google/uuid"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"log"
+	"net/http"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -31,6 +38,69 @@ func ConvertQueryStringToInt(query string) (int, error) {
 
 func isDateValid(date string) bool {
 	return false
+}
+
+func SendNewTicketMessageFor(event *models.Event) {
+	ticketMessage := buildTicketMessage(event)
+	body, err := json.Marshal(ticketMessage)
+	if err != nil {
+		log.Println("Error: ", err)
+		return
+	}
+	log.Println("request body: ", string(body))
+	req, err := http.NewRequest(http.MethodPost, os.Getenv("TICKET_SERVICE_URL"), bytes.NewReader(body))
+	req.Header.Add("Content-Type", "application/json")
+	log.Println("request data: ", req.Body)
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		log.Println("Error: ", err)
+	}
+	log.Println("response: ", *res)
+}
+
+func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
+	ticketTypes := extractTicketTypesFrom(event.Tickets)
+	var timeFrame = event.StartTime + " to " + event.EndTime
+
+	return &request.NewTicketMessage{
+		Types:        ticketTypes,
+		Name:         event.Name,
+		Reference:    event.Reference,
+		Venue:        event.Venue,
+		AttendeeTerm: event.AttendeeTerm,
+		Date:         event.EventDate,
+		TimeFrame:    timeFrame,
+		CreatedBy:    event.CreatedBy,
+	}
+}
+
+func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
+	ticketTypes := make([]*request.TicketType, 0)
+	for _, ticket := range tickets {
+		ticketType := &request.TicketType{
+			Reference:     ticket.Reference,
+			Name:          ticket.Name,
+			Price:         strconv.FormatFloat(ticket.Price, 'f', -1, 64),
+			Color:         ticket.Colour,
+			Category:      strconv.FormatUint(ticket.Category, 10),
+			Stock:         ToTitleCase(ToTitleCase(ticket.Stock)),
+			Capacity:      int(ticket.Capacity),
+			Perks:         strings.Join(ticket.TicketPerks, ","),
+			Type:          ToTitleCase(ticket.Type),
+			PurchaseLimit: int(ticket.PurchaseLimit),
+		}
+		if ticket.ActivePeriod != nil {
+			ticketType.SalesEndDate = ticket.ActivePeriod.EndDate
+			ticketType.SalesEndTime = ticket.ActivePeriod.EndTime
+		}
+		ticketTypes = append(ticketTypes, ticketType)
+	}
+	return ticketTypes
+}
+
+func ToTitleCase(text string) string {
+	return cases.Title(language.English).String(text)
 }
 
 func GenerateEventReference() string {

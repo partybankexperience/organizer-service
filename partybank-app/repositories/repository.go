@@ -26,6 +26,7 @@ type crudRepository[T, U any] interface {
 	FindAll() ([]*T, error)
 	FindAllBy(pageable Pageable) ([]*T, error)
 	DeleteById(id U) error
+	SaveAll(ticket []*T) error
 }
 
 type repositoryImpl[T, U any] struct {
@@ -53,6 +54,13 @@ func (r *repositoryImpl[T, U]) FindById(id U) (*T, error) {
 		return nil, err
 	}
 	return t, nil
+}
+
+func (r *repositoryImpl[T, U]) SaveAll(tickets []*T) error {
+	if err := r.Db.Save(tickets).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *repositoryImpl[T, U]) FindAll() ([]*T, error) {

@@ -1380,6 +1380,57 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.EditTicketRequest": {
+            "type": "object",
+            "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
+                "colour": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_transfer_payment_fees_to_guest": {
+                    "description": "TODO: Default: false",
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "purchase_limit": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "string"
+                },
+                "ticket_perks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ticket_sale_end_date": {
+                    "type": "string"
+                },
+                "ticket_sale_start_date": {
+                    "type": "string"
+                },
+                "ticket_sale_start_time": {
+                    "type": "string"
+                },
+                "ticket_sales_end_time": {
+                    "type": "string"
+                },
+                "ticket_type": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.EventResponse": {
             "type": "object",
             "properties": {
@@ -1615,7 +1666,7 @@ const docTemplate = `{
                 "tickets": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.CreateTicketRequest"
+                        "$ref": "#/definitions/dtos.EditTicketRequest"
                     }
                 },
                 "time": {
