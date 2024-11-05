@@ -39,7 +39,8 @@ type raveEventService struct {
 func NewEventService(eventRepository repositories.EventRepository,
 	organizerService OrganizerService,
 	seriesService SeriesService,
-	ticketService TicketService) EventService {
+	ticketService TicketService,
+) EventService {
 	return &raveEventService{
 		eventRepository,
 		organizerService,
@@ -134,7 +135,7 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	if err != nil {
 		return nil, errors.New("failed to save event")
 	}
-	_, err = raveEventService.TicketService.AddTickets(id, updateRequest.Tickets)
+	_, err = raveEventService.TicketService.EditTickets(updateRequest.Tickets)
 	if err != nil {
 		log.Println("Error adding ticket: ", err.Error())
 		return nil, errors.New("failed to update event")
@@ -143,6 +144,7 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	if err != nil {
 		return nil, errors.New("failed to update event during update")
 	}
+	go utils.SendNewTicketMessageFor(savedEvent)
 	updateEventResponse := mappers.MapEventToEventResponse("event update successful", savedEvent)
 	return updateEventResponse, nil
 }
