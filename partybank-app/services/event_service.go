@@ -135,14 +135,14 @@ func (raveEventService *raveEventService) UpdateEventInformation(id uint64, upda
 	if err != nil {
 		return nil, errors.New("failed to save event")
 	}
-	_, err = raveEventService.TicketService.EditTickets(updateRequest.Tickets)
+	_, err = raveEventService.TicketService.EditTickets(id, updateRequest.Tickets)
 	if err != nil {
 		log.Println("Error adding ticket: ", err.Error())
 		return nil, errors.New("failed to update event")
 	}
 	savedEvent, err = raveEventService.Save(savedEvent)
 	if err != nil {
-		return nil, errors.New("failed to update event during update")
+		return nil, errors.New("failed to update event during event update")
 	}
 	go utils.SendNewTicketMessageFor(savedEvent)
 	updateEventResponse := mappers.MapEventToEventResponse("event update successful", savedEvent)

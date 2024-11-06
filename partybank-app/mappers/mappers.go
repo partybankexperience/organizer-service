@@ -172,6 +172,24 @@ func MapTicketsToTicketsResponse(tickets []*models.Ticket) []*response.TicketRes
 	return ticketsResponse
 }
 
+func MapEditTicketToCreateTicket(editTicketRequest *dtos.EditTicketRequest) *dtos.CreateTicketRequest {
+	return &dtos.CreateTicketRequest{
+		Type:                         editTicketRequest.Type,
+		Name:                         editTicketRequest.Name,
+		Capacity:                     editTicketRequest.Capacity,
+		Stock:                        editTicketRequest.Stock,
+		Price:                        editTicketRequest.Price,
+		TicketPerks:                  editTicketRequest.TicketPerks,
+		PurchaseLimit:                editTicketRequest.PurchaseLimit,
+		IsTransferPaymentFeesToGuest: editTicketRequest.IsTransferPaymentFeesToGuest,
+		Colour:                       editTicketRequest.Colour,
+		SaleEndDate:                  editTicketRequest.SaleEndDate,
+		SalesStartDate:               editTicketRequest.SalesStartDate,
+		SalesStartTime:               editTicketRequest.SalesStartTime,
+		SalesEndTime:                 editTicketRequest.SalesEndTime,
+	}
+}
+
 func MapEditTicketRequestToTicket(editTicketRequest *dtos.EditTicketRequest, ticket *models.Ticket) *models.Ticket {
 	ticket.Colour = editTicketRequest.Colour
 	ticket.Name = editTicketRequest.Name
