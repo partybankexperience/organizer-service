@@ -21,7 +21,7 @@ type TicketService interface {
 	UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error)
 	UpdateTicket(ticketId uint64, updateTicketRequest *request.UpdateTicketRequest) (*response.TicketResponse, error)
 	EditTicket(ticketId uint64, editTicketRequest *request.EditTicketRequest) (editTicketResponse *response.TicketResponse, err error)
-	EditTickets(editTicketRequests []*request.EditTicketRequest) (editTicketResponses []*response.TicketResponse, err error)
+	EditTickets(eventId uint64, editTicketRequests []*request.EditTicketRequest) (editTicketResponses []*response.TicketResponse, err error)
 }
 
 type raveTicketService struct {
@@ -198,11 +198,22 @@ func (raveTicketService *raveTicketService) EditTicket(ticketId uint64, editTick
 	return ticketResponse, nil
 }
 
-func (raveTicketService *raveTicketService) EditTickets(editTicketRequests []*request.EditTicketRequest) (editTicketResponses []*response.TicketResponse, err error) {
+func (raveTicketService *raveTicketService) EditTickets(eventId uint64, editTicketRequests []*request.EditTicketRequest) (editTicketResponses []*response.TicketResponse, err error) {
 	tickets := make([]*models.Ticket, 0)
+	newlyCreatedTickets := make([]*response.TicketResponse, 0)
 	for _, ticketRequest := range editTicketRequests {
+		if ticketRequest.ID == 0 {
+			createTicketRequest := mappers.MapEditTicketToCreateTicket(ticketRequest)
+			res, err := raveTicketService.CreateTicketFor(eventId, createTicketRequest)
+			if err != nil {
+				return nil, errors.New("failed to add new ticket")
+			}
+			newlyCreatedTickets = append(newlyCreatedTickets, res)
+			continue
+		}
 		ticket, err := raveTicketService.GetTicketById(ticketRequest.ID)
 		if err != nil {
+			log.Println("ERROR: ", err)
 			return nil, errors.New("failed to find ticket")
 		}
 		ticket = mappers.MapEditTicketRequestToTicket(ticketRequest, ticket)
@@ -213,5 +224,7 @@ func (raveTicketService *raveTicketService) EditTickets(editTicketRequests []*re
 		log.Println("Error saving ticket in edit: ", err)
 		return nil, errors.New("failed to edit ticket")
 	}
-	return mappers.MapTicketsToTicketsResponse(tickets), nil
+	ticks := mappers.MapTicketsToTicketsResponse(tickets)
+	ticks = append(ticks, newlyCreatedTickets...)
+	return ticks, nil
 }
