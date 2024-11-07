@@ -50,7 +50,7 @@ func TestDeleteAllNotIn(t *testing.T) {
 	ticketCountBeforeDelete := len(tickets)
 	assert.Nil(t, err)
 	tickets = tickets[1:]
-	err = ticketRepository.DeleteAllNotIn(tickets)
+	err = ticketRepository.DeleteAllNotIn(tickets[0].EventID, tickets)
 	//fmt.Println("Error: ", err.Error())
 	assert.Nil(t, err)
 	tickets, err = ticketRepository.FindAllByEventId(eventId, 1, 30)

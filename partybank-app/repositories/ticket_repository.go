@@ -56,7 +56,7 @@ func (raveTicketRepository *raveTicketRepository) DeleteAllNotIn(eventId uint64,
 		idsToKeep = append(idsToKeep, ticket.ID)
 	}
 	db := raveTicketRepository.Db
-	err := db.Where("id NOT IN ?", idsToKeep).Delete(&models.Ticket{EventID: eventId}).Error
+	err := db.Where("event_id = ?", eventId).Where("id NOT IN ?", idsToKeep).Delete(&models.Ticket{}).Error
 	if err != nil {
 		return err
 	}
