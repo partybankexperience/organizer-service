@@ -12,7 +12,7 @@ type TicketRepository interface {
 	FindTicketByReference(reference string) (*models.Ticket, error)
 	FindAllTicketsByEventId(eventId uint64) ([]*models.Ticket, error)
 	DeleteTicketsFor(eventId uint64) error
-	DeleteAllNotIn(tickets []*models.Ticket) error
+	DeleteAllNotIn(eventId uint64, tickets []*models.Ticket) error
 }
 
 type raveTicketRepository struct {
@@ -50,13 +50,13 @@ func (raveTicketRepository *raveTicketRepository) FindAllTicketsByEventId(eventI
 	return nil, nil
 }
 
-func (raveTicketRepository *raveTicketRepository) DeleteAllNotIn(tickets []*models.Ticket) error {
+func (raveTicketRepository *raveTicketRepository) DeleteAllNotIn(eventId uint64, tickets []*models.Ticket) error {
 	idsToKeep := make([]uint64, 0)
 	for _, ticket := range tickets {
 		idsToKeep = append(idsToKeep, ticket.ID)
 	}
 	db := raveTicketRepository.Db
-	err := db.Where("id NOT IN ?", idsToKeep).Delete(&models.Ticket{}).Error
+	err := db.Where("id NOT IN ?", idsToKeep).Delete(&models.Ticket{EventID: eventId}).Error
 	if err != nil {
 		return err
 	}

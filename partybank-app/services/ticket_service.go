@@ -208,7 +208,7 @@ func (raveTicketService *raveTicketService) EditTickets(eventId uint64, editTick
 		ticket = mappers.MapEditTicketRequestToTicket(ticketRequest, ticket)
 		tickets = append(tickets, ticket)
 	}
-	err = raveTicketService.DeleteAllNotIn(tickets)
+	err = raveTicketService.DeleteAllNotIn(eventId, tickets)
 	if err != nil {
 		log.Println("Error removing tickets in edit: ", err)
 		return nil, errors.New("failed to edit ticket")
