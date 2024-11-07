@@ -63,6 +63,8 @@ func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, requ
 		StartTime: request.SalesStartTime,
 		EndTime:   request.SalesEndTime,
 	}
+	ticket.Category = request.Category
+	ticket.GroupTicketCapacity = request.GroupTicketCapacity
 	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
 		log.Println("error: ticket saving failed", err)
@@ -158,6 +160,7 @@ func (raveTicketService *raveTicketService) UpdateTicket(ticketId uint64, update
 	foundTicket.Stock = updateTicketRequest.Stock
 	foundTicket.IsTransferPaymentFeesToGuest = updateTicketRequest.IsTransferPaymentFeesToGuest
 	foundTicket.Category = updateTicketRequest.Category
+	foundTicket.GroupTicketCapacity = updateTicketRequest.GroupTicketCapacity
 	if foundTicket.ActivePeriod != nil {
 		foundTicket.ActivePeriod.StartTime = updateTicketRequest.SalesStartTime
 		foundTicket.ActivePeriod.EndTime = updateTicketRequest.SalesEndTime

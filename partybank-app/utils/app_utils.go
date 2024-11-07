@@ -79,16 +79,17 @@ func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
 	ticketTypes := make([]*request.TicketType, 0)
 	for _, ticket := range tickets {
 		ticketType := &request.TicketType{
-			Reference:     ticket.Reference,
-			Name:          ticket.Name,
-			Price:         strconv.FormatFloat(ticket.Price, 'f', -1, 64),
-			Color:         ticket.Colour,
-			Category:      strconv.FormatUint(ticket.Category, 10),
-			Stock:         ToTitleCase(ToTitleCase(ticket.Stock)),
-			Capacity:      int(ticket.Capacity),
-			Perks:         strings.Join(ticket.TicketPerks, ","),
-			Type:          ToTitleCase(ticket.Type),
-			PurchaseLimit: int(ticket.PurchaseLimit),
+			Reference:           ticket.Reference,
+			Name:                ticket.Name,
+			Price:               strconv.FormatFloat(ticket.Price, 'f', -1, 64),
+			Color:               ticket.Colour,
+			Category:            strings.ToLower(ticket.Category),
+			GroupTicketCapacity: ticket.GroupTicketCapacity,
+			Stock:               ToTitleCase(ToTitleCase(ticket.Stock)),
+			Capacity:            int(ticket.Capacity),
+			Perks:               strings.Join(ticket.TicketPerks, ","),
+			Type:                ToTitleCase(ticket.Type),
+			PurchaseLimit:       int(ticket.PurchaseLimit),
 		}
 		if ticket.ActivePeriod != nil {
 			ticketType.SalesEndDate = ticket.ActivePeriod.EndDate

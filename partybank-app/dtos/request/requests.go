@@ -98,6 +98,7 @@ type CreateTicketRequest struct {
 	Type                         string      `json:"ticket_type"`
 	Name                         string      `json:"name"`
 	Capacity                     uint64      `json:"capacity"`
+	Category                     string      `json:"category"`
 	Stock                        string      `json:"stock"`
 	Price                        float64     `json:"price"`
 	PurchaseLimit                uint64      `json:"purchase_limit"`
@@ -110,6 +111,7 @@ type CreateTicketRequest struct {
 	PriceChangeTime              string      `json:"-"`
 	SalesStartDate               string      `json:"ticket_sale_start_date"`
 	SalesStartTime               string      `json:"ticket_sale_start_time"`
+	GroupTicketCapacity          uint64      `json:"group_ticket_capacity"`
 }
 
 type EditTicketRequest struct {
@@ -117,6 +119,8 @@ type EditTicketRequest struct {
 	Type                         string      `json:"ticket_type"`
 	Name                         string      `json:"name"`
 	Capacity                     uint64      `json:"capacity"`
+	Category                     string      `json:"category"`
+	GroupTicketCapacity          uint64      `json:"group_ticket_capacity"`
 	Stock                        string      `json:"stock"`
 	Price                        float64     `json:"price"`
 	PurchaseLimit                uint64      `json:"purchase_limit"`
@@ -198,20 +202,21 @@ type Perks TicketPerks
 //}
 
 type TicketType struct {
-	Reference       string `json:"reference"`
-	Type            string `json:"type"`
-	Name            string `json:"name"`
-	Price           string `json:"price"`
-	Color           string `json:"color"`
-	Category        string `json:"category"`
-	Stock           string `json:"stock"`
-	PurchaseLimit   int    `json:"purchaseLimit"`
-	SalesEndDate    string `json:"salesEndDate"`
-	SalesEndTime    string `json:"salesEndTime"`
-	PriceChangeDate string `json:"priceChangeDate"`
-	PriceChangeTime string `json:"priceChangeTime"`
-	Capacity        int    `json:"capacity"`
-	Perks           string `json:"perks"`
+	Reference           string `json:"reference"`
+	Type                string `json:"type"`
+	Name                string `json:"name"`
+	Price               string `json:"price"`
+	Color               string `json:"color"`
+	Category            string `json:"category"`
+	GroupTicketCapacity uint64 `json:"groupTicketLimit"`
+	Stock               string `json:"stock"`
+	PurchaseLimit       int    `json:"purchaseLimit"`
+	SalesEndDate        string `json:"salesEndDate"`
+	SalesEndTime        string `json:"salesEndTime"`
+	PriceChangeDate     string `json:"priceChangeDate"`
+	PriceChangeTime     string `json:"priceChangeTime"`
+	Capacity            int    `json:"capacity"`
+	Perks               string `json:"perks"`
 }
 type NewTicketMessage struct {
 	Reference    string        `json:"eventReference"`
@@ -265,7 +270,8 @@ type UpdateTicketRequest struct {
 	Type                         string      `json:"ticket_type"`
 	Name                         string      `json:"name"`
 	Capacity                     uint64      `json:"capacity"`
-	Category                     uint64      `json:"category"`
+	Category                     string      `json:"category"`
+	GroupTicketCapacity          uint64      `json:"group_ticket_capacity"`
 	Stock                        string      `json:"stock"`
 	Price                        float64     `json:"price"`
 	PurchaseLimit                uint64      `json:"purchase_limit,omitempty"`
