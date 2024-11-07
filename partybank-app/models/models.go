@@ -106,8 +106,9 @@ type Ticket struct {
 	Type                         string
 	Name                         string                      `json:"name"`
 	Capacity                     uint64                      `json:"capacity"`
-	Category                     uint64                      `json:"category"`
+	Category                     string                      `json:"category"`
 	Stock                        string                      `json:"stock"`
+	GroupTicketCapacity          uint64                      `json:"group_ticket_capacity"`
 	NumberAvailable              uint64                      `json:"number_available"`
 	Price                        float64                     `json:"price"`
 	PurchaseLimit                uint64                      `json:"purchase_limit"`

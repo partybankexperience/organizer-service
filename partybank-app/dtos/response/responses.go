@@ -117,6 +117,8 @@ type TicketResponse struct {
 	Id                           uint64                             `json:"ticket_id"`
 	Type                         string                             `json:"ticket_type,omitempty"`
 	Name                         string                             `json:"name,omitempty"`
+	Category                     string                             `json:"category,omitempty"`
+	GroupTicketCapacity          uint64                             `json:"group_ticket_capacity"`
 	Capacity                     uint64                             `json:"capacity,omitempty"`
 	Stock                        string                             `json:"stock"`
 	NumberAvailable              uint64                             `json:"number_in_stock,omitempty"`

@@ -120,6 +120,8 @@ func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
 		Type:                         ticket.Type,
 		Name:                         ticket.Name,
 		Capacity:                     ticket.Capacity,
+		Category:                     ticket.Category,
+		GroupTicketCapacity:          ticket.GroupTicketCapacity,
 		Stock:                        ticket.Stock,
 		Reference:                    ticket.Reference,
 		NumberAvailable:              ticket.NumberAvailable,
@@ -177,6 +179,8 @@ func MapEditTicketToCreateTicket(editTicketRequest *dtos.EditTicketRequest) *dto
 		Type:                         editTicketRequest.Type,
 		Name:                         editTicketRequest.Name,
 		Capacity:                     editTicketRequest.Capacity,
+		Category:                     editTicketRequest.Category,
+		GroupTicketCapacity:          editTicketRequest.GroupTicketCapacity,
 		Stock:                        editTicketRequest.Stock,
 		Price:                        editTicketRequest.Price,
 		TicketPerks:                  editTicketRequest.TicketPerks,
@@ -197,6 +201,8 @@ func MapEditTicketRequestToTicket(editTicketRequest *dtos.EditTicketRequest, tic
 	ticket.Price = editTicketRequest.Price
 	ticket.TicketPerks = editTicketRequest.TicketPerks
 	ticket.IsTransferPaymentFeesToGuest = editTicketRequest.IsTransferPaymentFeesToGuest
+	ticket.Category = editTicketRequest.Category
+	ticket.GroupTicketCapacity = editTicketRequest.GroupTicketCapacity
 	if ticket.ActivePeriod != nil {
 		ticket.ActivePeriod.StartTime = editTicketRequest.SalesStartTime
 		ticket.ActivePeriod.EndTime = editTicketRequest.SalesEndTime
