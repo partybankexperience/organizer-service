@@ -1320,8 +1320,14 @@
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "colour": {
                     "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "description": "TODO: Default: false",
@@ -1382,8 +1388,14 @@
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "colour": {
                     "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
@@ -1519,6 +1531,9 @@
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "colour": {
                     "type": "string"
                 },
@@ -1530,6 +1545,9 @@
                 },
                 "discount_type": {
                     "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
                 },
                 "is_ticket_sale_date_expired": {
                     "type": "boolean"

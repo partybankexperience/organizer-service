@@ -1324,8 +1324,14 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "colour": {
                     "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "description": "TODO: Default: false",
@@ -1386,8 +1392,14 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "colour": {
                     "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
@@ -1523,6 +1535,9 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "colour": {
                     "type": "string"
                 },
@@ -1534,6 +1549,9 @@ const docTemplate = `{
                 },
                 "discount_type": {
                     "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
                 },
                 "is_ticket_sale_date_expired": {
                     "type": "boolean"
