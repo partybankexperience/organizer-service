@@ -194,6 +194,7 @@ func (raveTicketService *raveTicketService) EditTicket(ticketId uint64, editTick
 func (raveTicketService *raveTicketService) EditTickets(eventId uint64, editTicketRequests []*request.EditTicketRequest) (editTicketResponses []*response.TicketResponse, err error) {
 	tickets := make([]*models.Ticket, 0)
 	for _, ticketRequest := range editTicketRequests {
+		log.Println("ticket request: ", *ticketRequest)
 		if ticketRequest.ID == 0 {
 			createTicketRequest := mappers.MapEditTicketToCreateTicket(ticketRequest)
 			ticket, err := raveTicketService.CreateTicketFor(eventId, createTicketRequest)

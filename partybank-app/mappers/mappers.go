@@ -197,7 +197,10 @@ func MapEditTicketToCreateTicket(editTicketRequest *dtos.EditTicketRequest) *dto
 func MapEditTicketRequestToTicket(editTicketRequest *dtos.EditTicketRequest, ticket *models.Ticket) *models.Ticket {
 	ticket.Colour = editTicketRequest.Colour
 	ticket.Name = editTicketRequest.Name
+	ticket.Type = editTicketRequest.Type
 	ticket.Stock = editTicketRequest.Stock
+	ticket.Category = editTicketRequest.Category
+	ticket.GroupTicketCapacity = editTicketRequest.GroupTicketCapacity
 	ticket.Price = editTicketRequest.Price
 	ticket.TicketPerks = editTicketRequest.TicketPerks
 	ticket.IsTransferPaymentFeesToGuest = editTicketRequest.IsTransferPaymentFeesToGuest
