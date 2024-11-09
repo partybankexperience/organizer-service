@@ -40,7 +40,7 @@ type OrganizerResponse struct {
 
 type AttendeeResponse struct {
 	Username    string `json:"email"`
-	Message     string `json:"message"`
+	Message     string `json:"message,omitempty"`
 	FirstName   string `json:"first_name,omitempty"`
 	LastName    string `json:"last_name,omitempty"`
 	PhoneNumber string `json:"phone_number,omitempty"`
@@ -138,6 +138,35 @@ type TicketResponse struct {
 	SalesEndTime                 string                             `json:"ticket_sales_end_time,omitempty"`
 	SalesStartDate               string                             `json:"ticket_sale_start_date"`
 	SalesStartTime               string                             `json:"ticket_sale_start_time"`
+	TicketPerks                  dtos.TicketPerks                   `json:"ticket_perks,omitempty"`
+}
 
-	TicketPerks dtos.TicketPerks `json:"ticket_perks,omitempty"`
+func NewTicketResponseFromTicket(ticket *models.Ticket) *TicketResponse {
+	ticketResponse := &TicketResponse{
+		Id:                           ticket.ID,
+		Type:                         ticket.Type,
+		Name:                         ticket.Name,
+		Capacity:                     ticket.Capacity,
+		Category:                     ticket.Category,
+		GroupTicketCapacity:          ticket.GroupTicketCapacity,
+		Stock:                        ticket.Stock,
+		Reference:                    ticket.Reference,
+		NumberAvailable:              ticket.NumberAvailable,
+		Price:                        ticket.Price,
+		PurchaseLimit:                ticket.PurchaseLimit,
+		DiscountType:                 ticket.DiscountType,
+		AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
+		IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
+		AdditionalInformationFields:  ticket.AdditionalInformationFields,
+		Colour:                       ticket.Colour,
+		TicketPerks:                  ticket.TicketPerks,
+		IsTicketSaleEnded:            ticket.IsSoldOutTicket,
+	}
+	if ticket.ActivePeriod != nil {
+		ticketResponse.SaleEndDate = ticket.ActivePeriod.EndDate
+		ticketResponse.SalesEndTime = ticket.ActivePeriod.EndTime
+		ticketResponse.SalesStartTime = ticket.ActivePeriod.StartTime
+		ticketResponse.SalesStartDate = ticket.ActivePeriod.StartDate
+	}
+	return ticketResponse
 }
