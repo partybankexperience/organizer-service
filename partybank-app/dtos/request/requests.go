@@ -43,50 +43,52 @@ type CreateDiscountRequest struct {
 }
 
 type CreateEventRequest struct {
-	Name               string                 `json:"name" validate:"required"`
-	Visibility         string                 `json:"visibility" validate:"required"`
-	Address            string                 `json:"address" validate:"required"`
-	Date               string                 `json:"date" validate:"required"`
-	StartTime          string                 `json:"start_time" validate:"required"`
-	EndTime            string                 `json:"end_time" validate:"required"`
-	ContactInformation string                 `json:"contact_information"`
-	Description        string                 `json:"description"`
-	SeriesId           uint64                 `json:"series_id" validate:"required"`
-	OrganizerId        uint64                 `json:"organizer_id" validate:"required"`
-	EventTheme         string                 `json:"event_theme"`
-	Latitude           string                 `json:"lat"`
-	Longitude          string                 `json:"lng"`
-	City               string                 `json:"city"`
-	State              string                 `json:"state"`
-	Country            string                 `json:"country"`
-	AttendeeTerm       string                 `json:"-"`
-	Venue              string                 `json:"venue" validate:"required"`
-	ImageUrl           string                 `json:"image_url"`
-	Tickets            []*CreateTicketRequest `json:"tickets"`
+	Name                  string                 `json:"name" validate:"required"`
+	Visibility            string                 `json:"visibility" validate:"required"`
+	Address               string                 `json:"address" validate:"required"`
+	Date                  string                 `json:"date" validate:"required"`
+	StartTime             string                 `json:"start_time" validate:"required"`
+	EndTime               string                 `json:"end_time" validate:"required"`
+	ContactInformation    string                 `json:"contact_information"`
+	Description           string                 `json:"description"`
+	SeriesId              uint64                 `json:"series_id" validate:"required"`
+	OrganizerId           uint64                 `json:"organizer_id" validate:"required"`
+	EventTheme            string                 `json:"event_theme"`
+	IsNotificationEnabled bool                   `json:"is_notification_enabled"`
+	Latitude              string                 `json:"lat"`
+	Longitude             string                 `json:"lng"`
+	City                  string                 `json:"city"`
+	State                 string                 `json:"state"`
+	Country               string                 `json:"country"`
+	AttendeeTerm          string                 `json:"-"`
+	Venue                 string                 `json:"venue" validate:"required"`
+	ImageUrl              string                 `json:"image_url"`
+	Tickets               []*CreateTicketRequest `json:"tickets"`
 }
 
 type UpdateEventRequest struct {
-	Name               string               `json:"name"`
-	Location           string               `json:"location"`
-	Date               string               `json:"date"`
-	Address            string               `json:"address" validate:"required"`
-	Time               string               `json:"time"`
-	StartTime          string               `json:"start_time" validate:"required"`
-	EndTime            string               `json:"end_time" validate:"required"`
-	ContactInformation string               `json:"contact_information"`
-	Description        string               `json:"description"`
-	OrganizerId        uint64               `json:"organizer_id" validate:"required"`
-	EventTheme         string               `json:"event_theme"`
-	ImageUrl           string               `json:"image_url"`
-	Latitude           string               `json:"lat"`
-	Longitude          string               `json:"lng"`
-	City               string               `json:"city"`
-	State              string               `json:"state"`
-	Country            string               `json:"country"`
-	AttendeeTerm       string               `json:"attendee_term"`
-	Venue              string               `json:"venue" validate:"required"`
-	Visibility         string               `json:"visibility"`
-	Tickets            []*EditTicketRequest `json:"tickets"`
+	Name                  string               `json:"name"`
+	Location              string               `json:"location"`
+	Date                  string               `json:"date"`
+	Address               string               `json:"address" validate:"required"`
+	Time                  string               `json:"time"`
+	StartTime             string               `json:"start_time" validate:"required"`
+	IsNotificationEnabled bool                 `json:"is_notification_enabled"`
+	EndTime               string               `json:"end_time" validate:"required"`
+	ContactInformation    string               `json:"contact_information"`
+	Description           string               `json:"description"`
+	OrganizerId           uint64               `json:"organizer_id" validate:"required"`
+	EventTheme            string               `json:"event_theme"`
+	ImageUrl              string               `json:"image_url"`
+	Latitude              string               `json:"lat"`
+	Longitude             string               `json:"lng"`
+	City                  string               `json:"city"`
+	State                 string               `json:"state"`
+	Country               string               `json:"country"`
+	AttendeeTerm          string               `json:"attendee_term"`
+	Venue                 string               `json:"venue" validate:"required"`
+	Visibility            string               `json:"visibility"`
+	Tickets               []*EditTicketRequest `json:"tickets"`
 }
 
 type CreateTicketsDto struct {
@@ -219,15 +221,17 @@ type TicketType struct {
 	Perks               string `json:"perks"`
 }
 type NewTicketMessage struct {
-	Reference    string        `json:"eventReference"`
-	Types        []*TicketType `json:"ticketTypes"`
-	Name         string        `json:"eventName"`
-	Venue        string        `json:"venue"`
-	TimeFrame    string        `json:"timeFrame"`
-	AttendeeTerm string        `json:"attendeeTerm"`
-	Date         string        `json:"eventDate"`
-	Capacity     uint64        `json:"capacity"`
-	CreatedBy    string        `json:"createdBy"`
+	Reference             string        `json:"eventReference"`
+	Types                 []*TicketType `json:"ticketTypes"`
+	Name                  string        `json:"eventName"`
+	Venue                 string        `json:"venue"`
+	TimeFrame             string        `json:"timeFrame"`
+	IsNotificationEnabled bool          `json:"isNotificationEnabled"`
+	PhoneNumber           string        `json:"phoneNumber"`
+	AttendeeTerm          string        `json:"attendeeTerm"`
+	Date                  string        `json:"eventDate"`
+	Capacity              uint64        `json:"capacity"`
+	CreatedBy             string        `json:"createdBy"`
 }
 
 type Sender struct {

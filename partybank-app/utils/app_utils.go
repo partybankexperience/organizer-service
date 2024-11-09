@@ -64,14 +64,16 @@ func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
 	var timeFrame = event.StartTime + " to " + event.EndTime
 
 	return &request.NewTicketMessage{
-		Types:        ticketTypes,
-		Name:         event.Name,
-		Reference:    event.Reference,
-		Venue:        event.Venue,
-		AttendeeTerm: event.AttendeeTerm,
-		Date:         event.EventDate,
-		TimeFrame:    timeFrame,
-		CreatedBy:    event.CreatedBy,
+		Types:                 ticketTypes,
+		Name:                  event.Name,
+		Reference:             event.Reference,
+		Venue:                 event.Venue,
+		IsNotificationEnabled: event.IsNotificationEnabled,
+		PhoneNumber:           event.ContactInformation,
+		AttendeeTerm:          event.AttendeeTerm,
+		Date:                  event.EventDate,
+		TimeFrame:             timeFrame,
+		CreatedBy:             event.CreatedBy,
 	}
 }
 
