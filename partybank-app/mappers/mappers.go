@@ -115,32 +115,7 @@ func buildEventTimeForEventResponse(event *models.Event) string {
 }
 
 func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
-	ticketResponse := &response.TicketResponse{
-		Id:                           ticket.ID,
-		Type:                         ticket.Type,
-		Name:                         ticket.Name,
-		Capacity:                     ticket.Capacity,
-		Category:                     ticket.Category,
-		GroupTicketCapacity:          ticket.GroupTicketCapacity,
-		Stock:                        ticket.Stock,
-		Reference:                    ticket.Reference,
-		NumberAvailable:              ticket.NumberAvailable,
-		Price:                        ticket.Price,
-		PurchaseLimit:                ticket.PurchaseLimit,
-		DiscountType:                 ticket.DiscountType,
-		AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
-		IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
-		AdditionalInformationFields:  ticket.AdditionalInformationFields,
-		Colour:                       ticket.Colour,
-		TicketPerks:                  ticket.TicketPerks,
-		IsTicketSaleEnded:            ticket.IsSoldOutTicket,
-	}
-	if ticket.ActivePeriod != nil {
-		ticketResponse.SaleEndDate = ticket.ActivePeriod.EndDate
-		ticketResponse.SalesEndTime = ticket.ActivePeriod.EndTime
-		ticketResponse.SalesStartTime = ticket.ActivePeriod.StartTime
-		ticketResponse.SalesStartDate = ticket.ActivePeriod.StartDate
-	}
+	ticketResponse := response.NewTicketResponseFromTicket(ticket)
 	return ticketResponse
 }
 
