@@ -1482,6 +1482,9 @@ const docTemplate = `{
                 "image_url": {
                     "type": "string"
                 },
+                "is_notification_enabled": {
+                    "type": "boolean"
+                },
                 "lat": {
                     "type": "string"
                 },
