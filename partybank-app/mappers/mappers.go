@@ -51,6 +51,7 @@ func MapUpdateEventRequestToEvent(updateEventRequest *dtos.UpdateEventRequest, e
 	}
 	event.EventDate = updateEventRequest.Date
 	event.StartTime = updateEventRequest.StartTime
+	event.IsNotificationEnabled = updateEventRequest.IsNotificationEnabled
 	event.EndTime = updateEventRequest.EndTime
 	event.ContactInformation = updateEventRequest.ContactInformation
 	event.Description = updateEventRequest.Description
