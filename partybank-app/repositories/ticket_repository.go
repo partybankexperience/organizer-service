@@ -51,6 +51,7 @@ func (raveTicketRepository *raveTicketRepository) FindAllTicketsByEventId(eventI
 }
 
 func (raveTicketRepository *raveTicketRepository) DeleteAllNotIn(eventId uint64, tickets []*models.Ticket) error {
+
 	idsToKeep := make([]uint64, 0)
 	for _, ticket := range tickets {
 		idsToKeep = append(idsToKeep, ticket.ID)
