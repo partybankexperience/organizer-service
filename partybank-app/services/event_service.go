@@ -96,6 +96,7 @@ func updateEventDetails(createEventRequest *request.CreateEventRequest, event *m
 	event.SeriesID = calendar.ID
 	event.CreatedBy = calendar.Name
 	event.PublicationState = models.DRAFT
+	event.IsNotificationEnabled = createEventRequest.IsNotificationEnabled
 	event.CreatedBy = strconv.Itoa(int(createEventRequest.OrganizerId))
 	event.Location = &models.Location{
 		Longitude: createEventRequest.Longitude,
@@ -277,17 +278,18 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 			Latitude:  createEventRequest.Latitude,
 			Address:   createEventRequest.Address,
 		},
-		EventDate:          createEventRequest.Date,
-		StartTime:          createEventRequest.StartTime,
-		EndTime:            createEventRequest.EndTime,
-		SeriesID:           createEventRequest.SeriesId,
-		ContactInformation: createEventRequest.ContactInformation,
-		Description:        createEventRequest.Description,
-		Status:             models.UPCOMING,
-		EventTheme:         createEventRequest.EventTheme,
-		AttendeeTerm:       createEventRequest.AttendeeTerm,
-		Venue:              createEventRequest.Venue,
-		ImageUrl:           createEventRequest.ImageUrl,
-		Reference:          utils.GenerateEventReference(),
+		EventDate:             createEventRequest.Date,
+		StartTime:             createEventRequest.StartTime,
+		EndTime:               createEventRequest.EndTime,
+		SeriesID:              createEventRequest.SeriesId,
+		IsNotificationEnabled: createEventRequest.IsNotificationEnabled,
+		ContactInformation:    createEventRequest.ContactInformation,
+		Description:           createEventRequest.Description,
+		Status:                models.UPCOMING,
+		EventTheme:            createEventRequest.EventTheme,
+		AttendeeTerm:          createEventRequest.AttendeeTerm,
+		Venue:                 createEventRequest.Venue,
+		ImageUrl:              createEventRequest.ImageUrl,
+		Reference:             utils.GenerateEventReference(),
 	}
 }
