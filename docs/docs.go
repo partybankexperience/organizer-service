@@ -1260,6 +1260,9 @@ const docTemplate = `{
                 "image_url": {
                     "type": "string"
                 },
+                "is_notification_enabled": {
+                    "type": "boolean"
+                },
                 "lat": {
                     "type": "string"
                 },
@@ -1403,6 +1406,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "is_notification_enabled": {
+                    "type": "boolean"
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "description": "TODO: Default: false",
@@ -1659,6 +1665,9 @@ const docTemplate = `{
                 },
                 "image_url": {
                     "type": "string"
+                },
+                "is_notification_enabled": {
+                    "type": "boolean"
                 },
                 "lat": {
                     "type": "string"

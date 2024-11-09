@@ -1256,6 +1256,9 @@
                 "image_url": {
                     "type": "string"
                 },
+                "is_notification_enabled": {
+                    "type": "boolean"
+                },
                 "lat": {
                     "type": "string"
                 },
@@ -1399,6 +1402,9 @@
                 },
                 "id": {
                     "type": "integer"
+                },
+                "is_notification_enabled": {
+                    "type": "boolean"
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "description": "TODO: Default: false",
@@ -1655,6 +1661,9 @@
                 },
                 "image_url": {
                     "type": "string"
+                },
+                "is_notification_enabled": {
+                    "type": "boolean"
                 },
                 "lat": {
                     "type": "string"
