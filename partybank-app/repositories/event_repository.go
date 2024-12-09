@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"log"
-	"time"
 )
 
 type EventRepository interface {
@@ -110,12 +109,12 @@ func (raveEventRepository *raveEventRepository) FindAllUpcomingEvents() ([]*mode
 }
 
 func (raveEventRepository *raveEventRepository) RemovePastEvents() error {
-	log.Println("cron called remove past events")
 	if err := raveEventRepository.Db.
 		Model(&models.Event{}).
-		Where("event_date < ?", time.Now()).
+		Where("TO_DATE(event_date, 'DD-MM-YYYY') < CURRENT_DATE").
 		Update("status", models.PAST).
 		Error; err != nil {
+		log.Println("Error: ", err)
 		return err
 	}
 	return nil
