@@ -40,7 +40,7 @@ type OrganizerResponse struct {
 
 type AttendeeResponse struct {
 	Username    string `json:"email"`
-	Message     string `json:"message"`
+	Message     string `json:"message,omitempty"`
 	FirstName   string `json:"first_name,omitempty"`
 	LastName    string `json:"last_name,omitempty"`
 	PhoneNumber string `json:"phone_number,omitempty"`
@@ -89,33 +89,37 @@ type CalendarResponse struct {
 }
 
 type EventResponse struct {
-	ID                 uint64            `json:"id"`
-	SeriesID           uint64            `json:"series_id,omitempty"`
-	SeriesLogo         string            `json:"series_logo,omitempty"`
-	Message            string            `json:"message,omitempty"`
-	Name               string            `json:"event_name,omitempty"`
-	Location           *models.Location  `json:"location,omitempty"`
-	Date               string            `json:"date,omitempty"`
-	Time               string            `json:"time,omitempty"`
-	ContactInformation string            `json:"contact_information,omitempty"`
-	Description        string            `json:"description,omitempty"`
-	Status             string            `json:"status,omitempty"`
-	EventTheme         string            `json:"event_theme,omitempty"`
-	Longitude          string            `json:"lng,omitempty"`
-	Latitude           string            `json:"lat,omitempty"`
-	SeriesName         string            `json:"series_name,omitempty"`
-	AttendeeTerm       string            `json:"attendee_term,omitempty"`
-	Venue              string            `json:"venue,omitempty"`
-	ImageUrl           string            `json:"image_url,omitempty"`
-	Reference          string            `json:"event_reference,omitempty"`
-	CreatedBy          string            `json:"created_by,omitempty"`
-	Tickets            []*TicketResponse `json:"tickets"`
-	PublicationState   string            `json:"publication_state,omitempty"`
+	ID                    uint64            `json:"id"`
+	SeriesID              uint64            `json:"series_id,omitempty"`
+	SeriesLogo            string            `json:"series_logo,omitempty"`
+	Message               string            `json:"message,omitempty"`
+	Name                  string            `json:"event_name,omitempty"`
+	Location              *models.Location  `json:"location,omitempty"`
+	Date                  string            `json:"date,omitempty"`
+	Time                  string            `json:"time,omitempty"`
+	IsNotificationEnabled bool              `json:"is_notification_enabled"`
+	ContactInformation    string            `json:"contact_information,omitempty"`
+	Description           string            `json:"description,omitempty"`
+	Status                string            `json:"status,omitempty"`
+	EventTheme            string            `json:"event_theme,omitempty"`
+	Longitude             string            `json:"lng,omitempty"`
+	Latitude              string            `json:"lat,omitempty"`
+	SeriesName            string            `json:"series_name,omitempty"`
+	AttendeeTerm          string            `json:"attendee_term,omitempty"`
+	Venue                 string            `json:"venue,omitempty"`
+	ImageUrl              string            `json:"image_url,omitempty"`
+	Reference             string            `json:"event_reference,omitempty"`
+	CreatedBy             string            `json:"created_by,omitempty"`
+	Tickets               []*TicketResponse `json:"tickets"`
+	PublicationState      string            `json:"publication_state,omitempty"`
 }
 
 type TicketResponse struct {
+	Id                           uint64                             `json:"ticket_id"`
 	Type                         string                             `json:"ticket_type,omitempty"`
 	Name                         string                             `json:"name,omitempty"`
+	Category                     string                             `json:"category,omitempty"`
+	GroupTicketCapacity          uint64                             `json:"group_ticket_capacity"`
 	Capacity                     uint64                             `json:"capacity,omitempty"`
 	Stock                        string                             `json:"stock"`
 	NumberAvailable              uint64                             `json:"number_in_stock,omitempty"`
@@ -135,6 +139,35 @@ type TicketResponse struct {
 	SalesEndTime                 string                             `json:"ticket_sales_end_time,omitempty"`
 	SalesStartDate               string                             `json:"ticket_sale_start_date"`
 	SalesStartTime               string                             `json:"ticket_sale_start_time"`
+	TicketPerks                  dtos.TicketPerks                   `json:"ticket_perks,omitempty"`
+}
 
-	TicketPerks dtos.TicketPerks `json:"ticket_perks,omitempty"`
+func NewTicketResponseFromTicket(ticket *models.Ticket) *TicketResponse {
+	ticketResponse := &TicketResponse{
+		Id:                           ticket.ID,
+		Type:                         ticket.Type,
+		Name:                         ticket.Name,
+		Capacity:                     ticket.Capacity,
+		Category:                     ticket.Category,
+		GroupTicketCapacity:          ticket.GroupTicketCapacity,
+		Stock:                        ticket.Stock,
+		Reference:                    ticket.Reference,
+		NumberAvailable:              ticket.NumberAvailable,
+		Price:                        ticket.Price,
+		PurchaseLimit:                ticket.PurchaseLimit,
+		DiscountType:                 ticket.DiscountType,
+		AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
+		IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
+		AdditionalInformationFields:  ticket.AdditionalInformationFields,
+		Colour:                       ticket.Colour,
+		TicketPerks:                  ticket.TicketPerks,
+		IsTicketSaleEnded:            ticket.IsSoldOutTicket,
+	}
+	if ticket.ActivePeriod != nil {
+		ticketResponse.SaleEndDate = ticket.ActivePeriod.EndDate
+		ticketResponse.SalesEndTime = ticket.ActivePeriod.EndTime
+		ticketResponse.SalesStartTime = ticket.ActivePeriod.StartTime
+		ticketResponse.SalesStartDate = ticket.ActivePeriod.StartDate
+	}
+	return ticketResponse
 }

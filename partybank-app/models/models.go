@@ -106,8 +106,9 @@ type Ticket struct {
 	Type                         string
 	Name                         string                      `json:"name"`
 	Capacity                     uint64                      `json:"capacity"`
-	Category                     uint64                      `json:"category"`
+	Category                     string                      `json:"category"`
 	Stock                        string                      `json:"stock"`
+	GroupTicketCapacity          uint64                      `json:"group_ticket_capacity"`
 	NumberAvailable              uint64                      `json:"number_available"`
 	Price                        float64                     `json:"price"`
 	PurchaseLimit                uint64                      `json:"purchase_limit"`
@@ -127,6 +128,7 @@ type Ticket struct {
 	MaxSeats                     uint64                      `json:"max_seats"`
 	EventReference               string                      `json:"event_reference"`
 	Reserved                     uint64                      `json:"reserved"`
+	DeletedAt                    gorm.DeletedAt
 }
 
 type ActivePeriod struct {
@@ -137,30 +139,31 @@ type ActivePeriod struct {
 }
 
 type Event struct {
-	ID                 uint64    `id:"id" gorm:"primaryKey" json:"id"`
-	Name               string    `json:"name"`
-	Location           *Location `json:"location" gorm:"embedded"`
-	DeletedAt          gorm.DeletedAt
-	EventDate          string `json:"date"`
-	StartTime          string `json:"event_start"`
-	EndTime            string `json:"event_end"`
-	ContactInformation string `json:"contact_information"`
-	ImageUrl           string `json:"image_url"`
-	Description        string `json:"description"`
-	SeriesID           uint64 `json:"series_id"`
-	Status             string `json:"status"`
-	EventStaffID       uint64 `json:"event_staff_id"`
-	TicketID           uint64 `json:"ticket_id"`
-	EventTheme         string `json:"event_theme"`
-	AttendeeTerm       string `json:"-"`
-	Venue              string `json:"venue"`
-	Reference          string `json:"event_reference"`
-	Tickets            []*Ticket
-	EventStaff         []*EventStaff
-	CreatedBy          string
-	PublicationState   string
-	DateCreated        string `json:"created_at"`
-	IsEventDeleted     bool
+	ID                    uint64    `id:"id" gorm:"primaryKey" json:"id"`
+	Name                  string    `json:"name"`
+	Location              *Location `json:"location" gorm:"embedded"`
+	DeletedAt             gorm.DeletedAt
+	EventDate             string `json:"date"`
+	StartTime             string `json:"event_start"`
+	EndTime               string `json:"event_end"`
+	ContactInformation    string `json:"contact_information"`
+	ImageUrl              string `json:"image_url"`
+	Description           string `json:"description"`
+	SeriesID              uint64 `json:"series_id"`
+	Status                string `json:"status"`
+	EventStaffID          uint64 `json:"event_staff_id"`
+	IsNotificationEnabled bool   `json:"is_notification_enabled"`
+	TicketID              uint64 `json:"ticket_id"`
+	EventTheme            string `json:"event_theme"`
+	AttendeeTerm          string `json:"-"`
+	Venue                 string `json:"venue"`
+	Reference             string `json:"event_reference"`
+	Tickets               []*Ticket
+	EventStaff            []*EventStaff
+	CreatedBy             string
+	PublicationState      string
+	DateCreated           string `json:"created_at"`
+	IsEventDeleted        bool
 }
 
 type Location struct {

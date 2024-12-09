@@ -5,7 +5,6 @@ import (
 	otp2 "github.com/djfemz/organizer-service/partybank-app/security/otp"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
-	"log"
 )
 
 type OrganizerRepository interface {
@@ -39,9 +38,7 @@ func (organizerRepository *organizerRepositoryImpl) FindByOtp(otp string) (*mode
 
 	err := organizerRepository.Db.Preload(clause.Associations).Where(&models.Organizer{Otp: &otp2.OneTimePassword{Code: otp}}).Find(&organizer).Error
 	if err != nil {
-		log.Println("err: ", err)
 		return nil, err
 	}
-	log.Println("found org: ", organizer)
 	return &organizer, nil
 }

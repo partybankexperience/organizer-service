@@ -7,6 +7,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/security/otp"
+	"strings"
 
 	"log"
 )
@@ -46,12 +47,12 @@ func NewOrganizerService(organizerRepository repositories.OrganizerRepository,
 func (organizerService *appOrganizerService) Create(createOrganizerRequest *request.CreateUserRequest) (*response.CreateOrganizerResponse, error) {
 	organizer := mapCreateOrganizerRequestTo(createOrganizerRequest)
 	password := otp.GenerateOtp()
-	mailService := NewMailService()
+	mailService := NewGoMailService()
 
 	organizer.Otp = password
 	savedOrganizer, err := organizerService.repository.Save(organizer)
 	createCalendarRequest := &request.CreateSeriesRequest{
-		Name:        "Public",
+		Name:        "default",
 		OrganizerID: savedOrganizer.ID,
 	}
 	calendarResponse, err := organizerService.seriesService.AddSeries(createCalendarRequest)
@@ -113,15 +114,19 @@ func (organizerService *appOrganizerService) GetById(id uint64) (*models.Organiz
 func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *request.AddEventStaffRequest) (*response.RaveResponse[string], error) {
 	res, err := organizerService.eventStaffService.Create(&request.CreateEventStaffRequest{StaffEmails: addStaffRequest.StaffEmails, EventId: addStaffRequest.EventId})
 	if err != nil {
-		return nil, err
+		log.Println("Error creating event staff")
+		return nil, errors.New("failed to add event staff")
 	}
 	return res, nil
 }
 
 func (organizerService *appOrganizerService) GetByOtp(otp string) (*models.Organizer, error) {
 	organizerRepository := organizerService.repository
-	log.Println("repo:", organizerRepository)
-	return organizerRepository.FindByOtp(otp)
+	org, err := organizerRepository.FindByOtp(otp)
+	if org.ID < 1 || err != nil {
+		return nil, errors.New("failed to find user")
+	}
+	return org, nil
 }
 
 func (organizerService *appOrganizerService) IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.RaveResponse[string], error) {
@@ -154,7 +159,7 @@ func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *m
 	log.Println("organizerRequest", organizerRequest)
 	return &models.Organizer{
 		User: &models.User{
-			Username: organizerRequest.Username,
+			Username: strings.ToLower(organizerRequest.Username),
 			Role:     models.ORGANIZER,
 		},
 	}

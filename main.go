@@ -12,9 +12,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
+	"github.com/robfig/cron"
 	"gorm.io/gorm"
 	"log"
 	"os"
+	"time"
 )
 
 var err error
@@ -63,14 +65,16 @@ func init() {
 // @contact.email  unavailable
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host partybank-organizer-269c8057a65f.herokuapp.com
+// @host partybank-organizer.onrender.com
 // @schemes https
 // @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization
 // @externalDocs.description  OpenAPI
 func main() {
+	//partybank-organizer-269c8057a65f.herokuapp.com
 	config.GoogleConfig()
+	go startCron()
 	router := gin.Default()
 	configureAppComponents()
 	middlewares.Routers(router, organizerController,
@@ -84,6 +88,26 @@ func main() {
 	if err != nil {
 		log.Println("Error starting server: ", err)
 	}
+
+}
+
+func startCron() {
+	loc, err := time.LoadLocation("Africa/Lagos")
+	if err != nil {
+		log.Fatal("timezone not found")
+	}
+	job := cron.NewWithLocation(loc)
+	err = job.AddFunc("*/1 * * * * *", func() {
+		err = eventRepository.RemovePastEvents()
+		if err != nil {
+			log.Println("failed to Remove past events")
+		}
+	})
+	if err != nil {
+		log.Fatal("failed to create job")
+	}
+	log.Println("Starting scheduler...")
+	job.Start()
 }
 
 func configureAppComponents() {
@@ -103,7 +127,7 @@ func configureControllers() {
 }
 
 func configureServiceComponents() {
-	mailService := services.NewMailService()
+	mailService := services.NewGoMailService()
 	seriesService = services.NewSeriesService(seriesRepository)
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService, ticketService, attendeeService)

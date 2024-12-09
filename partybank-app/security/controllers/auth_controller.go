@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
 	authService "github.com/djfemz/organizer-service/partybank-app/security/services"
@@ -29,12 +30,11 @@ func NewAuthController(authService *authService.AuthService) *AuthController {
 // @Produce      json
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
-// @Failure      500  {object}  dtos.RaveResponse
 // @Router       /auth/login [post]
 func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 	var signInRequest request.AuthRequest
 	if err = ctx.BindJSON(&signInRequest); err != nil {
-		handleError(ctx, err)
+		handleError(ctx, errors.New("invalid request"))
 		return
 	}
 	res, err := authController.AuthService.Authenticate(&signInRequest)
@@ -54,7 +54,6 @@ func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 // @Param        code   query   int  true  "otp code"
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
-// @Failure      500  {object}  dtos.RaveResponse
 // @Router       /auth/otp/validate [get]
 func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
 	code := ctx.Query("code")

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"bytes"
 	"errors"
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
@@ -8,8 +9,9 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
-	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
+	"net/http"
+	"os"
 	"sort"
 	"strconv"
 )
@@ -40,7 +42,8 @@ type raveEventService struct {
 func NewEventService(eventRepository repositories.EventRepository,
 	organizerService OrganizerService,
 	seriesService SeriesService,
-	ticketService TicketService) EventService {
+	ticketService TicketService,
+) EventService {
 	return &raveEventService{
 		eventRepository,
 		organizerService,
@@ -87,7 +90,7 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 			log.Println("error adding tickets to event")
 		}
 	}
-	res := mappers.MapEventToEventResponse(savedEvent)
+	res := mappers.MapEventToEventResponse("event created successfully", savedEvent)
 	res.SeriesName = calendar.Name
 	return res, nil
 }
@@ -96,6 +99,7 @@ func updateEventDetails(createEventRequest *request.CreateEventRequest, event *m
 	event.SeriesID = calendar.ID
 	event.CreatedBy = calendar.Name
 	event.PublicationState = models.DRAFT
+	event.IsNotificationEnabled = createEventRequest.IsNotificationEnabled
 	event.CreatedBy = strconv.Itoa(int(createEventRequest.OrganizerId))
 	event.Location = &models.Location{
 		Longitude: createEventRequest.Longitude,
@@ -116,7 +120,7 @@ func (raveEventService *raveEventService) GetById(id uint64) (*response.EventRes
 	if err != nil {
 		return nil, errors.New("failed to find series")
 	}
-	eventResponse := mappers.MapEventToEventResponse(foundEvent)
+	eventResponse := mappers.MapEventToEventResponse("Success", foundEvent)
 	eventResponse.SeriesName = series.Name
 	return eventResponse, nil
 }
@@ -126,24 +130,26 @@ func (raveEventService *raveEventService) GetEventBy(id uint64) (*models.Event, 
 }
 
 func (raveEventService *raveEventService) UpdateEventInformation(id uint64, updateRequest *request.UpdateEventRequest) (*response.EventResponse, error) {
-	updateEventResponse := &response.EventResponse{}
-
 	foundEvent, err := raveEventService.FindById(id)
 	if err != nil {
 		return nil, err
 	}
-	copyErrors := model.Copy(foundEvent, updateRequest)
-	if len(copyErrors) != 0 {
-		return nil, errors.New("could not update event")
-	}
+	foundEvent = mappers.MapUpdateEventRequestToEvent(updateRequest, foundEvent)
 	savedEvent, err := raveEventService.Save(foundEvent)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("failed to save event")
 	}
-	copyErrors = model.Copy(updateEventResponse, savedEvent)
-	if len(copyErrors) != 0 {
-		return nil, errors.New("could not update event")
+	_, err = raveEventService.TicketService.EditTickets(id, updateRequest.Tickets)
+	if err != nil {
+		log.Println("Error adding ticket: ", err.Error())
+		return nil, errors.New("failed to update event")
 	}
+	savedEvent, err = raveEventService.Save(savedEvent)
+	if err != nil {
+		return nil, errors.New("failed to update event during event update")
+	}
+	go utils.SendNewTicketMessageFor(savedEvent)
+	updateEventResponse := mappers.MapEventToEventResponse("event update successful", savedEvent)
 	return updateEventResponse, nil
 }
 
@@ -159,7 +165,7 @@ func (raveEventService *raveEventService) GetAllEventsFor(calendarId uint64, pag
 		return nil, err
 	}
 	for _, event := range events {
-		eventResponse := mappers.MapEventToEventResponse(event)
+		eventResponse := mappers.MapEventToEventResponse("success", event)
 		eventsResponses = append(eventsResponses, eventResponse)
 	}
 	return eventsResponses, nil
@@ -193,7 +199,7 @@ func (raveEventService *raveEventService) GetEventByReference(reference string) 
 	if err != nil {
 		return nil, errors.New("failed to find series")
 	}
-	eventResponse := mappers.MapEventToEventResponse(event)
+	eventResponse := mappers.MapEventToEventResponse("Success", event)
 	eventResponse.SeriesName = series.Name
 	return eventResponse, nil
 }
@@ -216,7 +222,7 @@ func (raveEventService *raveEventService) PublishEvent(eventId uint64) (*respons
 	if err != nil {
 		return nil, errors.New("failed to find series")
 	}
-	eventResponse := mappers.MapEventToEventResponse(event)
+	eventResponse := mappers.MapEventToEventResponse("Success", event)
 	eventResponse.SeriesName = series.Name
 	return eventResponse, nil
 }
@@ -240,7 +246,7 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 	}
 	eventsResponses := make([]*response.EventResponse, 0)
 	for _, event := range events {
-		eventRes := mappers.MapEventToEventResponse(event)
+		eventRes := mappers.MapEventToEventResponse("Success", event)
 		series, err := raveEventService.SeriesService.GetById(event.SeriesID)
 		if err != nil {
 			return nil, errors.New("series not found")
@@ -255,9 +261,29 @@ func (raveEventService *raveEventService) GetAllEventsForOrganizer(organizerId u
 }
 
 func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string, error) {
-	err := raveEventService.EventRepository.DeleteById(eventId)
+	event, err := raveEventService.FindById(eventId)
+	if err != nil {
+		return "", errors.New("failed to find event")
+	}
+	event.PublicationState = "ARCHIVED"
+	err = raveEventService.EventRepository.DeleteById(eventId)
 	if err != nil {
 		return "", errors.New("failed to delete event")
+	}
+	paymentServiceDeleteEndpoint := os.Getenv("DELETE_EVENT_ENDPOINT_PAYMENT_SERVICE")
+	paymentServiceDeleteEndpoint = paymentServiceDeleteEndpoint + event.Reference
+	req, err := http.NewRequest(http.MethodPost, paymentServiceDeleteEndpoint, bytes.NewReader([]byte("")))
+
+	if err != nil {
+		log.Println("ERROR: failed to create delete request to payment side")
+		return "", errors.New("failed to delete event")
+	}
+	client := &http.Client{}
+	res, err := client.Do(req)
+	log.Println("delete event response from payment service: ", res.StatusCode)
+	if err != nil || res.StatusCode != 200 {
+		log.Println("ERROR: failed to send delete request to payment side", err)
+		//return "", errors.New("failed to send delete event to payment service")
 	}
 	return "event deleted successfully", nil
 }
@@ -270,17 +296,18 @@ func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest
 			Latitude:  createEventRequest.Latitude,
 			Address:   createEventRequest.Address,
 		},
-		EventDate:          createEventRequest.Date,
-		StartTime:          createEventRequest.StartTime,
-		EndTime:            createEventRequest.EndTime,
-		SeriesID:           createEventRequest.SeriesId,
-		ContactInformation: createEventRequest.ContactInformation,
-		Description:        createEventRequest.Description,
-		Status:             models.UPCOMING,
-		EventTheme:         createEventRequest.EventTheme,
-		AttendeeTerm:       createEventRequest.AttendeeTerm,
-		Venue:              createEventRequest.Venue,
-		ImageUrl:           createEventRequest.ImageUrl,
-		Reference:          utils.GenerateEventReference(),
+		EventDate:             createEventRequest.Date,
+		StartTime:             createEventRequest.StartTime,
+		EndTime:               createEventRequest.EndTime,
+		SeriesID:              createEventRequest.SeriesId,
+		IsNotificationEnabled: createEventRequest.IsNotificationEnabled,
+		ContactInformation:    createEventRequest.ContactInformation,
+		Description:           createEventRequest.Description,
+		Status:                models.UPCOMING,
+		EventTheme:            createEventRequest.EventTheme,
+		AttendeeTerm:          createEventRequest.AttendeeTerm,
+		Venue:                 createEventRequest.Venue,
+		ImageUrl:              createEventRequest.ImageUrl,
+		Reference:             utils.GenerateEventReference(),
 	}
 }

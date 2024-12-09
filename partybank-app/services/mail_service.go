@@ -21,13 +21,13 @@ type MailService interface {
 	Send(emailRequest *request.EmailNotificationRequest) (string, error)
 }
 
-type raveMailService struct{}
+type brevoMailService struct{}
 
 func NewMailService() MailService {
-	return &raveMailService{}
+	return &brevoMailService{}
 }
 
-func (raveMailService *raveMailService) Send(emailRequest *request.EmailNotificationRequest) (string, error) {
+func (raveMailService *brevoMailService) Send(emailRequest *request.EmailNotificationRequest) (string, error) {
 	jsonData, _ := json.Marshal(emailRequest)
 	req, err := http.NewRequest(http.MethodPost, os.Getenv("MAIL_API_URL"), bytes.NewReader(jsonData))
 	if err != nil {

@@ -29,7 +29,7 @@ func (eventStaffService *raveEventStaffService) Create(createUserRequest *reques
 	if err != nil {
 		return nil, errors.New("event not found")
 	}
-	mailService := NewMailService()
+	mailService := NewGoMailService()
 	for _, email := range createUserRequest.StaffEmails {
 		savedStaff, err := updateEvent(email, event, eventStaffService.EventStaffRepository)
 		if err != nil {

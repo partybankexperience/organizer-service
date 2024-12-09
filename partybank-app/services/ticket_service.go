@@ -1,8 +1,6 @@
 package services
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
@@ -10,25 +8,20 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"log"
-	"net/http"
-	"os"
-	"strconv"
-	"strings"
 )
 
 type TicketService interface {
-	CreateTicketFor(eventId uint64, request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error)
+	CreateTicketFor(eventId uint64, request *request.CreateTicketRequest) (addTicketResponse *models.Ticket, err error)
 	AddTickets(eventId uint64, tickets []*request.CreateTicketRequest) ([]*response.TicketResponse, error)
 	GetById(id uint64) (*response.TicketResponse, error)
 	GetTicketById(id uint64) (*models.Ticket, error)
-	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error)
+	GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*response.TicketResponse, error)
 	UpdateTicketSoldOutBy(reference string) (*response.TicketResponse, error)
 	UpdateTicket(ticketId uint64, updateTicketRequest *request.UpdateTicketRequest) (*response.TicketResponse, error)
 	EditTicket(ticketId uint64, editTicketRequest *request.EditTicketRequest) (editTicketResponse *response.TicketResponse, err error)
+	EditTickets(eventId uint64, editTicketRequests []*request.EditTicketRequest) (editTicketResponses []*response.TicketResponse, err error)
 }
 
 type raveTicketService struct {
@@ -43,7 +36,10 @@ func NewTicketService(ticketRepository repositories.TicketRepository, eventServi
 	}
 }
 
-func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, request *request.CreateTicketRequest) (addTicketResponse *response.TicketResponse, err error) {
+func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, request *request.CreateTicketRequest) (ticket *models.Ticket, err error) {
+	if request.ID > 0 {
+		return nil, nil
+	}
 	event, err := raveTicketService.GetEventBy(eventId)
 	if err != nil {
 		log.Println("event: ", event)
@@ -52,12 +48,13 @@ func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, requ
 	if utils.ExistsWithTicketName(event, request.Name) {
 		return nil, errors.New("ticket already exists")
 	}
-	ticket := &models.Ticket{}
+	ticket = &models.Ticket{}
 	errs := model.Copy(ticket, request)
 	if len(errs) != 0 {
 		log.Println(errs)
 		return nil, errors.New("failed to create ticket")
 	}
+	ticket.Stock = request.Stock
 	ticket.Reference = utils.GenerateTicketReference()
 	ticket.EventID = event.ID
 	ticket.TicketPerks = request.TicketPerks
@@ -67,6 +64,9 @@ func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, requ
 		StartTime: request.SalesStartTime,
 		EndTime:   request.SalesEndTime,
 	}
+	ticket.Capacity = request.Capacity
+	ticket.Category = request.Category
+	ticket.GroupTicketCapacity = request.GroupTicketCapacity
 	savedTicket, err := raveTicketService.TicketRepository.Save(ticket)
 	if err != nil {
 		log.Println("error: ticket saving failed", err)
@@ -77,18 +77,8 @@ func (raveTicketService *raveTicketService) CreateTicketFor(eventId uint64, requ
 	if err != nil {
 		return nil, errors.New("failed to save ticket")
 	}
-	createTicketResponse := &response.TicketResponse{}
-	errs = model.Copy(createTicketResponse, savedTicket)
-	log.Println("new ticket created: ", savedTicket.TicketPerks)
-	//go sendNewTicketMessageFor(event)
-	createTicketResponse.TicketPerks = savedTicket.TicketPerks
-	if savedTicket.ActivePeriod != nil {
-		createTicketResponse.SalesStartDate = savedTicket.ActivePeriod.StartDate
-		createTicketResponse.SalesStartTime = savedTicket.ActivePeriod.StartTime
-		createTicketResponse.SalesEndTime = savedTicket.ActivePeriod.EndTime
-		createTicketResponse.SaleEndDate = savedTicket.ActivePeriod.EndDate
-	}
-	return createTicketResponse, nil
+
+	return savedTicket, nil
 }
 
 func (raveTicketService *raveTicketService) GetById(id uint64) (*response.TicketResponse, error) {
@@ -127,26 +117,34 @@ func (raveTicketService *raveTicketService) UpdateTicketSoldOutBy(reference stri
 	return mappers.MapTicketToTicketResponse(ticket), nil
 }
 
-func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*models.Ticket, error) {
+func (raveTicketService *raveTicketService) GetAllTicketsFor(eventId uint64, pageNumber, pageSize int) ([]*response.TicketResponse, error) {
 	tickets, err := raveTicketService.FindAllByEventId(eventId, pageNumber, pageSize)
 	if err != nil {
 		return nil, errors.New(err.Error())
 	}
 
-	return tickets, nil
+	return mappers.MapTicketsToTicketsResponse(tickets), nil
 }
 
 func (raveTicketService *raveTicketService) AddTickets(eventId uint64, tickets []*request.CreateTicketRequest) ([]*response.TicketResponse, error) {
 	res := make([]*response.TicketResponse, 0)
+	err := raveTicketService.DeleteTicketsFor(eventId)
+	if err != nil {
+		log.Println("error: ticket_service.go: 146 \t\tfailed to remove tickets from event")
+	}
+	if len(tickets) < 1 {
+		return res, nil
+	}
 	for _, ticketRequest := range tickets {
 		ticketResponse, _ := raveTicketService.CreateTicketFor(eventId, ticketRequest)
-		res = append(res, ticketResponse)
+		ticket := mappers.MapTicketToTicketResponse(ticketResponse)
+		res = append(res, ticket)
 	}
 	event, err := raveTicketService.EventService.GetEventBy(eventId)
 	if err != nil {
-		log.Println("error: ticket_service.go: 146 \t\tfailed to find event")
+		log.Println("error: ticket_service.go: 158 \t\tfailed to find event")
 	}
-	go sendNewTicketMessageFor(event)
+	go utils.SendNewTicketMessageFor(event)
 	return res, nil
 }
 
@@ -164,6 +162,7 @@ func (raveTicketService *raveTicketService) UpdateTicket(ticketId uint64, update
 	foundTicket.Stock = updateTicketRequest.Stock
 	foundTicket.IsTransferPaymentFeesToGuest = updateTicketRequest.IsTransferPaymentFeesToGuest
 	foundTicket.Category = updateTicketRequest.Category
+	foundTicket.GroupTicketCapacity = updateTicketRequest.GroupTicketCapacity
 	if foundTicket.ActivePeriod != nil {
 		foundTicket.ActivePeriod.StartTime = updateTicketRequest.SalesStartTime
 		foundTicket.ActivePeriod.EndTime = updateTicketRequest.SalesEndTime
@@ -175,7 +174,7 @@ func (raveTicketService *raveTicketService) UpdateTicket(ticketId uint64, update
 		return nil, errors.New("failed to save ticket")
 	}
 	event, err := raveTicketService.EventService.GetEventBy(foundTicket.EventID)
-	go sendNewTicketMessageFor(event)
+	go utils.SendNewTicketMessageFor(event)
 	return mappers.MapTicketToTicketResponse(foundTicket), nil
 }
 
@@ -185,69 +184,55 @@ func (raveTicketService *raveTicketService) EditTicket(ticketId uint64, editTick
 		return nil, errors.New("failed to find ticket")
 	}
 	ticket = mappers.MapEditTicketRequestToTicket(editTicketRequest, ticket)
+	ticket, err = raveTicketService.TicketRepository.Save(ticket)
+	if err != nil {
+		log.Println("Error saving ticket in edit: ", err)
+		return nil, errors.New("failed to edit ticket")
+	}
 	ticketResponse := mappers.MapTicketToTicketResponse(ticket)
 	return ticketResponse, nil
 }
 
-func sendNewTicketMessageFor(event *models.Event) {
-	ticketMessage := buildTicketMessage(event)
-	body, err := json.Marshal(ticketMessage)
-	if err != nil {
-		log.Println("Error: ", err)
-		return
+func (raveTicketService *raveTicketService) EditTickets(eventId uint64, editTicketRequests []*request.EditTicketRequest) (editTicketResponses []*response.TicketResponse, err error) {
+	tickets := make([]*models.Ticket, 0)
+	if len(editTicketRequests) < 1 {
+		err := raveTicketService.TicketRepository.DeleteTicketsFor(eventId)
+		return nil, err
 	}
-	log.Println("request body: ", string(body))
-	req, err := http.NewRequest(http.MethodPost, os.Getenv("TICKET_SERVICE_URL"), bytes.NewReader(body))
-	req.Header.Add("Content-Type", APPLICATION_JSON_VALUE)
-	log.Println("request data: ", req.Body)
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		log.Println("Error: ", err)
-	}
-	log.Println("response: ", *res)
-}
-
-func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
-	ticketTypes := extractTicketTypesFrom(event.Tickets)
-	var timeFrame = event.StartTime + " to " + event.EndTime
-
-	return &request.NewTicketMessage{
-		Types:        ticketTypes,
-		Name:         event.Name,
-		Reference:    event.Reference,
-		Venue:        event.Venue,
-		AttendeeTerm: event.AttendeeTerm,
-		Date:         event.EventDate,
-		TimeFrame:    timeFrame,
-		CreatedBy:    event.CreatedBy,
-	}
-}
-
-func extractTicketTypesFrom(tickets []*models.Ticket) []*request.TicketType {
-	ticketTypes := make([]*request.TicketType, 0)
-	for _, ticket := range tickets {
-		ticketType := &request.TicketType{
-			Reference:     ticket.Reference,
-			Name:          ticket.Name,
-			Price:         strconv.FormatFloat(ticket.Price, 'f', -1, 64),
-			Color:         ticket.Colour,
-			Category:      strconv.FormatUint(ticket.Category, 10),
-			Stock:         ToTitleCase(ToTitleCase(ticket.Stock)),
-			Capacity:      int(ticket.Capacity),
-			Perks:         strings.Join(ticket.TicketPerks, ","),
-			Type:          ToTitleCase(ticket.Type),
-			PurchaseLimit: int(ticket.PurchaseLimit),
+	for _, ticketRequest := range editTicketRequests {
+		if ticketRequest.ID == 0 {
+			createTicketRequest := mappers.MapEditTicketToCreateTicket(ticketRequest)
+			ticket, err := raveTicketService.FindByNameForEvent(eventId, ticketRequest.Name)
+			if err == nil {
+				err = raveTicketService.DeleteById(ticket.ID)
+				log.Println("Error deleting ticket? :: ", err)
+			}
+			ticket, err = raveTicketService.CreateTicketFor(eventId, createTicketRequest)
+			if err != nil {
+				log.Println("error in edit tickets: ", err)
+				return nil, errors.New("failed to add new ticket")
+			}
+			tickets = append(tickets, ticket)
+			continue
 		}
-		if ticket.ActivePeriod != nil {
-			ticketType.SalesEndDate = ticket.ActivePeriod.EndDate
-			ticketType.SalesEndTime = ticket.ActivePeriod.EndTime
+		ticket, err := raveTicketService.GetTicketById(ticketRequest.ID)
+		if err != nil {
+			log.Println("ERROR: ", err)
+			return nil, errors.New("failed to find ticket")
 		}
-		ticketTypes = append(ticketTypes, ticketType)
+		ticket = mappers.MapEditTicketRequestToTicket(ticketRequest, ticket)
+		tickets = append(tickets, ticket)
 	}
-	return ticketTypes
-}
-
-func ToTitleCase(text string) string {
-	return cases.Title(language.English).String(text)
+	err = raveTicketService.DeleteAllNotIn(eventId, tickets)
+	if err != nil {
+		log.Println("Error removing tickets in edit: ", err)
+		return nil, errors.New("failed to edit ticket")
+	}
+	err = raveTicketService.TicketRepository.SaveAll(tickets)
+	if err != nil {
+		log.Println("Error saving ticket in edit: ", err)
+		return nil, errors.New("failed to edit ticket")
+	}
+	ticks := mappers.MapTicketsToTicketsResponse(tickets)
+	return ticks, nil
 }

@@ -54,7 +54,7 @@ func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, &response.RaveResponse[response.EventResponse]{Data: *res})
+	ctx.JSON(http.StatusCreated, &response.RaveResponse[*response.EventResponse]{Data: res})
 }
 
 // EditEvent godoc

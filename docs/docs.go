@@ -783,12 +783,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.RaveResponse"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
                     }
                 }
             }
@@ -1021,7 +1015,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Ticket"
+                                "$ref": "#/definitions/dtos.TicketResponse"
                             }
                         }
                     },
@@ -1096,12 +1090,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/dtos.RaveResponse"
                         }
@@ -1189,12 +1177,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.RaveResponse"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
-                        }
                     }
                 }
             }
@@ -1278,6 +1260,9 @@ const docTemplate = `{
                 "image_url": {
                     "type": "string"
                 },
+                "is_notification_enabled": {
+                    "type": "boolean"
+                },
                 "lat": {
                     "type": "string"
                 },
@@ -1342,9 +1327,88 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
-                "colour": {
-                    "description": "EventId                      uint64      ` + "`" + `json:\"event_id\"` + "`" + `",
+                "category": {
                     "type": "string"
+                },
+                "colour": {
+                    "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
+                },
+                "is_transfer_payment_fees_to_guest": {
+                    "description": "TODO: Default: false",
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "purchase_limit": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "string"
+                },
+                "ticket_id": {
+                    "type": "integer"
+                },
+                "ticket_perks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ticket_sale_end_date": {
+                    "type": "string"
+                },
+                "ticket_sale_start_date": {
+                    "type": "string"
+                },
+                "ticket_sale_start_time": {
+                    "type": "string"
+                },
+                "ticket_sales_end_time": {
+                    "type": "string"
+                },
+                "ticket_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CreateTicketsDto": {
+            "type": "object",
+            "properties": {
+                "ticketRequests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CreateTicketRequest"
+                    }
+                }
+            }
+        },
+        "dtos.EditTicketRequest": {
+            "type": "object",
+            "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "colour": {
+                    "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_notification_enabled": {
+                    "type": "boolean"
                 },
                 "is_transfer_payment_fees_to_guest": {
                     "description": "TODO: Default: false",
@@ -1385,17 +1449,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.CreateTicketsDto": {
-            "type": "object",
-            "properties": {
-                "ticketRequests": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CreateTicketRequest"
-                    }
-                }
-            }
-        },
         "dtos.EventResponse": {
             "type": "object",
             "properties": {
@@ -1428,6 +1481,9 @@ const docTemplate = `{
                 },
                 "image_url": {
                     "type": "string"
+                },
+                "is_notification_enabled": {
+                    "type": "boolean"
                 },
                 "lat": {
                     "type": "string"
@@ -1488,6 +1544,9 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
+                "category": {
+                    "type": "string"
+                },
                 "colour": {
                     "type": "string"
                 },
@@ -1499,6 +1558,9 @@ const docTemplate = `{
                 },
                 "discount_type": {
                     "type": "string"
+                },
+                "group_ticket_capacity": {
+                    "type": "integer"
                 },
                 "is_ticket_sale_date_expired": {
                     "type": "boolean"
@@ -1523,6 +1585,9 @@ const docTemplate = `{
                 },
                 "stock": {
                     "type": "string"
+                },
+                "ticket_id": {
+                    "type": "integer"
                 },
                 "ticket_perks": {
                     "type": "array",
@@ -1567,14 +1632,26 @@ const docTemplate = `{
         "dtos.UpdateEventRequest": {
             "type": "object",
             "required": [
+                "address",
+                "end_time",
                 "organizer_id",
+                "start_time",
                 "venue"
             ],
             "properties": {
+                "address": {
+                    "type": "string"
+                },
                 "attendee_term": {
                     "type": "string"
                 },
+                "city": {
+                    "type": "string"
+                },
                 "contact_information": {
+                    "type": "string"
+                },
+                "country": {
                     "type": "string"
                 },
                 "date": {
@@ -1583,16 +1660,25 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "end_time": {
+                    "type": "string"
+                },
                 "event_theme": {
                     "type": "string"
                 },
+                "image_url": {
+                    "type": "string"
+                },
+                "is_notification_enabled": {
+                    "type": "boolean"
+                },
+                "lat": {
+                    "type": "string"
+                },
+                "lng": {
+                    "type": "string"
+                },
                 "location": {
-                    "type": "string"
-                },
-                "map_embedded_url": {
-                    "type": "string"
-                },
-                "map_url": {
                     "type": "string"
                 },
                 "name": {
@@ -1601,10 +1687,25 @@ const docTemplate = `{
                 "organizer_id": {
                     "type": "integer"
                 },
+                "start_time": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "tickets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.EditTicketRequest"
+                    }
+                },
                 "time": {
                     "type": "string"
                 },
                 "venue": {
+                    "type": "string"
+                },
+                "visibility": {
                     "type": "string"
                 }
             }
@@ -1622,23 +1723,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "series_logo": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.ActivePeriod": {
-            "type": "object",
-            "properties": {
-                "ticket_sale_end_date": {
-                    "type": "string"
-                },
-                "ticket_sale_end_time": {
-                    "type": "string"
-                },
-                "ticket_sale_start_date": {
-                    "type": "string"
-                },
-                "ticket_sale_start_time": {
                     "type": "string"
                 }
             }
@@ -1665,92 +1749,6 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
-        },
-        "models.Ticket": {
-            "type": "object",
-            "properties": {
-                "active_period": {
-                    "$ref": "#/definitions/models.ActivePeriod"
-                },
-                "additional_information_fields": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "available_discounted_tickets": {
-                    "type": "integer"
-                },
-                "capacity": {
-                    "type": "integer"
-                },
-                "category": {
-                    "type": "integer"
-                },
-                "colour": {
-                    "type": "string"
-                },
-                "discount_code": {
-                    "type": "string"
-                },
-                "discount_price": {
-                    "type": "number"
-                },
-                "discount_type": {
-                    "type": "string"
-                },
-                "event_id": {
-                    "type": "integer"
-                },
-                "event_reference": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "is_sold_out_ticket": {
-                    "type": "boolean"
-                },
-                "is_transfer_payment_fees_to_guest": {
-                    "type": "boolean"
-                },
-                "max_seats": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "number_available": {
-                    "type": "integer"
-                },
-                "percentage": {
-                    "type": "number"
-                },
-                "price": {
-                    "type": "number"
-                },
-                "purchase_limit": {
-                    "type": "integer"
-                },
-                "reference": {
-                    "type": "string"
-                },
-                "reserved": {
-                    "type": "integer"
-                },
-                "stock": {
-                    "type": "string"
-                },
-                "ticket_perks": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
         }
     },
     "securityDefinitions": {
@@ -1765,7 +1763,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "partybank-organizer-269c8057a65f.herokuapp.com",
+	Host:             "partybank-organizer.onrender.com",
 	BasePath:         "",
 	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",

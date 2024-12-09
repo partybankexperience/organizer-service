@@ -12,6 +12,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"html/template"
 	"log"
+	"strings"
 )
 
 type AuthService struct {
@@ -32,25 +33,41 @@ func NewAuthService(organizerService services.OrganizerService,
 
 func (authenticationService *AuthService) Authenticate(authRequest *request.AuthRequest) (*response.LoginResponse, error) {
 	organizerService := authenticationService.organizerService
-	org, err := organizerService.GetByUsername(authRequest.Username)
+	password := otp.GenerateOtp()
+	org, err := organizerService.GetByUsername(strings.ToLower(authRequest.Username))
+	//TODO: refactor and make components reusable
 	if err != nil {
+		log.Println("Error Authenticating user with err :: ", err.Error())
+		content, err := getMailTemplate(password.Code)
+		if err != nil {
+			return nil, errors.New("error sending otp to user")
+		}
 		res, err := addUser(authRequest, err, organizerService, org)
-		return res, err
+		org, err = organizerService.UpdateOtpFor(res.UserID, password)
+		go func() {
+			resp, err := authenticationService.mailService.Send(request.NewEmailNotificationRequest(org.Username, content.String()))
+			if err != nil {
+				log.Println("Error sending otp to organizer:: ", org.Username)
+			}
+			log.Println("email sent with response message:: ", resp)
+		}()
+		return res, errors.New("user authentication failed with error:: " + err.Error())
 	} else {
-		password := otp.GenerateOtp()
 		_, err = organizerService.UpdateOtpFor(org.ID, password)
 		if err != nil {
-			return nil, err
+			return nil, errors.New("error sending otp")
 		}
 		content, err := getMailTemplate(password.Code)
 		if err != nil {
-			return nil, err
+			return nil, errors.New("error sending otp to user")
 		}
-		mailService := services.NewMailService()
-		_, err = mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content.String())))
-		if err != nil {
-			return nil, err
-		}
+		mailService := services.NewGoMailService()
+		go func() {
+			_, err := mailService.Send(request.NewEmailNotificationRequest(org.Username, services.CreateNewOrganizerEmail(content.String())))
+			if err != nil {
+				log.Println("Error sending otp to user:: ", org.Username)
+			}
+		}()
 		return createAuthResponse(org), nil
 	}
 }
@@ -59,13 +76,15 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 	organizerService := authenticationService.organizerService
 	org, err := organizerService.GetByOtp(otp)
 	if err != nil {
-		return nil, err
+		log.Println("Error: ", err)
+		return nil, errors.New("failed to validate otp")
 	}
 	orgResponse := mapOrgToOrgResponse(org)
 	log.Println("orgResponse: ", orgResponse)
 	token, err := security.GenerateAccessTokenForOrganizer(org.User)
 	if err != nil {
-		return nil, err
+		log.Println("Error: ", err)
+		return nil, errors.New("error generating otp for user")
 	}
 	res := map[string]any{
 		"token": token,
@@ -114,11 +133,12 @@ func (authenticationService *AuthService) AuthenticateAttendee(authRequest reque
 func addUser(authRequest *request.AuthRequest, err error, organizerService services.OrganizerService, org *models.Organizer) (*response.LoginResponse, error) {
 	organizer, err := organizerService.Create(&authRequest.CreateUserRequest)
 	if err != nil {
-		log.Println("Error: ", err)
+		log.Println("Error creating organizer account :: ", err)
+		return nil, errors.New("failed to add user")
 	}
 	org, err = organizerService.GetByUsername(organizer.Username)
 	if err != nil {
-		log.Println("Error: ", err)
+		log.Println("Error finding organizer with the given username:: ", err)
 	}
 	return createAuthResponse(org), nil
 }

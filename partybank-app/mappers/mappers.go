@@ -9,7 +9,7 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/models"
 )
 
-func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series, organizer *models.Organizer) []*response.SeriesResponse {
+func MapSeriesCollectionToSeriesResponseCollection(series []*models.Series) []*response.SeriesResponse {
 	seriesResponses := make([]*response.SeriesResponse, 0)
 	for _, userSeries := range series {
 		seriesResponse := &response.SeriesResponse{
@@ -30,13 +30,36 @@ func MapEventsToEventResponses(events []*models.Event, series *models.Series) []
 	for _, event := range events {
 		ticketResponses := GetTicketsFrom(event)
 		log.Println("tickets: ", ticketResponses)
-		eventResponse := MapEventToEventResponse(event)
+		eventResponse := MapEventToEventResponse("", event)
 		eventResponse.SeriesName = series.Name
 		eventResponse.Tickets = ticketResponses
 		eventResponse.SeriesLogo = series.Logo
 		responses = append(responses, eventResponse)
 	}
 	return responses
+}
+
+func MapUpdateEventRequestToEvent(updateEventRequest *dtos.UpdateEventRequest, event *models.Event) *models.Event {
+	event.Name = updateEventRequest.Name
+	event.Location = &models.Location{
+		Longitude: updateEventRequest.Longitude,
+		Latitude:  updateEventRequest.Latitude,
+		Address:   updateEventRequest.Address,
+		City:      updateEventRequest.City,
+		State:     updateEventRequest.State,
+		Country:   updateEventRequest.Country,
+	}
+	event.EventDate = updateEventRequest.Date
+	event.StartTime = updateEventRequest.StartTime
+	event.IsNotificationEnabled = updateEventRequest.IsNotificationEnabled
+	event.EndTime = updateEventRequest.EndTime
+	event.ContactInformation = updateEventRequest.ContactInformation
+	event.Description = updateEventRequest.Description
+	event.EventTheme = updateEventRequest.EventTheme
+	event.AttendeeTerm = updateEventRequest.AttendeeTerm
+	event.Venue = updateEventRequest.Venue
+	event.ImageUrl = updateEventRequest.ImageUrl
+	return event
 }
 
 func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
@@ -51,27 +74,28 @@ func GetTicketsFrom(event *models.Event) []*response.TicketResponse {
 	return ticketResponses
 }
 
-func MapEventToEventResponse(event *models.Event) *response.EventResponse {
+func MapEventToEventResponse(message string, event *models.Event) *response.EventResponse {
 	tickets := GetTicketsFrom(event)
 	eventTime := buildEventTimeForEventResponse(event)
 	eventResponse := &response.EventResponse{
-		ID:                 event.ID,
-		Message:            "event created successfully",
-		Name:               event.Name,
-		Date:               event.EventDate,
-		Time:               eventTime,
-		ContactInformation: event.ContactInformation,
-		Description:        event.Description,
-		Status:             event.Status,
-		SeriesID:           event.SeriesID,
-		Venue:              event.Venue,
-		AttendeeTerm:       event.AttendeeTerm,
-		EventTheme:         event.EventTheme,
-		ImageUrl:           event.ImageUrl,
-		Reference:          event.Reference,
-		CreatedBy:          event.CreatedBy,
-		PublicationState:   event.PublicationState,
-		Tickets:            tickets,
+		ID:                    event.ID,
+		Message:               message,
+		Name:                  event.Name,
+		Date:                  event.EventDate,
+		Time:                  eventTime,
+		ContactInformation:    event.ContactInformation,
+		Description:           event.Description,
+		IsNotificationEnabled: event.IsNotificationEnabled,
+		Status:                event.Status,
+		SeriesID:              event.SeriesID,
+		Venue:                 event.Venue,
+		AttendeeTerm:          event.AttendeeTerm,
+		EventTheme:            event.EventTheme,
+		ImageUrl:              event.ImageUrl,
+		Reference:             event.Reference,
+		CreatedBy:             event.CreatedBy,
+		PublicationState:      event.PublicationState,
+		Tickets:               tickets,
 	}
 
 	if event.Location != nil {
@@ -93,29 +117,7 @@ func buildEventTimeForEventResponse(event *models.Event) string {
 }
 
 func MapTicketToTicketResponse(ticket *models.Ticket) *response.TicketResponse {
-	ticketResponse := &response.TicketResponse{
-		Type:                         ticket.Type,
-		Name:                         ticket.Name,
-		Capacity:                     ticket.Capacity,
-		Stock:                        ticket.Stock,
-		Reference:                    ticket.Reference,
-		NumberAvailable:              ticket.NumberAvailable,
-		Price:                        ticket.Price,
-		PurchaseLimit:                ticket.PurchaseLimit,
-		DiscountType:                 ticket.DiscountType,
-		AvailableDiscountedTickets:   ticket.AvailableDiscountedTickets,
-		IsTransferPaymentFeesToGuest: ticket.IsTransferPaymentFeesToGuest,
-		AdditionalInformationFields:  ticket.AdditionalInformationFields,
-		Colour:                       ticket.Colour,
-		TicketPerks:                  ticket.TicketPerks,
-		IsTicketSaleEnded:            ticket.IsSoldOutTicket,
-	}
-	if ticket.ActivePeriod != nil {
-		ticketResponse.SaleEndDate = ticket.ActivePeriod.EndDate
-		ticketResponse.SalesEndTime = ticket.ActivePeriod.EndTime
-		ticketResponse.SalesStartTime = ticket.ActivePeriod.StartTime
-		ticketResponse.SalesStartDate = ticket.ActivePeriod.StartDate
-	}
+	ticketResponse := response.NewTicketResponseFromTicket(ticket)
 	return ticketResponse
 }
 
@@ -140,13 +142,48 @@ func MapAttendeeToAttendeeResponse(attendee *models.Attendee) *response.Attendee
 	}
 }
 
+func MapTicketsToTicketsResponse(tickets []*models.Ticket) []*response.TicketResponse {
+	ticketsResponse := make([]*response.TicketResponse, 0)
+	for _, ticket := range tickets {
+		ticketResponse := MapTicketToTicketResponse(ticket)
+		ticketsResponse = append(ticketsResponse, ticketResponse)
+	}
+	return ticketsResponse
+}
+
+func MapEditTicketToCreateTicket(editTicketRequest *dtos.EditTicketRequest) *dtos.CreateTicketRequest {
+	return &dtos.CreateTicketRequest{
+		Type:                         editTicketRequest.Type,
+		Name:                         editTicketRequest.Name,
+		Capacity:                     editTicketRequest.Capacity,
+		Category:                     editTicketRequest.Category,
+		GroupTicketCapacity:          editTicketRequest.GroupTicketCapacity,
+		Stock:                        editTicketRequest.Stock,
+		Price:                        editTicketRequest.Price,
+		TicketPerks:                  editTicketRequest.TicketPerks,
+		PurchaseLimit:                editTicketRequest.PurchaseLimit,
+		IsTransferPaymentFeesToGuest: editTicketRequest.IsTransferPaymentFeesToGuest,
+		Colour:                       editTicketRequest.Colour,
+		SaleEndDate:                  editTicketRequest.SaleEndDate,
+		SalesStartDate:               editTicketRequest.SalesStartDate,
+		SalesStartTime:               editTicketRequest.SalesStartTime,
+		SalesEndTime:                 editTicketRequest.SalesEndTime,
+	}
+}
+
 func MapEditTicketRequestToTicket(editTicketRequest *dtos.EditTicketRequest, ticket *models.Ticket) *models.Ticket {
 	ticket.Colour = editTicketRequest.Colour
 	ticket.Name = editTicketRequest.Name
+	ticket.Capacity = editTicketRequest.Capacity
+	ticket.Type = editTicketRequest.Type
 	ticket.Stock = editTicketRequest.Stock
+	ticket.Category = editTicketRequest.Category
+	ticket.GroupTicketCapacity = editTicketRequest.GroupTicketCapacity
 	ticket.Price = editTicketRequest.Price
 	ticket.TicketPerks = editTicketRequest.TicketPerks
 	ticket.IsTransferPaymentFeesToGuest = editTicketRequest.IsTransferPaymentFeesToGuest
+	ticket.Category = editTicketRequest.Category
+	ticket.GroupTicketCapacity = editTicketRequest.GroupTicketCapacity
 	if ticket.ActivePeriod != nil {
 		ticket.ActivePeriod.StartTime = editTicketRequest.SalesStartTime
 		ticket.ActivePeriod.EndTime = editTicketRequest.SalesEndTime
