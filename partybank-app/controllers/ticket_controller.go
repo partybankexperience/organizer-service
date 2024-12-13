@@ -71,7 +71,7 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 // @Security Bearer
 // @Router       /api/v1/ticket/{eventId} [get]
 func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context) {
-	eventId, err := extractParamFromRequest("eventId", ctx)
+	eventId, err := extractIdParamFromRequest("eventId", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -155,7 +155,7 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 // @Security Bearer
 // @Router       /api/v1/ticket/add/{eventId} [post]
 func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
-	eventId, err := extractParamFromRequest("eventId", ctx)
+	eventId, err := extractIdParamFromRequest("eventId", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return

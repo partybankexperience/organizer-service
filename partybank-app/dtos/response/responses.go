@@ -112,6 +112,7 @@ type EventResponse struct {
 	CreatedBy             string            `json:"created_by,omitempty"`
 	Tickets               []*TicketResponse `json:"tickets"`
 	PublicationState      string            `json:"publication_state,omitempty"`
+	IsEventWithTicketSale bool              `json:"-"`
 }
 
 type TicketResponse struct {

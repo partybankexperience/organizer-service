@@ -60,6 +60,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 	router.GET("/api/v1/event/discover", eventController.DiscoverEvents)
 	router.GET("/api/v1/event/reference/:reference", eventController.GetEventByReference)
 	router.GET("/api/v1/ticket/update", ticketController.UpdateTicketSoldOutStatusByReference)
+	router.PUT("/api/v1/event/sales/update", eventController.UpdateEventHasTicketSales)
 }
 
 func AuthMiddleware() gin.HandlerFunc {
