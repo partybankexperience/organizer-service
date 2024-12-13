@@ -199,6 +199,8 @@ definitions:
         type: integer
       image_url:
         type: string
+      is_event_with_ticket_sale:
+        type: boolean
       is_notification_enabled:
         type: boolean
       lat:
@@ -377,7 +379,7 @@ definitions:
       state:
         type: string
     type: object
-host: partybank-organizer.onrender.com
+host: organizer-service.onrender.com
 info:
   contact:
     email: unavailable
@@ -722,6 +724,33 @@ paths:
       summary: Add Event Staff
       tags:
       - Organizer
+  /api/v1/event/unpublish/{eventId}:
+    put:
+      consumes:
+      - application/json
+      description: Unpublish Event
+      parameters:
+      - description: eventId
+        in: path
+        name: eventId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.RaveResponse'
+      security:
+      - Bearer: []
+      summary: Unpublish Event
+      tags:
+      - Events
   /api/v1/series:
     post:
       consumes:

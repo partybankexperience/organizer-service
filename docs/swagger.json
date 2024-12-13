@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "partybank-organizer.onrender.com",
+    "host": "organizer-service.onrender.com",
     "paths": {
         "/api/v1/attendee/update/{username}": {
             "put": {
@@ -427,6 +427,49 @@
                         "schema": {
                             "$ref": "#/definitions/dtos.AddEventStaffRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/event/unpublish/{eventId}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Unpublish Event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Unpublish Event",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "eventId",
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1477,6 +1520,9 @@
                 },
                 "image_url": {
                     "type": "string"
+                },
+                "is_event_with_ticket_sale": {
+                    "type": "boolean"
                 },
                 "is_notification_enabled": {
                     "type": "boolean"

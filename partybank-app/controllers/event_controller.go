@@ -304,6 +304,36 @@ func (eventController *EventController) UpdateEventHasTicketSales(ctx *gin.Conte
 	ctx.JSON(http.StatusOK, &response.RaveResponse[string]{Data: updateEventResponse})
 }
 
+// UnpublishEvent godoc
+// @Summary      Unpublish Event
+// @Description  Unpublish Event
+// @Tags         Events
+// @Accept       json
+// @Param        eventId  path int  true  "eventId"
+// @Produce      json
+// @Success      200  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Security Bearer
+// @Router       /api/v1/event/unpublish/{eventId} [put]
+func (eventController *EventController) UnpublishEvent(ctx *gin.Context) {
+	eventId, err := extractIdParamFromRequest("eventId", ctx)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	unpublishRequest := &request.UnPublishEventRequest{}
+	if err := ctx.ShouldBindJSON(unpublishRequest); err != nil {
+		handleError(ctx, err)
+		return
+	}
+	event, err := eventController.EventService.UnPublishEvent(eventId, unpublishRequest)
+	if err := ctx.ShouldBindJSON(unpublishRequest); err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, event)
+}
+
 func extractIdParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
 	log.Println("param name: ", paramName, "val: ", ctx.Param(paramName))
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)

@@ -138,6 +138,10 @@ type EditTicketRequest struct {
 	SalesStartTime               string      `json:"ticket_sale_start_time"`
 }
 
+type UnPublishEventRequest struct {
+	UnPublishReason string `json:"reason" validate:"required"`
+}
+
 type TicketPerks []string
 
 func (o *TicketPerks) Scan(src any) error {

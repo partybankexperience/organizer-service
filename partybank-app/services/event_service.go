@@ -32,6 +32,7 @@ type EventService interface {
 	SetTicketService(service TicketService)
 	DeleteEventBy(eventId uint64) (string, error)
 	UpdateEventHasTicketSales(reference string) (string, error)
+	UnPublishEvent(eventId uint64, unpublishRequest *request.UnPublishEventRequest) (*response.EventResponse, error)
 }
 
 type raveEventService struct {
@@ -267,6 +268,9 @@ func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string,
 	if err != nil {
 		return "", errors.New("failed to find event")
 	}
+	if event.IsEventWithTicketSale {
+		return "failed to delete event", errors.New("cannot delete event with ticket sales")
+	}
 	event.PublicationState = "ARCHIVED"
 	err = raveEventService.EventRepository.DeleteById(eventId)
 	if err != nil {
@@ -303,6 +307,20 @@ func (raveEventService *raveEventService) UpdateEventHasTicketSales(reference st
 		return "event not saved", errors.New(fmt.Sprintf("failed to update event with reference %s", reference))
 	}
 	return "event updated successfully", nil
+}
+
+func (raveEventService *raveEventService) UnPublishEvent(eventId uint64, unpublishRequest *request.UnPublishEventRequest) (*response.EventResponse, error) {
+	event, err := raveEventService.GetEventBy(eventId)
+	if err != nil {
+		return nil, errors.New("event not found")
+	}
+	//TODO: send mail with reason to all attendees for event
+	event.PublicationState = models.UNPUBLISHED
+	event, err = raveEventService.EventRepository.Save(event)
+	if err != nil {
+		return nil, errors.New("failed to un-publish event")
+	}
+	return mappers.MapEventToEventResponse("event unpublished successfully", event), nil
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {
