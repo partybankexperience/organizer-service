@@ -54,7 +54,7 @@ func init() {
 	db = repositories.Connect()
 }
 
-//partybank-organizer-269c8057a65f.herokuapp.com
+//organizer-service.onrender.com
 
 // @title           Partybank Organizer Service
 // @version         1.0
@@ -65,7 +65,7 @@ func init() {
 // @contact.email  unavailable
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host partybank-organizer.onrender.com
+// @host organizer-service.onrender.com
 // @schemes https
 // @securityDefinitions.apikey Bearer
 // @in header
