@@ -102,13 +102,15 @@ func (raveEventRepository *raveEventRepository) DeleteEventById(eventId uint64) 
 
 func (raveEventRepository *raveEventRepository) FindAllUpcomingEvents() ([]*models.Event, error) {
 	var events []*models.Event
-	if err := raveEventRepository.Db.Where(&models.Event{Status: models.UPCOMING}).Find(&events).Error; err != nil {
+	if err := raveEventRepository.Db.Where(&models.Event{Status: models.UPCOMING}).
+		Find(&events).Error; err != nil {
 		return nil, err
 	}
 	return events, nil
 }
 
 func (raveEventRepository *raveEventRepository) RemovePastEvents() error {
+	log.Println("removing past events...")
 	if err := raveEventRepository.Db.
 		Model(&models.Event{}).
 		Where("TO_DATE(event_date, 'DD-MM-YYYY') < CURRENT_DATE").

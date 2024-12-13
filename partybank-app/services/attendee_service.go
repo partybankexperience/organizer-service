@@ -27,7 +27,8 @@ type raveAttendeeService struct {
 	MailService
 }
 
-func NewAttendeeService(attendeeRepository repositories.AttendeeRepository, mailService MailService) AttendeeService {
+func NewAttendeeService(attendeeRepository repositories.AttendeeRepository,
+	mailService MailService) AttendeeService {
 	return &raveAttendeeService{
 		attendeeRepository,
 		mailService,

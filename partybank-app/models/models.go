@@ -3,11 +3,9 @@ package models
 import (
 	"database/sql/driver"
 	"errors"
+	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	"reflect"
 	"strings"
-	"time"
-
-	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 
 	"gorm.io/gorm"
 
@@ -54,17 +52,17 @@ func init() {
 type Organizer struct {
 	ID uint64 `id:"ID" gorm:"primaryKey"`
 	*User
-	Name      string
-	CreatedAt time.Time
-	Otp       *otp.OneTimePassword `gorm:"embedded;embeddedPrefix:otp"`
-	EventId   uint64
-	Series    []*Series
+	Name    string
+	Otp     *otp.OneTimePassword `gorm:"embedded;embeddedPrefix:otp"`
+	EventId uint64
+	Series  []*Series
 }
 
 type User struct {
 	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
 	Username string `json:"username" gorm:"unique"`
 	Role     string `json:"role"`
+	*gorm.Model
 }
 
 type Attendee struct {
@@ -128,7 +126,8 @@ type Ticket struct {
 	MaxSeats                     uint64                      `json:"max_seats"`
 	EventReference               string                      `json:"event_reference"`
 	Reserved                     uint64                      `json:"reserved"`
-	DeletedAt                    gorm.DeletedAt
+	*gorm.Model
+	DeletedAt gorm.DeletedAt
 }
 
 type ActivePeriod struct {
@@ -178,7 +177,7 @@ type Location struct {
 type Series struct {
 	ID   uint64 `id:"id" gorm:"primaryKey" json:"id"`
 	Name string `json:"name"`
-	gorm.Model
+	*gorm.Model
 	Events      []*Event `json:"events"`
 	OrganizerID uint64   `json:"organizer_id"`
 	ImageUrl    string   `json:"image_url"`
@@ -200,4 +199,5 @@ type Discount struct {
 	Count uint64
 	Value string
 	Price float64
+	*gorm.Model
 }
