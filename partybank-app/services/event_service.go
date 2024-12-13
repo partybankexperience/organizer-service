@@ -268,6 +268,9 @@ func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string,
 	if err != nil {
 		return "", errors.New("failed to find event")
 	}
+	if event.IsEventWithTicketSale {
+		return "failed to delete event", errors.New("cannot delete event with ticket sales")
+	}
 	event.PublicationState = "ARCHIVED"
 	err = raveEventService.EventRepository.DeleteById(eventId)
 	if err != nil {

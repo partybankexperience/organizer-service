@@ -449,6 +449,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/event/unpublish/{eventId}": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Unpublish Event",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Unpublish Event",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "eventId",
+                        "name": "eventId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.RaveResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/event/{id}": {
             "get": {
                 "security": [
@@ -1482,6 +1525,9 @@ const docTemplate = `{
                 "image_url": {
                     "type": "string"
                 },
+                "is_event_with_ticket_sale": {
+                    "type": "boolean"
+                },
                 "is_notification_enabled": {
                     "type": "boolean"
                 },
@@ -1763,7 +1809,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "partybank-organizer.onrender.com",
+	Host:             "organizer-service.onrender.com",
 	BasePath:         "",
 	Schemes:          []string{"https"},
 	Title:            "Partybank Organizer Service",
