@@ -3,6 +3,7 @@ package services
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
 	"github.com/djfemz/organizer-service/partybank-app/mappers"
@@ -30,6 +31,7 @@ type EventService interface {
 	GetAllEventsForOrganizer(organizerId uint64, page, size int) ([]*response.EventResponse, error)
 	SetTicketService(service TicketService)
 	DeleteEventBy(eventId uint64) (string, error)
+	UpdateEventHasTicketSales(reference string) (string, error)
 }
 
 type raveEventService struct {
@@ -286,6 +288,21 @@ func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string,
 		//return "", errors.New("failed to send delete event to payment service")
 	}
 	return "event deleted successfully", nil
+}
+
+func (raveEventService *raveEventService) UpdateEventHasTicketSales(reference string) (string, error) {
+	event, err := raveEventService.FindByReference(reference)
+	if err != nil {
+		log.Println("no event found: ", event, " err: ", err)
+		return "event not found", errors.New(fmt.Sprintf("event with reference %s not found", reference))
+	}
+	event.IsEventWithTicketSale = true
+	event, err = raveEventService.Save(event)
+	if err != nil {
+		log.Println("no event found: ", err)
+		return "event not saved", errors.New(fmt.Sprintf("failed to update event with reference %s", reference))
+	}
+	return "event updated successfully", nil
 }
 
 func mapCreateEventRequestToEvent(createEventRequest *request.CreateEventRequest) *models.Event {

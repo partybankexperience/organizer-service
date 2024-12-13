@@ -68,7 +68,7 @@ func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 // @Router       /api/v1/series/{id} [get]
 func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 	seriesService := seriesController.SeriesService
-	id, err := extractParamFromRequest("id", ctx)
+	id, err := extractIdParamFromRequest("id", ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
 		return
@@ -97,7 +97,7 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 // @Security Bearer
 // @Router       /api/v1/series/organizer/{organizerId} [get]
 func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context) {
-	organizerId, err := extractParamFromRequest("organizerId", ctx)
+	organizerId, err := extractIdParamFromRequest("organizerId", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -137,7 +137,7 @@ func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context
 // @Security Bearer
 // @Router       /api/v1/series [put]
 func (seriesController *SeriesController) UpdateSeries(ctx *gin.Context) {
-	seriesId, err := extractParamFromRequest("seriesId", ctx)
+	seriesId, err := extractIdParamFromRequest("seriesId", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -174,7 +174,7 @@ func (seriesController *SeriesController) UpdateSeries(ctx *gin.Context) {
 // @Security Bearer
 // @Router       /api/v1/series/events/add [get]
 func (seriesController *SeriesController) AddEventToSeries(ctx *gin.Context) {
-	seriesId, err := extractParamFromRequest("seriesId", ctx)
+	seriesId, err := extractIdParamFromRequest("seriesId", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return

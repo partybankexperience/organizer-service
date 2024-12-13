@@ -161,8 +161,9 @@ type Event struct {
 	EventStaff            []*EventStaff
 	CreatedBy             string
 	PublicationState      string
-	DateCreated           string `json:"created_at"`
+	//DateCreated           string `json:"created_at"`
 	IsEventDeleted        bool
+	IsEventWithTicketSale bool
 }
 
 type Location struct {

@@ -71,7 +71,7 @@ func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 // @Router       /api/v1/event/{id} [put]
 func (eventController *EventController) EditEvent(ctx *gin.Context) {
 	updateEventRequest := &request.UpdateEventRequest{}
-	eventId, err := extractParamFromRequest("id", ctx)
+	eventId, err := extractIdParamFromRequest("id", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -145,7 +145,7 @@ func (eventController *EventController) GetAllEventsForSeries(ctx *gin.Context) 
 // @Security Bearer
 // @Router       /api/v1/event/{id} [get]
 func (eventController *EventController) GetEventById(ctx *gin.Context) {
-	id, err := extractParamFromRequest("id", ctx)
+	id, err := extractIdParamFromRequest("id", ctx)
 	if err != nil {
 		handleError(ctx, err)
 	}
@@ -217,7 +217,7 @@ func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 // @Security Bearer
 // @Router       /api/v1/event/publish/{id} [get]
 func (eventController *EventController) PublishEvent(ctx *gin.Context) {
-	id, err := extractParamFromRequest("id", ctx)
+	id, err := extractIdParamFromRequest("id", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -281,7 +281,7 @@ func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Contex
 // @Security Bearer
 // @Router       /api/v1/event/delete/{eventId} [delete]
 func (eventController *EventController) DeleteEvent(ctx *gin.Context) {
-	id, err := extractParamFromRequest("eventId", ctx)
+	id, err := extractIdParamFromRequest("eventId", ctx)
 	if err != nil {
 		handleError(ctx, err)
 		return
@@ -294,7 +294,17 @@ func (eventController *EventController) DeleteEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &response.RaveResponse[string]{Data: deleteEventResponse})
 }
 
-func extractParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
+func (eventController *EventController) UpdateEventHasTicketSales(ctx *gin.Context) {
+	eventReference := ctx.Query("eventReference")
+	updateEventResponse, err := eventController.EventService.UpdateEventHasTicketSales(eventReference)
+	if err != nil {
+		handleError(ctx, err)
+		return
+	}
+	ctx.JSON(http.StatusOK, &response.RaveResponse[string]{Data: updateEventResponse})
+}
+
+func extractIdParamFromRequest(paramName string, ctx *gin.Context) (uint64, error) {
 	log.Println("param name: ", paramName, "val: ", ctx.Param(paramName))
 	id, err := strconv.ParseUint(ctx.Param(paramName), 10, 64)
 	if err != nil {
