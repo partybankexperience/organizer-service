@@ -97,7 +97,7 @@ func startCron() {
 		log.Fatal("timezone not found")
 	}
 	job := cron.NewWithLocation(loc)
-	err = job.AddFunc("*/1 * * * * *", func() {
+	err = job.AddFunc("@daily", func() {
 		err = eventRepository.RemovePastEvents()
 		if err != nil {
 			log.Println("failed to Remove past events")
