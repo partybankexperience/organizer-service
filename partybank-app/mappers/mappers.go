@@ -96,6 +96,7 @@ func MapEventToEventResponse(message string, event *models.Event) *response.Even
 		CreatedBy:             event.CreatedBy,
 		PublicationState:      event.PublicationState,
 		Tickets:               tickets,
+		IsEventSoldTicket:     event.IsEventWithTicketSale,
 	}
 
 	if event.Location != nil {

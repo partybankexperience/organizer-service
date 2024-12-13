@@ -23,7 +23,6 @@ func (goMailService *goMailService) Send(emailRequest *request.EmailNotification
 	message.SetAddressHeader("Cc", emailRequest.Recipients[0].Email, emailRequest.Recipients[0].Email)
 	message.SetHeader("Subject", emailRequest.Subject)
 	message.SetBody("text/html", emailRequest.Content)
-	//message.Attach("/home/Alex/lolcat.jpg")
 
 	//dialer := gomail.NewDialer("smtp.gmail.com", 587, "partybankexperience@gmail.com", "mlztvopuabontioo")
 	dialer := gomail.NewDialer("smtp.gmail.com", 465,

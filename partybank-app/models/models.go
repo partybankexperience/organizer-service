@@ -30,8 +30,9 @@ const (
 )
 
 const (
-	PUBLISHED = "PUBLISHED"
-	DRAFT     = "DRAFT"
+	PUBLISHED   = "PUBLISHED"
+	DRAFT       = "DRAFT"
+	UNPUBLISHED = "UNPUBLISHED"
 )
 
 const (
@@ -163,7 +164,7 @@ type Event struct {
 	PublicationState      string
 	//DateCreated           string `json:"created_at"`
 	IsEventDeleted        bool
-	IsEventWithTicketSale bool
+	IsEventWithTicketSale bool `json:"is_event_with_ticket_sale"`
 }
 
 type Location struct {
