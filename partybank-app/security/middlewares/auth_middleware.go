@@ -20,7 +20,7 @@ import (
 
 var routesAuthorities map[string][]string
 
-func Routers(router *gin.Engine, organizerController *handlers.OrganizerController,
+func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.OrganizerController,
 	eventController *handlers.EventController, seriesController *handlers.SeriesController,
 	ticketController *handlers.TicketController, authService *services.AuthService,
 	attendeeController *handlers.AttendeeController, authController *controllers.AuthController, attendeeRepo repositories.AttendeeRepository) {
