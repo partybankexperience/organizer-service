@@ -20,7 +20,7 @@ import (
 
 var routesAuthorities map[string][]string
 
-func Routers(router *gin.Engine, organizerController *handlers.OrganizerController,
+func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.OrganizerController,
 	eventController *handlers.EventController, seriesController *handlers.SeriesController,
 	ticketController *handlers.TicketController, authService *services.AuthService,
 	attendeeController *handlers.AttendeeController, authController *controllers.AuthController, attendeeRepo repositories.AttendeeRepository) {
@@ -47,7 +47,7 @@ func Routers(router *gin.Engine, organizerController *handlers.OrganizerControll
 		protected.PUT("/attendee/update/:username", attendeeController.UpdateAttendee)
 		protected.GET("/series/events/add/:seriesId", seriesController.AddEventToSeries)
 		protected.GET("/ticket/edit", ticketController.EditTicket)
-		protected.PUT("/api/v1/event/unpublish/:eventId", eventController.UnpublishEvent)
+		protected.PUT("/event/unpublish/:eventId", eventController.UnpublishEvent)
 	}
 
 	oauthController := &controllers.OauthController{
