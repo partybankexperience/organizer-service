@@ -21,16 +21,16 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 	}
 }
 
-//// Register godoc
-//// @Summary      Onboard Attendee
-//// @Description  Onboard Attendee
-//// @Tags         Auth
-//// @Accept       json
-//// @Param 		 tags body dtos.CreateAttendeeRequest true "Auth tags"
-//// @Produce      json
-//// @Success      201  {object}  dtos.RaveResponse
-//// @Failure      400  {object}  dtos.RaveResponse
-//// @Router       /auth/attendee  [post]
+// Register godoc
+// @Summary      Onboard Attendee
+// @Description  Onboard Attendee
+// @Tags         Auth
+// @Accept       json
+// @Param 		 tags body dtos.CreateAttendeeRequest true "Auth tags"
+// @Produce      json
+// @Success      201  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.RaveResponse
+// @Router       /auth/attendee  [post]
 //func (attendeeController AttendeeController) Register(ctx *gin.Context) {
 //	attendeeAuthRequest := &dtos.CreateAttendeeRequest{}
 //	err := ctx.BindJSON(attendeeAuthRequest)

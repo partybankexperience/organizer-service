@@ -47,7 +47,7 @@ func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.Or
 		protected.PUT("/attendee/update/:username", attendeeController.UpdateAttendee)
 		protected.GET("/series/events/add/:seriesId", seriesController.AddEventToSeries)
 		protected.GET("/ticket/edit", ticketController.EditTicket)
-		protected.PUT("/api/v1/event/unpublish/:eventId", eventController.UnpublishEvent)
+		protected.PUT("/event/unpublish/:eventId", eventController.UnpublishEvent)
 	}
 
 	oauthController := &controllers.OauthController{
