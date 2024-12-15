@@ -323,12 +323,12 @@ func (eventController *EventController) UnpublishEvent(ctx *gin.Context) {
 		return
 	}
 	unpublishRequest := &request.UnPublishEventRequest{}
-	if err := ctx.ShouldBindJSON(unpublishRequest); err != nil {
+	if err := ctx.BindJSON(unpublishRequest); err != nil {
 		handleError(ctx, err)
 		return
 	}
 	event, err := eventController.EventService.UnPublishEvent(eventId, unpublishRequest)
-	if err := ctx.ShouldBindJSON(unpublishRequest); err != nil {
+	if err != nil {
 		handleError(ctx, err)
 		return
 	}
