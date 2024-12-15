@@ -474,6 +474,15 @@ const docTemplate = `{
                         "name": "eventId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Event tags",
+                        "name": "tags",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UnPublishEventRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -1657,6 +1666,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ticket_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UnPublishEventRequest": {
+            "type": "object",
+            "required": [
+                "reason"
+            ],
+            "properties": {
+                "reason": {
                     "type": "string"
                 }
             }

@@ -289,6 +289,13 @@ definitions:
       ticket_type:
         type: string
     type: object
+  dtos.UnPublishEventRequest:
+    properties:
+      reason:
+        type: string
+    required:
+    - reason
+    type: object
   dtos.UpdateAttendeeRequest:
     properties:
       first_name:
@@ -735,6 +742,12 @@ paths:
         name: eventId
         required: true
         type: integer
+      - description: Event tags
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UnPublishEventRequest'
       produces:
       - application/json
       responses:

@@ -310,6 +310,7 @@ func (eventController *EventController) UpdateEventHasTicketSales(ctx *gin.Conte
 // @Tags         Events
 // @Accept       json
 // @Param        eventId  path int  true  "eventId"
+// @Param 		 tags body dtos.UnPublishEventRequest true "Event tags"
 // @Produce      json
 // @Success      200  {object}  dtos.RaveResponse
 // @Failure      400  {object}  dtos.RaveResponse
