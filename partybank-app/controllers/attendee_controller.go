@@ -28,8 +28,8 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 // @Accept       json
 // @Param 		 tags body dtos.CreateAttendeeRequest true "Auth tags"
 // @Produce      json
-// @Success      201  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      201  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Router       /auth/attendee  [post]
 //func (attendeeController AttendeeController) Register(ctx *gin.Context) {
 //	attendeeAuthRequest := &dtos.CreateAttendeeRequest{}
@@ -48,7 +48,7 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 //		handleError(ctx, err)
 //		return
 //	}
-//	ctx.JSON(http.StatusCreated, response.RaveResponse[*response.AttendeeResponse]{Data: res})
+//	ctx.JSON(http.StatusCreated, response.PartybankBaseResponse[*response.AttendeeResponse]{Data: res})
 //}
 
 // UpdateAttendee godoc
@@ -59,8 +59,8 @@ func NewAttendeeController(attendeeService services.AttendeeService, objectValid
 // @Param 		 tags body dtos.UpdateAttendeeRequest true "Attendee tags"
 // @Param 		 username  path string  true  "username"
 // @Produce      json
-// @Success      201  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      201  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/attendee/update/{username}  [put]
 func (attendeeController AttendeeController) UpdateAttendee(ctx *gin.Context) {
@@ -82,5 +82,5 @@ func (attendeeController AttendeeController) UpdateAttendee(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, response.RaveResponse[*response.AttendeeResponse]{Data: res})
+	ctx.JSON(http.StatusOK, response.PartybankBaseResponse[*response.AttendeeResponse]{Data: res})
 }

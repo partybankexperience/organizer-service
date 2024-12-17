@@ -33,7 +33,7 @@ func NewTicketController(ticketService services.TicketService, objectValidator *
 //@Param 		 tags body dtos.CreateTicketRequest true "Ticket tags"
 //@Produce      json
 //@Success      200  {object}  dtos.TicketResponse
-//@Failure      400  {object}  dtos.RaveResponse
+//@Failure      400  {object}  dtos.PartybankBaseResponse
 //@Security Bearer
 //@Router       /api/v1/ticket [post]
 func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
@@ -67,7 +67,7 @@ func (ticketController *TicketController) AddTicketToEvent(ctx *gin.Context) {
 // @Param        size   query   int  true  "size"
 // @Produce      json
 // @Success      200  {array}  dtos.TicketResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/ticket/{eventId} [get]
 func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context) {
@@ -80,12 +80,12 @@ func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context
 	size := ctx.Query("size")
 	pageNumber, err := utils.ConvertQueryStringToInt(page)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	pageSize, err := utils.ConvertQueryStringToInt(size)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	tickets, err := ticketController.GetAllTicketsFor(eventId, pageNumber, pageSize)
@@ -104,7 +104,7 @@ func (ticketController *TicketController) GetAllTicketsForEvent(ctx *gin.Context
 // @Param        ticketId  query int  true  "ticketId"
 // @Produce      json
 // @Success      200  {object}  dtos.TicketResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/ticket [get]
 func (ticketController *TicketController) GetTicketById(ctx *gin.Context) {
@@ -129,7 +129,7 @@ func (ticketController *TicketController) GetTicketById(ctx *gin.Context) {
 // @Param        reference query string  true  "reference"
 // @Produce      json
 // @Success      200  {object}  dtos.TicketResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/ticket/update [get]
 func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(ctx *gin.Context) {
@@ -150,8 +150,8 @@ func (ticketController *TicketController) UpdateTicketSoldOutStatusByReference(c
 // @Param        eventId path int  true  "eventId"
 // @Param 		 tags body dtos.CreateTicketsDto true "Ticket tags"
 // @Produce      json
-// @Success      201  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      201  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/ticket/add/{eventId} [post]
 func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
@@ -171,7 +171,7 @@ func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.TicketResponse]{Data: res})
+	ctx.JSON(http.StatusOK, &response.PartybankBaseResponse[[]*response.TicketResponse]{Data: res})
 }
 
 // EditTicket godoc
@@ -182,7 +182,7 @@ func (ticketController *TicketController) AddTickets(ctx *gin.Context) {
 // @Param        ticketId  query int  true  "ticketId"
 // @Produce      json
 // @Success      200  {object}  dtos.TicketResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/ticket/edit [put]
 func (ticketController *TicketController) EditTicket(ctx *gin.Context) {

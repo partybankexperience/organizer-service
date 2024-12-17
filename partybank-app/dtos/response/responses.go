@@ -11,7 +11,7 @@ const (
 	USER_CREATED_SUCCESSFULLY    = "user created successfully"
 )
 
-type RaveResponse[T any] struct {
+type PartybankBaseResponse[T any] struct {
 	Data T `json:"data" swaggerignore:"true"`
 }
 

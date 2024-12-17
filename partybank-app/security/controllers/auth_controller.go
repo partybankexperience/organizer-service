@@ -28,8 +28,8 @@ func NewAuthController(authService *authService.AuthService) *AuthController {
 // @Accept       json
 // @Param 		 tags body dtos.AuthRequest true "Auth tags"
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Router       /auth/login [post]
 func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 	var signInRequest request.AuthRequest
@@ -39,7 +39,7 @@ func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 	}
 	res, err := authController.AuthService.Authenticate(&signInRequest)
 	if res != nil {
-		ctx.JSON(http.StatusOK, response.RaveResponse[response.LoginResponse]{Data: *res})
+		ctx.JSON(http.StatusOK, response.PartybankBaseResponse[response.LoginResponse]{Data: *res})
 	} else {
 		handleError(ctx, err)
 	}
@@ -52,8 +52,8 @@ func (authController *AuthController) AuthHandler(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        code   query   int  true  "otp code"
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Router       /auth/otp/validate [get]
 func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
 	code := ctx.Query("code")
@@ -72,9 +72,9 @@ func (authController *AuthController) ValidateOtp(ctx *gin.Context) {
 // @Accept       json
 // @Param 		 tags body dtos.AttendeeAuthRequest true "Auth tags"
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
-// @Failure      500  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
+// @Failure      500  {object}  dtos.PartybankBaseResponse
 // @Router       /auth/login/attendee [post]
 func (authController *AuthController) AuthenticateAttendee(ctx *gin.Context) {
 	var signInRequest = request.AttendeeAuthRequest{}
@@ -87,9 +87,9 @@ func (authController *AuthController) AuthenticateAttendee(ctx *gin.Context) {
 		handleError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, response.RaveResponse[*response.LoginResponse]{Data: authResponse})
+	ctx.JSON(http.StatusOK, response.PartybankBaseResponse[*response.LoginResponse]{Data: authResponse})
 }
 
 func handleError(ctx *gin.Context, err error) {
-	ctx.IndentedJSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+	ctx.IndentedJSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 }

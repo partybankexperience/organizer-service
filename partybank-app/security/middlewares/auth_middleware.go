@@ -71,7 +71,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		token := extractTokenFrom(authHeader)
 		if !isValid(token) {
 			ctx.AbortWithStatusJSON(http.StatusForbidden,
-				&response.RaveResponse[string]{Data: "access token is invalid"})
+				&response.PartybankBaseResponse[string]{Data: "access token is invalid"})
 			return
 		}
 		ctx.Next()

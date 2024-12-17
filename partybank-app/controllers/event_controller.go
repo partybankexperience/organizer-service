@@ -33,28 +33,28 @@ func NewEventController(eventService services.EventService, objectValidator *val
 // @Accept       json
 // @Param 		 tags body dtos.CreateEventRequest true "Event tags"
 // @Produce      json
-// @Success      201  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      201  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event  [post]
 func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 	createEventRequest := &request.CreateEventRequest{}
 	err := ctx.BindJSON(createEventRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 		return
 	}
 	err = eventController.Struct(createEventRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 		return
 	}
 	res, err := eventController.EventService.Create(createEventRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusCreated, &response.RaveResponse[*response.EventResponse]{Data: res})
+	ctx.JSON(http.StatusCreated, &response.PartybankBaseResponse[*response.EventResponse]{Data: res})
 }
 
 // EditEvent godoc
@@ -66,7 +66,7 @@ func (eventController *EventController) CreateEvent(ctx *gin.Context) {
 // @Param        id   path   int  true  "id"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/{id} [put]
 func (eventController *EventController) EditEvent(ctx *gin.Context) {
@@ -104,7 +104,7 @@ func (eventController *EventController) EditEvent(ctx *gin.Context) {
 // @Param        size   query   int  true  "size"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/series [get]
 func (eventController *EventController) GetAllEventsForSeries(ctx *gin.Context) {
@@ -117,12 +117,12 @@ func (eventController *EventController) GetAllEventsForSeries(ctx *gin.Context) 
 	size := ctx.Query("size")
 	pageNumber, err := utils.ConvertQueryStringToInt(page)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	pageSize, err := utils.ConvertQueryStringToInt(size)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	events, err := eventController.EventService.GetAllEventsFor(organizerId, pageNumber, pageSize)
@@ -141,7 +141,7 @@ func (eventController *EventController) GetAllEventsForSeries(ctx *gin.Context) 
 // @Param        id  path int  true  "id"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/{id} [get]
 func (eventController *EventController) GetEventById(ctx *gin.Context) {
@@ -164,21 +164,21 @@ func (eventController *EventController) GetEventById(ctx *gin.Context) {
 // @Produce      json
 // @Param        page   query   int  true  "page"
 // @Param        size   query   int  true  "size"
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Router       /api/v1/event/discover [get]
 func (eventController *EventController) DiscoverEvents(ctx *gin.Context) {
 	log.Println("In discover events")
 	page := ctx.Query("page")
 	pageNumber, err := utils.ConvertQueryStringToInt(page)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 		return
 	}
 	size := ctx.Query("size")
 	pageSize, err := utils.ConvertQueryStringToInt(size)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[string]{Data: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 		return
 	}
 	events, err := eventController.EventService.DiscoverEvents(pageNumber, pageSize)
@@ -193,13 +193,13 @@ func (eventController *EventController) DiscoverEvents(ctx *gin.Context) {
 // @Param        reference  path string  true  "reference"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Router       /api/v1/event/reference/{reference} [get]
 func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 	reference := ctx.Param("reference")
 	event, err := eventController.EventService.GetEventByReference(reference)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	ctx.JSON(http.StatusOK, event)
@@ -213,7 +213,7 @@ func (eventController *EventController) GetEventByReference(ctx *gin.Context) {
 // @Param        id  path int  true  "id"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/publish/{id} [get]
 func (eventController *EventController) PublishEvent(ctx *gin.Context) {
@@ -240,7 +240,7 @@ func (eventController *EventController) PublishEvent(ctx *gin.Context) {
 // @Param        size   query   int  true  "size"
 // @Produce      json
 // @Success      200  {object}  dtos.EventResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/organizer [get]
 func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Context) {
@@ -253,12 +253,12 @@ func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Contex
 	size := ctx.Query("size")
 	pageNumber, err := utils.ConvertQueryStringToInt(page)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	pageSize, err := utils.ConvertQueryStringToInt(size)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	events, err := eventController.EventService.GetAllEventsForOrganizer(organizerId, pageNumber, pageSize)
@@ -276,8 +276,8 @@ func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Contex
 // @Accept       json
 // @Param        eventId  path int  true  "eventId"
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/delete/{eventId} [delete]
 func (eventController *EventController) DeleteEvent(ctx *gin.Context) {
@@ -295,7 +295,7 @@ func (eventController *EventController) DeleteEvent(ctx *gin.Context) {
 		return
 	}
 	log.Println("delete response: ", deleteEventResponse)
-	ctx.JSON(http.StatusOK, &response.RaveResponse[string]{Data: deleteEventResponse})
+	ctx.JSON(http.StatusOK, &response.PartybankBaseResponse[string]{Data: deleteEventResponse})
 }
 
 func (eventController *EventController) UpdateEventHasTicketSales(ctx *gin.Context) {
@@ -305,7 +305,7 @@ func (eventController *EventController) UpdateEventHasTicketSales(ctx *gin.Conte
 		handleError(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, &response.RaveResponse[string]{Data: updateEventResponse})
+	ctx.JSON(http.StatusOK, &response.PartybankBaseResponse[string]{Data: updateEventResponse})
 }
 
 // UnpublishEvent godoc
@@ -316,8 +316,8 @@ func (eventController *EventController) UpdateEventHasTicketSales(ctx *gin.Conte
 // @Param        eventId  path int  true  "eventId"
 // @Param 		 tags body dtos.UnPublishEventRequest true "Event tags"
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/unpublish/{eventId} [put]
 func (eventController *EventController) UnpublishEvent(ctx *gin.Context) {
@@ -350,6 +350,6 @@ func extractIdParamFromRequest(paramName string, ctx *gin.Context) (uint64, erro
 
 func handleError(ctx *gin.Context, err error) {
 	ctx.AbortWithStatusJSON(http.StatusBadRequest,
-		&response.RaveResponse[string]{Data: "failed to process request payload"})
+		&response.PartybankBaseResponse[string]{Data: "failed to process request payload"})
 	return
 }
