@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "https"
+        "http"
     ],
     "swagger": "2.0",
     "info": {
@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "organizer-service.onrender.com",
+    "host": "localhost:8000",
     "paths": {
         "/api/v1/attendee/update/{username}": {
             "put": {

@@ -283,14 +283,18 @@ func (eventController *EventController) GetAllEventsForOrganizer(ctx *gin.Contex
 func (eventController *EventController) DeleteEvent(ctx *gin.Context) {
 	id, err := extractIdParamFromRequest("eventId", ctx)
 	if err != nil {
+		log.Println("error: ", err.Error())
 		handleError(ctx, err)
 		return
 	}
+	log.Println("event id: ", id)
 	deleteEventResponse, err := eventController.EventService.DeleteEventBy(id)
 	if err != nil {
+		log.Println("error: ", err.Error())
 		handleError(ctx, err)
 		return
 	}
+	log.Println("delete response: ", deleteEventResponse)
 	ctx.JSON(http.StatusOK, &response.RaveResponse[string]{Data: deleteEventResponse})
 }
 
