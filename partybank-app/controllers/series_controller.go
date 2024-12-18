@@ -31,28 +31,28 @@ func NewSeriesController(seriesService services.SeriesService, objectValidator *
 // @Accept       json
 // @Param 		 tags body dtos.CreateSeriesRequest true "Series tags"
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/series [post]
 func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 	createSeriesRequest := &request.CreateSeriesRequest{}
 	err := ctx.BindJSON(createSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	err = seriesController.Struct(createSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	resp, err := seriesController.AddSeries(createSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
-	ctx.JSON(http.StatusCreated, &response.RaveResponse[*response.CreateCalendarResponse]{Data: resp})
+	ctx.JSON(http.StatusCreated, &response.PartybankBaseResponse[*response.CreateCalendarResponse]{Data: resp})
 }
 
 // GetSeriesById godoc
@@ -62,24 +62,24 @@ func (seriesController *SeriesController) CreateSeries(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        id   path   int  true  "series id"
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/series/{id} [get]
 func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 	seriesService := seriesController.SeriesService
 	id, err := extractIdParamFromRequest("id", ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	calendar, err := seriesService.GetCalendar(id)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, &response.RaveResponse[*response.SeriesResponse]{Data: calendar})
+	ctx.JSON(http.StatusOK, &response.PartybankBaseResponse[*response.SeriesResponse]{Data: calendar})
 
 }
 
@@ -92,8 +92,8 @@ func (seriesController *SeriesController) GetSeriesById(ctx *gin.Context) {
 // @Param        organizerId   path   int  true  "organizerId"
 // @Param        page   query   int  true  "page"
 // @Param        size   query   int  true  "size"
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/series/organizer/{organizerId} [get]
 func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context) {
@@ -121,7 +121,7 @@ func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context
 		return
 	}
 	log.Println("series for org: ", orgSeries)
-	ctx.JSON(http.StatusOK, &response.RaveResponse[[]*response.SeriesResponse]{Data: orgSeries})
+	ctx.JSON(http.StatusOK, &response.PartybankBaseResponse[[]*response.SeriesResponse]{Data: orgSeries})
 }
 
 // UpdateSeries godoc
@@ -132,8 +132,8 @@ func (seriesController *SeriesController) GetSeriesForOrganizer(ctx *gin.Context
 // @Param 		 tags body dtos.UpdateSeriesRequest true "Series tags"
 // @Param        seriesId   path   int  true  "seriesId"
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/series [put]
 func (seriesController *SeriesController) UpdateSeries(ctx *gin.Context) {
@@ -145,20 +145,20 @@ func (seriesController *SeriesController) UpdateSeries(ctx *gin.Context) {
 	updateSeriesRequest := &request.UpdateSeriesRequest{}
 	err = ctx.BindJSON(updateSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	err = seriesController.Struct(updateSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
 	resp, err := seriesController.SeriesService.UpdateSeries(seriesId, updateSeriesRequest)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
-	ctx.JSON(http.StatusOK, &response.RaveResponse[*response.SeriesResponse]{Data: resp})
+	ctx.JSON(http.StatusOK, &response.PartybankBaseResponse[*response.SeriesResponse]{Data: resp})
 }
 
 // AddEventToSeries godoc
@@ -169,8 +169,8 @@ func (seriesController *SeriesController) UpdateSeries(ctx *gin.Context) {
 // @Produce      json
 // @Param        seriesId   path   int  true  "seriesId"
 // @Param        eventId   query   int  true  "eventId"
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/series/events/add [get]
 func (seriesController *SeriesController) AddEventToSeries(ctx *gin.Context) {
@@ -186,8 +186,8 @@ func (seriesController *SeriesController) AddEventToSeries(ctx *gin.Context) {
 	}
 	resp, err := seriesController.SeriesService.AddToSeries(seriesId, uint64(eventId))
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &response.RaveResponse[error]{Data: err})
+		ctx.JSON(http.StatusBadRequest, &response.PartybankBaseResponse[error]{Data: err})
 		return
 	}
-	ctx.JSON(http.StatusOK, &response.RaveResponse[*response.SeriesResponse]{Data: resp})
+	ctx.JSON(http.StatusOK, &response.PartybankBaseResponse[*response.SeriesResponse]{Data: resp})
 }

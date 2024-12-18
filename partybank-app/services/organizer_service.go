@@ -17,9 +17,9 @@ type OrganizerService interface {
 	GetByUsername(username string) (*models.Organizer, error)
 	UpdateOtpFor(id uint64, testOtp *otp.OneTimePassword) (*models.Organizer, error)
 	GetById(id uint64) (*models.Organizer, error)
-	AddEventStaff(staff *request.AddEventStaffRequest) (*response.RaveResponse[string], error)
+	AddEventStaff(staff *request.AddEventStaffRequest) (*response.PartybankBaseResponse[string], error)
 	GetByOtp(otp string) (*models.Organizer, error)
-	IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.RaveResponse[string], error)
+	IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.PartybankBaseResponse[string], error)
 }
 
 type appOrganizerService struct {
@@ -111,7 +111,7 @@ func (organizerService *appOrganizerService) GetById(id uint64) (*models.Organiz
 	return org, nil
 }
 
-func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *request.AddEventStaffRequest) (*response.RaveResponse[string], error) {
+func (organizerService *appOrganizerService) AddEventStaff(addStaffRequest *request.AddEventStaffRequest) (*response.PartybankBaseResponse[string], error) {
 	res, err := organizerService.eventStaffService.Create(&request.CreateEventStaffRequest{StaffEmails: addStaffRequest.StaffEmails, EventId: addStaffRequest.EventId})
 	if err != nil {
 		log.Println("Error creating event staff")
@@ -129,7 +129,7 @@ func (organizerService *appOrganizerService) GetByOtp(otp string) (*models.Organ
 	return org, nil
 }
 
-func (organizerService *appOrganizerService) IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.RaveResponse[string], error) {
+func (organizerService *appOrganizerService) IssueTicketTo(organizerId uint64, issueTicketRequest *request.IssueTicketRequest) (*response.PartybankBaseResponse[string], error) {
 	organizer, err := organizerService.repository.FindById(organizerId)
 	if err != nil {
 		return nil, errors.New("organizer not found")
@@ -152,7 +152,7 @@ func (organizerService *appOrganizerService) IssueTicketTo(organizerId uint64, i
 	if err != nil {
 		return nil, errors.New("failed to save issued ticket")
 	}
-	return &response.RaveResponse[string]{Data: "ticket has been issued to attendee"}, nil
+	return &response.PartybankBaseResponse[string]{Data: "ticket has been issued to attendee"}, nil
 }
 
 func mapCreateOrganizerRequestTo(organizerRequest *request.CreateUserRequest) *models.Organizer {

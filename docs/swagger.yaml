@@ -230,7 +230,7 @@ definitions:
       venue:
         type: string
     type: object
-  dtos.RaveResponse:
+  dtos.PartybankBaseResponse:
     type: object
   dtos.TicketResponse:
     properties:
@@ -423,11 +423,11 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Update Attendee
@@ -451,11 +451,11 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Add Event
@@ -482,7 +482,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Get Event By id
@@ -514,7 +514,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Edit Event
@@ -537,11 +537,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Delete Event by id
@@ -569,11 +569,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       summary: Discover events on the system
       tags:
       - Events
@@ -608,7 +608,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Get all Events for organizer
@@ -635,7 +635,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Publish Event
@@ -662,7 +662,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       summary: Get Event By reference
       tags:
       - Events
@@ -697,7 +697,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Get all Events in series
@@ -721,11 +721,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Add Event Staff
@@ -754,11 +754,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Unpublish Event
@@ -782,11 +782,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Add New Series
@@ -814,11 +814,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Update Existing Series
@@ -841,11 +841,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Get Series by id
@@ -873,11 +873,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Adds event to series
@@ -910,11 +910,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Get Series by organizerId
@@ -941,7 +941,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Get Ticket By id
@@ -980,7 +980,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Get all Tickets for Event
@@ -1009,11 +1009,11 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Add Tickets to event
@@ -1040,7 +1040,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Edit Ticket
@@ -1067,7 +1067,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       security:
       - Bearer: []
       summary: Update Ticket By reference
@@ -1084,11 +1084,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       summary: Authenticate with Google
       tags:
       - Google
@@ -1110,11 +1110,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       summary: Authenticate user
       tags:
       - Auth
@@ -1136,15 +1136,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       summary: Authenticate attendee
       tags:
       - Auth
@@ -1165,11 +1165,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dtos.RaveResponse'
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
       summary: Validate Otp
       tags:
       - Auth

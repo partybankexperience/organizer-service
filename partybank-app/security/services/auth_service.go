@@ -72,7 +72,7 @@ func (authenticationService *AuthService) Authenticate(authRequest *request.Auth
 	}
 }
 
-func (authenticationService *AuthService) ValidateOtp(otp string) (*response.RaveResponse[map[string]any], error) {
+func (authenticationService *AuthService) ValidateOtp(otp string) (*response.PartybankBaseResponse[map[string]any], error) {
 	organizerService := authenticationService.organizerService
 	org, err := organizerService.GetByOtp(otp)
 	if err != nil {
@@ -90,7 +90,7 @@ func (authenticationService *AuthService) ValidateOtp(otp string) (*response.Rav
 		"token": token,
 		"user":  orgResponse,
 	}
-	return &response.RaveResponse[map[string]any]{Data: res}, nil
+	return &response.PartybankBaseResponse[map[string]any]{Data: res}, nil
 }
 
 func (authenticationService *AuthService) AuthenticateAttendee(authRequest request.AttendeeAuthRequest) (*response.LoginResponse, error) {

@@ -34,13 +34,13 @@ func init() {
 // @Tags         Google
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Router       /auth/google/login [get]
 func (oauthController *OauthController) GoogleLogin(ctx *gin.Context) {
 	url := config.AppConfig.GoogleLoginConfig.AuthCodeURL(clientState)
 	log.Println("url: ", url)
-	ctx.JSON(http.StatusOK, response.RaveResponse[string]{Data: url})
+	ctx.JSON(http.StatusOK, response.PartybankBaseResponse[string]{Data: url})
 }
 
 func (oauthController *OauthController) GoogleCallback(ctx *gin.Context) {

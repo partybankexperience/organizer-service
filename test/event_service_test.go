@@ -67,10 +67,11 @@ func init() {
 
 func TestDeleteEvent(t *testing.T) {
 	db = repositories.Connect()
-	eventService = services.NewEventService(repositories.NewEventRepository(db), nil,
-		services.NewSeriesService(repositories.NewSeriesRepository(db)), nil)
-	eventService := services.NewEventService(repositories.NewEventRepository(repositories.Connect()), nil, nil, nil)
-	_, err := eventService.DeleteEventBy(9)
+	initPaymentService()
+	//eventService = services.NewEventService(repositories.NewEventRepository(db), nil,
+	//	services.NewSeriesService(repositories.NewSeriesRepository(db)), nil)
+	eventService := services.NewEventService(repositories.NewEventRepository(repositories.Connect()), nil, nil, nil, paymentService)
+	_, err := eventService.DeleteEventBy(76)
 	assert.Nil(t, err)
 
 	log.Println("Error: ", err)
@@ -79,7 +80,7 @@ func TestDeleteEvent(t *testing.T) {
 func TestGetAllEvents(t *testing.T) {
 	db = repositories.Connect()
 	eventService = services.NewEventService(repositories.NewEventRepository(db), nil,
-		services.NewSeriesService(repositories.NewSeriesRepository(db)), nil)
+		services.NewSeriesService(repositories.NewSeriesRepository(db)), nil, nil)
 	events, _ := eventService.GetAllEventsForOrganizer(5, 1, 99)
 	log.Println(events)
 	for _, event := range events {
@@ -90,7 +91,7 @@ func TestGetAllEvents(t *testing.T) {
 func TestUpdateEventHasSoldTicket(t *testing.T) {
 	db = repositories.Connect()
 	eventService = services.NewEventService(repositories.NewEventRepository(db), nil,
-		services.NewSeriesService(repositories.NewSeriesRepository(db)), nil)
+		services.NewSeriesService(repositories.NewSeriesRepository(db)), nil, nil)
 	eventReference := "evt-ZTA4OWVmMTktNzJlNy00ZDQyLWEyMjktZGUxNTMwNmNlYzc2"
 	updateEventResponse, err := eventService.UpdateEventHasTicketSales(eventReference)
 	assert.Nil(t, err)

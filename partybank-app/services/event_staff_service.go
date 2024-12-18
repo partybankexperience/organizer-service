@@ -9,7 +9,7 @@ import (
 )
 
 type EventStaffService interface {
-	Create(createUserRequest *request.CreateEventStaffRequest) (*response.RaveResponse[string], error)
+	Create(createUserRequest *request.CreateEventStaffRequest) (*response.PartybankBaseResponse[string], error)
 }
 
 type raveEventStaffService struct {
@@ -24,7 +24,7 @@ func NewEventStaffService(eventStaffRepository repositories.EventStaffRepository
 	}
 }
 
-func (eventStaffService *raveEventStaffService) Create(createUserRequest *request.CreateEventStaffRequest) (*response.RaveResponse[string], error) {
+func (eventStaffService *raveEventStaffService) Create(createUserRequest *request.CreateEventStaffRequest) (*response.PartybankBaseResponse[string], error) {
 	event, err := eventStaffService.EventRepository.FindById(createUserRequest.EventId)
 	if err != nil {
 		return nil, errors.New("event not found")
@@ -45,7 +45,7 @@ func (eventStaffService *raveEventStaffService) Create(createUserRequest *reques
 		}
 	}
 
-	return &response.RaveResponse[string]{Data: "event staffs invited"}, nil
+	return &response.PartybankBaseResponse[string]{Data: "event staffs invited"}, nil
 }
 
 func updateEvent(email string, event *models.Event, repo repositories.EventStaffRepository) (*models.EventStaff, error) {

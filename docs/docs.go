@@ -64,13 +64,13 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -109,13 +109,13 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -152,13 +152,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -197,13 +197,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -260,7 +260,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -303,7 +303,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -341,7 +341,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -398,7 +398,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -437,13 +437,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -489,13 +489,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -538,7 +538,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -588,7 +588,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -634,13 +634,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -677,13 +677,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -727,13 +727,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -784,13 +784,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -827,13 +827,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -876,7 +876,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -922,13 +922,13 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -971,7 +971,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1014,7 +1014,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1074,7 +1074,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1097,13 +1097,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1137,13 +1137,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1177,19 +1177,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1221,13 +1221,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1581,7 +1581,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.RaveResponse": {
+        "dtos.PartybankBaseResponse": {
             "type": "object"
         },
         "dtos.TicketResponse": {
