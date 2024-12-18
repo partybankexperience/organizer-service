@@ -1,6 +1,6 @@
 {
     "schemes": [
-        "http"
+        "https"
     ],
     "swagger": "2.0",
     "info": {
@@ -18,7 +18,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8000",
+    "host": "organizer-service.onrender.com",
     "paths": {
         "/api/v1/attendee/update/{username}": {
             "put": {
@@ -60,13 +60,13 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -105,13 +105,13 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -148,13 +148,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -193,13 +193,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -256,7 +256,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -299,7 +299,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -337,7 +337,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -394,7 +394,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -433,13 +433,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -485,13 +485,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -534,7 +534,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -584,7 +584,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -630,13 +630,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -673,13 +673,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -723,13 +723,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -780,13 +780,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -823,13 +823,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -872,7 +872,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -918,13 +918,13 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -967,7 +967,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1010,7 +1010,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1070,7 +1070,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1093,13 +1093,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1133,13 +1133,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1173,19 +1173,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1217,13 +1217,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/dtos.RaveResponse"
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
                         }
                     }
                 }
@@ -1577,7 +1577,7 @@
                 }
             }
         },
-        "dtos.RaveResponse": {
+        "dtos.PartybankBaseResponse": {
             "type": "object"
         },
         "dtos.TicketResponse": {

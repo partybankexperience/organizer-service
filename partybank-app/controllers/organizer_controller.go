@@ -27,8 +27,8 @@ func NewOrganizerController(organizerService services.OrganizerService, objectVa
 // @Accept       json
 // @Param 		 tags body dtos.AddEventStaffRequest true "Organizer tags"
 // @Produce      json
-// @Success      200  {object}  dtos.RaveResponse
-// @Failure      400  {object}  dtos.RaveResponse
+// @Success      200  {object}  dtos.PartybankBaseResponse
+// @Failure      400  {object}  dtos.PartybankBaseResponse
 // @Security Bearer
 // @Router       /api/v1/event/staff [post]
 func (orgController *OrganizerController) AddEventStaff(ctx *gin.Context) {

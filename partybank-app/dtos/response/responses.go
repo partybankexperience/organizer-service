@@ -15,6 +15,22 @@ type PartybankBaseResponse[T any] struct {
 	Data T `json:"data" swaggerignore:"true"`
 }
 
+type PaymentServiceAuthResponse struct {
+	Status  any       `json:"status"`
+	Data    TokenData `json:"data"`
+	Message string    `json:"message"`
+}
+
+type PaymentServiceAccessToken struct {
+	AccessToken string
+	ExpiresAt   time.Time
+}
+
+type TokenData struct {
+	AccessToken string `json:"access_token"`
+	TokenType   string `json:"token_type"`
+}
+
 type GoogleUserResponse struct {
 	Id              string `json:"id"`
 	Email           string `json:"email"`

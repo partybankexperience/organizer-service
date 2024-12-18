@@ -350,6 +350,6 @@ func extractIdParamFromRequest(paramName string, ctx *gin.Context) (uint64, erro
 
 func handleError(ctx *gin.Context, err error) {
 	ctx.AbortWithStatusJSON(http.StatusBadRequest,
-		&response.PartybankBaseResponse[string]{Data: "failed to process request payload"})
+		&response.PartybankBaseResponse[error]{Data: err})
 	return
 }

@@ -1,18 +1,16 @@
 package services
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
+	"github.com/djfemz/organizer-service/partybank-app/integrations"
 	"github.com/djfemz/organizer-service/partybank-app/mappers"
 	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"log"
-	"net/http"
-	"os"
 	"sort"
 	"strconv"
 )
@@ -40,18 +38,20 @@ type raveEventService struct {
 	OrganizerService
 	SeriesService
 	TicketService
+	integrations.PaymentService
 }
 
 func NewEventService(eventRepository repositories.EventRepository,
 	organizerService OrganizerService,
 	seriesService SeriesService,
 	ticketService TicketService,
-) EventService {
+	paymentService integrations.PaymentService) EventService {
 	return &raveEventService{
 		eventRepository,
 		organizerService,
 		seriesService,
 		ticketService,
+		paymentService,
 	}
 }
 
@@ -276,19 +276,10 @@ func (raveEventService *raveEventService) DeleteEventBy(eventId uint64) (string,
 	if err != nil {
 		return "", errors.New("failed to delete event")
 	}
-	paymentServiceDeleteEndpoint := os.Getenv("DELETE_EVENT_ENDPOINT_PAYMENT_SERVICE")
-	paymentServiceDeleteEndpoint = paymentServiceDeleteEndpoint + event.Reference
-	req, err := http.NewRequest(http.MethodPost, paymentServiceDeleteEndpoint, bytes.NewReader([]byte("")))
+	err = raveEventService.PaymentService.DeleteEventBy(event.Reference)
 	if err != nil {
-		log.Println("ERROR: failed to create delete request to payment side")
-		return "", errors.New("failed to delete event")
-	}
-	client := &http.Client{}
-	res, err := client.Do(req)
-	log.Println("delete event response from payment service: ", res)
-	if err != nil || res.StatusCode != 200 {
-		log.Println("ERROR: failed to send delete request to payment side", err)
-		//return "", errors.New("failed to send delete event to payment service")
+		log.Println("Error sending delete request: ", err)
+		return "", errors.New("error deleting event on payment side")
 	}
 	return "event deleted successfully", nil
 }

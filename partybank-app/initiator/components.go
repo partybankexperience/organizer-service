@@ -2,12 +2,14 @@ package initiator
 
 import (
 	handlers "github.com/djfemz/organizer-service/partybank-app/controllers"
+	"github.com/djfemz/organizer-service/partybank-app/integrations"
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/security/controllers"
 	services2 "github.com/djfemz/organizer-service/partybank-app/security/services"
 	"github.com/djfemz/organizer-service/partybank-app/services"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
+	"os"
 )
 
 var err error
@@ -33,7 +35,7 @@ var seriesController *handlers.SeriesController
 var ticketController *handlers.TicketController
 var attendeeController *handlers.AttendeeController
 var authController *controllers.AuthController
-
+var paymentService integrations.PaymentService
 var objectValidator *validator.Validate
 
 func configureAppComponents() {
@@ -57,7 +59,8 @@ func configureServiceComponents() {
 	seriesService = services.NewSeriesService(seriesRepository)
 	eventStaffService = services.NewEventStaffService(eventStaffRepository, eventRepository)
 	organizerService = services.NewOrganizerService(organizerRepository, eventStaffService, seriesService, ticketService, attendeeService)
-	eventService = services.NewEventService(eventRepository, organizerService, seriesService, ticketService)
+	paymentService = integrations.NewPaymentService(os.Getenv("PAYMENT_SERVICE_CLIENT_ID"), os.Getenv("PAYMENT_SERVICE_CLIENT_SECRET"))
+	eventService = services.NewEventService(eventRepository, organizerService, seriesService, ticketService, paymentService)
 	seriesService.SetEventService(eventService)
 	ticketService = services.NewTicketService(ticketRepository, eventService)
 	eventService.SetTicketService(ticketService)

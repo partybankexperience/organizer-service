@@ -15,6 +15,11 @@ type AuthRequest struct {
 	CreateUserRequest
 }
 
+type PaymentServiceAuthRequest struct {
+	ClientId     string `json:"clientId"`
+	ClientSecret string `json:"clientSecret"`
+}
+
 type CreateAttendeeRequest struct {
 	FullName    string `json:"full_name,omitempty"`
 	Username    string `json:"email"`
