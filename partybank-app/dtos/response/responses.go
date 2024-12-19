@@ -16,7 +16,7 @@ type PartybankBaseResponse[T any] struct {
 }
 
 type ImageUploadResponse struct {
-	Url string `json:"url"`
+	Url string `json:"image_url"`
 }
 
 type PaymentServiceAuthResponse struct {

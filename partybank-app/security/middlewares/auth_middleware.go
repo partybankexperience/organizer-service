@@ -23,7 +23,8 @@ var routesAuthorities map[string][]string
 func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.OrganizerController,
 	eventController *handlers.EventController, seriesController *handlers.SeriesController,
 	ticketController *handlers.TicketController, authService *services.AuthService,
-	attendeeController *handlers.AttendeeController, authController *controllers.AuthController, attendeeRepo repositories.AttendeeRepository) {
+	attendeeController *handlers.AttendeeController, authController *controllers.AuthController,
+	attendeeRepo repositories.AttendeeRepository, imageController *handlers.FileController) {
 
 	router.Use(cors.New(configureCors()))
 	protected := router.Group("/api/v1", AuthMiddleware())
@@ -62,6 +63,8 @@ func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.Or
 	router.GET("/api/v1/event/reference/:reference", eventController.GetEventByReference)
 	router.GET("/api/v1/ticket/update", ticketController.UpdateTicketSoldOutStatusByReference)
 	router.PUT("/api/v1/event/sales/update", eventController.UpdateEventHasTicketSales)
+	router.POST("/api/v1/image", imageController.UploadImage)
+	router.GET("/api/v1/image/:image_id", imageController.GetImage)
 }
 
 func AuthMiddleware() gin.HandlerFunc {

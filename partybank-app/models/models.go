@@ -60,10 +60,11 @@ type Organizer struct {
 }
 
 type Image struct {
+	ID uint64 `id:"ID" gorm:"primaryKey"`
 	gorm.Model
-	Name string 
-	Content string
-	Url string
+	Name    string
+	Content []byte `gorm:"type:bytea"`
+	Url     string
 	ImageId string
 }
 
