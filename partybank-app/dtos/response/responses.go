@@ -15,6 +15,10 @@ type PartybankBaseResponse[T any] struct {
 	Data T `json:"data" swaggerignore:"true"`
 }
 
+type ImageUploadResponse struct {
+	Url string `json:"image_url"`
+}
+
 type PaymentServiceAuthResponse struct {
 	Status  any       `json:"status"`
 	Data    TokenData `json:"data"`

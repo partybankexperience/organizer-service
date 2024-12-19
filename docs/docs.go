@@ -594,6 +594,83 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/image": {
+            "post": {
+                "description": "Upload an image file to the server",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Upload an image",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Image to upload",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/image/{image_id}": {
+            "get": {
+                "description": "Get Image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream",
+                    "application/json"
+                ],
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Get Image",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "image_id",
+                        "name": "image_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Binary data as a response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.PartybankBaseResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/series": {
             "put": {
                 "security": [

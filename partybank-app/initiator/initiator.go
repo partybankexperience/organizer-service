@@ -31,7 +31,8 @@ func Initiate() {
 		organizerController,
 		eventController, seriesController,
 		ticketController, authService,
-		attendeeController, authController, attendeeRepository)
+		attendeeController, authController, attendeeRepository,
+		imageController)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000"

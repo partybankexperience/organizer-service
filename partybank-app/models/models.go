@@ -59,6 +59,15 @@ type Organizer struct {
 	Series  []*Series
 }
 
+type Image struct {
+	ID uint64 `id:"ID" gorm:"primaryKey"`
+	gorm.Model
+	Name    string
+	Content []byte `gorm:"type:bytea"`
+	Url     string
+	ImageId string
+}
+
 type User struct {
 	ID       uint64 `id:"ID" gorm:"primaryKey" json:"id"`
 	Username string `json:"username" gorm:"unique"`

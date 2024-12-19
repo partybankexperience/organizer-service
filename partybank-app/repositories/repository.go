@@ -97,7 +97,7 @@ func Connect() *gorm.DB {
 	if err != nil {
 		log.Fatal("error reading port: ", err)
 	}
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d TimeZone=Africa/Lagos", os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_NAME"), port)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d TimeZone=Africa/Lagos client_encoding=UTF8", os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_NAME"), port)
 	db, err = gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true}), &gorm.Config{})
@@ -106,7 +106,7 @@ func Connect() *gorm.DB {
 	}
 
 	err = db.AutoMigrate(&models.Organizer{}, &models.Event{}, &models.EventStaff{},
-		&models.Ticket{}, &models.Series{}, &models.Attendee{})
+		&models.Ticket{}, &models.Series{}, &models.Attendee{}, &models.Image{})
 	if err != nil {
 		log.Fatal("error migrating: ", err)
 	}

@@ -20,6 +20,7 @@ var seriesRepository repositories.SeriesRepository
 var ticketRepository repositories.TicketRepository
 var eventStaffRepository repositories.EventStaffRepository
 var attendeeRepository repositories.AttendeeRepository
+var imageRepository repositories.ImageRepository
 
 var eventService services.EventService
 var organizerService services.OrganizerService
@@ -28,6 +29,8 @@ var ticketService services.TicketService
 var eventStaffService services.EventStaffService
 var authService *services2.AuthService
 var attendeeService services.AttendeeService
+var imageService services.ImageService
+var fileService services.FileUploadService
 
 var organizerController *handlers.OrganizerController
 var eventController *handlers.EventController
@@ -37,6 +40,7 @@ var attendeeController *handlers.AttendeeController
 var authController *controllers.AuthController
 var paymentService integrations.PaymentService
 var objectValidator *validator.Validate
+var imageController *handlers.FileController
 
 func configureAppComponents() {
 	objectValidator = validator.New()
@@ -52,6 +56,7 @@ func configureControllers() {
 	ticketController = handlers.NewTicketController(ticketService, objectValidator)
 	attendeeController = handlers.NewAttendeeController(attendeeService, objectValidator)
 	authController = controllers.NewAuthController(authService)
+	imageController = handlers.NewFileController(fileService)
 }
 
 func configureServiceComponents() {
@@ -66,6 +71,8 @@ func configureServiceComponents() {
 	eventService.SetTicketService(ticketService)
 	attendeeService = services.NewAttendeeService(attendeeRepository, mailService)
 	authService = services2.NewAuthService(organizerService, attendeeService, mailService)
+	imageService = services.NewImageService(imageRepository)
+	fileService = services.NewFileUploadService(imageService)
 }
 
 func configureRepositoryComponents() {
@@ -75,4 +82,5 @@ func configureRepositoryComponents() {
 	ticketRepository = repositories.NewTicketRepository(db)
 	eventStaffRepository = repositories.NewEventStaffRepository(db)
 	attendeeRepository = repositories.NewAttendeeRepository(db)
+	imageRepository = repositories.NewPartybankImageRepository(db)
 }

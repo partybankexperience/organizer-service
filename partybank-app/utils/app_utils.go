@@ -4,16 +4,20 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
-	"github.com/djfemz/organizer-service/partybank-app/models"
-	"github.com/google/uuid"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+	"time"
+
+	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
+	"github.com/djfemz/organizer-service/partybank-app/models"
+	"github.com/google/uuid"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const (
@@ -116,6 +120,16 @@ func GenerateTicketReference() string {
 	uniqueId := uuid.New()
 	uniqueHash := base64.RawURLEncoding.EncodeToString([]byte(uniqueId.String()))
 	return TICKET_REFERENCE_PREFIX + uniqueHash
+}
+
+func GenerateImageId(length int) string{
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	seededRand := rand.New(rand.NewSource(time.Now().UnixNano()))
+	result := make([]byte, length)
+	for i := range result {
+		result[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(result)
 }
 
 func ExistsWithTicketName(event *models.Event, name string) bool {
