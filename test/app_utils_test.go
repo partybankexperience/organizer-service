@@ -1,7 +1,5 @@
 package test
 
-
-
 //
 //import (
 //	"github.com/djfemz/rave/partybank-app/models"
@@ -22,6 +20,3 @@ package test
 //	status := utils.IsTicketSaleEndedFor(ticket)
 //	log.Println(status)
 //}
-
-
-
