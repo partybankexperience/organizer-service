@@ -27,12 +27,7 @@ func Initiate() {
 	go startCron()
 	router := gin.Default()
 	configureAppComponents()
-	middlewares.AddComponentsToRouters(router,
-		organizerController,
-		eventController, seriesController,
-		ticketController, authService,
-		attendeeController, authController, attendeeRepository,
-		imageController)
+	middlewares.AddComponentsToRouters(router, organizerController, eventController, seriesController, ticketController, attendeeController, authController, attendeeRepository, imageController)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000"
