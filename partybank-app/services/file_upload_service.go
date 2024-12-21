@@ -38,7 +38,7 @@ func (partybankFileUploadService *PartybankFileUploadService) UploadImage(file m
 
 func (partybankFileUploadService *PartybankFileUploadService) buildImageFrom(imageContent []byte) *models.Image {
 	imageId := utils.GenerateImageId(6)
-	imageUrl := os.Getenv("APPLICATION_BASE_URL") + "/api/v1/image/" + imageId
+	imageUrl := os.Getenv("APPLICATION_STAGING_URL") + utils.GET_IMAGE_URL_PATH + imageId
 	image := &models.Image{
 		ImageId: imageId,
 		Content: imageContent,

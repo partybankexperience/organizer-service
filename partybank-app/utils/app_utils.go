@@ -29,6 +29,7 @@ const (
 	FRONT_END_PROD_URL      = "https://thepartybank.com"
 	EVENT_REFERENCE_PREFIX  = "evt-"
 	TICKET_REFERENCE_PREFIX = "tkt-"
+	GET_IMAGE_URL_PATH      = "/api/v1/image/"
 )
 
 func ConvertQueryStringToInt(query string) (int, error) {
