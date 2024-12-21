@@ -6,7 +6,6 @@ import (
 	"github.com/djfemz/organizer-service/partybank-app/repositories"
 	"github.com/djfemz/organizer-service/partybank-app/security"
 	"github.com/djfemz/organizer-service/partybank-app/security/controllers"
-	"github.com/djfemz/organizer-service/partybank-app/security/services"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -22,9 +21,9 @@ var routesAuthorities map[string][]string
 
 func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.OrganizerController,
 	eventController *handlers.EventController, seriesController *handlers.SeriesController,
-	ticketController *handlers.TicketController, authService *services.AuthService,
-	attendeeController *handlers.AttendeeController, authController *controllers.AuthController,
-	attendeeRepo repositories.AttendeeRepository, imageController *handlers.FileController) {
+	ticketController *handlers.TicketController, attendeeController *handlers.AttendeeController,
+	authController *controllers.AuthController, attendeeRepo repositories.AttendeeRepository,
+	imageController *handlers.FileController) {
 
 	router.Use(cors.New(configureCors()))
 	protected := router.Group("/api/v1", AuthMiddleware())
@@ -65,6 +64,7 @@ func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.Or
 	router.PUT("/api/v1/event/sales/update", eventController.UpdateEventHasTicketSales)
 	router.POST("/api/v1/image", imageController.UploadImage)
 	router.GET("/api/v1/image/:image_id", imageController.GetImage)
+	router.POST("/api/v1/image/upload", imageController.UploadImageContent)
 }
 
 func AuthMiddleware() gin.HandlerFunc {

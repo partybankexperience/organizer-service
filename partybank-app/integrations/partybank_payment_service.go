@@ -4,6 +4,7 @@ import (
 	"errors"
 	request "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
+	"github.com/djfemz/organizer-service/partybank-app/models"
 	"github.com/djfemz/organizer-service/partybank-app/utils"
 	"log"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 type PaymentService interface {
 	Authenticate() (token string, err error)
 	IsAccessTokenInvalid() bool
+	CreateEventFor(event *models.Event) error
 	DeleteEventBy(reference string) error
 }
 
@@ -57,6 +59,29 @@ func (partyBankPaymentService *PartyBankPaymentService) IsAccessTokenInvalid() b
 		return true
 	}
 	return false
+}
+
+func (partyBankPaymentService *PartyBankPaymentService) CreateEventFor(event *models.Event) error {
+	paymentServiceCreateEventEndpoint := os.Getenv("PAYMENT_SERVICE_ADD_EVENT_URL")
+	if partyBankPaymentService.IsAccessTokenInvalid() {
+		_, err := partyBankPaymentService.Authenticate()
+		if err != nil {
+			log.Println("error obtaining token from payment service")
+			return errors.New("error obtaining token from payment service")
+		}
+	}
+	ticketMessage := utils.BuildTicketMessage(event)
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + partyBankPaymentService.AccessToken.AccessToken
+	client := utils.NewHttpClient[request.NewTicketMessage, interface{}](&log.Logger{}, &http.Client{})
+	go func() {
+		_, err := client.Send(http.MethodPost, paymentServiceCreateEventEndpoint, ticketMessage, headers)
+		if err != nil {
+			log.Println("Error sending ticket message to payment service: ", err)
+			return
+		}
+	}()
+	return nil
 }
 
 func (partyBankPaymentService *PartyBankPaymentService) DeleteEventBy(reference string) error {

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	dtos "github.com/djfemz/organizer-service/partybank-app/dtos/request"
 	response "github.com/djfemz/organizer-service/partybank-app/dtos/response"
 	"github.com/djfemz/organizer-service/partybank-app/services"
 	"github.com/gin-gonic/gin"
@@ -43,6 +44,31 @@ func (fileController *FileController) UploadImage(ctx *gin.Context) {
 		}
 	}(file)
 	imageUploadResponse, err := fileController.FileUploadService.UploadImage(file)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusCreated, &response.PartybankBaseResponse[*response.ImageUploadResponse]{Data: imageUploadResponse})
+}
+
+// UploadImageContent godoc
+// @Summary Upload an image
+// @Description Upload an image file to the server
+// @Tags Images
+// @Accept application/json
+// @Produce json
+// @Param input body dtos.UploadImageRequest true "image content"
+// @Success 201 {object} dtos.PartybankBaseResponse "success"
+// @Failure 400 {object} dtos.PartybankBaseResponse "error"
+// @Router /api/v1/image/upload [post]
+func (fileController *FileController) UploadImageContent(ctx *gin.Context) {
+	uploadImageRequest := &dtos.UploadImageRequest{}
+	err := ctx.BindJSON(&uploadImageRequest)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, errors.New("could not find file in request"))
+		return
+	}
+	imageUploadResponse, err := fileController.FileUploadService.UploadImageContent(uploadImageRequest.Image)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 		return
