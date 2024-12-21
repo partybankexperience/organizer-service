@@ -371,6 +371,13 @@ definitions:
       series_logo:
         type: string
     type: object
+  dtos.UploadImageRequest:
+    properties:
+      image:
+        items:
+          type: integer
+        type: array
+    type: object
   models.Location:
     properties:
       address:
@@ -813,6 +820,32 @@ paths:
           schema:
             $ref: '#/definitions/dtos.PartybankBaseResponse'
       summary: Get Image
+      tags:
+      - Images
+  /api/v1/image/upload:
+    post:
+      consumes:
+      - application/json
+      description: Upload an image file to the server
+      parameters:
+      - description: image content
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UploadImageRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: success
+          schema:
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/dtos.PartybankBaseResponse'
+      summary: Upload an image
       tags:
       - Images
   /api/v1/series:
