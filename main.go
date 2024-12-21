@@ -23,7 +23,6 @@ import (
 // @name Authorization
 // @externalDocs.description  OpenAPI
 func main() {
-	//organizer-service.onrender.com
-	//partybank-organizer-269c8057a65f.herokuapp.com
+
 	initiator.Initiate()
 }
