@@ -20,6 +20,10 @@ type PaymentServiceAuthRequest struct {
 	ClientSecret string `json:"clientSecret"`
 }
 
+type UploadImageRequest struct {
+	Image []byte `json:"image"`
+}
+
 type CreateAttendeeRequest struct {
 	FullName    string `json:"full_name,omitempty"`
 	Username    string `json:"email"`

@@ -140,11 +140,11 @@ func (raveTicketService *raveTicketService) AddTickets(eventId uint64, tickets [
 		ticket := mappers.MapTicketToTicketResponse(ticketResponse)
 		res = append(res, ticket)
 	}
-	event, err := raveTicketService.EventService.GetEventBy(eventId)
-	if err != nil {
-		log.Println("error: ticket_service.go: 158 \t\tfailed to find event")
-	}
-	go utils.SendNewTicketMessageFor(event)
+	//_, err = raveTicketService.EventService.GetEventBy(eventId)
+	//if err != nil {
+	//	log.Println("error: ticket_service.go: 158 \t\tfailed to find event")
+	//}
+	////go utils.SendNewTicketMessageFor(event)
 	return res, nil
 }
 

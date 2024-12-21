@@ -64,6 +64,7 @@ func AddComponentsToRouters(router *gin.Engine, organizerController *handlers.Or
 	router.PUT("/api/v1/event/sales/update", eventController.UpdateEventHasTicketSales)
 	router.POST("/api/v1/image", imageController.UploadImage)
 	router.GET("/api/v1/image/:image_id", imageController.GetImage)
+	router.POST("/api/v1/image/upload", imageController.UploadImageContent)
 }
 
 func AuthMiddleware() gin.HandlerFunc {

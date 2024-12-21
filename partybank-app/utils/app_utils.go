@@ -45,7 +45,7 @@ func isDateValid(date string) bool {
 }
 
 func SendNewTicketMessageFor(event *models.Event) {
-	ticketMessage := buildTicketMessage(event)
+	ticketMessage := BuildTicketMessage(event)
 	body, err := json.Marshal(ticketMessage)
 	if err != nil {
 		log.Println("Error: ", err)
@@ -63,7 +63,7 @@ func SendNewTicketMessageFor(event *models.Event) {
 	log.Println("response: ", *res)
 }
 
-func buildTicketMessage(event *models.Event) *request.NewTicketMessage {
+func BuildTicketMessage(event *models.Event) *request.NewTicketMessage {
 	ticketTypes := extractTicketTypesFrom(event.Tickets)
 	var timeFrame = event.StartTime + " to " + event.EndTime
 
@@ -122,7 +122,7 @@ func GenerateTicketReference() string {
 	return TICKET_REFERENCE_PREFIX + uniqueHash
 }
 
-func GenerateImageId(length int) string{
+func GenerateImageId(length int) string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	seededRand := rand.New(rand.NewSource(time.Now().UnixNano()))
 	result := make([]byte, length)

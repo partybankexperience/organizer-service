@@ -93,6 +93,16 @@ func (raveEventService *raveEventService) Create(createEventRequest *request.Cre
 			log.Println("error adding tickets to event")
 		}
 	}
+	event, err = raveEventService.GetEventBy(savedEvent.ID)
+	if err != nil {
+		log.Println("failed to retrieve events after adding tickets: ", err)
+		return nil, errors.New("error adding event")
+	}
+	err = raveEventService.PaymentService.CreateEventFor(event)
+	if err != nil {
+		log.Println("error sending events to payment service: ", err)
+		return nil, errors.New("error adding event")
+	}
 	res := mappers.MapEventToEventResponse("event created successfully", savedEvent)
 	res.SeriesName = calendar.Name
 	return res, nil
