@@ -65,11 +65,13 @@ func (fileController *FileController) UploadImageContent(ctx *gin.Context) {
 	uploadImageRequest := &dtos.UploadImageRequest{}
 	err := ctx.BindJSON(&uploadImageRequest)
 	if err != nil {
+		log.Println("error: ", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, errors.New("could not find file in request"))
 		return
 	}
 	imageUploadResponse, err := fileController.FileUploadService.UploadImageContent(uploadImageRequest.Image)
 	if err != nil {
+		log.Println("error: ", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, &response.PartybankBaseResponse[string]{Data: err.Error()})
 		return
 	}

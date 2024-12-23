@@ -23,6 +23,6 @@ import (
 // @name Authorization
 // @externalDocs.description  OpenAPI
 func main() {
-
+	//organizer-service.onrender.com
 	initiator.Initiate()
 }
